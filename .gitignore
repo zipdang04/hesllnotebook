@@ -1,3 +1,18 @@
+# remove binary
+*
+!*/
+!*.*
+
+# MacOS shit
+.DS_Store
+
+# files for debugging
+*.txt
+tex/customlexers/*
+!tex/customlexers/lexers.py
+######################################################################
+# TeX.gitignore
+
 ## Core latex/pdflatex auxiliary files:
 *.aux
 *.lof
