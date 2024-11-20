@@ -42,8 +42,8 @@ void read(T &a, Ts&... args){
 #define randomize mt19937_64 mt(CURRENT_TIMESTAMP)
 
 // remember to fill in:
-#define MAX ???
-#define MOD ???
+// #define MAX ???
+// #define MOD ???
 
-int main()
-{ios_base::sync_with_stdio(0);cin.tie(0);}
+// int main()
+// {ios_base::sync_with_stdio(0);cin.tie(0);}
