@@ -1,6 +1,6 @@
 #include "../../../tex/contents/math/ds/modint.hpp"
 
-#define MAX 1000000
+#define MAX 10000000
 modint fact[MAX + 1], ifac[MAX + 1];
 
 main()
@@ -9,7 +9,7 @@ main()
 	int t; read(t, MOD);
 	const int LIMIT = min(1ll*MAX, MOD - 1);
 	fact[0] = 1; FOR(int, i, 1, LIMIT) fact[i] = fact[i - 1] * i;
-	ifac[LIMIT] = fact[LIMIT].inv();
+	ifac[LIMIT] = 1 / fact[LIMIT];
 	REV(int, i, LIMIT - 1, 0) ifac[i] = ifac[i + 1] * (i + 1);
 
 	FOR(int, _, 1, t) {
