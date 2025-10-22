@@ -3,6 +3,7 @@
 main()
 {
 	ios_base::sync_with_stdio(0); cin.tie(0);
+	// MOD = 998244353;
 	FFT::buildRoot();
 	int n, m; cin >> n >> m;
 	vector<int> a(n); FOR(int, i, 0, n-1) cin >> a[i];

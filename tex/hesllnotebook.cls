@@ -15,6 +15,8 @@
 \RequirePackage[utf8]{vntex}
 \RequirePackage{fancyhdr}
 \RequirePackage{multicol}
+\RequirePackage{amsmath}
+\RequirePackage{amssymb}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 2. margins %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \paperwidth=29.7cm
@@ -74,13 +76,17 @@
 \titlespacing*{\subsubsection}{0pt}{0.5ex}{0.25ex}
 \setcounter{tocdepth}{2}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 3. codes %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 5. codes %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \setminted{xleftmargin=11pt, resetmargins, numbersep=4pt, breaklines, breakbefore=. , stripnl, linenos, tabsize=2, fontsize=\footnotesize, firstnumber=1}
 
 \def\currentdir{}
 \newcommand{\setcurrentdir}[1]{\def\currentdir{contents/#1}}
-\NewDocumentCommand\othercodes{oommm}{
-    \subsubsection{#3}\addcontentsline{toc}{subsubsection}{#3} 
+\NewDocumentCommand\othercodes{oommmo}{
+    \subsubsection{#3}\addcontentsline{toc}{subsubsection}{#3}
+    \IfNoValueTF{#6}{} {%
+        #6
+        \vspace*{-1em}
+    } 
     \IfNoValueTF{#2}{%
         \IfNoValueTF{#1}{%
             \inputminted{#4}{\currentdir/#5}
@@ -91,4 +97,4 @@
         \inputminted[firstline={#1},lastline={#2}]{#4}{\currentdir/#5}
     }
 }
-\NewDocumentCommand\cpp{oomm}{\othercodes[#1][#2]{#3}{'customlexers/lexers.py -x'}{#4}}
+\NewDocumentCommand\cpp{oommo}{\othercodes[#1][#2]{#3}{'customlexers/lexers.py -x'}{#4}[#5]}

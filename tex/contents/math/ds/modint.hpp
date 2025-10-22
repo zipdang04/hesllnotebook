@@ -1,8 +1,8 @@
 #include "../../miscellanous/template.hpp"
 
 typedef unsigned long long ull;
-ll MOD = 1000000007;
 struct modint{
+	inline static const ll MOD = 998244353;
 	int v;
 	static inline ll mod(ll num) {
 		ll val=num-ull((__uint128_t(-1ULL/MOD)*num)>>64)*MOD;

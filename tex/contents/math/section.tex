@@ -1,16 +1,24 @@
 \section{Mathematics}
 \subsection{Data structure}
 \setcurrentdir{math/ds}
-\cpp{Modulo}{modint.hpp}
-\cpp{BigInteger}{bigint.cpp}
+\cpp[3]{Modulo}{modint.hpp}
+\cpp{BigInteger}{bigint.hpp}
 
 \subsection{Number Theory}
 \setcurrentdir{math/numbertheory}
-\cpp{Mildly-optimized sieve(Factorable)}{eratos_factorable.cpp}
-\cpp{Primality check}{millerrabin.hpp}
+\cpp[3]{Mildly-optimized sieve(Factorable)}{eratos_factorable.cpp}
+\cpp[3]{Primality check}{millerrabin.hpp}
 \cpp{Prime factorization}{pollardrho.hpp} 
 
 \subsection{Numerical}
 \setcurrentdir{math/numerical}
-\cpp[75][133]{FFT}{fft.cpp}
-\cpp{NTT}{ntt.hpp}
+\cpp{FFT}{fft.hpp}
+\cpp{NTT}{ntt.hpp}[
+	$k$-th root of unity, mod $p$: $\omega_k$ satisfies
+	$\begin{cases}
+		\omega_k^k \equiv 1 & \\ 
+		\omega_k^i \not\equiv \omega_k^j & (i \not\equiv j)
+	\end{cases}$\\
+	$p=c \times 2^k+1 \Rightarrow w_{2^k}=g^c$ w/ any $g: \gcd(g, p)=1$\\
+	only works for $p$ with big $k$ (e.g. $998244353$ w/ $k=23$ below)
+]

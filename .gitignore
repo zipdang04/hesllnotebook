@@ -5,6 +5,7 @@
 
 # MacOS shit
 .DS_Store
+build/
 
 # files for debugging
 *.txt

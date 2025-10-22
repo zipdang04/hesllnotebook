@@ -1,7 +1,7 @@
 #!/bin/bash
 
 compile() {
-	g++ $1.cpp -O2 -lm -fmax-errors=5 -march=native -s -o $1 2> /dev/null
+	g++-14 $1.cpp -O2 -lm -fmax-errors=5 -march=native -s -o $1 2> /dev/null
 	if [ $? -ne 0 ]
 	then
 		echo "Error during compilation"
@@ -32,6 +32,7 @@ run() {
 }
 ############################
 MAIN_DIR=$(dirname $0)/..
+echo $MAIN_DIR
 TEST_DIR=library-checker-problems
 cd $MAIN_DIR
 if [ $(basename `pwd`) != "hesllnotebook" ]

@@ -2,12 +2,14 @@
 
 // MOD=998244353=c*2^k+1 => ROOT=g^c, any g: gcd(g,MOD)=1
 namespace FFT{
-	constexpr int K_MOD = 23, BIT = 20, MAX_LEN = 1 << BIT;
+	constexpr int K_MOD = 23, BIT = 22, MAX_LEN = 1 << BIT;
 	constexpr int ROOT = 15311432;
 
 	modint _root[MAX_LEN + 1];
 	vector<int> _rev[BIT + 1];
+	bool _built = false;
 	void buildRoot() {
+		if (_built) return; _built = true;
 		_root[0] = 1; modint mul=ROOT; 
 		FOR(int, i, 1, K_MOD-BIT) mul*=mul;
 		FOR(int, i, 1, MAX_LEN) _root[i] = _root[i-1] * mul;
