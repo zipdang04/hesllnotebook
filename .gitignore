@@ -6,6 +6,8 @@
 # MacOS shit
 .DS_Store
 build/
+.vscode
+.ccls*
 
 # files for debugging
 *.txt
