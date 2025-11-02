@@ -30,7 +30,7 @@ class bigint {
 				return (digs[i] < oth.digs[i]) xor xV;
 			return eqV;
 		}
-		inline bigint& _minusDigits(const bigint &num) {
+		inline bigint& _minusD(const bigint &num) {
 			bool flip = ltAbs(num, false, false);
 			const vc *big = &(flip ? num.digs : digs), 
 					 *small = &(flip ? digs : num.digs);
@@ -100,28 +100,19 @@ class bigint {
 			{ return not operator<(num); }
 		inline bool operator > (const bigint &num) const 
 			{ return not operator<=(num); }
+		// fix rlvalue error/improve performance by:
+		// inline bool operator ...  (bigint &&num) const 
+		// 	{ return operator ... (num); }
 		
-		inline bool operator > (bigint &&num) const 
-			{ return operator > (num); }
-		inline bool operator < (bigint &&num) const 
-			{ return operator < (num); }
-		inline bool operator >= (bigint &&num) const 
-			{ return operator >= (num); }
-		inline bool operator <= (bigint &&num) const 
-			{ return operator <= (num); }
-		inline bool operator == (bigint &&num) const 
-			{ return operator == (num); }
-		inline bool operator != (bigint &&num) const 
-			{ return operator != (num); }
 		/* operator + - * / */
 		inline bigint operator - () const 
 			{ return bigint(*this).flipNega(); }
 		inline bigint& operator += (const bigint& num) {
 			if (num.isNega() == isNega()) _plusD(num);
-			else _minusDigits(num); return *this;
+			else _minusD(num); return *this;
 		}
 		inline bigint& operator -= (const bigint& num) {
-			if (num.isNega() == isNega()) _minusDigits(num);
+			if (num.isNega() == isNega()) _minusD(num);
 			else _plusD(num); return *this;
 		}
 		inline bigint operator + (const bigint& num) 

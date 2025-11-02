@@ -25,6 +25,9 @@ all_source_codes = {
 			"fft": TestCase("math/numerical/fft", "convolution/convolution_mod_1000000007", 3),
 			"ntt": TestCase("math/numerical/ntt", "convolution/convolution_mod")
 		}
+	},
+	"string": {
+	    "hash": TestCase("string/enumerate_palindromes", "string/hash")
 	}
 }
 
