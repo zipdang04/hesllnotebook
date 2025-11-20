@@ -1,6 +1,6 @@
 #include "../../../tex/contents/math/numerical/ntt.hpp"
 
-main()
+int main()
 {
 	ios_base::sync_with_stdio(0); cin.tie(0);
 	// MOD = 998244353;

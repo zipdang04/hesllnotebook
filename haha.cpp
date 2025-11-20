@@ -15,44 +15,42 @@ template <class T> using PQMax = priority_queue<T>;
 template <class T> using PQMin = priority_queue<T, vector<T>, greater<T>>;
 template <class T1, class T2>
 void maximize(T1 &a, T2 b){
-    if (b > a) a = b;
+	if (b > a) a = b;
 }
 template <class T1, class T2>
 void minimize(T1 &a, T2 b){
-    if (b < a) a = b;
+	if (b < a) a = b;
 }
 template <class T>
 void read(T &number)
 {
-    bool negative = false;
-    register int c;
-    number = 0;
-    c = getchar();
-    while (c != '-' && !isalnum(c)) c = getchar();
-    if (c=='-'){
-        negative = true;
-        c = getchar();
-    }
-    for (; (c>47 && c<58); c=getchar())
-        number = number *10 + c - 48;
-    if (negative)
-        number *= -1;
+	bool negative = false;
+	register int c;
+	number = 0;
+	c = getchar();
+	while (c != '-' && !isalnum(c)) c = getchar();
+	if (c=='-'){
+		negative = true;
+		c = getchar();
+	}
+	for (; (c>47 && c<58); c=getchar())
+		number = number *10 + c - 48;
+	if (negative)
+		number *= -1;
 }
 template <class T, class ...Ts>
 void read(T &a, Ts& ... args){
-    read(a);
-    read(args...);
+	read(a);
+	read(args...);
 }
 
-/*
 struct Node
 {
-    int node, len;
-    Node() {node = len = 0;}
-    Node(int node, int len) {this -> node = node, this -> len = len;}
+	int node, len;
+	Node() {node = len = 0;}
+	Node(int node, int len) {this -> node = node, this -> len = len;}
 };
 typedef vector<Node> vg;
-*/
 
 #define fi first
 #define se second
@@ -64,20 +62,24 @@ typedef vector<Node> vg;
 #define flipBit(n, bit) ((n) ^ (1ll << (bit)))
 #define cntBit(n) __builtin_popcount(n)
 #define cntBitll(n) __builtin_popcountll(n)
+#define log2(n) (31 - __builtin_clz(n))
+#define log2ll(n) (63 - __builtin_clzll(n))
 #define CURRENT_TIMESTAMP chrono::steady_clock::now().time_since_epoch().count()
 #define randomize mt19937_64 mt(CURRENT_TIMESTAMP)
 
 #define MAX 1000001
 #define MOD 1000000007
 
-namespace GaussianElimination{
-    // struct Equation{
-    //     // vector<
-    // }
-}
+struct A{
+	int b;
+};
+
+A* c;
 
 main()
 {
-    ios_base::sync_with_stdio(0); cin.tie(0);
-    // 
+	ios_base::sync_with_stdio(0); cin.tie(0);
+	c = new A;
+	c -> b = 5;
+	A *d = new A(*c);
 }

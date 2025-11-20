@@ -15,7 +15,7 @@ ll d[MAX], trace[MAX];
 deque<int> q;
 randomize;
 
-void spfa(int root){
+void spfa(int root, bool detect){
 	FOR(int, i, 0, n)
 		shuffle(graph[i].begin(), graph[i].end(), mt);
 	memset(d, 0x3f, sizeof(d));
@@ -30,13 +30,16 @@ void spfa(int root){
 		const int LIM = sqrt(n);
 		qSum -= d[node];
 		for (Node ch: graph[node]) {
-			int child=ch.node;ll chDist=max(-oo,d[node]+ch.len);
+			int child=ch.node;
+			ll chDist=(d[node]==-oo) ? -oo :(d[node]+ch.len);
 			if (chDist >= d[child]) continue;
 			qSum=max(-oo,qSum+chDist-in[child]*d[child]);
 			d[child] = chDist, trace[child] = node;
 			if (in[child]) continue;
-			if (++cnt[child] == n)
+			if (++cnt[child] == n) {
+				if (not detect) break;
 				d[child] = chDist = -oo;
+			}
 			in[child] = true;
 			if (cnt[child] > LIM or d[child] * q.size() > qSum)
 				q.push_back(child);

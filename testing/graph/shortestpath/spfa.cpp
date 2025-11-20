@@ -9,13 +9,13 @@ int main()
 		int u, v, w; cin >> u >> v >> w;
 		SPFA::graph[u].emplace_back(v, w);
 	}
-	SPFA::spfa(s);
-	// FOR(int, i, 0, n-1) cerr << SPFA::dist[i] << " \n"[i == n-1];
-	if (SPFA::dist[t] >= SPFA::oo) {
+	SPFA::spfa(s, false);
+	// FOR(int, i, 0, n-1) cerr << SPFA::d[i] << " \n"[i == n-1];
+	if (SPFA::d[t] >= SPFA::oo) {
 		cout << -1; return 0;
 	}
 	// cerr << "oke\n";
-	ll ans = SPFA::dist[t];
+	ll ans = SPFA::d[t];
 
 	vector<int> path {t};
 	int node = t;
