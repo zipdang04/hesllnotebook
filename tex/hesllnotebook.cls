@@ -7,6 +7,7 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%% 1. packages required %%%%%%%%%%%%%%%%%%%%%%%%%
 \RequirePackage{titlesec}
+\RequirePackage{titletoc}
 \RequirePackage{graphicx}
 \RequirePackage{xcolor}
 \RequirePackage{xparse}
@@ -74,15 +75,29 @@
 \titlespacing*{\section} {0pt}{1ex}{0.75ex}
 \titlespacing*{\subsection} {0pt}{0.75ex}{0.5ex}
 \titlespacing*{\subsubsection}{0pt}{0.5ex}{0.25ex}
-\setcounter{tocdepth}{2}
+\setcounter{tocdepth}{3}
+% compact ToC: footnotesize, no paragraph skip, little space between entries.
+% Lengths in pt (em differs between the indent and the footnotesize label): each level's number
+% starts where the parent's title starts (16pt, 34pt = 16 + 18).
+\titlecontents{section}[16pt]{\addvspace{3pt}\footnotesize\bfseries}{\contentslabel{16pt}}{\hspace*{-16pt}}{\hfill\contentspage}
+\titlecontents{subsection}[34pt]{\footnotesize}{\contentslabel{18pt}}{\hspace*{-18pt}}{\titlerule*[0.5pc]{.}\contentspage}
+\titlecontents{subsubsection}[57pt]{\footnotesize}{\contentslabel{23pt}}{\hspace*{-23pt}}{\titlerule*[0.5pc]{.}\contentspage}
+\let\hesll@tableofcontents\tableofcontents
+\renewcommand{\tableofcontents}{{\setlength{\parskip}{0pt}\hesll@tableofcontents}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 5. codes %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \setminted{xleftmargin=11pt, resetmargins, numbersep=4pt, breaklines, breakbefore=. , stripnl, linenos, tabsize=2, fontsize=\footnotesize, firstnumber=1}
 
 \def\currentdir{}
+% entry heading level: \twolevels (section -> entry) or \threelevels (section -> group -> entry)
+\def\entrylevel{subsection}
+\newcommand{\twolevels}{\def\entrylevel{subsection}}
+\newcommand{\threelevels}{\def\entrylevel{subsubsection}}
+% heading for an entry with no content yet
+\newcommand{\entry}[1]{\csname\entrylevel\endcsname{#1}}
 \newcommand{\setcurrentdir}[1]{\def\currentdir{contents/#1}}
 \NewDocumentCommand\othercodes{oommmo}{
-    \subsubsection{#3}\addcontentsline{toc}{subsubsection}{#3}
+    \csname\entrylevel\endcsname{#3}
     \IfNoValueTF{#6}{} {%
         #6
         \vspace*{-1em}
@@ -97,4 +112,9 @@
         \inputminted[firstline={#1},lastline={#2}]{#4}{\currentdir/#5}
     }
 }
-\NewDocumentCommand\cpp{oommo}{\othercodes[#1][#2]{#3}{'customlexers/lexers.py -x'}{#4}[#5]}
+% minted v3 (2024+) names a custom lexer file.py:Class and needs it enabled in ~/.latexminted_config;
+% minted v2 passes the string to pygmentize with -x
+\@ifpackagelater{minted}{2024/01/01}
+    {\def\cpplexer{customlexers/lexers.py:CustomLexer}}
+    {\def\cpplexer{'customlexers/lexers.py -x'}}
+\NewDocumentCommand\cpp{oommo}{\othercodes[#1][#2]{#3}{\cpplexer}{#4}[#5]}

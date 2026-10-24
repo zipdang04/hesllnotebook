@@ -1,4 +1,4 @@
-#include "../../tex/contents/string/strhash.hpp"
+#include "../../tex/contents/strings/strhash.hpp"
 
 
 int n;

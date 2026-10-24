@@ -1,6 +1,26 @@
+\setcounter{section}{1}
 \section{Graph}
-\subsection{Shortest Path}
-\setcurrentdir{graph/shortestpath}
+\threelevels
+\setcurrentdir{graph}
+
+\subsection{Connectivity}
+\cpp[2]{2-SAT}{2sat.hpp}
+\entry{Lowlink: bridges, articulation points, BCC}
+\entry{Euler path / circuit}
+
+\subsection{Paths \& spanning trees}
 \cpp[3]{SPFA}{spfa.hpp}[
 	Somehow this passed yosupo's Library Checker.
 ]
+\entry{Directed MST}
+\entry{Manhattan MST}
+\entry{Matrix-tree theorem}
+
+\subsection{Trees}
+\entry{HLD}
+\entry{Centroid decomposition}
+\entry{Virtual tree}
+
+\subsection{Hard}
+\entry{Dominator tree}
+\entry{Max clique}

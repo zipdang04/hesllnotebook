@@ -1,18 +1,23 @@
-\section{Mathematics}
-\subsection{Data structure}
-\setcurrentdir{math/ds}
-\cpp[3]{Modulo}{modint.hpp}
-\cpp{BigInteger}{bigint.hpp}
+\setcounter{section}{5}
+\section{Math}
+\threelevels
+\setcurrentdir{math}
 
-\subsection{Number Theory}
-\setcurrentdir{math/numbertheory}
-\cpp[3]{Mildly-optimized sieve(Factorable)}{eratos_factorable.cpp}
-\cpp[3]{Primality check}{millerrabin.hpp}
-\cpp{Prime factorization}{pollardrho.hpp}
-\cpp{Gauss}{gauss.hpp}
+\subsection{Number theory}
+\cpp[3]{Modint}{modint.hpp}
+\cpp{Bigint}{bigint.hpp}
+\entry{Ext-gcd, CRT}
+\cpp[3]{Sieve (factorable)}{eratos_factorable.cpp}
+\cpp[3]{Miller--Rabin}{millerrabin.hpp}
+\cpp{Pollard rho}{pollardrho.hpp}
+\entry{Discrete log / discrete sqrt}
+\entry{Floor sum}
 
-\subsection{Numerical}
-\setcurrentdir{math/numerical}
+\subsection{Linear algebra}
+\cpp{Gauss--Jordan}{gauss.hpp}
+\entry{Simplex}
+
+\subsection{Polynomials \& transforms}
 \cpp{FFT}{fft.hpp}
 \cpp{NTT}{ntt.hpp}[
 	$k$-th root of unity, mod $p$: $\omega_k$ satisfies
@@ -23,3 +28,10 @@
 	$p=c \times 2^k+1 \Rightarrow w_{2^k}=g^c$ w/ any $g: \gcd(g, p)=1$\\
 	only works for $p$ with big $k$ (e.g. $998244353$ w/ $k=23$ below)
 ]
+\entry{FWHT}
+\entry{FPS: inv, log, exp, div}
+\entry{Berlekamp--Massey + Bostan--Mori}
+\entry{Lagrange interpolation}
+
+\subsection{Numerical}
+\entry{Simpson integration}

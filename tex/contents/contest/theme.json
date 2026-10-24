@@ -1,0 +1,11 @@
+{"editor.tokenColorCustomizations": {
+  "[Monokai]": { "textMateRules": [
+      {
+        "scope": "entity.name.type",
+        "settings": { "foreground": "#66D9EF", "fontStyle": "bold" }
+      },
+      {
+        "scope": "entity.name.function.preprocessor",
+        "settings": { "foreground": "#948AE3", "fontStyle": "bold" }
+      }
+  ]}}}

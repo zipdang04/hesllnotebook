@@ -1,7 +1,7 @@
 #!/bin/bash
 
 compile() {
-	g++-14 $1.cpp -O2 -lm -fmax-errors=5 -march=native -s -o $1 2> /dev/null
+	g++-14 $1.cpp -O2 -lm -fmax-errors=5 -march=native -Wl,-stack_size,0x10000000 -s -o $1 2> /dev/null
 	if [ $? -ne 0 ]
 	then
 		echo "Error during compilation"
@@ -19,16 +19,17 @@ createTest() {
 run() {
 	./$1 < $2 > $3 &
 	pid=$!
-	sleep $4
-
-	ps -p $pid
-	state=$(ps -p $pid | grep "$pid")
-	if [ -n $state ]
-	then
-		return 0
-	else
-		return 1
-	fi
+	ticks=$(awk "BEGIN{printf \"%d\", $4 * 20}")
+	i=0
+	while [ $i -lt $ticks ]
+	do
+		kill -0 $pid 2>/dev/null || { wait $pid; return 0; }
+		sleep 0.05
+		i=$((i + 1))
+	done
+	kill -0 $pid 2>/dev/null && return 1
+	wait $pid
+	return 0
 }
 ############################
 MAIN_DIR=$(dirname $0)/..
@@ -65,6 +66,7 @@ else
 fi
 echo "Time limit: $TIME_LIMIT"
 
+FAILED=0
 mkdir .build
 for file in `ls $test_dir/in`
 do
@@ -78,14 +80,16 @@ do
 	if [ $? -eq 1 ]
 	then
 		echo "Time limit exceeded!"
-		kill $pid
+		kill $pid; FAILED=1
 		break
 	fi
 
 	./$test_dir/checker $inp_file $out_file $ans_file
 	if [ $? -ne 0 ]
 	then
+		FAILED=1
 		break
 	fi
 done
 rm -r .build
+exit $FAILED

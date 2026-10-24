@@ -22,39 +22,35 @@ class TestCase:
 
 
 all_source_codes = {
-    "math": {
-        "ds": {
-            "modint": TestCase(
-                "math/ds/combinatorics",
-                "enumerative_combinatorics/binomial_coefficient_prime_mod",
-            ),
-            "bigint": TestCase(
-                "math/ds/combinatorics", "big_integer/multiplication_of_big_integers", 2
-            ),
-        },
-        "numbertheory": {
-            "millerrabin": TestCase(
-                "math/numbertheory/millerrabin", "number_theory/primality_test", 2
-            ),
-            "pollardrho": TestCase(
-                "math/numbertheory/pollardrho", "number_theory/factorize", 2
-            ),
-            "gauss": TestCase(
-                "math/numbertheory/gauss",
-                "number_theory/system_of_linear_equations",
-                0.5,
-            ),
-        },
-        "numerical": {
-            "fft": TestCase(
-                "math/numerical/fft", "convolution/convolution_mod_1000000007", 3
-            ),
-            "ntt": TestCase("math/numerical/ntt", "convolution/convolution_mod"),
-        },
+    "flow": {
+        "dinitz": TestCase("flow/dinitz", "graph/bipartitematching", 1),
     },
-    "string": {"hash": TestCase("string/enumerate_palindromes", "string/hash")},
     "graph": {
-        "shortestpath": TestCase("graph/shortest_path", "graph/shortestpath/spfa", 1)
+        "spfa": TestCase("graph/spfa", "graph/shortest_path", 1),
+        "2sat": TestCase("graph/2sat", "other/two_sat", 5),
+    },
+    "ds": {
+        "ps_seg": TestCase("ds/ps_seg", "data_structure/rectangle_sum", 5),
+    },
+    "strings": {
+        "hash": TestCase("strings/hash", "string/enumerate_palindromes"),
+        "suffixarray": TestCase("strings/suffixarray", "string/suffixarray", 5),
+    },
+    "math": {
+        "modint": TestCase(
+            "math/combinatorics",
+            "enumerative_combinatorics/binomial_coefficient_prime_mod",
+        ),
+        "bigint": TestCase(
+            "math/bigint", "big_integer/multiplication_of_big_integers", 2
+        ),
+        "millerrabin": TestCase("math/millerrabin", "number_theory/primality_test", 2),
+        "pollardrho": TestCase("math/pollardrho", "number_theory/factorize", 2),
+        "gauss": TestCase(
+            "math/gauss", "linear_algebra/system_of_linear_equations", 0.5
+        ),
+        "fft": TestCase("math/fft", "convolution/convolution_mod_1000000007", 3),
+        "ntt": TestCase("math/ntt", "convolution/convolution_mod"),
     },
 }
 
