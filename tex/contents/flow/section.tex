@@ -12,7 +12,9 @@
 	Bounds $l \le f \le r$, any costs, no source/sink. $s \to t$ flow of exactly $F$: add $t \to s$ with $[F, F]$, cost 0. Supplies $b_v$: extra vertex $X$, edges $X \to v$ $[b_v, b_v]$ ($b_v > 0$), $v \to X$ $[-b_v, -b_v]$ ($b_v < 0$). Infeasible $\Rightarrow$ \texttt{solve().first = false}.
 ]
 \entry{Flow models}
-\entry{Global min cut (Stoer--Wagner)}
+\cpp[4]{Global min cut (Stoer--Wagner)}{stoerwagner.hpp}[
+	Undirected, $w \ge 0$, self-loops ignored. \texttt{run()} (call once) returns the cut weight and one side; $n = 1$ gives $\{0, \{\}\}$.
+]
 \entry{Gomory--Hu tree}
 
 \subsection{Matching}
