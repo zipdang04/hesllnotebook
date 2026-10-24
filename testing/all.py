@@ -144,6 +144,8 @@ all_source_codes = {
 		"costscaling_aoj": OjTest("flow/costscaling_aoj", "https://onlinejudge.u-aizu.ac.jp/problems/GRL_6_B", 1),
 		"hungarian": TestCase("flow/hungarian", "graph/assignment", 2),
 		"hungarian_stress": StressTest("flow/hungarian_stress", 10),
+		"blossom": TestCase("flow/blossom", "graph/general_matching", 5),
+		"blossom_stress": StressTest("flow/blossom_stress", 10),
 	},
 	"graph": {
 		"spfa": TestCase("graph/spfa", "graph/shortest_path", 1),

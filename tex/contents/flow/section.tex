@@ -31,4 +31,6 @@
 \cpp[4]{Hungarian (min-cost assignment)}{hungarian.hpp}[
 	$n \le m$ (transpose otherwise), negative costs fine; exact in ll for $|c| \le 10^9$, $n \le 500$. \texttt{run()} keeps \texttt{c}. Max weight: negate costs and the result.
 ]
-\entry{General matching (blossom)}
+\cpp[4]{General matching (blossom)}{blossom.hpp}[
+	\texttt{run()} (call once) returns the matching size; \texttt{mate[v]} is the partner of $v$, or $n$ if $v$ is unmatched. $O(VE)$, $n = 500$ dense in 0.04 s.
+]
