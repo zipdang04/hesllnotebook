@@ -1,17 +1,10 @@
-#include "../../tex/contents/graph/2sat.hpp"
-
-int main() {
+#include "../../tex/contents/graph/scc.hpp"
+int main(){
 	ios_base::sync_with_stdio(false); cin.tie(nullptr);
-	string p, cnf; int n, m; cin >> p >> cnf >> n >> m;
-	TWOSET ts; ts.init(n);
-	FOR(int, i, 1, m) {
-		int a, b, zero; cin >> a >> b >> zero;
-		ts.addEdge(a, b);
-	}
-	if (!ts.checkSatisfiable()) {
-		cout << "s UNSATISFIABLE\n"; return 0;
-	}
-	cout << "s SATISFIABLE\n" << 'v';
-	FOR(int, i, 1, n) cout << ' ' << (ts.getAnswer(i) ? i : -i);
+	string p, cnf; int n, m; cin >> p >> cnf >> n >> m; TwoSat ts(n);
+	EFOR(int, i, 0, m){ int a, b, z; cin >> a >> b >> z; ts.either(a > 0 ? a - 1 : a, b > 0 ? b - 1 : b); }
+	if (!ts.solve()){ cout << "s UNSATISFIABLE\n"; return 0; }
+	cout << "s SATISFIABLE\nv";
+	EFOR(int, i, 0, n) cout << ' ' << (ts.val[i] ? i + 1 : -i - 1);
 	cout << " 0\n";
 }

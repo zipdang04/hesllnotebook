@@ -8,6 +8,9 @@
 \cpp[4]{Lowlink: bridges, articulation points, BCC, 2ECC}{lowlink.hpp}[
 	Self-loops and multi-edges OK (parent skipped by edge id). Recursive: depth up to $n$ (needs a big stack for $n \approx 5\cdot10^5$). Block-cut tree: join each block node to its vertices.
 ]
+\cpp[4]{SCC + 2-SAT}{scc.hpp}[
+	Component ids are in topological order (edge $u\to v$ $\Rightarrow$ \texttt{comp[u]} $\le$ \texttt{comp[v]}). Iterative, safe at $10^6$ vertices. Force $x$ true: \texttt{either(x, x)}; $x \Rightarrow y$: \texttt{either(\textasciitilde x, y)}.
+]
 \entry{Euler path / circuit}
 
 \subsection{Paths \& spanning trees}
