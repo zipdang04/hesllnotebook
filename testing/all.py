@@ -162,6 +162,7 @@ all_source_codes = {
 		"cgl2b": OjTest("geometry/cgl2b", "https://onlinejudge.u-aizu.ac.jp/problems/CGL_2_B", 1),
 		"cgl2c": OjTest("geometry/cgl2c", "https://onlinejudge.u-aizu.ac.jp/problems/CGL_2_C", 1, error=1e-8),
 		"cgl2d": OjTest("geometry/cgl2d", "https://onlinejudge.u-aizu.ac.jp/problems/CGL_2_D", 1, error=1e-8),
+		"segstress": StressTest("geometry/segstress", 10),
 	},
 	"math": {
 		"modint": TestCase(
