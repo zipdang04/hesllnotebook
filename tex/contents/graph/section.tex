@@ -9,8 +9,8 @@
 \entry{Euler path / circuit}
 
 \subsection{Paths \& spanning trees}
-\cpp[3]{SPFA}{spfa.hpp}[
-	Somehow this passed yosupo's Library Checker.
+\cpp[4]{SPFA}{spfa.hpp}[
+	Path: walk \texttt{par} back from $t$ (edge ids, so keep each edge's tail). Other \texttt{adj}: filter edges (\texttt{if (w <= lim)}), change weights (min mean cycle: $w - \lambda$), implicit graphs (grids).
 ]
 \entry{Directed MST}
 \entry{Manhattan MST}

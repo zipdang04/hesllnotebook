@@ -1,31 +1,18 @@
 #include "../../tex/contents/graph/spfa.hpp"
-
-int n, m, s, t;
-int main()
-{
+// Library Checker shortest_path
+int main() {
 	ios_base::sync_with_stdio(0); cin.tie(0);
-	cin >> n >> m >> s >> t; SPFA::n = n;
-	FOR(int, _, 1, m) {
-		int u, v, w; cin >> u >> v >> w;
-		SPFA::graph[u].emplace_back(v, w);
-	}
-	SPFA::spfa(s, false);
-	// FOR(int, i, 0, n-1) cerr << SPFA::d[i] << " \n"[i == n-1];
-	if (SPFA::d[t] >= SPFA::oo) {
-		cout << -1; return 0;
-	}
-	// cerr << "oke\n";
-	ll ans = SPFA::d[t];
-
+	int n, m, s, t; cin >> n >> m >> s >> t;
+	vector<vector<array<ll, 3>>> g(n); vector<int> from(m);
+	FOR(int, i, 0, m - 1) { int u, v, w; cin >> u >> v >> w; g[u].push_back({v, w, i}); from[i] = u; }
+	randomize;
+	for (auto &e: g) shuffle(e.begin(), e.end(), mt);
+	SPFA sp;
+	sp.run(n, s, [&](int u, auto relax) { for (auto [v, w, id]: g[u]) relax(v, w, id); });
+	if (sp.dist[t] >= SPFA::oo) { cout << -1; return 0; }
 	vector<int> path {t};
-	int node = t;
-	while (node != s) {
-		// cerr << node << ' ';
-		node = SPFA::trace[node];
-		path.push_back(node);
-	}
+	for (int v = t; v != s; ) path.push_back(v = from[sp.par[v]]);
 	reverse(path.begin(), path.end());
-	cout << ans << ' ' << (int) path.size() - 1 << '\n';
-	for (int i = 1; i < (int)path.size(); i++)
-		cout << path[i-1] << ' ' << path[i] << "\n";
+	cout << sp.dist[t] << ' ' << (int)path.size() - 1 << '\n';
+	for (int i = 1; i < (int)path.size(); i++) cout << path[i-1] << ' ' << path[i] << '\n';
 }

@@ -1,53 +1,49 @@
+#pragma once
 #include "../contest/template.hpp"
 
-#define MAX 1000001
-struct Node
-{
-	int node, len;
-	Node() {node = len = 0;}
-	Node(int node, int len) {this -> node = node, this -> len = len;}
-};
-namespace SPFA{
-int n; vector<Node> graph[MAX];
-constexpr ll oo = (1e18+1);
-bool in[MAX]; int cnt[MAX];
-ll d[MAX], trace[MAX];
-deque<int> q;
-randomize;
+// SPFA with SLF/LLL deque heuristics. The caller supplies the edges:
+// adj(u, relax) must call relax(v, w, id) for every usable edge u -> v.
+// Returns true if a negative cycle is reachable from s; with detect, dist = -oo on/after it.
+struct SPFA {
+	static constexpr ll oo = LLONG_MAX / 4;
+	vector<ll> dist; vector<int> par;              // par[v] = id of the edge into v, -1 if none
 
-void spfa(int root, bool detect){
-	FOR(int, i, 0, n)
-		shuffle(graph[i].begin(), graph[i].end(), mt);
-	memset(d, 0x3f, sizeof(d));
-
-	d[root] = 0; q.push_back(root);
-	ll qSum = 0;
-	while (!q.empty()) {
-		while (d[q.front()] > d[q.back()])
-			{ q.push_back(q.front()); q.pop_front(); }
-		int node = q.front(); q.pop_front();
-		in[node] = false;
+	template<class Adj> bool run(int n, int s, Adj adj, bool detect = false) {
+		dist.assign(n, oo); par.assign(n, -1);
+		vector<int> len(n), cnt(n); vector<char> inq(n); vector<int> bad;
 		const int LIM = sqrt(n);
-		qSum -= d[node];
-		for (Node ch: graph[node]) {
-			int child=ch.node;
-			ll chDist=(d[node]==-oo) ? -oo :(d[node]+ch.len);
-			if (chDist >= d[child]) continue;
-			qSum=max(-oo,qSum+chDist-in[child]*d[child]);
-			d[child] = chDist, trace[child] = node;
-			if (in[child]) continue;
-			if (++cnt[child] == n) {
-				if (not detect) break;
-				d[child] = chDist = -oo;
-			}
-			in[child] = true;
-			if (cnt[child] > LIM or d[child] * q.size() > qSum)
-				q.push_back(child);
-			else if (q.empty() or d[child] <= d[q.front()])
-				q.push_front(child);
-			else
-				q.push_back(child);
+		deque<int> q{s}; dist[s] = 0; inq[s] = 1;
+		__int128 qSum = 0;                         // sum of dist over queued vertices
+		while (!q.empty()) {
+			while (dist[q.front()] > dist[q.back()]) q.push_back(q.front()), q.pop_front();
+			int u = q.front(); q.pop_front(); inq[u] = 0; qSum -= dist[u];
+			adj(u, [&](int v, ll w, int id) {
+				ll nd = dist[u] + w;
+				if (nd >= dist[v]) return;
+				qSum += inq[v] ? nd - dist[v] : nd;
+				dist[v] = nd; par[v] = id; len[v] = len[u] + 1;
+				if (len[v] >= n) { bad.push_back(v); if (!inq[v]) qSum -= nd; return; }   // >= n edges: negative cycle
+				if (inq[v]) return;
+				inq[v] = 1;
+				if (++cnt[v] > LIM || (__int128)nd * (ll)q.size() > qSum) q.push_back(v);
+				else if (q.empty() || nd <= dist[q.front()]) q.push_front(v);
+				else q.push_back(v);
+			});
+			if (!bad.empty() && !detect) return true;
 		}
+		if (bad.empty()) return false;
+		for (int v: bad) dist[v] = -oo, q.push_back(v);
+		while (!q.empty()) {
+			int u = q.front(); q.pop_front();
+			adj(u, [&](int v, ll, int) { if (dist[v] != -oo) dist[v] = -oo, q.push_back(v); });
+		}
+		return true;
 	}
-}
+};
+
+inline void _example() {
+	int n = 4, s = 0;
+	vector<vector<array<ll, 3>>> g(n);             // g[u] = {v, w, id}; shuffle each g[u] once
+	SPFA sp;
+	sp.run(n, s, [&](int u, auto relax) { for (auto [v, w, id]: g[u]) relax(v, w, id); });
 }

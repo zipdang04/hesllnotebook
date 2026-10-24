@@ -5,7 +5,12 @@
 
 \subsection{Flow}
 \cpp[4]{Dinic with scaling + min cut}{dinitzwscaling.hpp}
-\entry{MCMF}
+\cpp[4]{MCMF}{mcmf.hpp}[
+	Uses SPFA (\S2.2.1). \texttt{calculate(F)}: cheapest flow of at most $F$; no limit = min-cost max-flow. Each augmentation is optimal for its flow value. No negative cycles; \texttt{MCMF<\_\_int128>} if the total cost can overflow.
+]
+\cpp[4]{Min-cost circulation (cost scaling)}{costscaling.hpp}[
+	Bounds $l \le f \le r$, any costs, no source/sink. $s \to t$ flow of exactly $F$: add $t \to s$ with $[F, F]$, cost 0. Supplies $b_v$: extra vertex $X$, edges $X \to v$ $[b_v, b_v]$ ($b_v > 0$), $v \to X$ $[-b_v, -b_v]$ ($b_v < 0$). Infeasible $\Rightarrow$ \texttt{solve().first = false}.
+]
 \entry{Flow models}
 \entry{Global min cut (Stoer--Wagner)}
 \entry{Gomory--Hu tree}

@@ -49,18 +49,20 @@ NOTEBOOK (25 pp)  —  section → entry, or section → group → entry where a
 │       YES/Yes, decimals; geometry: parallel/coincident lines, far
 │       intersections, circles at 0/1/2 points, collinear, on axes
 │
-├── 1. Flow & Matching  (3 levels) ................................ ~272 lines · 2 pp (over by ~12)
+├── 1. Flow & Matching  (3 levels) ................................ ~345 lines · 2 pp (over by ~85)
 │   ├── 1.1 Flow
 │   │   ├── 1.1.1 Dinic with scaling + min cut             CODE       ~45              ✓ flow/dinitzwscaling.hpp (passes test, TL 1 s)
 │   │   │   (reverse BFS from t, multi-push DFS)
-│   │   ├── 1.1.2 MCMF (SPFA/Dijkstra potentials)          CODE       ~50              ◐ test only: testing/flow/mcmf.cpp (header missing)
-│   │   ├── 1.1.3 Flow models: lower bounds / circulation  TEXT       ~12  uses: Dinic, MCMF   [4/7]
+│   │   ├── 1.1.2 MCMF (SSP + SPFA)                        CODE       ~45  uses: SPFA (§2.2.1)   ✓ flow/mcmf.hpp (GRL_6_B 32/32; fails anti_ssp)
+│   │   ├── 1.1.3 Min-cost circulation, cost scaling       CODE       ~73  uses: Dinic          ✓ flow/costscaling.hpp (min_cost_b_flow 54/54, GRL_6_B)
+│   │   │   (bounds, any costs; O(V²E log VC), beats anti-SSP)
+│   │   ├── 1.1.4 Flow models: lower bounds / circulation  TEXT       ~12  uses: Dinic, MCMF   [4/7]
 │   │   │   via super source-sink; min-cost circulation by
 │   │   │   saturating negative edges; vertex capacities by node
 │   │   │   splitting; project selection / max closure;
 │   │   │   König (min VC = max M), Dilworth (min chain cover = n − M), Hall
-│   │   ├── 1.1.4 O(V³) Global min cut, Stoer–Wagner       CODE       ~25              [7/7]
-│   │   └── 1.1.5 Gomory–Hu tree                           CODE       ~15  uses: Dinic [3/7+]
+│   │   ├── 1.1.5 O(V³) Global min cut, Stoer–Wagner       CODE       ~25              [7/7]
+│   │   └── 1.1.6 Gomory–Hu tree                           CODE       ~15  uses: Dinic [3/7+]
 │   └── 1.2 Matching
 │       ├── 1.2.1 O(E√V) Hopcroft–Karp                     CODE       ~25              (5–10× faster than Dinic on bipartitematching)
 │       ├── 1.2.2 O(V³) Hungarian                          CODE       ~35              [6/7]
@@ -73,7 +75,7 @@ NOTEBOOK (25 pp)  —  section → entry, or section → group → entry where a
 │   │   │   BCC
 │   │   └── 2.1.3 Euler path / circuit                     CODE       ~25
 │   ├── 2.2 Paths & spanning trees
-│   │   ├── 2.2.1 SPFA + negative cycle; min mean cycle =  CODE+TEXT  ~53              ✓ graph/spfa.hpp  [5/7]
+│   │   ├── 2.2.1 SPFA + negative cycle; min mean cycle =  CODE+TEXT  ~53              ✓ graph/spfa.hpp (shortest_path, GRL_1_B; old: graph/old_spfa.hpp)  [5/7]
 │   │   │   binary search λ, negative cycle on w − λ
 │   │   ├── 2.2.2 O(E log V) Directed MST                  CODE       ~50  uses: Rollback DSU (§3.3.1)   [5/7]
 │   │   ├── 2.2.3 Manhattan MST                            CODE       ~30              [3/7]
@@ -195,10 +197,10 @@ NOTEBOOK (25 pp)  —  section → entry, or section → group → entry where a
 ```
 
 Budget check: 1.25 + 2 + 3.25 + 3 + 2.25 + 3 + 6 + 1 + 0.75 + 1.5 + 1 = **25**.
-Estimated content: ~3,060 lines ≈ 23.5 pp at 130 lines/page. §1 is ~12 lines over its 2 pp (Hopcroft–Karp).
+Estimated content: ~3,060 lines ≈ 23.5 pp at 130 lines/page. §1 is ~85 lines over its 2 pp (Hopcroft–Karp, cost scaling).
 
-Status: the tree has 82 entries (one per printed file). 18 have code in the repo (16 of them in the PDF, 2 ◐ not wired);
-MCMF has a test but no header. The other 64 entries are still to write (MCMF among them), 14 of them prose.
+Status: the tree has 83 entries (one per printed file). 20 have code in the repo (18 of them in the PDF, 2 ◐ not wired);
+The other 63 entries are still to write, 14 of them prose.
 Out of the printed book, replaced by notes on the entry that covers them: persistent lazy segtree, standalone
 SOS DP, LR flow / circulation code (flow models), min mean cycle (SPFA), LineContainer (Li Chao),
 Manacher (rolling hash), min rotation (suffix array).
