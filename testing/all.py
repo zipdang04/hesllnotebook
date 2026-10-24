@@ -157,6 +157,9 @@ all_source_codes = {
 		"scc": TestCase("graph/scc", "graph/scc", 2),
 		"2sat": TestCase("graph/2sat", "other/two_sat", 2),
 		"manhattanmst": TestCase("graph/manhattanmst", "geo/manhattanmst", 5),
+		"euler_directed": TestCase("graph/euler_directed", "graph/eulerian_trail_directed", 5),
+		"euler_undirected": TestCase("graph/euler_undirected", "graph/eulerian_trail_undirected", 5),
+		"euler_stress": StressTest("graph/euler_stress", 10),
 	},
 	"ds": {
 		"ps_seg": TestCase("ds/ps_seg", "data_structure/rectangle_sum", 5),

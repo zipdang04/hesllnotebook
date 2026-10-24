@@ -10,7 +10,8 @@
 \cpp[4]{Lowlink: bridges, articulation points, BCC, 2ECC}{lowlink.hpp}[
 	Self-loops and multi-edges OK (parent skipped by edge id). Recursive: depth up to $n$ (needs a big stack for $n \approx 5\cdot10^5$). Block-cut tree: join each block node to its vertices.
 ]
-\entry{Euler path / circuit}
+\cpp[4]{Euler path / circuit}{euler.hpp}[
+	Circuit exists iff \texttt{solve()} and \texttt{vs[0] == vs.back()}. \texttt{false} also when edges lie in several components (isolated vertices are fine).
 
 \subsection{Paths \& spanning trees}
 \cpp[4]{SPFA}{spfa.hpp}[
