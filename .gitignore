@@ -2,6 +2,7 @@
 *
 !*/
 !*.*
+!Makefile
 
 # MacOS shit
 .DS_Store
@@ -325,3 +326,7 @@ TSWLatexianTemp*
 
 # scratch notes
 .scrap/
+
+# local secrets, oj test cache
+.env
+testing/.oj-tests/

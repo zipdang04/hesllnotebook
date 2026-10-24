@@ -1,0 +1,52 @@
+name: verify
+on: [push, pull_request, workflow_dispatch]
+
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install online-judge-tools -r library-checker-problems/requirements.txt
+
+      # test data: oj/yukicoder downloads and Library Checker generated cases
+      - uses: actions/cache@v4
+        with:
+          path: |
+            testing/.oj-tests
+            library-checker-problems/**/in
+            library-checker-problems/**/out
+          key: tests-${{ hashFiles('testing/all.py') }}
+
+      - name: Run tests
+        env:
+          CXX: g++-14
+          YUKICODER_TOKEN: ${{ secrets.YUKICODER_TOKEN }}
+        run: make test
+
+  pdf:
+    needs: verify                     # only build the PDF from code that passes
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - run: sudo apt-get update && sudo apt-get install -y latexmk texlive-latex-extra texlive-lang-other python3-pygments
+
+      # minted v3 runs a custom lexer only if its hash is listed; harmless under minted v2
+      - name: Allow the custom lexer
+        run: |
+          hash=$(sha256sum tex/customlexers/lexers.py | cut -d' ' -f1)
+          echo "{\"custom_lexers\": {\"lexers.py\": \"$hash\"}}" > ~/.latexminted_config
+
+      - run: make pdf
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: notebook
+          path: tex/main.pdf

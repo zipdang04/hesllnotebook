@@ -1,11 +1,70 @@
 import os
+import platform
+import re
+import shutil
+import subprocess
 import sys
+import urllib.request
+import json
+
+TESTING_DIR = os.path.dirname(os.path.abspath(__file__))
+ROOT = os.path.dirname(TESTING_DIR)
+OJ_TESTS_DIR = os.path.join(TESTING_DIR, ".oj-tests")
+
+
+def load_env(path=os.path.join(ROOT, ".env")):
+    # KEY=value lines; variables already set (e.g. CI secrets) win
+    if not os.path.exists(path):
+        return
+    for line in open(path):
+        line = line.strip()
+        if line and not line.startswith("#") and "=" in line:
+            key, value = line.split("=", 1)
+            os.environ.setdefault(key.strip(), value.strip().strip("\"'"))
+
+
+load_env()
+
+
+def find_cxx():
+    for cxx in [os.environ.get("CXX"), "g++-16", "g++-15", "g++-14", "g++"]:
+        if cxx and shutil.which(cxx):
+            return cxx
+    print("No C++ compiler found")
+    exit(1)
+
+
+def oj_command():
+    if shutil.which("oj"):
+        return ["oj"]
+    return [sys.executable, "-m", "onlinejudge_command.main"]
+
+
+def download_yukicoder(url, test_dir):
+    # oj only knows cookie login for yukicoder; the API takes the token
+    no = re.search(r"/problems/no/(\d+)", url).group(1)
+    api = "https://yukicoder.me/api/v1/problems/no/" + no + "/file/"
+
+    def get(path):
+        request = urllib.request.Request(api + path, headers={"Authorization": "Bearer " + os.environ["YUKICODER_TOKEN"]})
+        return urllib.request.urlopen(request, timeout=60).read()
+
+    os.makedirs(test_dir, exist_ok=True)
+    for name in json.loads(get("in")):
+        base = os.path.splitext(name)[0]
+        for kind in ("in", "out"):
+            with open(os.path.join(test_dir, base + "." + kind), "wb") as f:
+                f.write(get(kind + "/" + name))
+
+
+def run(command):
+    if subprocess.call(command, cwd=TESTING_DIR) != 0:
+        print("FAILED")
+        exit(1)
 
 
 class TestCase:
-    source_code = ""
-    testing_folder = ""
-    time_limit = 1
+    """Library Checker problem, generated from the submodule by test.sh."""
 
     def __init__(self, source_code, testing_folder, time_limit: float = 1):
         self.source_code = source_code
@@ -13,12 +72,42 @@ class TestCase:
         self.time_limit = time_limit
 
     def process(self):
-        command = "./test.sh {} {} {}".format(
-            self.source_code, self.testing_folder, self.time_limit
-        )
-        if os.system(command) != 0:
+        env = dict(os.environ, CXX=find_cxx())
+        command = ["bash", "test.sh", self.source_code, self.testing_folder, str(self.time_limit)]
+        if subprocess.call(command, cwd=TESTING_DIR, env=env) != 0:
             print("FAILED")
             exit(1)
+
+
+class OjTest:
+    """AOJ, yukicoder, or any judge online-judge-tools can download from; checked with `oj test`.
+    Test data is cached in testing/.oj-tests/. yukicoder needs YUKICODER_TOKEN (.env or env)."""
+
+    def __init__(self, source_code, url, time_limit: float = 1, error=None):
+        self.source_code = source_code
+        self.url = url
+        self.time_limit = time_limit
+        self.error = error
+
+    def process(self):
+        if "yukicoder.me" in self.url and not os.environ.get("YUKICODER_TOKEN"):
+            print("SKIPPED (no YUKICODER_TOKEN)")
+            return
+        test_dir = os.path.join(OJ_TESTS_DIR, re.sub(r"\W+", "_", self.url.split("://", 1)[-1]).strip("_"))
+        if not os.path.isdir(test_dir) or not os.listdir(test_dir):
+            if "yukicoder.me" in self.url:
+                download_yukicoder(self.url, test_dir)
+            else:
+                run(oj_command() + ["download", "--system", "--silent", self.url, "-d", test_dir])
+        compile_command = [find_cxx(), self.source_code + ".cpp", "-O2", "-std=c++17", "-o", self.source_code]
+        if platform.system() == "Darwin":
+            compile_command.append("-Wl,-stack_size,0x10000000")
+        run(compile_command)
+        test_command = oj_command() + ["test", "--silent", "-c", "./" + self.source_code,
+                                       "-d", test_dir, "-t", str(self.time_limit)]
+        if self.error is not None:
+            test_command += ["-e", str(self.error)]
+        run(test_command)
 
 
 all_source_codes = {
@@ -35,6 +124,7 @@ all_source_codes = {
     "strings": {
         "hash": TestCase("strings/hash", "string/enumerate_palindromes"),
         "suffixarray": TestCase("strings/suffixarray", "string/suffixarray", 5),
+        "ahocorasick": OjTest("strings/ahocorasick", "https://yukicoder.me/problems/no/430", 2),
     },
     "math": {
         "modint": TestCase(
@@ -59,8 +149,9 @@ name = DELIMITER + DELIMITER.join(sys.argv[1:])
 
 
 def testingProcess(node, prefix=""):
-    if isinstance(node, TestCase):
-        if name == "." or name == prefix:
+    if isinstance(node, (TestCase, OjTest)):
+        # "all.py" runs everything, "all.py math" a section, "all.py math ntt" one test
+        if name == "." or prefix == name or prefix.startswith(name + DELIMITER):
             print(">> ", prefix)
             node.process()
     elif isinstance(node, dict):
@@ -72,5 +163,3 @@ def testingProcess(node, prefix=""):
 
 
 testingProcess(all_source_codes)
-# for test in all_source_codes["math"]["ds"]["modint"]:
-# 	test.process()

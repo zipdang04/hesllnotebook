@@ -6,7 +6,10 @@
 \entry{Z-function}
 \cpp[3]{Rolling hash}{strhash.hpp}
 \entry{Suffix array + LCP}
-\entry{Aho--Corasick}
+\cpp[4]{Aho--Corasick}{ahocorasick.hpp}[
+	Per-pattern counts: \texttt{hit[u]++} at each step of the scan, then for $u$ in reverse \texttt{order}: \texttt{hit[link[u]] += hit[u]}; pattern $i$ occurs \texttt{hit[end$_i$]} times.\\
+	Online inserts: $\log$ groups of sizes $2^k$; insert = merge the smaller groups and rebuild; a query sums over all groups.
+]
 \entry{Suffix automaton}
 \entry{Eertree}
 \entry{Lyndon factorisation (Duval)}

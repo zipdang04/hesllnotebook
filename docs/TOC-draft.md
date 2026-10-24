@@ -109,7 +109,7 @@ NOTEBOOK (25 pp)  —  section → entry, or section → group → entry where a
 │   │   backward hash, longest palindrome by binary search per centre
 │   ├── 4.3 O(N log N) Suffix array + LCP; cyclic SA       CODE+TEXT  ~61              ◐ strings/suffixarray.hpp (remove undeclared MAX)  [6/7]
 │   │   without sentinel: sa[0] = minimum rotation
-│   ├── 4.4 Aho–Corasick                                   CODE       ~40              ◐ strings/ahocorasick.hpp (trie only)  [5/7]
+│   ├── 4.4 Aho–Corasick                                   CODE       ~40              ✓ strings/ahocorasick.hpp (yukicoder 430)  [5/7]
 │   ├── 4.5 Suffix automaton                               CODE       ~35
 │   ├── 4.6 Eertree (palindromic tree)                     CODE       ~30
 │   └── 4.7 Lyndon factorisation (Duval)                   CODE       ~15
@@ -197,7 +197,7 @@ NOTEBOOK (25 pp)  —  section → entry, or section → group → entry where a
 Budget check: 1.25 + 2 + 3.25 + 3 + 2.25 + 3 + 6 + 1 + 0.75 + 1.5 + 1 = **25**.
 Estimated content: ~3,060 lines ≈ 23.5 pp at 130 lines/page. §1 is ~12 lines over its 2 pp (Hopcroft–Karp).
 
-Status: the tree has 82 entries (one per printed file). 18 have code in the repo (15 of them in the PDF, 3 ◐ not wired);
+Status: the tree has 82 entries (one per printed file). 18 have code in the repo (16 of them in the PDF, 2 ◐ not wired);
 MCMF has a test but no header. The other 64 entries are still to write (MCMF among them), 14 of them prose.
 Out of the printed book, replaced by notes on the entry that covers them: persistent lazy segtree, standalone
 SOS DP, LR flow / circulation code (flow models), min mean cycle (SPFA), LineContainer (Li Chao),
