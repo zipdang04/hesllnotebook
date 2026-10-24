@@ -136,6 +136,7 @@ class StressTest:
 all_source_codes = {
 	"flow": {
 		"dinitz": TestCase("flow/dinitz", "graph/bipartitematching", 1),
+		"hopcroftkarp": TestCase("flow/hopcroftkarp", "graph/bipartitematching", 1),
 		"mcmf_aoj": OjTest("flow/mcmf_aoj", "https://onlinejudge.u-aizu.ac.jp/problems/GRL_6_B", 1),
 		"costscaling": TestCase("flow/costscaling", "graph/min_cost_b_flow", 10),
 		"costscaling_aoj": OjTest("flow/costscaling_aoj", "https://onlinejudge.u-aizu.ac.jp/problems/GRL_6_B", 1),

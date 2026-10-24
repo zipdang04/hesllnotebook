@@ -16,6 +16,8 @@
 \entry{Gomory--Hu tree}
 
 \subsection{Matching}
-\entry{Hopcroft--Karp}
+\cpp[4]{Hopcroft--Karp + min vertex cover}{hopcroftkarp.hpp}[
+	Warm start: \texttt{run()} again after more \texttt{addEdge} returns the extra pairs. \texttt{cover()}: König min vertex cover (size = matching); its complement is a max independent set.
+]
 \entry{Hungarian}
 \entry{General matching (blossom)}
