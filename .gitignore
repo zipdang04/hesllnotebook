@@ -330,3 +330,4 @@ TSWLatexianTemp*
 # local secrets, oj test cache
 .env
 testing/.oj-tests/
+.worktrees/

@@ -110,6 +110,29 @@ class OjTest:
 		run(test_command)
 
 
+class StressTest:
+	"""Self-checking program: loops over random cases, compares with a brute force, exits 0 when all agree."""
+
+	def __init__(self, source_code, time_limit: float = 10):
+		self.source_code = source_code
+		self.time_limit = time_limit
+
+	def process(self):
+		compile_command = [find_cxx(), self.source_code + ".cpp", "-O2", "-std=c++17", "-o", self.source_code]
+		if platform.system() == "Darwin":
+			compile_command.append("-Wl,-stack_size,0x10000000")
+		run(compile_command)
+		try:
+			code = subprocess.call(["./" + self.source_code], cwd=TESTING_DIR, timeout=self.time_limit)
+		except subprocess.TimeoutExpired:
+			print("TLE")
+			exit(1)
+		if code != 0:
+			print("FAILED")
+			exit(1)
+		print("[SUCCESS] stress test passed")
+
+
 all_source_codes = {
 	"flow": {
 		"dinitz": TestCase("flow/dinitz", "graph/bipartitematching", 1),
@@ -154,7 +177,7 @@ name = DELIMITER + DELIMITER.join(sys.argv[1:])
 
 
 def testingProcess(node, prefix=""):
-	if isinstance(node, (TestCase, OjTest)):
+	if isinstance(node, (TestCase, OjTest, StressTest)):
 		# "all.py" runs everything, "all.py math" a section, "all.py math ntt" one test
 		if name == "." or prefix == name or prefix.startswith(name + DELIMITER):
 			print(">> ", prefix)
