@@ -26,5 +26,7 @@
 \cpp[4]{Hopcroft--Karp + min vertex cover}{hopcroftkarp.hpp}[
 	Warm start: \texttt{run()} again after more \texttt{addEdge} returns the extra pairs. \texttt{cover()}: K\"onig min vertex cover (size = matching); its complement is a max independent set.
 ]
-\entry{Hungarian}
+\cpp[4]{Hungarian (min-cost assignment)}{hungarian.hpp}[
+	$n \le m$ (transpose otherwise), negative costs fine; exact in ll for $|c| \le 10^9$, $n \le 500$. \texttt{run()} keeps \texttt{c}. Max weight: negate costs and the result.
+]
 \entry{General matching (blossom)}

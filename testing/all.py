@@ -141,6 +141,8 @@ all_source_codes = {
 		"mcmf_aoj": OjTest("flow/mcmf_aoj", "https://onlinejudge.u-aizu.ac.jp/problems/GRL_6_B", 1),
 		"costscaling": TestCase("flow/costscaling", "graph/min_cost_b_flow", 10),
 		"costscaling_aoj": OjTest("flow/costscaling_aoj", "https://onlinejudge.u-aizu.ac.jp/problems/GRL_6_B", 1),
+		"hungarian": TestCase("flow/hungarian", "graph/assignment", 2),
+		"hungarian_stress": StressTest("flow/hungarian_stress", 10),
 	},
 	"graph": {
 		"spfa": TestCase("graph/spfa", "graph/shortest_path", 1),
