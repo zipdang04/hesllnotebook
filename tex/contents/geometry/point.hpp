@@ -1,7 +1,6 @@
 #pragma once
 #include "../contest/template.hpp"
 
-// Point<ll> is exact for predicates; point results (proj, intersections, unit, rotate) need Point<ld>.
 const ld eps = 1e-9;
 template<class T> int sgn(T x) { return (x > eps) - (x < -eps); }
 template<class T> struct Point {
@@ -25,7 +24,7 @@ template<class T> struct Point {
 	P rotate(ld a) const { return P(x * cosl(a) - y * sinl(a), x * sinl(a) + y * cosl(a)); } // ccw
 };
 template<class P> int orient(P a, P b, P c) { return sgn(a.cross(b, c)); } // 1 if c left of a->b
-template<class P> bool onSegment(P s, P e, P p) { return sgn(p.cross(s, e)) == 0 && sgn((s - p).dot(e - p)) <= 0; }
+template<class P> bool onSegment(P s, P e, P p) { return !sgn(p.cross(s, e)) && sgn((s - p).dot(e - p)) <= 0; }
 template<class P> P lineProj(P a, P b, P p, bool refl = false) { // refl: reflection instead
 	P v = b - a;
 	return p - v.perp() * (1 + refl) * v.cross(p - a) / v.dist2();
@@ -42,10 +41,8 @@ template<class P> vector<P> segInter(P a, P b, P c, P d) {
 	auto oa = c.cross(d, a), ob = c.cross(d, b), oc = a.cross(b, c), od = a.cross(b, d);
 	if (sgn(oa) * sgn(ob) < 0 && sgn(oc) * sgn(od) < 0) return {(a * ob - b * oa) / (ob - oa)};
 	set<P> s;
-	if (onSegment(c, d, a)) s.insert(a);
-	if (onSegment(c, d, b)) s.insert(b);
-	if (onSegment(a, b, c)) s.insert(c);
-	if (onSegment(a, b, d)) s.insert(d);
+	for (P p: {a, b}) if (onSegment(c, d, p)) s.insert(p);
+	for (P p: {c, d}) if (onSegment(a, b, p)) s.insert(p);
 	return {s.begin(), s.end()};
 }
 template<class P> ld segDist(P s, P e, P p) { // s == e allowed

@@ -4,7 +4,7 @@
 \setcurrentdir{geometry}
 
 \cpp[4]{Point / line primitives}{point.hpp}[
-	\texttt{Point<ll>} is exact for predicates (\texttt{orient}, \texttt{onSegment}, \texttt{segInter(...).empty()}, distances); use \texttt{Point<ld>} when a point is computed (projection, intersections, \texttt{rotate}). \texttt{sgn} uses $\varepsilon = 10^{-9}$: rescale it with the coordinate range.
+	\texttt{Point<ll>} is exact for \texttt{orient}, \texttt{onSegment}, \texttt{segDist} up to $|x| \le 10^9$, for \texttt{segInter}/\texttt{segSegDist} up to $10^6$; use \texttt{Point<ld>} when a point is computed (projection, intersections, \texttt{rotate}). \texttt{sgn} uses $\varepsilon = 10^{-9}$: rescale it with the coordinate range. \texttt{lineProj}, \texttt{lineInter} need $a \ne b$.
 ]
 \entry{Polygon}
 \entry{Convex hull}

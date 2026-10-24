@@ -12,8 +12,8 @@
 	Bounds $l \le f \le r$, any costs, no source/sink. $s \to t$ flow of exactly $F$: add $t \to s$ with $[F, F]$, cost 0. Supplies $b_v$: extra vertex $X$, edges $X \to v$ $[b_v, b_v]$ ($b_v > 0$), $v \to X$ $[-b_v, -b_v]$ ($b_v < 0$). Infeasible $\Rightarrow$ \texttt{solve().first = false}.
 ]
 \entry{Flow models}
-\textbf{Bounds} $[l, r]$: cap $r - l$, $d_v = \sum_{\text{in}} l - \sum_{\text{out}} l$; $S \to v$ cap $d_v$ ($d_v > 0$), $v \to T$ cap $-d_v$ ($d_v < 0$). Feasible iff maxflow$(S,T) = \sum_{d_v > 0} d_v$; flow $l + f$. With $s, t$: add $t \to s$ cap $\infty$, then max $=$ maxflow$(s,t)$; min $= f_{t \to s} -$ maxflow$(t,s)$ without $t \to s$. Min cost: \S1.1.3.
-\textbf{Vertex cap}: $v_{\text{in}} \to v_{\text{out}}$.
+\textbf{Bounds} $[l, r]$: cap $r - l$, $d_v = \sum_{\text{in}} l - \sum_{\text{out}} l$; $S \to v$ cap $d_v$ ($d_v > 0$), $v \to T$ cap $-d_v$ ($d_v < 0$). Feasible iff maxflow$(S,T) = \sum_{d_v > 0} d_v$; flow $l + f$. With $s, t$: add $t \to s$ cap $\infty$, then max $=$ maxflow$(s,t)$ on the residual (keep $t \to s$); min $= f_{t \to s} -$ maxflow$(t,s)$ without $t \to s$. Min cost: \S1.1.3.
+\textbf{Vertex cap} $c_v$: $v_{\text{in}} \to v_{\text{out}}$ cap $c_v$.
 \textbf{Closure}: $S \to v$ cap $p_v > 0$, $v \to T$ cap $-p_v$; $u$ needs $v$: $u \to v$ cap $\infty$. Max $= \sum_{p_v > 0} p_v -$ mincut, $S$ side.
 \textbf{Bipartite}, max matching $M$: min vertex cover $= M$ (K\"onig; $(L \setminus Z) \cup (R \cap Z)$, $Z = S$ side); max indep.\ set $= |V| - M$. Hall: $L$ matchable iff $|N(X)| \ge |X|$ $\forall X \subseteq L$.
 \textbf{DAG}: min disjoint path cover $= n - M$ (edges $u_{\text{out}} v_{\text{in}}$); on transitive closure: min chain cover $=$ max antichain (Dilworth).
@@ -24,7 +24,7 @@
 
 \subsection{Matching}
 \cpp[4]{Hopcroft--Karp + min vertex cover}{hopcroftkarp.hpp}[
-	Warm start: \texttt{run()} again after more \texttt{addEdge} returns the extra pairs. \texttt{cover()}: König min vertex cover (size = matching); its complement is a max independent set.
+	Warm start: \texttt{run()} again after more \texttt{addEdge} returns the extra pairs. \texttt{cover()}: K\"onig min vertex cover (size = matching); its complement is a max independent set.
 ]
 \entry{Hungarian}
 \entry{General matching (blossom)}
