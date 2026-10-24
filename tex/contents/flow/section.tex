@@ -20,7 +20,9 @@
 \cpp[4]{Global min cut (Stoer--Wagner)}{stoerwagner.hpp}[
 	Undirected, $w \ge 0$, self-loops ignored. \texttt{run()} (call once) returns the cut weight and one side; $n = 1$ gives $\{0, \{\}\}$.
 ]
-\entry{Gomory--Hu tree}
+\cpp[4]{Gomory--Hu tree}{gomoryhu.hpp}[
+	Uses Dinic (\S1.1.1). Undirected, $w \ge 0$, total $\le 10^{18}$; \texttt{run()} once, $n-1$ flows. Min $u$--$v$ cut $=$ min \texttt{cut} on the tree path (Gusfield). Dinic min cut: after \texttt{calculate()}, $s$ side $= \{v : {\texttt{level[v]}} < 0\}$.
+]
 
 \subsection{Matching}
 \cpp[4]{Hopcroft--Karp + min vertex cover}{hopcroftkarp.hpp}[
