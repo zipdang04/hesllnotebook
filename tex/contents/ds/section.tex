@@ -13,6 +13,8 @@
 \entry{Link-cut tree}
 
 \subsection{Other}
-\entry{Rollback DSU}
+\cpp[4]{Rollback DSU}{rollbackdsu.hpp}[
+	No path compression (undo needs it). \texttt{rollback(t)} only to a \texttt{time()} not yet undone below. Offline dynamic connectivity: segment tree over time, DFS with \texttt{time()}/\texttt{rollback}.
+]
 \entry{pb\_ds}
 \entry{Mo's algorithm}
