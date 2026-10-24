@@ -5,7 +5,9 @@
 
 \subsection{Connectivity}
 \cpp[2]{2-SAT}{2sat.hpp}
-\entry{Lowlink: bridges, articulation points, BCC}
+\cpp[4]{Lowlink: bridges, articulation points, BCC, 2ECC}{lowlink.hpp}[
+	Self-loops and multi-edges OK (parent skipped by edge id). Recursive: depth up to $n$ (needs a big stack for $n \approx 5\cdot10^5$). Block-cut tree: join each block node to its vertices.
+]
 \entry{Euler path / circuit}
 
 \subsection{Paths \& spanning trees}
