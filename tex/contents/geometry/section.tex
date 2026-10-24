@@ -3,7 +3,9 @@
 \twolevels
 \setcurrentdir{geometry}
 
-\entry{Point / line primitives}
+\cpp[4]{Point / line primitives}{point.hpp}[
+	\texttt{Point<ll>} is exact for predicates (\texttt{orient}, \texttt{onSegment}, \texttt{segInter(...).empty()}, distances); use \texttt{Point<ld>} when a point is computed (projection, intersections, \texttt{rotate}). \texttt{sgn} uses $\varepsilon = 10^{-9}$: rescale it with the coordinate range.
+]
 \entry{Polygon}
 \entry{Convex hull}
 \entry{Circles}

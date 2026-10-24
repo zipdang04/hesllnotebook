@@ -156,6 +156,15 @@ all_source_codes = {
 		"suffixarray": TestCase("strings/suffixarray", "string/suffixarray", 5),
 		"ahocorasick": OjTest("strings/ahocorasick", "https://yukicoder.me/problems/no/430", 2),
 	},
+	"geometry": {
+		"cgl1a": OjTest("geometry/cgl1a", "https://onlinejudge.u-aizu.ac.jp/problems/CGL_1_A", 1, error=1e-8),
+		"cgl1b": OjTest("geometry/cgl1b", "https://onlinejudge.u-aizu.ac.jp/problems/CGL_1_B", 1, error=1e-8),
+		"cgl1c": OjTest("geometry/cgl1c", "https://onlinejudge.u-aizu.ac.jp/problems/CGL_1_C", 1),
+		"cgl2a": OjTest("geometry/cgl2a", "https://onlinejudge.u-aizu.ac.jp/problems/CGL_2_A", 1),
+		"cgl2b": OjTest("geometry/cgl2b", "https://onlinejudge.u-aizu.ac.jp/problems/CGL_2_B", 1),
+		"cgl2c": OjTest("geometry/cgl2c", "https://onlinejudge.u-aizu.ac.jp/problems/CGL_2_C", 1, error=1e-8),
+		"cgl2d": OjTest("geometry/cgl2d", "https://onlinejudge.u-aizu.ac.jp/problems/CGL_2_D", 1, error=1e-8),
+	},
 	"math": {
 		"modint": TestCase(
 			"math/combinatorics",
