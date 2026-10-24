@@ -156,6 +156,7 @@ all_source_codes = {
 		"lowlink_stress": StressTest("graph/lowlink_stress", 10),
 		"scc": TestCase("graph/scc", "graph/scc", 2),
 		"2sat": TestCase("graph/2sat", "other/two_sat", 2),
+		"manhattanmst": TestCase("graph/manhattanmst", "geo/manhattanmst", 5),
 	},
 	"ds": {
 		"ps_seg": TestCase("ds/ps_seg", "data_structure/rectangle_sum", 5),
