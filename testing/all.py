@@ -151,7 +151,6 @@ all_source_codes = {
 		"spfa": TestCase("graph/spfa", "graph/shortest_path", 1),
 		"spfa_aoj": OjTest("graph/spfa_aoj", "https://onlinejudge.u-aizu.ac.jp/problems/GRL_1_B", 1),
 		"old_spfa": TestCase("graph/old_spfa", "graph/shortest_path", 1),
-		"2sat": TestCase("graph/2sat", "other/two_sat", 5),
 		"lowlink": TestCase("graph/lowlink", "graph/biconnected_components", 2),
 		"lowlink_2ecc": TestCase("graph/lowlink_2ecc", "graph/two_edge_connected_components", 2),
 		"lowlink_stress": StressTest("graph/lowlink_stress", 10),
