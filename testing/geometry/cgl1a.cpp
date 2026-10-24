@@ -7,7 +7,8 @@ int main() {
 	Point<ld> a(x1, y1), b(x2, y2);
 	while (q--) {
 		ld x, y; cin >> x >> y;
-		Point<ld> r = lineProj(a, b, Point<ld>(x, y));
+		Point<ld> p(x, y), r = lineProj(a, b, p);
+		assert((lineProj(a, b, p, true) - (r * 2 - p)).dist() < 1e-6);   // reflection = 2 proj - p
 		cout << r.x << ' ' << r.y << '\n';
 	}
 }
