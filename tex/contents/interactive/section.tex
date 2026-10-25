@@ -19,7 +19,7 @@
 \cpp[4]{Hamming SECDED}{hamming.hpp}[$n=2^r$ bits carry $n-r-1$ data bits; positions $0,1,2,4,\dots$ are check bits (0 = overall parity). Status 1: one flip fixed, 2: two flips detected; $\ge3$ flips undefined.]
 
 \subsection{Encoding}
-\entry{Rank / unrank}
 \cpp[4]{Tree canonical form (AHU)}{ahu.hpp}[
 	Equal ids $\Leftrightarrow$ isomorphic rooted trees; ids are comparable only within one \texttt{AHU} object (numbering depends on call order, so not across runs). \texttt{unrooted}: root at the center(s), min id if two. $O(n\log n)$, iterative.
 ]
+\cpp[4]{Rank / unrank}{rankunrank.hpp}[Lexicographic, 0-based ranks; T=ll ($N\le20$) or bigint (include math/bigint.hpp first). $k$-multiset: map $x_i \mapsto x_i+i$ to subset of $n{+}k{-}1$ elements; $0\le r<\mathrm{count}$.]
