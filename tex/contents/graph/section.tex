@@ -12,6 +12,7 @@
 ]
 \cpp[4]{Euler path / circuit}{euler.hpp}[
 	Circuit exists iff \texttt{solve()} and \texttt{vs[0] == vs.back()}. \texttt{false} also when edges lie in several components (isolated vertices are fine).
+]
 
 \subsection{Paths \& spanning trees}
 \cpp[4]{SPFA}{spfa.hpp}[
@@ -29,6 +30,7 @@
 ]
 \cpp[4]{HLD}{hld.hpp}[
 	Iterative (no recursion; fine for $n = 5\cdot10^5$). \texttt{f(l, r)}: half-open \texttt{pos} ranges in arbitrary order, direction lost: commutative aggregates only. Edge $(par_c, c)$ is stored at \texttt{pos[c]}; distance $= dep_u + dep_v - 2\,dep_{lca}$.
+]
 \entry{Virtual tree}
 
 \subsection{Hard}
