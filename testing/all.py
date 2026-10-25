@@ -268,6 +268,8 @@ all_source_codes = {
 	},
 	"interactive": {
 		"hammingstress": StressTest("interactive/hammingstress", 10),
+		"ahu": TestCase("interactive/ahu", "tree/rooted_tree_isomorphism_classification", 5),
+		"ahustress": StressTest("interactive/ahustress", 10),
 	},
 }
 

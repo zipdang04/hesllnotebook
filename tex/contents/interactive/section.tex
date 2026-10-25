@@ -20,4 +20,6 @@
 
 \subsection{Encoding}
 \entry{Rank / unrank}
-\entry{Tree canonical form (AHU)}
+\cpp[4]{Tree canonical form (AHU)}{ahu.hpp}[
+	Equal ids $\Leftrightarrow$ isomorphic rooted trees; ids are comparable only within one \texttt{AHU} object (numbering depends on call order, so not across runs). \texttt{unrooted}: root at the center(s), min id if two. $O(n\log n)$, iterative.
+]
