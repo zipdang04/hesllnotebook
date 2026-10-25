@@ -4,8 +4,49 @@
 \setcurrentdir{reference}
 
 \entry{Counting}
+\textbf{Binomials} $\binom nk = \binom{n-1}{k-1} + \binom{n-1}{k} = \frac nk \binom{n-1}{k-1}$; $\sum_k \binom mk \binom n{r-k} = \binom{m+n}r$; $\sum_{i=r}^n \binom ir = \binom{n+1}{r+1}$; $\sum_k \binom nk^2 = \binom{2n}n$. $n$ identical balls into $k$ boxes: $\binom{n+k-1}{k-1}$ (each $\ge 1$: $\binom{n-1}{k-1}$). Multinomial $\frac{n!}{k_1! \cdots k_m!}$.
+
+\textbf{Lucas} $p$ prime, $n = \sum n_i p^i$, $k = \sum k_i p^i$: $\binom nk \equiv \prod \binom{n_i}{k_i} \pmod p$. \textbf{Kummer} $v_p\binom nk =$ \#carries adding $k + (n-k)$ in base $p$. \textbf{Legendre} $v_p(n!) = \sum_{i \ge 1} \lfloor n/p^i \rfloor$.
+
+\textbf{Incl.--excl.} $|\bigcup A_i| = \sum_{\emptyset \ne S} (-1)^{|S|+1} |\bigcap_{i \in S} A_i|$.
+
+\textbf{Derangements} $D_n = (n-1)(D_{n-1} + D_{n-2}) = n D_{n-1} + (-1)^n = \operatorname{round}(n!/e)$, $n \ge 1$: 1, 0, 1, 2, 9, 44, 265, 1854, 14833 ($n = 0..8$).
+
+\textbf{Stirling 1st} $c(n,k)$ = perms of $n$ with $k$ cycles: $c(n,k) = c(n-1,k-1) + (n-1)\,c(n-1,k)$, $c(0,0) = 1$; $\sum_k c(n,k) x^k = x(x+1)\cdots(x+n-1)$. Signed $s(n,k) = (-1)^{n-k} c(n,k)$ gives $x(x-1)\cdots(x-n+1)$.
+
+\textbf{Stirling 2nd} $S(n,k)$ = partitions of $n$ labelled items into $k$ non-empty sets: $S(n,k) = S(n-1,k-1) + k\,S(n-1,k)$; $S(n,k) = \frac1{k!} \sum_{j=0}^k (-1)^j \binom kj (k-j)^n$ (one row by NTT); $x^n = \sum_k S(n,k)\, x(x-1)\cdots(x-k+1)$. Onto maps $n \to k$: $k!\,S(n,k)$.
+
+\textbf{Bell} $B_n = \sum_k S(n,k)$, $B_{n+1} = \sum_k \binom nk B_k$: 1, 1, 2, 5, 15, 52, 203, 877, 4140, 21147, 115975 ($n = 0..10$). $B_{p+n} \equiv B_n + B_{n+1} \pmod p$.
+
+\textbf{Catalan} $C_n = \frac{1}{n+1}\binom{2n}n = \binom{2n}n - \binom{2n}{n+1}$, $C_{n+1} = \sum_{i=0}^n C_i C_{n-i} = \frac{2(2n+1)}{n+2} C_n$: 1, 1, 2, 5, 14, 42, 132, 429, 1430, 4862, 16796, 58786 ($n = 0..11$). Counts: balanced strings of $n$ bracket pairs; monotone $n\times n$ paths not above the diagonal; binary trees with $n$ nodes; full binary trees with $n+1$ leaves; triangulations of a convex $(n+2)$-gon; 231-avoiding perms. \textbf{Ballot} paths $(0,0) \to (a,b)$, $a \ge b$, \#U $\le$ \#R in every prefix: $\binom{a+b}b - \binom{a+b}{b-1} = \frac{a-b+1}{a+1}\binom{a+b}b$ (reflection).
+
+\textbf{Cayley} labelled trees on $n$: $n^{n-2}$; with degrees $d_i$: $\frac{(n-2)!}{\prod (d_i - 1)!}$; forests on $n$ where $k$ given vertices lie in distinct trees: $k\,n^{n-k-1}$.
+
+\textbf{Partitions} $p(n) = \sum_{k \ne 0} (-1)^{k+1} p(n - k(3k-1)/2)$: 1, 1, 2, 3, 5, 7, 11, 15, 22, 30, 42; $p(20) = 627$, $p(50) = 204226$, $p(100) \approx 1.9\cdot 10^8$.
+
+\textbf{Burnside} \#orbits of $X$ under group $G$ $= \frac1{|G|} \sum_{g} |\mathrm{Fix}(g)|$. \textbf{P\'olya} colourings with $k$ colours up to $G$: $\frac1{|G|} \sum_g k^{\mathrm{cyc}(g)}$, $\mathrm{cyc}(g)$ = \#cycles of $g$ on positions. Necklaces (rotations) $N = \frac1n \sum_{d \mid n} \varphi(d)\, k^{n/d}$; bracelets (+ reflections) $\frac N2 + \frac12 k^{(n+1)/2}$ ($n$ odd), $\frac N2 + \frac14 (k^{n/2} + k^{n/2+1})$ ($n$ even).
 \entry{Number theory}
+\textbf{Euler} $\varphi(n) = n \prod_{p \mid n} (1 - \frac1p)$, $\sum_{d \mid n} \varphi(d) = n$, $\sum_{i \le n,\, (i,n) = 1} i = \frac{n \varphi(n)}2$ ($n > 1$), $\sum_{i=1}^n \gcd(i,n) = \sum_{d \mid n} d\, \varphi(n/d)$. $a^{\varphi(m)} \equiv 1$ if $(a,m) = 1$; for any $a$ and $b \ge \varphi(m)$: $a^b \equiv a^{(b \bmod \varphi(m)) + \varphi(m)} \pmod m$. Fermat $a^{p-1} \equiv 1$, Wilson $(p-1)! \equiv -1 \pmod p$. $a \not\equiv 0$ is a square mod odd $p$ iff $a^{(p-1)/2} \equiv 1$ (else $-1$). $g$ is a primitive root mod $p$ iff $g^{(p-1)/q} \ne 1$ for every prime $q \mid p - 1$.
+
+\textbf{M\"obius} $\mu(n) = 0$ if $p^2 \mid n$, else $(-1)^{\#\text{primes}}$. $\sum_{d \mid n} \mu(d) = [n = 1]$, so $[\gcd = 1] = \sum_{d \mid \gcd} \mu(d)$; $\sum_{d \mid n} \frac{\mu(d)}d = \frac{\varphi(n)}n$. Inversion: $g(n) = \sum_{d \mid n} f(d) \iff f(n) = \sum_{d \mid n} \mu(d)\, g(n/d)$; $g(n) = \sum_{n \mid d} f(d) \iff f(n) = \sum_{n \mid d} \mu(d/n)\, g(d)$. Coprime pairs in $[1,n]^2$: $\sum_d \mu(d) \lfloor n/d \rfloor^2$. $\lfloor n/d \rfloor$ takes $\le 2\sqrt n$ values, constant for $d \in [l, \lfloor n / \lfloor n/l \rfloor \rfloor]$.
+
+\textbf{Divisors} max $d(n)$ for $n \le N$ (smallest such $n$); $\sigma(n) = O(n \log\log n)$.\\
+{\small\begin{tabular}{@{}r@{\ }r@{\ }r|r@{\ }r@{\ }r@{}}
+$10^5$ & 128 & 83160 & $10^{9}$ & 1344 & 735134400 \\
+$10^6$ & 240 & 720720 & $10^{12}$ & 6720 & 963761198400 \\
+$10^7$ & 448 & 8648640 & $10^{15}$ & 26880 & 866421317361600 \\
+$10^8$ & 768 & 73513440 & $10^{18}$ & 103680 & 897612484786617600
+\end{tabular}}
+
+\textbf{Primes} $\pi(10^6) = 78498$, $\pi(10^7) = 664579$, $\pi(10^8) = 5761455$, $\pi(10^9) = 50847534$; max gap below $10^9$ is 282. Primes: $10^9{+}7$, $10^9{+}9$, $2^{31}{-}1$, $10^{12}{+}39$, $10^{18}{+}3$, $10^{18}{+}9$, $2^{61}{-}1$. NTT $p = c \cdot 2^k + 1$ (primitive root $g$): $998244353 = 119 \cdot 2^{23} + 1$ ($g = 3$), $167772161 = 5 \cdot 2^{25} + 1$ (3), $469762049 = 7 \cdot 2^{26} + 1$ (3), $754974721 = 45 \cdot 2^{24} + 1$ (11), $1004535809 = 479 \cdot 2^{21} + 1$ (3), $2013265921 = 15 \cdot 2^{27} + 1$ (31).
 \entry{Sums \& generating functions}
+\textbf{Power sums} $\sum_{i=1}^n i^2 = \frac{n(n+1)(2n+1)}6$, $\sum i^3 = \big(\frac{n(n+1)}2\big)^2$, $\sum i^4 = \frac{n(n+1)(2n+1)(3n^2+3n-1)}{30}$, $\sum i^5 = \frac{n^2(n+1)^2(2n^2+2n-1)}{12}$. $\sum_{i=1}^n i^m$ is a polynomial of degree $m+1$: evaluate at $m+2$ points and use Lagrange interpolation (\S6.3). \textbf{Faulhaber} $\sum_{i=0}^{n-1} i^m = \frac1{m+1} \sum_{k=0}^m \binom{m+1}k B_k\, n^{m+1-k}$, $B_k$: $1, -\frac12, \frac16, 0, -\frac1{30}, 0, \frac1{42}, 0, -\frac1{30}$; EGF $\sum B_k \frac{x^k}{k!} = \frac x{e^x - 1}$, $\sum_{k<m} \binom mk B_k = 0$ ($m \ge 2$).
+
+\textbf{Other sums} $\sum_{i=0}^{n-1} r^i = \frac{r^n - 1}{r - 1}$; $\sum_{i=0}^n i r^i = \frac{r(1 - (n+1) r^n + n r^{n+1})}{(1-r)^2}$; $H_n = \sum_{i \le n} \frac1i \approx \ln n + 0.5772 + \frac1{2n}$; $\sum_{i \le n} d(i) = \sum_{i \le n} \lfloor n/i \rfloor = n \ln n + O(n)$.
+
+\textbf{OGF} $[x^n]$: $\frac1{1-ax} \to a^n$; $\frac1{(1-x)^k} \to \binom{n+k-1}{k-1}$; $(1+x)^m \to \binom mn$; $\frac x{1-x-x^2} \to F_n$; $\frac{1 - \sqrt{1-4x}}{2x} \to C_n$ (solves $C = 1 + xC^2$); $\prod_{k \ge 1} \frac1{1-x^k} \to p(n)$, $\prod_{k \in S} \frac1{1-x^k}$: partitions into parts from $S$ ($\prod (1 + x^k)$: distinct parts). Linear recurrence $a_n = \sum_{i=1}^d c_i a_{n-i}$ $\iff$ $A = P(x) / (1 - \sum c_i x^i)$, $\deg P < d$. $\frac{A(x)}{1-x}$: prefix sums; $x A'(x)$: $n a_n$; $A(x)B(x)$: convolution.
+
+\textbf{EGF} $[\frac{x^n}{n!}]$: $e^x \to 1$; $e^{e^x - 1} \to B_n$; $\frac{(e^x - 1)^k}{k!} \to S(n,k)$; $\frac{(-\ln(1-x))^k}{k!} \to c(n,k)$; $\frac{e^{-x}}{1-x} \to D_n$. $A(x)B(x)$: $\sum_k \binom nk a_k b_{n-k}$. For labelled structures with EGF $A$ ($a_0 = 0$): sets of them $e^A$, sequences $\frac1{1-A}$, cycles $\ln\frac1{1-A}$. Perms with all cycle lengths in $S$: $\exp(\sum_{n \in S} \frac{x^n}n)$.
 \entry{Games}
 \entry{Probability \& identities}
 \entry{Techniques prompt list}
