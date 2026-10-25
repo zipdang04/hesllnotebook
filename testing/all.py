@@ -214,6 +214,12 @@ all_source_codes = {
 		"convexhull": TestCase("geometry/convexhull", "geo/static_convex_hull", 2),
 		"furthestpair": TestCase("geometry/furthestpair", "geo/furthest_pair", 2),
 		"inhull": StressTest("geometry/inhull", 10),
+		"cgl7c": OjTest("geometry/cgl7c", "https://onlinejudge.u-aizu.ac.jp/problems/CGL_7_C", 1, error=1e-6),
+		"cgl7d": OjTest("geometry/cgl7d", "https://onlinejudge.u-aizu.ac.jp/problems/CGL_7_D", 1, error=1e-6),
+		"cgl7e": OjTest("geometry/cgl7e", "https://onlinejudge.u-aizu.ac.jp/problems/CGL_7_E", 1, error=1e-6),
+		"cgl7f": OjTest("geometry/cgl7f", "https://onlinejudge.u-aizu.ac.jp/problems/CGL_7_F", 1, error=1e-6),
+		"cgl7g": OjTest("geometry/cgl7g", "https://onlinejudge.u-aizu.ac.jp/problems/CGL_7_G", 1, error=1e-6),
+		"mecstress": StressTest("geometry/mecstress", 10),
 	},
 	"math": {
 		"modint": TestCase(
