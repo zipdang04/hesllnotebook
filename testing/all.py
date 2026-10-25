@@ -226,6 +226,8 @@ all_source_codes = {
 		"polystress": StressTest("geometry/polystress", 10),
 		"halfplane": StressTest("geometry/halfplane", 10),
 		"hull3dstress": StressTest("geometry/hull3dstress", 10),
+		"closestpair": TestCase("geometry/closestpair", "geo/closest_pair", 5),
+		"kdtreestress": StressTest("geometry/kdtreestress", 10),
 	},
 	"math": {
 		"modint": TestCase(
