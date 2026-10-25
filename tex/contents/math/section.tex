@@ -6,12 +6,16 @@
 \subsection{Number theory}
 \cpp[3]{Modint}{modint.hpp}
 \cpp{Bigint}{bigint.hpp}
-\entry{Ext-gcd, CRT}
+\cpp[4]{Ext-gcd, CRT}{crt.hpp}[
+	Any $a, b$; \texttt{crt} needs $m, n \le 4\cdot 10^{18}$, $\mathrm{lcm}(m,n) < 2^{63}$; no solution $\to \{-1,-1\}$. Many congruences: fold from \texttt{\{0, 1\}}.
+]
 \cpp[3]{Sieve (factorable)}{eratos_factorable.cpp}
 \cpp[3]{Miller--Rabin}{millerrabin.hpp}
 \cpp{Pollard rho}{pollardrho.hpp}
 \entry{Discrete log / discrete sqrt}
-\entry{Floor sum}
+\cpp[4]{Floor sum}{floorsum.hpp}[
+	$0 \le n < 2^{32}$, $1 \le m < 2^{32}$, any $a, b$ ($|a|, |b| \le 4\cdot 10^{18}$); exact if the answer fits in \texttt{ll}.
+]
 
 \subsection{Linear algebra}
 \cpp{Gauss--Jordan}{gauss.hpp}

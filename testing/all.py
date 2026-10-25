@@ -236,6 +236,10 @@ all_source_codes = {
 		),
 		"millerrabin": TestCase("math/millerrabin", "number_theory/primality_test", 2),
 		"pollardrho": TestCase("math/pollardrho", "number_theory/factorize", 2),
+		"extgcd": OjTest("math/extgcd", "https://onlinejudge.u-aizu.ac.jp/problems/NTL_1_E", 1),
+		"crt": OjTest("math/crt", "https://yukicoder.me/problems/no/186", 2),
+		"floorsum": TestCase("math/floorsum", "number_theory/sum_of_floor_of_linear", 5),
+		"numtheorystress": StressTest("math/numtheorystress", 10),
 		"gauss": TestCase(
 			"math/gauss", "linear_algebra/system_of_linear_equations", 0.5
 		),
