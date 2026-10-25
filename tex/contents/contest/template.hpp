@@ -1,4 +1,6 @@
 #pragma once
+#pragma GCC optimize("O3,unroll-loops")
+//#pragma GCC target("avx2,bmi,bmi2,popcnt,lzcnt") // x86 only, some judges reject
 
 #include <bits/stdc++.h>
 #include <cassert>
@@ -46,12 +48,14 @@ void read(T &a, Ts&... args){
 #define CURRENT_TIMESTAMP chrono::steady_clock::now().time_since_epoch().count()
 #define randomize mt19937_64 mt(CURRENT_TIMESTAMP)
 
-/*
- * remember to fill in:
- * 	#define MAX ???
- * 	#define MOD ???
- *
- * 	int main() {
- * 		ios_base::sync_with_stdio(0); cin.tie(nullptr);
- * 	}
- */
+#ifndef STRESS
+#define STRESS 0
+#endif
+#ifdef LOCAL
+#define dbg(...) cerr << "[" << #__VA_ARGS__ << "] = ", _dbg(__VA_ARGS__)
+template<class T, class... Ts> void _dbg(const T &a, const Ts&... b){
+	cerr << a; ((cerr << ' ' << b), ...); cerr << endl;
+}
+#else
+#define dbg(...)
+#endif

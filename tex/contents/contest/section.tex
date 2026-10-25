@@ -6,7 +6,7 @@
 \cpp[3]{Template}{template.hpp}
 \othercodes{Shell: compile/run, hash}{bash}{command.sh}
 \inputminted{bash}{\currentdir/hash.sh}
-\entry{Fast IO}
+\cpp[1]{Fast IO}{fastio.hpp}[Reads only stdin: never mix with \texttt{cin}/\texttt{scanf}; not for interactive problems (the buffer blocks). Integers only, $|x| \le 9\cdot10^{18}$.]
 \othercodes{stress.sh}{bash}{stress.sh}
 \cpp[2]{Gen helper}{gen.cpp}[Seed from \texttt{argv[1]} so a failing case can be replayed. Keep $n$ tiny ($\le 8$) first, then grow.]
 \cpp[2]{Checker skeleton}{checker.cpp}[When several answers are valid: check the contestant's output itself (compare only the optimum with \texttt{ans}).]

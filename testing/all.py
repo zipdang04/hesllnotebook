@@ -156,6 +156,9 @@ class ShellTest:
 all_source_codes = {
 	"contest": {
 		"scripts": ShellTest("contest/scripts", 300),
+		"fastio": TestCase("contest/fastio", "sample/many_aplusb", 5),
+		"fastiostress": StressTest("contest/fastiostress", 10),
+		"dbg": StressTest("contest/dbg", 10),
 	},
 	"flow": {
 		"stoerwagner": StressTest("flow/stoerwagner", 10),
