@@ -173,6 +173,8 @@ all_source_codes = {
 		"dmst_stress": StressTest("graph/dmst_stress", 10),
 	},
 	"ds": {
+		"lazyseg": TestCase("ds/lazyseg", "data_structure/range_affine_range_sum", 5),
+		"lazyseg_stress": StressTest("ds/lazyseg_stress", 10),
 		"ps_seg": TestCase("ds/ps_seg", "data_structure/rectangle_sum", 5),
 		"rollbackdsu": TestCase("ds/rollbackdsu", "data_structure/persistent_unionfind", 5),
 		"rollbackdsu_stress": StressTest("ds/rollbackdsu_stress", 10),
