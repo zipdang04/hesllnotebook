@@ -21,7 +21,9 @@
 \cpp[4]{Gauss--Jordan}{gauss.hpp}[
 	Prime modulus. \texttt{rref(a, m, \&det)}: pivots in the first $m$ columns, the rest are carried along (\texttt{solve}: {$[A|b]$}; \texttt{inverse}: {$[A|I]$}); \texttt{det} valid for square $A$. \texttt{solveXor}: $b$ in bit $m$ of each row, $m+1 \le$ \texttt{MAXB}; $O(n^2m/64)$.
 ]
-\entry{Simplex}
+\cpp[4]{Simplex}{simplex.hpp}[
+	Max $c^T x$ s.t.\ $Ax \le b$, $x \ge 0$; $\ge$ rows: negate; $=$: two rows; free $x = x^+ - x^-$. Returns $-\infty$ (infeasible, $x$ untouched), $\infty$ (unbounded, $x$ feasible) or the max with an optimal $x$. \texttt{eps} $= 10^{-9}$ is absolute: tested $|A|, |c| \le 100$, $|b| \le 10^5$; scale the data otherwise.
+]
 
 \subsection{Polynomials \& transforms}
 \cpp[3]{FFT}{fft.hpp}[\texttt{conv}: exact after rounding if $(\sum a_i^2+\sum b_i^2)\log_2 n < 9\cdot10^{14}$. \texttt{convMod}: $a_i, b_i \in {[0, M)}$, tested $M \le 10^9+7$, $|a|=|b|=2^{19}$ (0.25\,s); balanced digits keep rounding error $\le 0.2$ in pure \texttt{double} (plain {$[0,\sqrt M)$} digits fail).]
