@@ -5,7 +5,7 @@
 
 \cpp[4]{Z-function}{zfunc.hpp}
 \cpp[3]{Rolling hash}{strhash.hpp}
-\entry{Suffix array + LCP}
+\cpp[4]{Suffix array + LCP}{suffixarray.hpp}[Chars in 1..127. \texttt{cyc}: no sentinel, sorts rotations, so \texttt{sa[0]} is a minimum rotation; there \texttt{lcp} is valid only if $s$ is not periodic. Distinct substrings $= n(n+1)/2 - \sum$\texttt{lcp}.]
 \cpp[4]{Aho--Corasick}{ahocorasick.hpp}[
 	Per-pattern counts: \texttt{hit[u]++} at each step of the scan, then for $u$ in reverse \texttt{order}: \texttt{hit[link[u]] += hit[u]}; pattern $i$ occurs \texttt{hit[end$_i$]} times.\\
 	Online inserts: $\log$ groups of sizes $2^k$; insert = merge the smaller groups and rebuild; a query sums over all groups.

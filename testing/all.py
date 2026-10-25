@@ -193,6 +193,8 @@ all_source_codes = {
 	"strings": {
 		"hash": TestCase("strings/hash", "string/enumerate_palindromes"),
 		"suffixarray": TestCase("strings/suffixarray", "string/suffixarray", 5),
+		"numsubstr": TestCase("strings/numsubstr", "string/number_of_substrings", 5),
+		"sacyclic": StressTest("strings/sacyclic", 10),
 		"ahocorasick": OjTest("strings/ahocorasick", "https://yukicoder.me/problems/no/430", 2),
 		"zfunc": TestCase("strings/zfunc", "string/zalgorithm", 5),
 		"lyndon": TestCase("strings/lyndon", "string/lyndon_factorization", 5),
