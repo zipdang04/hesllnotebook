@@ -12,7 +12,9 @@
 
 \subsection{Balanced trees}
 \entry{Implicit treap}
-\entry{Link-cut tree}
+\cpp[4]{Link-cut tree}{lct.hpp}[
+	Node $n$ is null. \texttt{query}, \texttt{lca}, \texttt{link}, \texttt{cut} re-root (no fixed root; \texttt{lca(r,u,v)} w.r.t.\ $r$). Aggregate in \texttt{pull} must be commutative; otherwise also keep the reversed aggregate and swap it on flip.
+]
 
 \subsection{Other}
 \cpp[4]{Rollback DSU}{rollbackdsu.hpp}[
