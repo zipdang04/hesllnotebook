@@ -38,7 +38,9 @@
 \cpp[5]{FPS: inv, log, exp, div}{fps.hpp}[
 	Mod $998244353$ only; results have exactly $n$ terms ($a$ may be shorter/longer). \texttt{inv}: $a_0 \ne 0$; \texttt{log}: $a_0 = 1$; \texttt{exp}: $a_0 = 0$; \texttt{divMod}: $b$ has no leading zero, $q, r$ untrimmed. $n = 5\cdot10^5$: exp 4\,s, others $< 2$\,s.
 ]
-\entry{Berlekamp--Massey + Bostan--Mori}
+\cpp[5]{Berlekamp--Massey + Bostan--Mori}{bm.hpp}[
+	Mod $998244353$ only. \texttt{berlekampMassey}: shortest $c$, $O(n^2)$; an order-$d$ recurrence needs $2d$ terms; all zeros $\to$ \texttt{\{\}}. \texttt{bostanMori}: $[x^k]P/Q$, $Q_0 \ne 0$, any $|P|$, $O(m\log m\log k)$. \texttt{kthTerm}: $a_k$ from $a_0..a_{d-1}$ and $c$ ($d=0 \to 0$), replaces Kitamasa; guess: \texttt{kthTerm(s, berlekampMassey(s), k)}. $d=10^5$, $k=10^{18}$: 3.5\,s.
+]
 \cpp[4]{Lagrange interpolation}{lagrange.hpp}[$O(n)$ at $x=0..n-1$ (prime $p\ge n$); \texttt{interpolate}: distinct $x$, $O(n^2)$, then Horner.]
 
 \subsection{Numerical}

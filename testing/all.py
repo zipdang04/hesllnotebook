@@ -265,6 +265,9 @@ all_source_codes = {
 		"fpsexp": TestCase("math/fpsexp", "polynomial/exp_of_formal_power_series", 10),
 		"fpsdiv": TestCase("math/fpsdiv", "polynomial/division_of_polynomials", 5),
 		"fpsstress": StressTest("math/fpsstress", 10),
+		"bm": TestCase("math/bm", "other/find_linear_recurrence", 5),
+		"bmkth": TestCase("math/bmkth", "other/kth_term_of_linearly_recurrent_sequence", 10),
+		"bmstress": StressTest("math/bmstress", 10),
 	},
 	"interactive": {
 		"hammingstress": StressTest("interactive/hammingstress", 10),
