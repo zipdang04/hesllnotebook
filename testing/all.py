@@ -247,6 +247,7 @@ all_source_codes = {
 		"dlog": TestCase("math/dlog", "number_theory/discrete_logarithm_mod", 2),
 		"dsqrt": TestCase("math/dsqrt", "number_theory/sqrt_mod", 3),
 		"dlogstress": StressTest("math/dlogstress", 10),
+		"simpson": StressTest("math/simpson", 10),
 		"numtheorystress": StressTest("math/numtheorystress", 10),
 		"gauss": TestCase(
 			"math/gauss", "linear_algebra/system_of_linear_equations", 0.5

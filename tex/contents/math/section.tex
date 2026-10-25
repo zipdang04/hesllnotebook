@@ -38,4 +38,4 @@
 \cpp[4]{Lagrange interpolation}{lagrange.hpp}[$O(n)$ at $x=0..n-1$ (prime $p\ge n$); \texttt{interpolate}: distinct $x$, $O(n^2)$, then Horner.]
 
 \subsection{Numerical}
-\entry{Simpson integration}
+\cpp[3]{Simpson integration}{simpson.hpp}[Adaptive: abs error $\approx$ eps for smooth $f$; can miss spikes narrower than $\sim10^{-4}(b-a)$. Split at kinks/jumps; nest calls for 2D.]
