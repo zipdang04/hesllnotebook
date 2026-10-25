@@ -266,6 +266,9 @@ all_source_codes = {
 		"fpsdiv": TestCase("math/fpsdiv", "polynomial/division_of_polynomials", 5),
 		"fpsstress": StressTest("math/fpsstress", 10),
 	},
+	"interactive": {
+		"hammingstress": StressTest("interactive/hammingstress", 10),
+	},
 }
 
 DELIMITER = "."
