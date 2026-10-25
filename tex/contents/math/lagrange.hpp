@@ -4,6 +4,7 @@
 // y[i] = f(i), i = 0..n-1, deg f < n; returns f(X mod p). O(n), needs n <= p
 modint lagrangeAt(const vector<modint> &y, ll X){
 	int n = y.size();
+	if (!n) return 0;
 	vector<modint> pre(n + 1, 1), suf(n + 1, 1), f(n, 1); // f[i] = 1/i! after the loop
 	EFOR(int, i, 0, n) pre[i + 1] = pre[i] * (X - i);
 	REV(int, i, n - 1, 0) suf[i] = suf[i + 1] * (X - i);

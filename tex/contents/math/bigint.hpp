@@ -1,3 +1,4 @@
+#pragma once
 #include "../contest/template.hpp"
 #include "ntt.hpp"
 
@@ -7,7 +8,7 @@ using vc = vector<char>;
 private:
 	bool neg = false;
 	vc ds;
-	inline bigint&flipNega(){neg=!neg;return *this;}
+	inline bigint&flipNega(){if(ds.size()>1||(!ds.empty()&&ds[0]!=0))neg=!neg;return *this;}
 	inline void reformat() {
 		while ((int)ds.size() > 1 && *(ds.rbegin()) == 0) ds.pop_back();
 		if (ds.size() == 1 && ds[0] == 0) neg = false; }
@@ -21,7 +22,7 @@ private:
 			if (nho == 0) break; }
 		if (nho) push_back(nho); return *this; }
 	inline bool ltAbs(const bigint&oth,bool xV,bool eqV)const{
-		if (size()!=oth.size())return size()<oth.size();
+		if (size()!=oth.size())return (size()<oth.size()) xor xV;
 		REV(int, i, size()-1, 0) if (ds[i] != oth.ds[i])
 			return (ds[i] < oth.ds[i]) xor xV;
 		return eqV; }
@@ -46,9 +47,13 @@ public:
 	inline static string _I;
 	/* constructors */
 	bigint() { ds = {0}; }
-	bigint(ll num) {
-		if(num == 0){ds={0};return;} ds.reserve(18);
-		while (num) ds.push_back(num%10), num/=10; }
+	bigint(ll num) { // handles LLONG_MIN safely
+		if (num == 0) { ds = {0}; return; }
+		if (num < 0) neg = true;
+		unsigned long long u = (num < 0) ? 0ULL - (unsigned long long)num : (unsigned long long)num;
+		ds.reserve(19);
+		while (u) ds.push_back(u % 10), u /= 10;
+	}
 	bigint(string s) {
 		ds.reserve(s.size());
 		REV(int, j, (int)s.size()-1, 0)

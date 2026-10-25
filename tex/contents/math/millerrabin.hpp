@@ -1,7 +1,5 @@
+#pragma once
 #include "../contest/template.hpp"
-
-#define MAX 1000001
-#define MOD 1000000007
 
 namespace MillerRabin{
 	typedef __int128_t i128;
