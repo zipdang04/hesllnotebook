@@ -7,11 +7,13 @@ void _add(vector<ll> a, int sgn){ // ans += sgn * (a * a)
 	if (a.size() <= 64){
 		b.assign(2 * a.size() - 1, 0);
 		EFOR(int, i, 0, (int)a.size()) EFOR(int, j, 0, (int)a.size()) b[i + j] += a[i] * a[j];
-	} else b = FFT::conv(a, a);
+	} else {
+		vector<double> d(a.begin(), a.end()), r = conv(d, d);
+		b.resize(r.size()); EFOR(int, i, 0, (int)r.size()) b[i] = llround(r[i]);
+	}
 	EFOR(int, i, 0, (int)min(b.size(), ans.size())) ans[i] += sgn * b[i];
 }
 int main(){
-	FFT::buildRoot();
 	int n; read(n);
 	Centroid cd(n);
 	EFOR(int, i, 0, n - 1){ int a, b; read(a, b); cd.addEdge(a, b); }
