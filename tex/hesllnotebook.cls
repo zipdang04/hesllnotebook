@@ -96,8 +96,15 @@
 % heading for an entry with no content yet
 \newcommand{\entry}[1]{\csname\entrylevel\endcsname{#1}}
 \newcommand{\setcurrentdir}[1]{\def\currentdir{contents/#1}}
+% \cpp entries show the hash of their printed lines (= contest/hash.sh) at the right of the title
+\def\entryhash{}
+\ExplSyntaxOn
+\NewDocumentCommand\sethash{mmm}{% file, firstline, lastline (empty = to the end)
+    \exp_args:Nx\sys_get_shell:nnN{sh~entryhash.sh~#1~#2~#3}{}\l_tmpa_tl
+    \tl_gset:Nx\entryhash{\exp_not:N\hfill{\exp_not:N\normalfont\exp_not:N\ttfamily\exp_not:N\scriptsize\l_tmpa_tl}}}
+\ExplSyntaxOff
 \NewDocumentCommand\othercodes{oommmo}{
-    \csname\entrylevel\endcsname{#3}
+    \csname\entrylevel\endcsname[#3]{#3\entryhash}\gdef\entryhash{}
     \IfNoValueTF{#6}{} {%
         #6
         \vspace*{-1em}
@@ -117,4 +124,6 @@
 \@ifpackagelater{minted}{2024/01/01}
     {\def\cpplexer{customlexers/lexers.py:CustomLexer}}
     {\def\cpplexer{'customlexers/lexers.py -x'}}
-\NewDocumentCommand\cpp{oommo}{\othercodes[#1][#2]{#3}{\cpplexer}{#4}[#5]}
+\NewDocumentCommand\cpp{oommo}{%
+    \sethash{\currentdir/#4}{\IfNoValueTF{#1}{1}{#1}}{\IfNoValueTF{#2}{}{#2}}%
+    \othercodes[#1][#2]{#3}{\cpplexer}{#4}[#5]}

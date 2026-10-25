@@ -133,7 +133,30 @@ class StressTest:
 		print("[SUCCESS] stress test passed")
 
 
+class ShellTest:
+	"""Shell self-test (testing/<sec>/<name>.sh), run with bash from testing/ with CXX set; exit 0 = pass."""
+
+	def __init__(self, source_code, time_limit: float = 300):
+		self.source_code = source_code
+		self.time_limit = time_limit
+
+	def process(self):
+		env = dict(os.environ, CXX=find_cxx())
+		try:
+			code = subprocess.call(["bash", self.source_code + ".sh"], cwd=TESTING_DIR, env=env, timeout=self.time_limit)
+		except subprocess.TimeoutExpired:
+			print("TLE")
+			exit(1)
+		if code != 0:
+			print("FAILED")
+			exit(1)
+		print("[SUCCESS] shell test passed")
+
+
 all_source_codes = {
+	"contest": {
+		"scripts": ShellTest("contest/scripts", 300),
+	},
 	"flow": {
 		"stoerwagner": StressTest("flow/stoerwagner", 10),
 		"gomoryhu": StressTest("flow/gomoryhu", 10),
@@ -289,7 +312,7 @@ name = DELIMITER + DELIMITER.join(sys.argv[1:])
 
 
 def testingProcess(node, prefix=""):
-	if isinstance(node, (TestCase, OjTest, StressTest)):
+	if isinstance(node, (TestCase, OjTest, StressTest, ShellTest)):
 		# "all.py" runs everything, "all.py math" a section, "all.py math ntt" one test
 		if name == "." or prefix == name or prefix.startswith(name + DELIMITER):
 			print(">> ", prefix)
