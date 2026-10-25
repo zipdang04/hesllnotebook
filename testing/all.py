@@ -249,9 +249,11 @@ all_source_codes = {
 		"dlogstress": StressTest("math/dlogstress", 10),
 		"simpson": StressTest("math/simpson", 10),
 		"numtheorystress": StressTest("math/numtheorystress", 10),
-		"gauss": TestCase(
-			"math/gauss", "linear_algebra/system_of_linear_equations", 0.5
-		),
+		"gauss": TestCase("math/gauss", "linear_algebra/system_of_linear_equations", 0.5),
+		"gaussdet": TestCase("math/gaussdet", "linear_algebra/matrix_det", 2),
+		"gaussinv": TestCase("math/gaussinv", "linear_algebra/inverse_matrix", 2),
+		"gaussrank": TestCase("math/gaussrank", "linear_algebra/matrix_rank", 2),
+		"gaussxor": TestCase("math/gaussxor", "linear_algebra/system_of_linear_equations_mod_2", 2),
 		"fft": TestCase("math/fft", "convolution/convolution_mod_1000000007", 3),
 		"ntt": TestCase("math/ntt", "convolution/convolution_mod"),
 		"fwht": TestCase("math/fwht", "convolution/bitwise_xor_convolution"),

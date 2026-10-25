@@ -18,7 +18,9 @@
 ]
 
 \subsection{Linear algebra}
-\cpp{Gauss--Jordan}{gauss.hpp}
+\cpp[4]{Gauss--Jordan}{gauss.hpp}[
+	Prime modulus. \texttt{rref(a, m, \&det)}: pivots in the first $m$ columns, the rest are carried along (\texttt{solve}: {$[A|b]$}; \texttt{inverse}: {$[A|I]$}); \texttt{det} valid for square $A$. \texttt{solveXor}: $b$ in bit $m$ of each row, $m+1 \le$ \texttt{MAXB}; $O(n^2m/64)$.
+]
 \entry{Simplex}
 
 \subsection{Polynomials \& transforms}
