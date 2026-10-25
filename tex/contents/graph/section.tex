@@ -25,6 +25,7 @@
 	Exact with ll for $|x|,|y| \le 10^9$ (tested $0..10^9$; translation-invariant). Duplicate points OK. \texttt{cand}: $\le 4n$ edges containing an MST.
 ]
 \entry{Matrix-tree theorem}
+\#spanning trees $= \det$ of $L = D - A$ minus row/col $i$ (any $i$), $A_{uv} =$ \#edges $uv$ (loops ignored). Directed, minus row/col $r$: out-trees (edges away from $r$) $L = D_{\text{in}} - A$, in-trees $L = D_{\text{out}} - A$, $A_{uv} =$ \#$(u \to v)$. Weights in $A$, $D$: $\sum_T \prod_{e \in T} w_e$. Det mod $p$: Gauss--Jordan (\S6.2.1).
 
 \subsection{Trees}
 \cpp[4]{HLD}{hld.hpp}[
