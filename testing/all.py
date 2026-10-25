@@ -201,6 +201,8 @@ all_source_codes = {
 		"minrot": StressTest("strings/minrot", 10),
 		"sam": TestCase("strings/sam", "string/number_of_substrings", 5),
 		"sam_stress": StressTest("strings/sam_stress", 10),
+		"eertree": TestCase("strings/eertree", "string/eertree", 5),
+		"eertreestress": StressTest("strings/eertreestress", 10),
 	},
 	"geometry": {
 		"cgl1a": OjTest("geometry/cgl1a", "https://onlinejudge.u-aizu.ac.jp/problems/CGL_1_A", 1, error=1e-8),
