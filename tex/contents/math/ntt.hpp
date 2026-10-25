@@ -1,3 +1,4 @@
+#pragma once
 #include "modint.hpp"
 
 // MOD=998244353=c*2^k+1 => ROOT=g^c, any g: gcd(g,MOD)=1

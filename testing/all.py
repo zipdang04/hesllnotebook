@@ -260,6 +260,11 @@ all_source_codes = {
 		"fwhtand": TestCase("math/fwhtand", "convolution/bitwise_and_convolution"),
 		"fwhtstress": StressTest("math/fwhtstress", 10),
 		"lagrangestress": StressTest("math/lagrangestress", 10),
+		"fpsinv": TestCase("math/fpsinv", "polynomial/inv_of_formal_power_series", 5),
+		"fpslog": TestCase("math/fpslog", "polynomial/log_of_formal_power_series", 5),
+		"fpsexp": TestCase("math/fpsexp", "polynomial/exp_of_formal_power_series", 10),
+		"fpsdiv": TestCase("math/fpsdiv", "polynomial/division_of_polynomials", 5),
+		"fpsstress": StressTest("math/fpsstress", 10),
 	},
 }
 

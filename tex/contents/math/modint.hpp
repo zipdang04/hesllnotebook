@@ -1,3 +1,4 @@
+#pragma once
 #include "../contest/template.hpp"
 
 typedef unsigned long long ull;
