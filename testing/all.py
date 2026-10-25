@@ -250,6 +250,9 @@ all_source_codes = {
 		),
 		"fft": TestCase("math/fft", "convolution/convolution_mod_1000000007", 3),
 		"ntt": TestCase("math/ntt", "convolution/convolution_mod"),
+		"fwht": TestCase("math/fwht", "convolution/bitwise_xor_convolution"),
+		"fwhtand": TestCase("math/fwhtand", "convolution/bitwise_and_convolution"),
+		"fwhtstress": StressTest("math/fwhtstress", 10),
 	},
 }
 

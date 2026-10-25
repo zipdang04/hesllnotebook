@@ -32,7 +32,7 @@
 	$p=c \times 2^k+1 \Rightarrow w_{2^k}=g^c$ w/ any $g: \gcd(g, p)=1$\\
 	only works for $p$ with big $k$ (e.g. $998244353$ w/ $k=23$ below)
 ]
-\entry{FWHT}
+\cpp[4]{FWHT (xor/and/or), SOS}{fwht.hpp}[$|a|=2^k$, $O(n\log n)$. The or/and transforms are subset/superset sums (SOS DP); replacing $+$ by $\max$/$\min$ (\texttt{sos}) gives SOS over max/min.]
 \entry{FPS: inv, log, exp, div}
 \entry{Berlekamp--Massey + Bostan--Mori}
 \entry{Lagrange interpolation}
