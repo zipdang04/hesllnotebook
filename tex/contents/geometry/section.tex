@@ -15,6 +15,8 @@
 \cpp[4]{Circles}{circles.hpp}[
 	\texttt{P = Point<ld>}; tangency is decided with \texttt{sgn} and yields one point. \texttt{tangents}: $-r_2$ gives the internal tangents, $r_2 = 0$ the tangents from point $c_2$; the number of common tangents is the sum of both sizes. \texttt{mec}: expected $O(n)$, tested up to $|x| \le 10^9$; the others up to $10^4$.
 ]
-\entry{Half-plane intersection}
+\cpp[4]{Half-plane intersection}{halfplane.hpp}[
+	Half-plane $=$ left of $p \to p + d$. Result: intersection of the closed half-planes and the box $[-B, B]^2$ (unbounded inputs come back clipped), strictly convex, ccw; \texttt{\{\}} when its area is 0 (empty, point, segment). Tested for $|x| \le 10^4$, $B \le 10^6$; a larger $B$ can break the zero-area cases (positive areas stay correct up to $|x| \le 10^6$, $B = 10^9$).
+]
 \entry{Closest pair / kd-tree}
 \entry{3D}
