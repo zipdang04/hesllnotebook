@@ -1,5 +1,5 @@
 #!/bin/bash
-# ./stress.sh [mode] [-c checker] [-n 1000] [-s 1] [-t 2]
+# ./stress.sh [mode] [-c ./checker] [-n 1000] [-s 1] [-t 2]
 # stress: gen $i>in; sol<in>out; brute<in>ans; check
 #   fail: print seed, keep tests/fail_<i>.{in,out,ans}
 # tests: sol on tests/*.in vs .ans: PASS/FAIL/RE/TLE
