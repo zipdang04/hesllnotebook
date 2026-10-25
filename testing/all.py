@@ -220,6 +220,10 @@ all_source_codes = {
 		"cgl7f": OjTest("geometry/cgl7f", "https://onlinejudge.u-aizu.ac.jp/problems/CGL_7_F", 1, error=1e-6),
 		"cgl7g": OjTest("geometry/cgl7g", "https://onlinejudge.u-aizu.ac.jp/problems/CGL_7_G", 1, error=1e-6),
 		"mecstress": StressTest("geometry/mecstress", 10),
+		"cgl3a": OjTest("geometry/cgl3a", "https://onlinejudge.u-aizu.ac.jp/problems/CGL_3_A", 1, error=1e-6),
+		"cgl3c": OjTest("geometry/cgl3c", "https://onlinejudge.u-aizu.ac.jp/problems/CGL_3_C", 1),
+		"cgl4c": OjTest("geometry/cgl4c", "https://onlinejudge.u-aizu.ac.jp/problems/CGL_4_C", 1, error=1e-5),
+		"polystress": StressTest("geometry/polystress", 10),
 	},
 	"math": {
 		"modint": TestCase(
