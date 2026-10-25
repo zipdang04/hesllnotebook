@@ -192,6 +192,9 @@ all_source_codes = {
 		"hash": TestCase("strings/hash", "string/enumerate_palindromes"),
 		"suffixarray": TestCase("strings/suffixarray", "string/suffixarray", 5),
 		"ahocorasick": OjTest("strings/ahocorasick", "https://yukicoder.me/problems/no/430", 2),
+		"zfunc": TestCase("strings/zfunc", "string/zalgorithm", 5),
+		"lyndon": TestCase("strings/lyndon", "string/lyndon_factorization", 5),
+		"minrot": StressTest("strings/minrot", 10),
 	},
 	"geometry": {
 		"cgl1a": OjTest("geometry/cgl1a", "https://onlinejudge.u-aizu.ac.jp/problems/CGL_1_A", 1, error=1e-8),
