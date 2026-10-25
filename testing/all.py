@@ -244,6 +244,9 @@ all_source_codes = {
 		"extgcd": OjTest("math/extgcd", "https://onlinejudge.u-aizu.ac.jp/problems/NTL_1_E", 1),
 		"crt": OjTest("math/crt", "https://yukicoder.me/problems/no/186", 2),
 		"floorsum": TestCase("math/floorsum", "number_theory/sum_of_floor_of_linear", 5),
+		"dlog": TestCase("math/dlog", "number_theory/discrete_logarithm_mod", 2),
+		"dsqrt": TestCase("math/dsqrt", "number_theory/sqrt_mod", 3),
+		"dlogstress": StressTest("math/dlogstress", 10),
 		"numtheorystress": StressTest("math/numtheorystress", 10),
 		"gauss": TestCase(
 			"math/gauss", "linear_algebra/system_of_linear_equations", 0.5

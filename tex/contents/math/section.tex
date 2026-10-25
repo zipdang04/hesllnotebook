@@ -12,7 +12,7 @@
 \cpp[3]{Sieve (factorable)}{sieve.hpp}[$O(n)$; memory $\approx 4n$ bytes ($n=5\cdot10^8$: 2.2\,GB, 1.7\,s).]
 \cpp[3]{Miller--Rabin}{millerrabin.hpp}
 \cpp{Pollard rho}{pollardrho.hpp}
-\entry{Discrete log / discrete sqrt}
+\cpp[4]{Discrete log / sqrt}{dlog.hpp}[$1\le m\le 10^9$ (tested). \texttt{dlog}: any $a,b$ (not necessarily coprime), $0^0=1$, $-1$ if none; \texttt{dsqrt}: $p$ prime, other root $p-x$. Primitive root: $g$ is one iff $g^{(p-1)/q}\ne1$ for every prime $q\mid p-1$ (text only, no code).]
 \cpp[4]{Floor sum}{floorsum.hpp}[
 	$0 \le n < 2^{32}$, $1 \le m < 2^{32}$, any $a, b$ ($|a|, |b| \le 4\cdot 10^{18}$); exact if the answer fits in \texttt{ll}.
 ]
