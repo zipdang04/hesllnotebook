@@ -6,7 +6,7 @@
 template<class M> struct LazySeg{
 	using S = typename M::S; using F = typename M::F;
 	int n; vector<S> t; vector<F> lz;
-	LazySeg(const vector<S>& a): n(a.size()), t(4 * n), lz(4 * n, M::id()){ _build(1, 1, n, a); } // pos i = a[i-1]
+	LazySeg(const vector<S>& a): n(a.size()), t(4 * n), lz(4 * n, M::id()){ if (n) _build(1, 1, n, a); } // pos i = a[i-1]
 	void _build(int k, int l, int r, const vector<S>& a){
 		if (l == r){ t[k] = a[l - 1]; return; }
 		int m = (l + r) / 2; _build(2 * k, l, m, a); _build(2 * k + 1, m + 1, r, a);

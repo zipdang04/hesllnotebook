@@ -8,8 +8,8 @@ struct HLD{
 	void addEdge(int u, int v){ g[u].push_back(v); g[v].push_back(u); }
 	void build(int r = 0){
 		vector<int> ord{r};
-		EFOR(int, i, 0, n){ int u = ord[i]; for (int v: g[u]) if (v != par[u]) par[v] = u, dep[v] = dep[u] + 1, ord.push_back(v); }
-		EREV(int, i, n - 1, 0){
+		EFOR(int, i, 0, (int)ord.size()){ int u = ord[i]; for (int v: g[u]) if (v != par[u]) par[v] = u, dep[v] = dep[u] + 1, ord.push_back(v); }
+		EREV(int, i, (int)ord.size() - 1, 0){
 			int u = ord[i], p = par[u]; sz[p] += sz[u];
 			if (hv[p] < 0 || sz[u] > sz[hv[p]]) hv[p] = u;
 		}
