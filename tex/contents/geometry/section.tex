@@ -19,4 +19,6 @@
 	Half-plane $=$ left of $p \to p + d$. Result: intersection of the closed half-planes and the box $[-B, B]^2$ (unbounded inputs come back clipped), strictly convex, ccw; \texttt{\{\}} when its area is 0 (empty, point, segment). Tested for $|x| \le 10^4$, $B \le 10^6$; a larger $B$ can break the zero-area cases (positive areas stay correct up to $|x| \le 10^6$, $B = 10^9$).
 ]
 \entry{Closest pair / kd-tree}
-\entry{3D}
+\cpp[4]{3D hull}{hull3d.hpp}[
+	\texttt{hull3d} accepts any input (duplicates, coplanar points) and returns $\{\}$ iff $n < 4$ or all points are coplanar; flat faces come out triangulated. $O(n^2)$ time and memory. \texttt{Point3<ll>} is exact for $|x| \le 5 \cdot 10^5$; \texttt{polyVolume6} returns $6V$ and needs outward ccw faces.
+]

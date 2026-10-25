@@ -225,6 +225,7 @@ all_source_codes = {
 		"cgl4c": OjTest("geometry/cgl4c", "https://onlinejudge.u-aizu.ac.jp/problems/CGL_4_C", 1, error=1e-5),
 		"polystress": StressTest("geometry/polystress", 10),
 		"halfplane": StressTest("geometry/halfplane", 10),
+		"hull3dstress": StressTest("geometry/hull3dstress", 10),
 	},
 	"math": {
 		"modint": TestCase(
