@@ -171,6 +171,8 @@ all_source_codes = {
 		"dominator_stress": StressTest("graph/dominator_stress", 10),
 		"dmst": TestCase("graph/dmst", "graph/directedmst", 5),
 		"dmst_stress": StressTest("graph/dmst_stress", 10),
+		"virtualtree": OjTest("graph/virtualtree", "https://yukicoder.me/problems/no/901", 3),
+		"virtualtree_stress": StressTest("graph/virtualtree_stress", 10),
 	},
 	"ds": {
 		"lazyseg": TestCase("ds/lazyseg", "data_structure/range_affine_range_sum", 5),

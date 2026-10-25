@@ -33,7 +33,9 @@
 \cpp[4]{Centroid decomposition}{centroid.hpp}[
 	Forest OK. Only centroid recursion (depth $\le \log_2 n + 1$); sizes via BFS, safe at $n = 2\cdot10^5$ (path) on a default stack. In \texttt{f(c)}: \texttt{bfs(c, -1)} = whole piece, \texttt{bfs(v, c)} per non-removed neighbour $v$ = one subtree, \texttt{dep} = distance to $c$.
 ]
-\entry{Virtual tree}
+\cpp[4]{Virtual tree}{virtualtree.hpp}[
+	Duplicates in $S$ OK; $|vs| \le 2|S|-1$, \texttt{pa[i] < i}: reverse index order is bottom-up for DP. \texttt{id} is $O(n)$ once, reused without reset. Weighted lengths: use weighted depths instead of \texttt{dep}.
+]
 
 \subsection{Hard}
 \cpp[4]{Dominator tree}{dominator.hpp}[
