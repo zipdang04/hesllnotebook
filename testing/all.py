@@ -148,6 +148,8 @@ all_source_codes = {
 		"blossom_stress": StressTest("flow/blossom_stress", 10),
 	},
 	"graph": {
+		"centroid": TestCase("graph/centroid", "tree/frequency_table_of_tree_distance", 5),
+		"centroid_stress": StressTest("graph/centroid_stress", 10),
 		"spfa": TestCase("graph/spfa", "graph/shortest_path", 1),
 		"spfa_aoj": OjTest("graph/spfa_aoj", "https://onlinejudge.u-aizu.ac.jp/problems/GRL_1_B", 1),
 		"old_spfa": TestCase("graph/old_spfa", "graph/shortest_path", 1),

@@ -25,7 +25,9 @@
 
 \subsection{Trees}
 \entry{HLD}
-\entry{Centroid decomposition}
+\cpp[4]{Centroid decomposition}{centroid.hpp}[
+	Forest OK. Only centroid recursion (depth $\le \log_2 n + 1$); sizes via BFS, safe at $n = 2\cdot10^5$ (path) on a default stack. In \texttt{f(c)}: \texttt{bfs(c, -1)} = whole piece, \texttt{bfs(v, c)} per non-removed neighbour $v$ = one subtree, \texttt{dep} = distance to $c$.
+]
 \entry{Virtual tree}
 
 \subsection{Hard}
