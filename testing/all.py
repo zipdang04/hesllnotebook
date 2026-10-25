@@ -280,6 +280,10 @@ all_source_codes = {
 	"misc": {
 		"ternary": StressTest("misc/ternary", 10),
 	},
+	"misc": {
+		"dpoptobst": OjTest("misc/dpoptobst", "https://onlinejudge.u-aizu.ac.jp/problems/ALDS1_10_D", 1, error=1e-4),
+		"dpoptstress": StressTest("misc/dpoptstress", 10),
+	},
 }
 
 DELIMITER = "."
