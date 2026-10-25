@@ -10,6 +10,6 @@
 	Per-pattern counts: \texttt{hit[u]++} at each step of the scan, then for $u$ in reverse \texttt{order}: \texttt{hit[link[u]] += hit[u]}; pattern $i$ occurs \texttt{hit[end$_i$]} times.\\
 	Online inserts: $\log$ groups of sizes $2^k$; insert = merge the smaller groups and rebuild; a query sums over all groups.
 ]
-\entry{Suffix automaton}
+\cpp[4]{Suffix automaton}{sam.hpp}[Occurrences of $p$: \texttt{t[find(p)].cnt} after \texttt{countEndpos()} ($p$ non-empty). \texttt{distinct()} $=\sum_{v>0}\texttt{len}[v]-\texttt{len}[\texttt{link}[v]]$. At most $2n-1$ states of $4(K{+}3)$ bytes ($\le$120\,MB measured for $n=5\cdot10^5$, $K=26$, string constructor; incremental \texttt{extend} has no \texttt{reserve}, peak $\approx2\times$).]
 \entry{Eertree}
 \cpp[4]{Lyndon factorisation (Duval)}{lyndon.hpp}[Lyndon word: strictly smaller than all its proper suffixes; the factorisation is unique. The smallest suffix of $s$ is its last factor.]

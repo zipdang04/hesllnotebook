@@ -199,6 +199,8 @@ all_source_codes = {
 		"zfunc": TestCase("strings/zfunc", "string/zalgorithm", 5),
 		"lyndon": TestCase("strings/lyndon", "string/lyndon_factorization", 5),
 		"minrot": StressTest("strings/minrot", 10),
+		"sam": TestCase("strings/sam", "string/number_of_substrings", 5),
+		"sam_stress": StressTest("strings/sam_stress", 10),
 	},
 	"geometry": {
 		"cgl1a": OjTest("geometry/cgl1a", "https://onlinejudge.u-aizu.ac.jp/problems/CGL_1_A", 1, error=1e-8),
