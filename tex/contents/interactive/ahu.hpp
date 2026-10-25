@@ -1,7 +1,6 @@
 #pragma once
 #include "../contest/template.hpp"
 
-// canonical ids of rooted trees; ids are shared by every call on the same object, so equal id <=> isomorphic
 struct AHU{
 	map<vector<int>, int> mp;
 	vector<int> id; // id[v] = class of the subtree of v after the last call

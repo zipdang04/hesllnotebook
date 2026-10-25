@@ -66,7 +66,7 @@ int main(){
 		double k = 1 + rg() % 5;
 		auto f = [&](double x){ return sd % 2 ? fabs(x - c) * k : (x - c) * (x - c) * k + 3; };
 		double x = goldenSection(a, b, f);
-		double tol = sd % 2 ? 1e-9 * (1 + fabs(c)) : 1e-6 * (1 + w);
+		double tol = sd % 2 ? 1e-9 * (1 + fabs(c)) : 2e-8 * (1 + fabs(c)); // printed note: ~1e-8 (1 + |x|)
 		worst = max(worst, fabs(x - c));
 		if (fabs(x - c) > tol || x < a || x > b){
 			printf("CHECK 4 FAIL %d x=%.12f c=%.12f w=%g\n", sd, x, c, w);

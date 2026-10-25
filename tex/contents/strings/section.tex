@@ -4,14 +4,15 @@
 \setcurrentdir{strings}
 
 \cpp[4]{Z-function}{zfunc.hpp}
-\cpp[3]{Rolling hash}{strhash.hpp}
+\cpp[3]{Rolling hash}{strhash.hpp}[\texttt{getF(l, r)}, \texttt{getB(l, r)}: 1-indexed, inclusive (forward / backward); $|s| \le 10^6$, chars $\ge 0$. $s[l..r]$ is a palindrome iff \texttt{getF(l, r) == getB(l, r)}.]
 \cpp[4]{Suffix array + LCP}{suffixarray.hpp}[Chars in 1..127. \texttt{cyc}: no sentinel, sorts rotations, so \texttt{sa[0]} is a minimum rotation; there \texttt{lcp} is valid only if $s$ is not periodic. Distinct substrings $= n(n+1)/2 - \sum$\texttt{lcp}.]
 \cpp[4]{Aho--Corasick}{ahocorasick.hpp}[
+	All \texttt{add()}, then \texttt{build()} once; chars in ${[}$\texttt{first}, \texttt{first}$+K)$.
 	Per-pattern counts: \texttt{hit[u]++} at each step of the scan, then for $u$ in reverse \texttt{order}: \texttt{hit[link[u]] += hit[u]}; pattern $i$ occurs \texttt{hit[end$_i$]} times.\\
 	Online inserts: $\log$ groups of sizes $2^k$; insert = merge the smaller groups and rebuild; a query sums over all groups.
 ]
 \cpp[4]{Suffix automaton}{sam.hpp}[Occurrences of $p$: \texttt{t[find(p)].cnt} after \texttt{countEndpos()} ($p$ non-empty). \texttt{distinct()} $=\sum_{v>0}\texttt{len}[v]-\texttt{len}[\texttt{link}[v]]$. At most $2n-1$ states of $4(K{+}3)$ bytes ($\le$120\,MB measured for $n=5\cdot10^5$, $K=26$, string constructor; incremental \texttt{extend} has no \texttt{reserve}, peak $\approx2\times$).]
 \cpp[4]{Eertree}{eertree.hpp}[
-	Distinct palindromes: \texttt{t.size()}$-2$. After \texttt{calc()}, $\sum$ \texttt{cnt} = number of palindromic substrings (sum in \texttt{ll}: up to $n(n+1)/2$). Memory $\approx 4(K+3)$ bytes per node.
+	Distinct palindromes: \texttt{t.size()}$-2$. \texttt{calc()} once, after all \texttt{add()}; then $\sum$ \texttt{cnt} = number of palindromic substrings (sum in \texttt{ll}: up to $n(n+1)/2$). Memory $\approx 4(K+3)$ bytes per node.
 ]
 \cpp[4]{Lyndon factorisation (Duval)}{lyndon.hpp}[Lyndon word: strictly smaller than all its proper suffixes; the factorisation is unique. The smallest suffix of $s$ is its last factor.]

@@ -1,7 +1,6 @@
 #pragma once
 #include "../contest/template.hpp"
 
-// SECDED: codeword length n = 2^r >= 4 carries n - r - 1 data bits
 struct Hamming{
 	int n; vector<int> pos; // pos[i] = codeword index of data bit i
 	Hamming(int n): n(n){ EFOR(int, i, 3, n) if (i & (i - 1)) pos.push_back(i); }

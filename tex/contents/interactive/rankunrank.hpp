@@ -1,7 +1,6 @@
 #pragma once
 #include "../contest/template.hpp"
 
-// T = ll or bigint (include math/bigint.hpp first). Lexicographic, 0-indexed.
 template<class T> struct RankUnrank{
 	vector<T> f; vector<vector<T>> C; // f[i] = i!, C[i][j] = binom(i, j)
 	RankUnrank(int n): f(n+1, T(1)), C(n+1, vector<T>(n+1)){

@@ -54,5 +54,25 @@ int main(){
 	AHU t; int u1 = t.unrooted(g); G h(N);
 	EFOR(int, i, 0, N - 1) h[i].push_back(i + 1), h[i + 1].push_back(i);
 	assert(t.unrooted(h) == u1 && t.rooted(g, 0) != t.rooted(g, 1));
+	// large random trees (n = 2e5): relabelled copy matches; a leaf moved elsewhere changes the degree multiset -> differs
+	int twoCentres = 0;
+	for (int seed = 0; seed < 8; seed++){
+		mt.seed(1000 + seed); int n = 200000;
+		G a(n); EFOR(int, i, 1, n){ int p = seed % 2 ? rnd(0, i - 1) : rnd(max(0, i - 3), i - 1); a[p].push_back(i); a[i].push_back(p); }
+		auto far = [&](int s, vector<int> &d){ d.assign(n, -1); d[s] = 0; vector<int> q{s};
+			for (int i = 0; i < (int)q.size(); i++) for (int w: a[q[i]]) if (d[w] < 0) d[w] = d[q[i]] + 1, q.push_back(w);
+			return q.back(); };
+		vector<int> d; int x = far(0, d); int y = far(x, d); twoCentres += d[y] % 2;
+		vector<int> p; G h = relabel(a, p);
+		AHU s; int ua = s.unrooted(a);
+		if (s.unrooted(h) != ua){ printf("FAIL large seed %d\n", seed); return 1; }
+		// b: move leaf n-1 (always a leaf) under a vertex of max degree; changes the degree multiset unless already attached there
+		G b = a; int par = b[n - 1][0], m = 0; EFOR(int, v, 0, n - 1) if (b[v].size() > b[m].size()) m = v;
+		if (m != par && b[par].size() != b[m].size() + 1){
+			b[par].erase(find(b[par].begin(), b[par].end(), n - 1)); b[n - 1] = {m}; b[m].push_back(n - 1);
+			if (s.unrooted(b) == ua){ printf("FAIL large non-iso seed %d\n", seed); return 1; }
+		}
+	}
+	assert(twoCentres > 0 && twoCentres < 8);
 	puts("ok");
 }

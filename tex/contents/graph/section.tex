@@ -7,7 +7,7 @@
 \cpp[4]{SCC + 2-SAT}{scc.hpp}[
 	Component ids are in topological order (edge $u\to v$ $\Rightarrow$ \texttt{comp[u]} $\le$ \texttt{comp[v]}). Iterative, safe at $10^6$ vertices. Force $x$ true: \texttt{either(x, x)}; $x \Rightarrow y$: \texttt{either(\textasciitilde x, y)}.
 ]
-\cpp[4]{Lowlink: bridges, articulation points, BCC, 2ECC}{lowlink.hpp}[
+\cpp[4]{Lowlink: bridges, cut vertices, BCC}{lowlink.hpp}[
 	Self-loops and multi-edges OK (parent skipped by edge id). Recursive: depth up to $n$ (needs a big stack for $n \approx 5\cdot10^5$). Block-cut tree: join each block node to its vertices.
 ]
 \cpp[4]{Euler path / circuit}{euler.hpp}[
@@ -22,14 +22,14 @@
 	Any weights (ll, tested $|w| \le 10^9$), self-loops and multi-edges OK; with negative weights test \texttt{par.empty()} for unreachable. \texttt{par[r]} $= -1$; \texttt{solve} can be called again.
 ]
 \cpp[4]{Manhattan MST}{manhattanmst.hpp}[
-	Exact with ll for $|x|,|y| \le 10^9$ (tested $0..10^9$; translation-invariant). Duplicate points OK. \texttt{cand}: $\le 4n$ edges containing an MST.
+	Exact with ll for $|x|,|y| \le 10^9$ (tested $0..10^9$; translation-invariant). Duplicate points OK.
 ]
 \entry{Matrix-tree theorem}
 \#spanning trees $= \det$ of $L = D - A$ minus row/col $i$ (any $i$), $A_{uv} =$ \#edges $uv$ (loops ignored). Directed, minus row/col $r$: out-trees (edges away from $r$) $L = D_{\text{in}} - A$, in-trees $L = D_{\text{out}} - A$, $A_{uv} =$ \#$(u \to v)$. Weights in $A$, $D$: $\sum_T \prod_{e \in T} w_e$. Det mod $p$: Gauss--Jordan (\S6.2.1).
 
 \subsection{Trees}
 \cpp[4]{HLD}{hld.hpp}[
-	Iterative (no recursion; fine for $n = 5\cdot10^5$). \texttt{f(l, r)}: half-open \texttt{pos} ranges in arbitrary order, direction lost: commutative aggregates only. Edge $(par_c, c)$ is stored at \texttt{pos[c]}; distance $= dep_u + dep_v - 2\,dep_{lca}$.
+	Connected tree; \texttt{build()} once. Iterative (fine for $n = 5\cdot10^5$). \texttt{f(l, r)}: half-open \texttt{pos} ranges in arbitrary order, direction lost: commutative aggregates only. Edge $(par_c, c)$ is stored at \texttt{pos[c]}; distance $= dep_u + dep_v - 2\,dep_{lca}$.
 ]
 \cpp[4]{Centroid decomposition}{centroid.hpp}[
 	Forest OK. Only centroid recursion (depth $\le \log_2 n + 1$); sizes via BFS, safe at $n = 2\cdot10^5$ (path) on a default stack. In \texttt{f(c)}: \texttt{bfs(c, -1)} = whole piece, \texttt{bfs(v, c)} per non-removed neighbour $v$ = one subtree, \texttt{dep} = distance to $c$.

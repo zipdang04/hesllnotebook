@@ -4,15 +4,15 @@
 \setcurrentdir{math}
 
 \subsection{Number theory}
-\cpp[3]{Modint}{modint.hpp}
-\cpp{Bigint}{bigint.hpp}
+\cpp[3]{Modint}{modint.hpp}[\texttt{MOD} prime, $< 2^{30}$; NTT, FPS, BM need $998244353$.]
+\cpp{Bigint}{bigint.hpp}[Base-10 digits; only \texttt{*} uses NTT (\S6.3.2); no division.]
 \cpp[4]{Ext-gcd, CRT}{crt.hpp}[
 	Any $a, b$; \texttt{crt} needs $m, n \le 4\cdot 10^{18}$, $\mathrm{lcm}(m,n) < 2^{63}$; no solution $\to \{-1,-1\}$. Many congruences: fold from \texttt{\{0, 1\}}.
 ]
 \cpp[3]{Sieve (factorable)}{sieve.hpp}[$O(n)$; memory $\approx 4n$ bytes ($n=5\cdot10^8$: 2.2\,GB, 1.7\,s).]
 \cpp[3]{Miller--Rabin}{millerrabin.hpp}
-\cpp{Pollard rho}{pollardrho.hpp}
-\cpp[4]{Discrete log / sqrt}{dlog.hpp}[$1\le m\le 10^9$ (tested). \texttt{dlog}: any $a,b$ (not necessarily coprime), $0^0=1$, $-1$ if none; \texttt{dsqrt}: $p$ prime, other root $p-x$. Primitive root: $g$ is one iff $g^{(p-1)/q}\ne1$ for every prime $q\mid p-1$ (text only, no code).]
+\cpp{Pollard rho}{pollardrho.hpp}[$n \ge 1$; prime factors with multiplicity, unsorted.]
+\cpp[4]{Discrete log / sqrt}{dlog.hpp}[$1\le m\le 10^9$ (tested). \texttt{dlog}: $a, b \ge 0$ (not necessarily coprime), $0^0=1$, $-1$ if none; \texttt{dsqrt}: $p$ prime, other root $p-x$. Primitive root: $g$ is one iff $g^{(p-1)/q}\ne1$ for every prime $q\mid p-1$ (text only, no code).]
 \cpp[4]{Floor sum}{floorsum.hpp}[
 	$0 \le n < 2^{32}$, $1 \le m < 2^{32}$, any $a, b$ ($|a|, |b| \le 4\cdot 10^{18}$); exact if the answer fits in \texttt{ll}.
 ]
@@ -28,13 +28,7 @@
 \subsection{Polynomials \& transforms}
 \cpp[3]{FFT}{fft.hpp}[\texttt{conv}: exact after rounding if $(\sum a_i^2+\sum b_i^2)\log_2 n < 9\cdot10^{14}$. \texttt{convMod}: $a_i, b_i \in {[0, M)}$, tested $M \le 10^9+7$, $|a|=|b|=2^{19}$ (0.25\,s); balanced digits keep rounding error $\le 0.2$ in pure \texttt{double} (plain {$[0,\sqrt M)$} digits fail).]
 \cpp{NTT}{ntt.hpp}[
-	$k$-th root of unity, mod $p$: $\omega_k$ satisfies
-	$\begin{cases}
-		\omega_k^k \equiv 1 & \\
-		\omega_k^i \not\equiv \omega_k^j & (i \not\equiv j)
-	\end{cases}$\\
-	$p=c \times 2^k+1 \Rightarrow w_{2^k}=g^c$ w/ any $g: \gcd(g, p)=1$\\
-	only works for $p$ with big $k$ (e.g. $998244353$ w/ $k=23$ below)
+	$p = c \cdot 2^k + 1$, $g$ a primitive root mod $p$ (3 for $998244353 = 119 \cdot 2^{23} + 1$): $\omega = g^c$ is a primitive $2^k$-th root of unity, so lengths up to $2^k$. Other primes: \S9.2.
 ]
 \cpp[4]{FWHT (xor/and/or), SOS}{fwht.hpp}[$|a|=2^k$, $O(n\log n)$. The or/and transforms are subset/superset sums (SOS DP); replacing $+$ by $\max$/$\min$ (\texttt{sos}) gives SOS over max/min.]
 \cpp[5]{FPS: inv, log, exp, div}{fps.hpp}[
