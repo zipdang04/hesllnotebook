@@ -1,7 +1,7 @@
 #pragma once
 #include "modint.hpp"
 
-// MOD=998244353=c*2^k+1 => ROOT=g^c, any g: gcd(g,MOD)=1
+// MOD=998244353=c*2^k+1 => ROOT=g^c, g a primitive root (3)
 namespace FFT{
 	constexpr int K_MOD = 23, BIT = 22, MAX_LEN = 1 << BIT;
 	constexpr int ROOT = 15311432;
