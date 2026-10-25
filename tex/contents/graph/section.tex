@@ -27,11 +27,11 @@
 \entry{Matrix-tree theorem}
 
 \subsection{Trees}
-\cpp[4]{Centroid decomposition}{centroid.hpp}[
-	Forest OK. Only centroid recursion (depth $\le \log_2 n + 1$); sizes via BFS, safe at $n = 2\cdot10^5$ (path) on a default stack. In \texttt{f(c)}: \texttt{bfs(c, -1)} = whole piece, \texttt{bfs(v, c)} per non-removed neighbour $v$ = one subtree, \texttt{dep} = distance to $c$.
-]
 \cpp[4]{HLD}{hld.hpp}[
 	Iterative (no recursion; fine for $n = 5\cdot10^5$). \texttt{f(l, r)}: half-open \texttt{pos} ranges in arbitrary order, direction lost: commutative aggregates only. Edge $(par_c, c)$ is stored at \texttt{pos[c]}; distance $= dep_u + dep_v - 2\,dep_{lca}$.
+]
+\cpp[4]{Centroid decomposition}{centroid.hpp}[
+	Forest OK. Only centroid recursion (depth $\le \log_2 n + 1$); sizes via BFS, safe at $n = 2\cdot10^5$ (path) on a default stack. In \texttt{f(c)}: \texttt{bfs(c, -1)} = whole piece, \texttt{bfs(v, c)} per non-removed neighbour $v$ = one subtree, \texttt{dep} = distance to $c$.
 ]
 \entry{Virtual tree}
 
