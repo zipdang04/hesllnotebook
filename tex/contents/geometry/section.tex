@@ -6,14 +6,14 @@
 \cpp[4]{Point / line primitives}{point.hpp}[
 	\texttt{Point<ll>} is exact for \texttt{orient}, \texttt{onSegment}, \texttt{segDist} up to $|x| \le 10^9$, for \texttt{segInter}/\texttt{segSegDist} up to $10^6$; use \texttt{Point<ld>} when a point is computed (projection, intersections, \texttt{rotate}). \texttt{sgn} uses $\varepsilon = 10^{-9}$: rescale it with the coordinate range. \texttt{lineProj}, \texttt{lineInter} need $a \ne b$.
 ]
+\cpp[4]{Polygon}{polygon.hpp}[
+	\texttt{Point<ll>}: \texttt{polyArea2}, \texttt{inPolygon} exact for $|x| \le 10^9$ (simple polygon, any orientation). \texttt{polygonCut} needs \texttt{Point<ld>}; works for non-convex polygons (pieces joined by zero-width bridges along the line, duplicate points possible), may return $< 3$ points: check before \texttt{polyArea2}. \textbf{Pick}: $A = I + B/2 - 1$, $B = \sum \gcd(|\Delta x|, |\Delta y|)$.
+]
 \cpp[4]{Convex hull}{hull.hpp}[
 	\texttt{convexHull} is ccw from the lexicographically smallest point; points on hull edges and duplicates are dropped. \texttt{hullDiameter} and \texttt{inHull} need a non-empty \texttt{convexHull} output. \texttt{Point<ll>} is exact for $|x| \le 10^9$.
 ]
 \cpp[4]{Circles}{circles.hpp}[
 	\texttt{P = Point<ld>}; tangency is decided with \texttt{sgn} and yields one point. \texttt{tangents}: $-r_2$ gives the internal tangents, $r_2 = 0$ the tangents from point $c_2$; the number of common tangents is the sum of both sizes. \texttt{mec}: expected $O(n)$, tested up to $|x| \le 10^9$; the others up to $10^4$.
-]
-\cpp[4]{Polygon}{polygon.hpp}[
-	\texttt{Point<ll>}: \texttt{polyArea2}, \texttt{inPolygon} exact for $|x| \le 10^9$ (simple polygon, any orientation). \texttt{polygonCut} needs \texttt{Point<ld>}; works for non-convex polygons (pieces joined by zero-width bridges along the line, duplicate points possible), may return $< 3$ points: check before \texttt{polyArea2}. \textbf{Pick}: $A = I + B/2 - 1$, $B = \sum \gcd(|\Delta x|, |\Delta y|)$.
 ]
 \entry{Half-plane intersection}
 \entry{Closest pair / kd-tree}
