@@ -11,9 +11,11 @@
 \entry{Li Chao tree}
 
 \subsection{Balanced trees}
-\entry{Implicit treap}
 \cpp[4]{Link-cut tree}{lct.hpp}[
 	Node $n$ is null. \texttt{query}, \texttt{lca}, \texttt{link}, \texttt{cut} re-root (no fixed root; \texttt{lca(r,u,v)} w.r.t.\ $r$). Aggregate in \texttt{pull} must be commutative; otherwise also keep the reversed aggregate and swap it on flip.
+]
+\cpp[4]{Implicit treap}{treap.hpp}[
+	Positions $1..size()$, ranges inclusive; policy \texttt{M} as in the lazy segment tree. \texttt{reverse} needs a commutative \texttt{op}. Erased nodes are not freed. Other ops (cut/paste, rotate): \texttt{\_split}, \texttt{\_merge}, \texttt{\_range}.
 ]
 
 \subsection{Other}

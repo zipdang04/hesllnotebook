@@ -181,6 +181,8 @@ all_source_codes = {
 		"ps_seg": TestCase("ds/ps_seg", "data_structure/rectangle_sum", 5),
 		"rollbackdsu": TestCase("ds/rollbackdsu", "data_structure/persistent_unionfind", 5),
 		"rollbackdsu_stress": StressTest("ds/rollbackdsu_stress", 10),
+		"treap": TestCase("ds/treap", "data_structure/dynamic_sequence_range_affine_range_sum", 10),
+		"treap_stress": StressTest("ds/treap_stress", 10),
 	},
 	"strings": {
 		"hash": TestCase("strings/hash", "string/enumerate_palindromes"),
