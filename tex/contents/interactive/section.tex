@@ -5,12 +5,17 @@
 
 \subsection{Checklists}
 \entry{Interactive}
+\textbf{Flush} each query; on \texttt{-1} or after the answer exit at once. \textbf{Random}: clock seed beats a fixed answer; an adaptive judge (answer moves while consistent) leaves only the worst case. \textbf{Bound}: $q \ge \lceil \log \#\text{answers} / \log \#\text{responses} \rceil$. \textbf{One lie} (yes/no, $n$ candidates; Pelc): min $q$ with $n(q+1) \le 2^q$; $n$ odd: $n(q+1) + q - 1 \le 2^q$. \textbf{Local}: \texttt{mkfifo f; (./sol < f) | (./interactor > f)}.
 \entry{Multi-pass}
+\textbf{Same binary} reruns on input built from its output; TL/ML per run; nothing carries over (files, statics). \textbf{Pass}: read the marker from the input. \textbf{Seed} fixed (\texttt{mt19937 rng(12345)}), never clock, \texttt{random\_device}, pointers. \textbf{Order}: sort; never iterate \texttt{unordered\_map}. \textbf{Count}: $\#$messages $\le$ $\#$channel states (Parrots: $\binom{L+255}{255} \ge 256^N$ $\Rightarrow$ rank / unrank). \textbf{Test}: pass 1 $\to$ own noisy channel $\to$ pass 2.
 \entry{Noise taxonomy}
+\textbf{Shuffled}: rank / unrank, or index tags. \textbf{Erased}: Reed--Solomon (Lagrange), GF(2) code (\texttt{solveXor}). \textbf{1 flip} (detect 2): Hamming SECDED; \textbf{$t$ flips}: RS + Berlekamp--Welch, majority. \textbf{Stuck} (sender knows): stuck-bit code. \textbf{Only $0 \to 1$}: WOM, 2 bits twice in 3 cells. \textbf{Delete 1}: VT; \textbf{unknown length}: self-delimiting. \textbf{Adversary owns positions}: majority; header to find safe ones (IOI 2024 Message). \textbf{Complement / symmetry}: send an invariant. \textbf{Relabelled tree}: AHU. \textbf{Random} noise: w.h.p.\ codes; \textbf{adaptive}: worst-case codes. Verify decodes by rolling hash.
 
 \subsection{Codes}
 \entry{Linear codes: Reed--Solomon, GF(2), stuck bits}
+\textbf{Reed--Solomon}, prime $p \ge n$: data $= P(0..k{-}1)$, $\deg P < k$; send $P(0..n{-}1)$. Any $k$ values give $P$ (\texttt{lagrangeAt}); $s$ erasures $+$ $e$ errors iff $2e + s \le n - k$. \textbf{Berlekamp--Welch} ($m$ points, $\le e$ wrong, $m \ge k + 2e$): solve $Q(x_i) = y_i E(x_i)$, $\deg Q < k + e$, $E$ monic of degree $e$ (Gauss mod $p$); $P = Q / E$. Or try $k$-subsets, keep $P$ agreeing on $\ge m - e$. \textbf{GF(2) erasures}: shared random $k \times n$ $G$ (fixed seed), send $mG$; solve on the $s$ survivors (\texttt{solveXor}); fails w.p.\ $\le 2^{k-s}$, so $s \ge k + 20$. \textbf{Stuck bits} ($s$ cells, sender knows; JOI 2017 Broken Device): receiver reads $m = Hx$, $H$ shared random $k \times n$; sender fixes the stuck $x_i$, solves for the other $n - s$; fails w.p.\ $\le 2^{k-n+s}$, so $n \ge k + s + 20$.
 \entry{Bit-level codes: self-delimiting, VT, pairs, checksum}
+\textbf{Self-delimiting}: unary $1^N0$; Elias-$\gamma$ ($N \ge 1$): $\lfloor \log_2 N \rfloor$ zeros, $N$ in binary ($2\lfloor \log_2 N \rfloor + 1$ bits). Pad: append $10\ldots0$, cut at the last 1. \textbf{VT} (1 deletion): $\sum i x_i \equiv a \pmod{n+1}$, $a = 0$: $\ge 2^n/(n+1)$ words. Encode: data off powers of 2, $x_{2^j} =$ bit $j$ of $(a - \sum i x_i) \bmod (n+1)$. Decode $y$: $w = \#$ones, $D = (a - \sum i y_i) \bmod (n+1)$; $D \le w$: insert 0 with $D$ ones right of it, else 1 with $D - w - 1$ zeros left of it. \textbf{Pairs} $0 \to 01$, $1 \to 10$: a flip gives 00/11 (located erasure); complement-proof: bit $=$ XOR of a pair. \textbf{Checksum}: $h$-bit hash, garbage passes w.p.\ $\approx 2^{-h}$.
 \entry{Hamming SECDED}
 
 \subsection{Encoding}
