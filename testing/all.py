@@ -234,6 +234,8 @@ all_source_codes = {
 		"bigint": TestCase(
 			"math/bigint", "big_integer/multiplication_of_big_integers", 2
 		),
+		"sieve": TestCase("math/sieve", "number_theory/enumerate_primes", 5),
+		"sieve_stress": StressTest("math/sieve_stress", 10),
 		"millerrabin": TestCase("math/millerrabin", "number_theory/primality_test", 2),
 		"pollardrho": TestCase("math/pollardrho", "number_theory/factorize", 2),
 		"extgcd": OjTest("math/extgcd", "https://onlinejudge.u-aizu.ac.jp/problems/NTL_1_E", 1),

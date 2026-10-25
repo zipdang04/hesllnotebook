@@ -9,7 +9,7 @@
 \cpp[4]{Ext-gcd, CRT}{crt.hpp}[
 	Any $a, b$; \texttt{crt} needs $m, n \le 4\cdot 10^{18}$, $\mathrm{lcm}(m,n) < 2^{63}$; no solution $\to \{-1,-1\}$. Many congruences: fold from \texttt{\{0, 1\}}.
 ]
-\cpp[3]{Sieve (factorable)}{eratos_factorable.cpp}
+\cpp[3]{Sieve (factorable)}{sieve.hpp}[$O(n)$; memory $\approx 4n$ bytes ($n=5\cdot10^8$: 2.2\,GB, 1.7\,s).]
 \cpp[3]{Miller--Rabin}{millerrabin.hpp}
 \cpp{Pollard rho}{pollardrho.hpp}
 \entry{Discrete log / discrete sqrt}
