@@ -272,6 +272,9 @@ all_source_codes = {
 		"ahustress": StressTest("interactive/ahustress", 10),
 		"rankunrankstress": StressTest("interactive/rankunrankstress", 10),
 	},
+	"misc": {
+		"ternary": StressTest("misc/ternary", 10),
+	},
 }
 
 DELIMITER = "."
