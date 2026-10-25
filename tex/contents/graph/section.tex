@@ -34,5 +34,7 @@
 \entry{Virtual tree}
 
 \subsection{Hard}
-\entry{Dominator tree}
+\cpp[4]{Dominator tree}{dominator.hpp}[
+	Fully iterative (DFS and path compression), safe at $n = 2\cdot10^5$ with the default stack. Self-loops and multi-edges OK. $u$ dominates $v$ iff $u$ is an ancestor of $v$ in the tree.
+]
 \entry{Max clique}

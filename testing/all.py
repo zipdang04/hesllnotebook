@@ -166,6 +166,8 @@ all_source_codes = {
 		"hld_lca": TestCase("graph/hld_lca", "tree/lca", 2),
 		"hld_subtree": TestCase("graph/hld_subtree", "tree/vertex_add_subtree_sum", 2),
 		"hld_stress": StressTest("graph/hld_stress", 10),
+		"dominator": TestCase("graph/dominator", "graph/dominatortree", 5),
+		"dominator_stress": StressTest("graph/dominator_stress", 10),
 	},
 	"ds": {
 		"ps_seg": TestCase("ds/ps_seg", "data_structure/rectangle_sum", 5),
