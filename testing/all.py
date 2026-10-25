@@ -180,6 +180,8 @@ all_source_codes = {
 		"lct": TestCase("ds/lct", "tree/dynamic_tree_vertex_add_path_sum", 5),
 		"lct_stress": StressTest("ds/lct_stress", 10),
 		"mo": TestCase("ds/mo", "data_structure/static_range_inversions_query", 5),
+		"pbds": TestCase("ds/pbds", "data_structure/ordered_set", 10),
+		"pbds_hash": TestCase("ds/pbds_hash", "data_structure/associative_array", 5),
 		"ps_seg": TestCase("ds/ps_seg", "data_structure/rectangle_sum", 5),
 		"lichao_seg": TestCase("ds/lichao_seg", "data_structure/segment_add_get_min", 5),
 		"lichao_line": TestCase("ds/lichao_line", "data_structure/line_add_get_min", 5),
