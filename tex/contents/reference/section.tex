@@ -48,5 +48,30 @@ $10^8$ & 768 & 73513440 & $10^{18}$ & 103680 & 897612484786617600
 
 \textbf{EGF} $[\frac{x^n}{n!}]$: $e^x \to 1$; $e^{e^x - 1} \to B_n$; $\frac{(e^x - 1)^k}{k!} \to S(n,k)$; $\frac{(-\ln(1-x))^k}{k!} \to c(n,k)$; $\frac{e^{-x}}{1-x} \to D_n$. $A(x)B(x)$: $\sum_k \binom nk a_k b_{n-k}$. For labelled structures with EGF $A$ ($a_0 = 0$): sets of them $e^A$, sequences $\frac1{1-A}$, cycles $\ln\frac1{1-A}$. Perms with all cycle lengths in $S$: $\exp(\sum_{n \in S} \frac{x^n}n)$.
 \entry{Games}
+\textbf{Sprague--Grundy}: $g(s) = \mathrm{mex}\{g(t) : s \to t\}$, lose iff $g = 0$; sum of games: $\bigoplus g_i$. Otherwise brute-force small $g$ and find a period.
+\textbf{Nim}: lose iff $\bigoplus a_i = 0$. \textbf{Mis\`ere} (last move loses): if all $a_i \le 1$, lose iff \#ones odd; else as Nim. \textbf{Take $1..k$}: $g(n) = n \bmod (k+1)$. \textbf{Staircase} (move coins from step $i$ to $i-1$, floor $= 0$): Nim on odd steps. \textbf{Moore} (decrease $1..k$ piles): lose iff every bit's count $\equiv 0 \pmod{k+1}$. \textbf{Wythoff} (one pile, or equal from both): lose iff $\{a, b\} = \{\lfloor j\varphi \rfloor, \lfloor j\varphi^2 \rfloor\}$, $\varphi = \frac{1+\sqrt5}{2}$. \textbf{Lasker} (take, or split a pile in two): $g(4m{+}3) = 4m{+}4$, $g(4m{+}4) = 4m{+}3$, else $g(n) = n$. \textbf{Hackenbush} rooted tree: $g(v) = \bigoplus_{c \text{ child}} (g(c) + 1)$. \textbf{Undirected geography} (token to unvisited neighbour): start $v$ wins iff $\nu(G - v) < \nu(G)$ (max matching).
+
 \entry{Probability \& identities}
+\textbf{Expectation} is linear always (sum indicators); $E[XY] = EX\,EY$ and $\mathrm{Var}$ additive if independent; $\mathrm{Var}\,X = E[X^2] - (EX)^2$. $X \in \mathbb{N}$: $EX = \sum_{k \ge 1} P(X \ge k)$. Independent: $P(\max \le x) = \prod P(X_i \le x)$.
+\textbf{Conditional}: $P(A \mid B) = \frac{P(A \cap B)}{P(B)} = \frac{P(B \mid A)P(A)}{P(B)}$; $EX = \sum_i E[X \mid B_i]P(B_i)$.
+\textbf{Mean; var}: binomial $np$; $np(1-p)$. Geometric (trials to 1st success) $\frac1p$; $\frac{1-p}{p^2}$. Poisson $e^{-\lambda}\frac{\lambda^k}{k!}$: $\lambda$; $\lambda$. Uniform $\{a..b\}$: $\frac{a+b}{2}$; $\frac{(b-a+1)^2-1}{12}$. Exponential: $\frac1\lambda$; $\frac1{\lambda^2}$.
+\textbf{Classics}: coupon collector $nH_n$. Random permutation: $E[\text{fixed pts}] = 1$, $E[\text{cycles}] = E[\text{prefix maxima}] = H_n$. Birthday: $P(k \text{ of } N \text{ distinct}) \approx e^{-k^2/2N}$. Gambler's ruin from $i$ to $0$ or $n$, $+1$ w.p.\ $p$, $r = \frac{1-p}{p}$: $P(n) = \frac{1-r^i}{1-r^n}$; fair: $\frac{i}{n}$, $E[\text{steps}] = i(n-i)$. Absorbing Markov chain: Gauss--Jordan; DAG: DP.
+\textbf{Trig}: $\sin(a \pm b) = \sin a \cos b \pm \cos a \sin b$, $\cos(a \pm b) = \cos a \cos b \mp \sin a \sin b$; $a\cos x + b\sin x = \sqrt{a^2+b^2}\cos(x - \mathrm{atan2}(b, a))$.
+\textbf{Triangle} ($a$ opposite $A$, $s = \frac{a+b+c}{2}$): $\frac{a}{\sin A} = 2R$; $c^2 = a^2 + b^2 - 2ab\cos C$; area $\frac12 ab\sin C = \sqrt{s(s-a)(s-b)(s-c)} = rs = \frac{abc}{4R}$; median $m_a = \frac12\sqrt{2b^2 + 2c^2 - a^2}$, bisector $\ell_a = \frac{2bc}{b+c}\cos\frac{A}{2}$. Cyclic quad: area $\sqrt{(s-a)(s-b)(s-c)(s-d)}$.
+\textbf{Pick}: $A = I + \frac{B}{2} - 1$, $B = \sum \gcd(|\Delta x|, |\Delta y|)$. Planar: $V - E + F = 1 + C$ (components).
+\textbf{Circle}: chord $2r\sin\frac{\theta}{2}$, segment $\frac{r^2}{2}(\theta - \sin\theta)$. \textbf{3D}: sphere $\frac43\pi r^3$, $4\pi r^2$; cap of height $h$: $\frac{\pi h^2}{3}(3r - h)$, $2\pi r h$; cone $\frac13\pi r^2 h$; tetrahedron $|(b-a) \cdot ((c-a) \times (d-a))|/6$. Lat.\ $\varphi$, long.\ $\lambda$: $r(\cos\varphi\cos\lambda, \cos\varphi\sin\lambda, \sin\varphi)$; great circle $2r\arcsin\sqrt{\sin^2\frac{\Delta\varphi}{2} + \cos\varphi_1\cos\varphi_2\sin^2\frac{\Delta\lambda}{2}}$. \textbf{Rotation} about unit $k$: $v\cos\theta + (k \times v)\sin\theta + k(k \cdot v)(1 - \cos\theta)$.
+
 \entry{Techniques prompt list}
+\textbf{Bounds}: $n \le 12$: $n!$; $20$: $2^n$; $40$: $2^{n/2}$; $500$: $n^3$; $5000$: $n^2$; $10^5$: $n\sqrt n$, $n\log^2 n$; $10^6$: $n\log n$; more: $O(n)$ or a formula.
+\textbf{Reformulate}: reverse time (deletions $\to$ DSU insertions); offline, sort queries; fix the min / max / split point and count the rest; complement counting; sort by a key and sweep.
+\textbf{Search}: binary search on the answer; parallel binary search; ternary search; two pointers; meet in the middle.
+\textbf{Sweep}: events + segment tree; coordinate compression; Manhattan: rotate to $(x+y, x-y)$.
+\textbf{Decompose}: D\&C / CDQ over time; sqrt by size (heavy/light) or by time (rebuild every $\sqrt q$); Mo; centroid / HLD; small-to-large.
+\textbf{Contribution}: count, per element or pair, the answers it is in; prefix sums / difference arrays (2D).
+\textbf{Greedy}: exchange argument (sort by comparator); regret with a heap; matroid; verify by brute force.
+\textbf{DP}: state $=$ what the future needs; subsets, digits, intervals, profile, trees (rerooting); bitset; D\&C / Knuth / CHT / Aliens (\S8.1); matrix power; swap value and index if the answer is small.
+\textbf{Graphs}: shortest path on product states (0-1 BFS); flow / matching / min cut / 2-SAT; SCC $\to$ DAG; bipartite check.
+\textbf{Strings}: hash + binary search; KMP / Aho--Corasick automaton DP; SA / SAM for distinct substrings.
+\textbf{Math}: linearity of expectation; inclusion--exclusion, M\"obius, Burnside; generating functions; invariants, parity, pigeonhole; brute-force small cases, guess pattern / recurrence (Berlekamp--Massey).
+\textbf{Random}: shuffle, random hash base, sampling; annealing.
+\textbf{Stuck}: re-read; do the sample by hand; $n = 1$, all equal, max values; monotone? convex? small answer? Solve a simpler version (1D, tree, no updates).
