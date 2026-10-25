@@ -177,6 +177,7 @@ all_source_codes = {
 		"lazyseg_stress": StressTest("ds/lazyseg_stress", 10),
 		"lct": TestCase("ds/lct", "tree/dynamic_tree_vertex_add_path_sum", 5),
 		"lct_stress": StressTest("ds/lct_stress", 10),
+		"mo": TestCase("ds/mo", "data_structure/static_range_inversions_query", 5),
 		"ps_seg": TestCase("ds/ps_seg", "data_structure/rectangle_sum", 5),
 		"rollbackdsu": TestCase("ds/rollbackdsu", "data_structure/persistent_unionfind", 5),
 		"rollbackdsu_stress": StressTest("ds/rollbackdsu_stress", 10),
