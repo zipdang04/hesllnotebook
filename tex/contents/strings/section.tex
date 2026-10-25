@@ -11,7 +11,7 @@
 	Online inserts: $\log$ groups of sizes $2^k$; insert = merge the smaller groups and rebuild; a query sums over all groups.
 ]
 \cpp[4]{Suffix automaton}{sam.hpp}[Occurrences of $p$: \texttt{t[find(p)].cnt} after \texttt{countEndpos()} ($p$ non-empty). \texttt{distinct()} $=\sum_{v>0}\texttt{len}[v]-\texttt{len}[\texttt{link}[v]]$. At most $2n-1$ states of $4(K{+}3)$ bytes ($\le$120\,MB measured for $n=5\cdot10^5$, $K=26$, string constructor; incremental \texttt{extend} has no \texttt{reserve}, peak $\approx2\times$).]
-\cpp[4]{Lyndon factorisation (Duval)}{lyndon.hpp}[Lyndon word: strictly smaller than all its proper suffixes; the factorisation is unique. The smallest suffix of $s$ is its last factor.]
 \cpp[4]{Eertree}{eertree.hpp}[
 	Distinct palindromes: \texttt{t.size()}$-2$. After \texttt{calc()}, $\sum$ \texttt{cnt} = number of palindromic substrings (sum in \texttt{ll}: up to $n(n+1)/2$). Memory $\approx 4(K+3)$ bytes per node.
 ]
+\cpp[4]{Lyndon factorisation (Duval)}{lyndon.hpp}[Lyndon word: strictly smaller than all its proper suffixes; the factorisation is unique. The smallest suffix of $s$ is its last factor.]
