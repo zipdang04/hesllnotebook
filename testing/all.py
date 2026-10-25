@@ -256,6 +256,7 @@ all_source_codes = {
 		"fwht": TestCase("math/fwht", "convolution/bitwise_xor_convolution"),
 		"fwhtand": TestCase("math/fwhtand", "convolution/bitwise_and_convolution"),
 		"fwhtstress": StressTest("math/fwhtstress", 10),
+		"lagrangestress": StressTest("math/lagrangestress", 10),
 	},
 }
 

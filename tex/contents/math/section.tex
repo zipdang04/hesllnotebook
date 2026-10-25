@@ -35,7 +35,7 @@
 \cpp[4]{FWHT (xor/and/or), SOS}{fwht.hpp}[$|a|=2^k$, $O(n\log n)$. The or/and transforms are subset/superset sums (SOS DP); replacing $+$ by $\max$/$\min$ (\texttt{sos}) gives SOS over max/min.]
 \entry{FPS: inv, log, exp, div}
 \entry{Berlekamp--Massey + Bostan--Mori}
-\entry{Lagrange interpolation}
+\cpp[4]{Lagrange interpolation}{lagrange.hpp}[$O(n)$ at $x=0..n-1$ (prime $p\ge n$); \texttt{interpolate}: distinct $x$, $O(n^2)$, then Horner.]
 
 \subsection{Numerical}
 \entry{Simpson integration}
