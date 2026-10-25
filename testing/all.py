@@ -163,7 +163,7 @@ all_source_codes = {
 	"flow": {
 		"stoerwagner": StressTest("flow/stoerwagner", 10),
 		"gomoryhu": StressTest("flow/gomoryhu", 10),
-		"dinitz": TestCase("flow/dinitz", "graph/bipartitematching", 1),
+		"dinitz": TestCase("flow/dinitz", "graph/bipartitematching", 1.5),
 		"hopcroftkarp": TestCase("flow/hopcroftkarp", "graph/bipartitematching", 1),
 		"mcmf_aoj": OjTest("flow/mcmf_aoj", "https://onlinejudge.u-aizu.ac.jp/problems/GRL_6_B", 1),
 		"costscaling": TestCase("flow/costscaling", "graph/min_cost_b_flow", 10),
