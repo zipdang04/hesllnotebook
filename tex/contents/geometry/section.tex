@@ -7,7 +7,9 @@
 	\texttt{Point<ll>} is exact for \texttt{orient}, \texttt{onSegment}, \texttt{segDist} up to $|x| \le 10^9$, for \texttt{segInter}/\texttt{segSegDist} up to $10^6$; use \texttt{Point<ld>} when a point is computed (projection, intersections, \texttt{rotate}). \texttt{sgn} uses $\varepsilon = 10^{-9}$: rescale it with the coordinate range. \texttt{lineProj}, \texttt{lineInter} need $a \ne b$.
 ]
 \entry{Polygon}
-\entry{Convex hull}
+\cpp[4]{Convex hull}{hull.hpp}[
+	\texttt{convexHull} is ccw from the lexicographically smallest point; points on hull edges and duplicates are dropped. \texttt{hullDiameter} and \texttt{inHull} need a non-empty \texttt{convexHull} output. \texttt{Point<ll>} is exact for $|x| \le 10^9$.
+]
 \entry{Circles}
 \entry{Half-plane intersection}
 \entry{Closest pair / kd-tree}
