@@ -255,6 +255,7 @@ all_source_codes = {
 		"gaussrank": TestCase("math/gaussrank", "linear_algebra/matrix_rank", 2),
 		"gaussxor": TestCase("math/gaussxor", "linear_algebra/system_of_linear_equations_mod_2", 2),
 		"fft": TestCase("math/fft", "convolution/convolution_mod_1000000007", 3),
+		"fftstress": StressTest("math/fftstress", 10),
 		"ntt": TestCase("math/ntt", "convolution/convolution_mod"),
 		"fwht": TestCase("math/fwht", "convolution/bitwise_xor_convolution"),
 		"fwhtand": TestCase("math/fwhtand", "convolution/bitwise_and_convolution"),
