@@ -10,7 +10,7 @@
 \cpp[2]{Gen helper}{gen.cpp}[Seed from \texttt{argv[1]} so a failing case can be replayed. Keep $n$ tiny ($\le 8$) first, then grow.]
 \cpp[2]{Checker skeleton}{checker.cpp}[When several answers are valid: check the contestant's output itself (compare only the optimum with \texttt{ans}).]
 \entry{Troubleshoot + edge cases}
-\textbf{Hand-made first}: a teammate writes small cases on paper (one \texttt{tests/} folder per problem), incl.\ the edge cases below. \textbf{Stress} (\texttt{stress.sh}, Gen helper, Checker skeleton) after a WA, or at once if random input is always valid, the greedy/DP is unproven and a brute force takes $\le 5$ min. Small $n$ first. Under \texttt{-DSTRESS} shrink block sizes / thresholds to 1--3: \texttt{const int B = STRESS ? 2 : 300;} (not \texttt{\#define}; build normally with \texttt{-DSTRESS=0}).
+\textbf{Hand-made first}: a teammate writes small cases on paper (one \texttt{tests/} folder per problem), incl.\ the edge cases below. \textbf{Stress} (\texttt{stress.sh}, Gen helper, Checker skeleton) after a WA, or at once if random input is always valid, the greedy/DP is unproven and a brute force takes $\le 5$ min. Small $n$ first. Under \texttt{-DSTRESS} shrink block sizes / thresholds to 1--3: \texttt{const int B = STRESS ? 2 : 300;} (not \texttt{\#define}; \texttt{STRESS} defaults to 0).
 
 \textbf{Edge cases.} \emph{Size}: min ($n = 1$, empty); max (TL / ML / overflow), generated, never hand-written.
 \emph{Values}: 0, negative, $\pm10^9$, $2^{31}$, $10^{18}$; all equal, all distinct, sorted, reversed, many duplicates.
