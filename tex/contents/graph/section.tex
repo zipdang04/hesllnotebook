@@ -5,43 +5,74 @@
 
 \subsection{Connectivity}
 \cpp[4]{SCC + 2-SAT}{scc.hpp}[
-	Component ids are in topological order (edge $u\to v$ $\Rightarrow$ \texttt{comp[u]} $\le$ \texttt{comp[v]}). Iterative, safe at $10^6$ vertices. Force $x$ true: \texttt{either(x, x)}; $x \Rightarrow y$: \texttt{either(\textasciitilde x, y)}.
+	\fld{Order} component ids are in topological order (edge $u\to v$ $\Rightarrow$ \texttt{comp[u]} $\le$ \texttt{comp[v]}).
+	\fld{Note} iterative, safe at $10^6$ vertices.
+	\fld{2-SAT} force $x$ true: \texttt{either(x, x)}; $x \Rightarrow y$: \texttt{either(\textasciitilde x, y)}.
 ]
 \cpp[4]{Lowlink: bridges, cut vertices, BCC}{lowlink.hpp}[
-	Self-loops and multi-edges OK (parent skipped by edge id). Recursive: depth up to $n$ (needs a big stack for $n \approx 5\cdot10^5$). Block-cut tree: join each block node to its vertices.
+	\fld{Note} self-loops and multi-edges OK (parent skipped by edge id).
+	\fld{Stack} recursive: depth up to $n$ (needs a big stack for $n \approx 5\cdot10^5$).
+	\fld{Block-cut tree} join each block node to its vertices.
 ]
 \cpp[4]{Euler path / circuit}{euler.hpp}[
-	Circuit exists iff \texttt{solve()} and \texttt{vs[0] == vs.back()}. \texttt{false} also when edges lie in several components (isolated vertices are fine).
+	\fld{Circuit} exists iff \texttt{solve()} and \texttt{vs[0] == vs.back()}.
+	\fld{Note} \texttt{false} also when edges lie in several components (isolated vertices are fine).
 ]
 
 \subsection{Paths \& spanning trees}
 \cpp[4]{SPFA}{spfa.hpp}[
-	Path: walk \texttt{par} back from $t$ (edge ids, so keep each edge's tail). Other \texttt{adj}: filter edges (\texttt{if (w <= lim)}), change weights (min mean cycle: $w - \lambda$), implicit graphs (grids).
+	\fld{Path} walk \texttt{par} back from $t$ (edge ids, so keep each edge's tail).
+	\fld{Other \texttt{adj}} filter edges (\texttt{if (w <= lim)}), change weights (min mean cycle: $w - \lambda$), implicit graphs (grids).
 ]
 \cpp[4]{Directed MST}{dmst.hpp}[
-	Any weights (ll, tested $|w| \le 10^9$), self-loops and multi-edges OK; with negative weights test \texttt{par.empty()} for unreachable. \texttt{par[r]} $= -1$; \texttt{solve} can be called again.
+	\fld{Note} any weights (ll, tested $|w| \le 10^9$), self-loops and multi-edges OK.
+	\fld{Unreachable} with negative weights test \texttt{par.empty()}.
+	\fld{Returns} \texttt{par[r]} $= -1$; \texttt{solve} can be called again.
 ]
 \cpp[4]{Manhattan MST}{manhattanmst.hpp}[
-	Exact with ll for $|x|,|y| \le 10^9$ (tested $0..10^9$; translation-invariant). Duplicate points OK.
+	\fld{Note} exact with ll for $|x|,|y| \le 10^9$ (tested $0..10^9$; translation-invariant). Duplicate points OK.
 ]
 \entry{Matrix-tree theorem}
-\#spanning trees $= \det$ of $L = D - A$ minus row/col $i$ (any $i$), $A_{uv} =$ \#edges $uv$ (loops ignored). Directed, minus row/col $r$: out-trees (edges away from $r$) $L = D_{\text{in}} - A$, in-trees $L = D_{\text{out}} - A$, $A_{uv} =$ \#$(u \to v)$. Weights in $A$, $D$: $\sum_T \prod_{e \in T} w_e$. Det mod $p$: Gauss--Jordan (\S6.2.1).
+\small\tightdisplay
+\topic{Undirected}
+The number of spanning trees is the determinant of the Laplacian with any row and column $i$ removed (loops ignored):
+\[ L = D - A, \qquad A_{uv} = \#\text{edges } uv \]
+\topic{Directed}
+Remove row and column $r$; $A_{uv} = \#(u \to v)$.
+\begin{facts}
+\item Out-trees (edges away from $r$): $L = D_{\text{in}} - A$.
+\item In-trees: $L = D_{\text{out}} - A$.
+\end{facts}
+\topic{Weighted}
+Put weights in $A$ and $D$ to get the sum over trees:
+\[ \sum_T \prod_{e \in T} w_e \]
+Determinant mod $p$: Gauss--Jordan (\S6.2.1).
 
 \subsection{Trees}
 \cpp[4]{HLD}{hld.hpp}[
-	Connected tree; \texttt{build()} once. Iterative (fine for $n = 5\cdot10^5$). \texttt{f(l, r)}: half-open \texttt{pos} ranges in arbitrary order, direction lost: commutative aggregates only. Edge $(par_c, c)$ is stored at \texttt{pos[c]}; distance $= dep_u + dep_v - 2\,dep_{lca}$.
+	\fld{Needs} connected tree; \texttt{build()} once. Iterative (fine for $n = 5\cdot10^5$).
+	\fld{\texttt{f(l, r)}} half-open \texttt{pos} ranges in arbitrary order, direction lost: commutative aggregates only.
+	\fld{Edges} edge $(par_c, c)$ is stored at \texttt{pos[c]}.
+	\fld{Distance}
+	\[ d(u,v) = dep_u + dep_v - 2\,dep_{lca} \]
 ]
 \cpp[4]{Centroid decomposition}{centroid.hpp}[
-	Forest OK. Only centroid recursion (depth $\le \log_2 n + 1$); sizes via BFS, safe at $n = 2\cdot10^5$ (path) on a default stack. In \texttt{f(c)}: \texttt{bfs(c, -1)} = whole piece, \texttt{bfs(v, c)} per non-removed neighbour $v$ = one subtree, \texttt{dep} = distance to $c$.
+	\fld{Note} forest OK. Only centroid recursion (depth $\le \log_2 n + 1$); sizes via BFS, safe at $n = 2\cdot10^5$ (path) on a default stack.
+	\fld{In \texttt{f(c)}} \texttt{bfs(c, -1)} = whole piece; \texttt{bfs(v, c)} per non-removed neighbour $v$ = one subtree; \texttt{dep} = distance to $c$.
 ]
 \cpp[4]{Virtual tree}{virtualtree.hpp}[
-	Duplicates in $S$ OK; $|vs| \le 2|S|-1$, \texttt{pa[i] < i}: reverse index order is bottom-up for DP. \texttt{id} is $O(n)$ once, reused without reset. Weighted lengths: use weighted depths instead of \texttt{dep}.
+	\fld{Note} duplicates in $S$ OK; $|vs| \le 2|S|-1$.
+	\fld{Order} \texttt{pa[i] < i}: reverse index order is bottom-up for DP.
+	\fld{\texttt{id}} $O(n)$ once, reused without reset.
+	\fld{Weighted} lengths: use weighted depths instead of \texttt{dep}.
 ]
 
 \subsection{Hard}
 \cpp[4]{Dominator tree}{dominator.hpp}[
-	Fully iterative (DFS and path compression), safe at $n = 2\cdot10^5$ with the default stack. Self-loops and multi-edges OK. $u$ dominates $v$ iff $u$ is an ancestor of $v$ in the tree.
+	\fld{Note} fully iterative (DFS and path compression), safe at $n = 2\cdot10^5$ with the default stack. Self-loops and multi-edges OK.
+	\fld{Meaning} $u$ dominates $v$ iff $u$ is an ancestor of $v$ in the tree.
 ]
 \cpp[4]{Max clique}{maxclique.hpp}[
-	Max independent set = max clique of the complement; min vertex cover = the other $n - |\text{MIS}|$ vertices. \texttt{solve()} may be called again (graph is restored).
+	\fld{Reductions} max independent set = max clique of the complement; min vertex cover = the other $n - |\text{MIS}|$ vertices.
+	\fld{Note} \texttt{solve()} may be called again (graph is restored).
 ]
