@@ -1,14 +1,12 @@
-#include "../../tex/contents/math/pollardrho.hpp"
-main()
-{
-	ios_base::sync_with_stdio(0); cin.tie(0);
+#include "../../tex/contents/math/primes.hpp"
+int main(){
 	int q; read(q);
-	FOR(int, _, 1, q) {
-		ll n; read(n);
-		vector<ll> ans = Pollards::rho(n);
-		sort(ans.begin(), ans.end());
-		cout << ans.size() << ' ';
-		for (ll i: ans) cout << i << ' ';
-		cout << '\n';
+	FOR(int, _, 1, q){
+		ull n; read(n);
+		auto v = factor(n);
+		sort(v.begin(), v.end());
+		printf("%d", (int)v.size());
+		for (ull p: v) printf(" %llu", p);
+		puts("");
 	}
 }

@@ -1,10 +1,8 @@
-#include "../../tex/contents/math/millerrabin.hpp"
-main()
-{
-	ios_base::sync_with_stdio(0); cin.tie(0);
+#include "../../tex/contents/math/primes.hpp"
+int main(){
 	int q; read(q);
-	FOR(int, _, 1, q) {
-		ll num; read(num);
-		cout << (MillerRabin::checkPrime(num) ? "Yes\n" : "No\n");
+	FOR(int, _, 1, q){
+		ull n; read(n);
+		puts(isPrime(n) ? "Yes" : "No");
 	}
 }

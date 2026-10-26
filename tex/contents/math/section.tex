@@ -10,8 +10,7 @@
 	Any $a, b$; \texttt{crt} needs $m, n \le 4\cdot 10^{18}$, $\mathrm{lcm}(m,n) < 2^{63}$; no solution $\to \{-1,-1\}$. Many congruences: fold from \texttt{\{0, 1\}}.
 ]
 \cpp[3]{Sieve (factorable)}{sieve.hpp}[$O(n)$; memory $\approx 4n$ bytes ($n=5\cdot10^8$: 2.2\,GB, 1.7\,s).]
-\cpp[3]{Miller--Rabin}{millerrabin.hpp}
-\cpp{Pollard rho}{pollardrho.hpp}[$n \ge 1$; prime factors with multiplicity, unsorted.]
+\cpp[3]{Primality, factorization}{primes.hpp}[\texttt{isPrime}: deterministic for all $n < 2^{64}$ (7 bases). \texttt{factor}: $n \ge 1$, prime factors with multiplicity, \emph{unsorted}; $\approx O(n^{1/4})$ expected.]
 \cpp[4]{Discrete log / sqrt}{dlog.hpp}[$1\le m\le 10^9$ (tested). \texttt{dlog}: $a, b \ge 0$ (not necessarily coprime), $0^0=1$, $-1$ if none; \texttt{dsqrt}: $p$ prime, other root $p-x$. Primitive root: $g$ is one iff $g^{(p-1)/q}\ne1$ for every prime $q\mid p-1$ (text only, no code).]
 \cpp[4]{Floor sum}{floorsum.hpp}[
 	$0 \le n < 2^{32}$, $1 \le m < 2^{32}$, any $a, b$ ($|a|, |b| \le 4\cdot 10^{18}$); exact if the answer fits in \texttt{ll}.
