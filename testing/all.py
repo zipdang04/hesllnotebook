@@ -212,6 +212,7 @@ all_source_codes = {
 		"pbds": TestCase("ds/pbds", "data_structure/ordered_set", 10),
 		"pbds_hash": TestCase("ds/pbds_hash", "data_structure/associative_array", 5),
 		"ps_seg": TestCase("ds/ps_seg", "data_structure/rectangle_sum", 5),
+		"psegstress": StressTest("ds/psegstress", 10),
 		"lichao_seg": TestCase("ds/lichao_seg", "data_structure/segment_add_get_min", 5),
 		"lichao_line": TestCase("ds/lichao_line", "data_structure/line_add_get_min", 5),
 		"rollbackdsu": TestCase("ds/rollbackdsu", "data_structure/persistent_unionfind", 5),
