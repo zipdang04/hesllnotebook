@@ -4,15 +4,34 @@
 \setcurrentdir{strings}
 
 \cpp[4]{Z-function}{zfunc.hpp}
-\cpp[3]{Rolling hash}{strhash.hpp}[Two random bases mod $2^{61}-1$ (clock seed): collision $\lesssim (n/2^{61})^2$ per comparison; for multi-pass problems use a constant seed. \texttt{getF(l, r)}, \texttt{getB(l, r)}: 1-indexed, inclusive (forward / reversed); $s[l..r]$ is a palindrome iff \texttt{getF(l, r) == getB(l, r)}.]
-\cpp[4]{Suffix array + LCP}{suffixarray.hpp}[Chars in 1..127. \texttt{cyc}: no sentinel, sorts rotations, so \texttt{sa[0]} is a minimum rotation; there \texttt{lcp} is valid only if $s$ is not periodic. Distinct substrings $= n(n+1)/2 - \sum$\texttt{lcp}.]
+\cpp[3]{Rolling hash}{strhash.hpp}[
+	\fld{Usage} \texttt{getF(l, r)}, \texttt{getB(l, r)}: 1-indexed, inclusive (forward / reversed); $s[l..r]$ is a palindrome iff \texttt{getF(l, r) == getB(l, r)}.
+	\fld{Note} two random bases mod $2^{61}-1$ (clock seed); for multi-pass problems use a constant seed. Collision probability per comparison:
+	\[ \lesssim (n/2^{61})^2 \]
+]
+\cpp[4]{Suffix array + LCP}{suffixarray.hpp}[
+	\fld{Needs} chars in 1..127.
+	\fld{cyc} no sentinel, sorts rotations, so \texttt{sa[0]} is a minimum rotation; there \texttt{lcp} is valid only if $s$ is not periodic.
+	\fld{Distinct substrings}
+	\[ n(n+1)/2 - \sum \texttt{lcp} \]
+]
 \cpp[4]{Aho--Corasick}{ahocorasick.hpp}[
-	All \texttt{add()}, then \texttt{build()} once; chars in ${[}$\texttt{first}, \texttt{first}$+K)$.
-	Per-pattern counts: \texttt{hit[u]++} at each step of the scan, then for $u$ in reverse \texttt{order}: \texttt{hit[link[u]] += hit[u]}; pattern $i$ occurs \texttt{hit[end$_i$]} times.\\
-	Online inserts: $\log$ groups of sizes $2^k$; insert = merge the smaller groups and rebuild; a query sums over all groups.
+	\fld{Usage} all \texttt{add()}, then \texttt{build()} once; chars in ${[}$\texttt{first}, \texttt{first}$+K)$.
+	\fld{Counts} per pattern: \texttt{hit[u]++} at each step of the scan, then for $u$ in reverse \texttt{order}:
+	\[ \texttt{hit[link[u]]} \mathrel{+}= \texttt{hit[u]} \]
+	pattern $i$ occurs \texttt{hit[end$_i$]} times.
+	\fld{Online} inserts: $\log$ groups of sizes $2^k$; insert = merge the smaller groups and rebuild; a query sums over all groups.
 ]
-\cpp[4]{Suffix automaton}{sam.hpp}[Occurrences of $p$: \texttt{t[find(p)].cnt} after \texttt{countEndpos()} ($p$ non-empty). \texttt{distinct()} $=\sum_{v>0}\texttt{len}[v]-\texttt{len}[\texttt{link}[v]]$. At most $2n-1$ states of $4(K{+}3)$ bytes ($\le$120\,MB measured for $n=5\cdot10^5$, $K=26$, string constructor; incremental \texttt{extend} has no \texttt{reserve}, peak $\approx2\times$).]
+\cpp[4]{Suffix automaton}{sam.hpp}[
+	\fld{Occurrences} of $p$ ($p$ non-empty): \texttt{t[find(p)].cnt} after \texttt{countEndpos()}.
+	\fld{Distinct} \texttt{distinct()} $=$
+	\[ \sum_{v>0}\texttt{len}[v]-\texttt{len}[\texttt{link}[v]] \]
+	\fld{Memory} at most $2n-1$ states of $4(K{+}3)$ bytes ($\le$120\,MB measured for $n=5\cdot10^5$, $K=26$, string constructor; incremental \texttt{extend} has no \texttt{reserve}, peak $\approx2\times$).
+]
 \cpp[4]{Eertree}{eertree.hpp}[
-	Distinct palindromes: \texttt{t.size()}$-2$. \texttt{calc()} once, after all \texttt{add()}; then $\sum$ \texttt{cnt} = number of palindromic substrings (sum in \texttt{ll}: up to $n(n+1)/2$). Memory $\approx 4(K+3)$ bytes per node.
+	\fld{Usage} distinct palindromes: \texttt{t.size()}$-2$. \texttt{calc()} once, after all \texttt{add()}; then $\sum$ \texttt{cnt} = number of palindromic substrings (sum in \texttt{ll}: up to $n(n+1)/2$).
+	\fld{Memory} $\approx 4(K+3)$ bytes per node.
 ]
-\cpp[4]{Lyndon factorisation (Duval)}{lyndon.hpp}[Lyndon word: strictly smaller than all its proper suffixes; the factorisation is unique. The smallest suffix of $s$ is its last factor.]
+\cpp[4]{Lyndon factorisation (Duval)}{lyndon.hpp}[
+	\fld{Note} Lyndon word: strictly smaller than all its proper suffixes; the factorisation is unique. The smallest suffix of $s$ is its last factor.
+]

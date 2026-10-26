@@ -5,28 +5,46 @@
 
 \subsection{Segment trees}
 \cpp[4]{Lazy segment tree}{lazyseg.hpp}[
-	Positions $1..n$, ranges inclusive. With HLD: \texttt{path(u, v, [\&](int l, int r)\{ seg.apply(l + 1, r, f); \})}, value of $v$ at \texttt{pos[v] + 1}. Needs $mp(f, x \cdot y) = mp(f,x) \cdot mp(f,y)$; keep the segment length in \texttt{S} if \texttt{mp} needs it (affine: $S = (sum, len)$, $cp(f,g)=f\circ g$).
+	\fld{Usage} positions $1..n$, ranges inclusive. With HLD: \texttt{path(u, v, [\&](int l, int r)\{ seg.apply(l + 1, r, f); \})}, value of $v$ at \texttt{pos[v] + 1}.
+	\fld{Needs}
+	\[ mp(f, x \cdot y) = mp(f,x) \cdot mp(f,y) \]
+	\fld{Note} keep the segment length in \texttt{S} if \texttt{mp} needs it (affine: $S = (sum, len)$, $cp(f,g)=f\circ g$).
 ]
-\cpp[3]{Persistent segment tree}{ps_seg.hpp}[\texttt{upd} returns a new root and leaves the old one valid; ${[}a,b)$, 0-indexed; root 0 = all identity. Space $O(n+q\log n)$ nodes (about 16 bytes each for \texttt{ll}).]
+\cpp[3]{Persistent segment tree}{ps_seg.hpp}[
+	\fld{Usage} \texttt{upd} returns a new root and leaves the old one valid; ${[}a,b)$, 0-indexed; root 0 = all identity.
+	\fld{Memory} $O(n+q\log n)$ nodes (about 16 bytes each for \texttt{ll}).
+]
 \cpp[4]{Li Chao tree}{lichao.hpp}[
-	All query $x$ known up front, and every queried $x$ must be in the constructor's list (lines fully online); segment ${[}lo, hi)$ in $x$ values. Exact in \texttt{ll} if $|ax| + |b| < 9.2\cdot 10^{18}$ (e.g.\ $|a|,|x| \le 10^9$, $|b| \le 10^{18}$). Max: negate $a, b$ and the answer.
+	\fld{Usage} all query $x$ known up front, and every queried $x$ must be in the constructor's list (lines fully online); segment ${[}lo, hi)$ in $x$ values. Max: negate $a, b$ and the answer.
+	\fld{Exact} in \texttt{ll} if
+	\[ |ax| + |b| < 9.2\cdot 10^{18} \]
+	e.g.\ $|a|,|x| \le 10^9$, $|b| \le 10^{18}$.
 ]
 
 \subsection{Balanced trees}
 \cpp[4]{Implicit treap}{treap.hpp}[
-	Positions $1..size()$, ranges inclusive; policy \texttt{M} as in the lazy segment tree. \texttt{reverse} needs a commutative \texttt{op}. Erased nodes are not freed. Other ops (cut/paste, rotate): \texttt{\_split}, \texttt{\_merge}, \texttt{\_range}.
+	\fld{Usage} positions $1..size()$, ranges inclusive; policy \texttt{M} as in the lazy segment tree.
+	\fld{Needs} \texttt{reverse} needs a commutative \texttt{op}.
+	\fld{Note} erased nodes are not freed. Other ops (cut/paste, rotate): \texttt{\_split}, \texttt{\_merge}, \texttt{\_range}.
 ]
 \cpp[4]{Link-cut tree}{lct.hpp}[
-	Node $n$ is null. \texttt{query}, \texttt{lca}, \texttt{link}, \texttt{cut} re-root (no fixed root; \texttt{lca(r,u,v)} w.r.t.\ $r$). Aggregate in \texttt{pull} must be commutative; otherwise also keep the reversed aggregate and swap it on flip.
+	\fld{Usage} node $n$ is null. \texttt{query}, \texttt{lca}, \texttt{link}, \texttt{cut} re-root (no fixed root; \texttt{lca(r,u,v)} w.r.t.\ $r$).
+	\fld{Needs} aggregate in \texttt{pull} must be commutative; otherwise also keep the reversed aggregate and swap it on flip.
 ]
 
 \subsection{Other}
 \cpp[4]{Rollback DSU}{rollbackdsu.hpp}[
-	No path compression (undo needs it). \texttt{rollback(t)} only to a \texttt{time()} not yet undone below. Offline dynamic connectivity: segment tree over time, DFS with \texttt{time()}/\texttt{rollback}.
+	\fld{Note} no path compression (undo needs it). \texttt{rollback(t)} only to a \texttt{time()} not yet undone below.
+	\fld{Usage} offline dynamic connectivity: segment tree over time, DFS with \texttt{time()}/\texttt{rollback}.
 ]
 \cpp[4]{pb\_ds}{pbds.hpp}[
-	Map: \texttt{null\_type} $\to$ value type. Multiset: store \texttt{pair(x, id)}. \texttt{chash} hashes integers; combine pair keys first. Presize: \texttt{hashMap<K,V> h(\{\},\{\},\{\},\{\},\{1<<20\})}.
+	\fld{Map} \texttt{null\_type} $\to$ value type.
+	\fld{Multiset} store \texttt{pair(x, id)}.
+	\fld{Hash} \texttt{chash} hashes integers; combine pair keys first. Presize: \texttt{hashMap<K,V> h(\{\},\{\},\{\},\{\},\{1<<20\})}.
 ]
 \cpp[4]{Mo's algorithm}{mo.hpp}[
-	Sequence $1..n$, queries $[l, r]$ inclusive. \texttt{e} tells which end moves (needed when order matters, e.g.\ inversions with a BIT). Block alternative: sort by $(l/B, \pm r)$, $B \approx n/\sqrt q$. Not here: Mo on trees (Euler tour, toggle vertices), Mo with updates (time as 3rd coordinate, $B \approx n^{2/3}$, $O(n^{5/3})$).
+	\fld{Usage} sequence $1..n$, queries $[l, r]$ inclusive. \texttt{e} tells which end moves (needed when order matters, e.g.\ inversions with a BIT).
+	\fld{Blocks} alternative: sort by $(l/B, \pm r)$ with
+	\[ B \approx n/\sqrt q \]
+	\fld{Not here} Mo on trees (Euler tour, toggle vertices); Mo with updates (time as 3rd coordinate, $B \approx n^{2/3}$, $O(n^{5/3})$).
 ]
