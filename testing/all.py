@@ -268,6 +268,8 @@ all_source_codes = {
 			"math/bigint", "big_integer/multiplication_of_big_integers", 2
 		),
 		"bigintstress": StressTest("math/bigintstress", 10),
+		"bigintadd": TestCase("math/bigintadd", "big_integer/addition_of_big_integers", 2),
+		"bigintdivstress": StressTest("math/bigintdivstress", 10),
 		"sieve": TestCase("math/sieve", "number_theory/enumerate_primes", 5),
 		"sieve_stress": StressTest("math/sieve_stress", 10),
 		"millerrabin": TestCase("math/millerrabin", "number_theory/primality_test", 2),

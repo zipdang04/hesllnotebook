@@ -88,6 +88,9 @@ int main() {
 		assert(b_to_str(diff) == to_str((i128)a - b));
 		bigint diff_eq = ba; diff_eq -= bb;
 		assert(b_to_str(diff_eq) == to_str((i128)a - b));
+
+		// multiplication (schoolbook path; NTT path is checked by math/bigint and math/bigintdivstress)
+		assert(b_to_str(ba * bb) == to_str((i128)a * b));
 	};
 
 	// Test all pairs of corner cases
@@ -119,6 +122,14 @@ int main() {
 		if (i % 11 == 0 && a != numeric_limits<ll>::min()) b = -a;
 		check_pair(a, b);
 	}
+
+	// string ctor: leading zeros, "-0"
+	assert(b_to_str(bigint("000123")) == "123");
+	assert(b_to_str(bigint("-00045")) == "-45");
+	assert(b_to_str(bigint("-0")) == "0" && bigint("-0") == bigint(0));
+	assert(b_to_str(bigint("0000")) == "0");
+	assert(b_to_str(-bigint(0)) == "0");
+	puts("OK");
 
 	return 0;
 }

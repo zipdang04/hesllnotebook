@@ -5,7 +5,7 @@
 
 \subsection{Number theory}
 \cpp[3]{Modint}{modint.hpp}[\texttt{MOD} prime, $< 2^{30}$; NTT, FPS, BM need $998244353$.]
-\cpp{Bigint}{bigint.hpp}[Base-10 digits; only \texttt{*} uses NTT (\S6.3.2); no division.]
+\cpp{Bigint}{bigint.hpp}[Base 10. \texttt{*}: NTT (\S6.3.2) if both $\ge 64$ digits, needs $|a|+|b| \le 2^{22}+1$ digits ($2\cdot10^6 \times 2\cdot10^6$: 0.8\,s). \texttt{/}, \texttt{\%} by \texttt{ll} $0<|b|\le10^{17}$: $O(|a|)$; by bigint: $O(|q|\,|b|)$, $10^4/5\cdot10^3$ digits 0.5\,s, $2\cdot10^4/10^4$ 1.9\,s. C++ signs: $q$ truncates toward 0, $r$ has the sign of $a$.]
 \cpp[4]{Ext-gcd, CRT}{crt.hpp}[
 	Any $a, b$; \texttt{crt} needs $m, n \le 4\cdot 10^{18}$, $\mathrm{lcm}(m,n) < 2^{63}$; no solution $\to \{-1,-1\}$. Many congruences: fold from \texttt{\{0, 1\}}.
 ]
