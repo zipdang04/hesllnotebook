@@ -5,15 +5,18 @@
 
 \cpp[3]{Ternary search, annealing}{ternary.hpp}[$f$ strictly decreasing then increasing (flat only at the minimum); for max pass $-f$. \texttt{ternaryInt}: $|l|, |r| \le 4\cdot10^{18}$. Golden: $x$ within $\sim10^{-8}(1+|x|)$. \texttt{anneal}: heuristic, clock-seeded (fix the seed for multi-pass); set $T_0$ to a typical $|\Delta E|$.]
 \cpp[4]{DP opt: D\&C, Knuth, Aliens}{dpopt.hpp}[
-	\textbf{All}: 1-based; $C(l,r)$ = cost of $a[l..r]$ inclusive. \textbf{QI}: $C(a,c)+C(b,d) \le C(a,d)+C(b,c)$ for $a \le b \le c \le d$.\\
-	\textbf{QI costs}: $(a_l+\dots+a_r)^2$ with $a \ge 0$; sum of $w \ge 0$ over sub-intervals of $[l,r]$; plain range sum.\\
-	\textbf{D\&C}: split $a[1..n]$ into $K$ groups; $dp_i[j] = \min_{k<j} dp_{i-1}[k] + C(k+1,j)$.\\
-	\textbf{D\&C needs}: QI. Returns $dp_K[0..n]$, \texttt{LLONG\_MAX} where $j < K$. $O(Kn\log n)$.\\
-	\textbf{Knuth}: merge adjacent, optimal BST; $dp[l][r] = \min_{l \le k < r} dp[l][k] + dp[k+1][r] + C(l,r)$, $dp[i][i] = 0$.\\
-	\textbf{Knuth needs}: QI and $C(b,c) \le C(a,d)$ for $a \le b \le c \le d$. $O(n^2)$ time, $(n+1)^2$ (ll + int) memory.\\
-	\textbf{Knuth base}: $dp[i][i] = b_i$ $\Rightarrow$ add $b_l+\dots+b_r$ to $dp[l][r]$. OBST: positions = dummies $q_0..q_n$, $C$ = subtree weight, $+\sum q$.\\
-	\textbf{Aliens}: $f(k)$ = min with exactly $k$ items, convex in $k$ (e.g.\ $k$ groups, QI cost). Binary search on $\lambda$.\\
-	\textbf{Aliens solve($\lambda$)}: $+\lambda$ per item; returns \{min, \emph{smallest} count among minimisers\} (ties!). Only the value is recovered.\\
-	\textbf{Aliens range}: default $\lambda \in [-10^{12}, 10^{12}]$; needs $lo \le f(k-1)-f(k)$, $hi \ge f(k)-f(k+1)$, else pass $lo, hi$.\\
-	\textbf{Aliens overflow}: $|\text{value}| + \max(|lo|,|hi|) \cdot n < 9.2\cdot10^{18}$.
+	\fld{All} 1-based; $C(l,r)$ = cost of $a[l..r]$ inclusive. QI (quadrangle inequality), for $a \le b \le c \le d$:
+	\[ C(a,c) + C(b,d) \le C(a,d) + C(b,c) \]
+	\fld{QI costs} $(a_l+\dots+a_r)^2$ with $a \ge 0$; sum of $w \ge 0$ over sub-intervals of $[l,r]$; plain range sum.
+	\fld{D\&C} split $a[1..n]$ into $K$ groups:
+	\[ dp_i[j] = \min_{k<j}\; dp_{i-1}[k] + C(k+1,j) \]
+	\fld{Needs} QI. \textbf{Time:} $O(Kn\log n)$. \textbf{Returns:} $dp_K[0..n]$, \texttt{LLONG\_MAX} where $j < K$.
+	\fld{Knuth} merge adjacent, optimal BST; $dp[i][i] = 0$:
+	\[ dp[l][r] = \min_{l \le k < r}\; dp[l][k] + dp[k+1][r] + C(l,r) \]
+	\fld{Needs} QI and $C(b,c) \le C(a,d)$ for $a \le b \le c \le d$. \textbf{Time:} $O(n^2)$; memory $(n+1)^2$ (ll + int).
+	\fld{Base} $dp[i][i] = b_i$: add $b_l+\dots+b_r$ to $dp[l][r]$. OBST: positions = dummies $q_0..q_n$, $C$ = subtree weight, then $+\sum q$.
+	\fld{Aliens} $f(k)$ = min with exactly $k$ items, convex in $k$ (e.g.\ $k$ groups, QI cost); binary search on $\lambda$.
+	\fld{solve($\lambda$)} $+\lambda$ per item; returns \{min, \emph{smallest} count among minimisers\} (ties!). Only the value is recovered.
+	\fld{Range} default $\lambda \in [-10^{12}, 10^{12}]$; needs $lo \le f(k-1)-f(k)$ and $hi \ge f(k)-f(k+1)$, else pass $lo, hi$.
+	\fld{Overflow} $|\text{value}| + \max(|lo|,|hi|) \cdot n < 9.2\cdot10^{18}$.
 ]

@@ -18,6 +18,8 @@
 \RequirePackage{multicol}
 \RequirePackage{amsmath}
 \RequirePackage{amssymb}
+\RequirePackage{enumitem}
+\RequirePackage{booktabs}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 2. margins %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \paperwidth=29.7cm
@@ -96,6 +98,16 @@
 % heading for an entry with no content yet
 \newcommand{\entry}[1]{\csname\entrylevel\endcsname{#1}}
 \newcommand{\setcurrentdir}[1]{\def\currentdir{contents/#1}}
+% Text layout (kactl-like). Code notes: one \fld{Label} line per fact, recurrences displayed with \[ \].
+\newcommand{\fld}[1]{\par\noindent\hangindent=1em\textbf{#1:}\ }
+\newcommand{\tightdisplay}{\setlength\abovedisplayskip{2pt}\setlength\belowdisplayskip{2pt}%
+  \setlength\abovedisplayshortskip{0pt}\setlength\belowdisplayshortskip{1pt}}
+% Prose: \topic{Heading} per topic, formulas displayed; checklists: \begin{checks}\item ...\end{checks}
+\newcommand{\topic}[1]{\par\smallskip\noindent\textbf{#1}\par\nopagebreak}
+\newlist{checks}{itemize}{1}
+\setlist[checks]{nosep,leftmargin=1.2em,label=$\square$}
+\newlist{facts}{itemize}{1}
+\setlist[facts]{nosep,leftmargin=1.1em,label=\textbullet}
 % \cpp entries show the hash of their printed lines (= contest/hash.sh) at the right of the title
 \def\entryhash{}
 \ExplSyntaxOn
@@ -106,7 +118,7 @@
 \NewDocumentCommand\othercodes{oommmo}{
     \csname\entrylevel\endcsname[#3]{#3\entryhash}\gdef\entryhash{}
     \IfNoValueTF{#6}{} {%
-        #6
+        {\footnotesize\raggedright\parskip=0pt\tightdisplay #6\par}
         \vspace*{-1em}
     } 
     \IfNoValueTF{#2}{%
