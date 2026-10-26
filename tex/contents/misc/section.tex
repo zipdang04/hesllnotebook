@@ -3,7 +3,12 @@
 \twolevels
 \setcurrentdir{misc}
 
-\cpp[3]{Ternary search, annealing}{ternary.hpp}[$f$ strictly decreasing then increasing (flat only at the minimum); for max pass $-f$. \texttt{ternaryInt}: $|l|, |r| \le 4\cdot10^{18}$. Golden: $x$ within $\sim10^{-8}(1+|x|)$. \texttt{anneal}: heuristic, clock-seeded (fix the seed for multi-pass); set $T_0$ to a typical $|\Delta E|$.]
+\cpp[3]{Ternary search, annealing}{ternary.hpp}[
+	\fld{Needs} $f$ strictly decreasing then increasing (flat only at the minimum); for max pass $-f$.
+	\fld{ternaryInt} $|l|, |r| \le 4\cdot10^{18}$.
+	\fld{Golden} $x$ within $\sim10^{-8}(1+|x|)$.
+	\fld{anneal} heuristic, clock-seeded (fix the seed for multi-pass); set $T_0$ to a typical $|\Delta E|$.
+]
 \cpp[4]{DP opt: D\&C, Knuth, Aliens}{dpopt.hpp}[
 	\fld{All} 1-based; $C(l,r)$ = cost of $a[l..r]$ inclusive. QI (quadrangle inequality), for $a \le b \le c \le d$:
 	\[ C(a,c) + C(b,d) \le C(a,d) + C(b,c) \]
