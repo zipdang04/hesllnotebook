@@ -221,6 +221,7 @@ all_source_codes = {
 	},
 	"strings": {
 		"hash": TestCase("strings/hash", "string/enumerate_palindromes"),
+		"hashstress": StressTest("strings/hashstress", 10),
 		"suffixarray": TestCase("strings/suffixarray", "string/suffixarray", 5),
 		"numsubstr": TestCase("strings/numsubstr", "string/number_of_substrings", 5),
 		"sacyclic": StressTest("strings/sacyclic", 10),

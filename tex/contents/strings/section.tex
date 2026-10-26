@@ -4,7 +4,7 @@
 \setcurrentdir{strings}
 
 \cpp[4]{Z-function}{zfunc.hpp}
-\cpp[3]{Rolling hash}{strhash.hpp}[\texttt{getF(l, r)}, \texttt{getB(l, r)}: 1-indexed, inclusive (forward / backward); $|s| \le 10^6$, chars $\ge 0$. $s[l..r]$ is a palindrome iff \texttt{getF(l, r) == getB(l, r)}.]
+\cpp[3]{Rolling hash}{strhash.hpp}[Two random bases mod $2^{61}-1$ (clock seed): collision $\lesssim (n/2^{61})^2$ per comparison; for multi-pass problems use a constant seed. \texttt{getF(l, r)}, \texttt{getB(l, r)}: 1-indexed, inclusive (forward / reversed); $s[l..r]$ is a palindrome iff \texttt{getF(l, r) == getB(l, r)}.]
 \cpp[4]{Suffix array + LCP}{suffixarray.hpp}[Chars in 1..127. \texttt{cyc}: no sentinel, sorts rotations, so \texttt{sa[0]} is a minimum rotation; there \texttt{lcp} is valid only if $s$ is not periodic. Distinct substrings $= n(n+1)/2 - \sum$\texttt{lcp}.]
 \cpp[4]{Aho--Corasick}{ahocorasick.hpp}[
 	All \texttt{add()}, then \texttt{build()} once; chars in ${[}$\texttt{first}, \texttt{first}$+K)$.
