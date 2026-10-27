@@ -38,6 +38,10 @@ its `section.tex`.
 
 ## Building the PDF
 
+The latest notebook from `main` (built by CI):
+<https://github.com/zipdang04/hesllnotebook/releases/download/latest/hesllnotebook.pdf>.
+`tex/main.pdf` is a build output and is not tracked by git.
+
 Needs TeX Live with `titlesec`, `minted` and `vntex` (BasicTeX users:
 `sudo tlmgr install collection-latexextra`).
 

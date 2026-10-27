@@ -10,6 +10,9 @@ build/
 .vscode
 .ccls*
 
+# build output (CI publishes it as the "latest" release)
+tex/main.pdf
+
 # files for debugging
 *.txt
 tex/customlexers/*

@@ -4,6 +4,7 @@ import re
 import shutil
 import subprocess
 import sys
+import time
 import urllib.request
 import json
 
@@ -481,6 +482,25 @@ def select(base):
 
 
 DELIMITER = "."
+timings = []  # (test, seconds, passed), for the report
+
+
+def report(top=15):
+	# slowest tests and the total; on GitHub Actions also a table in the run's summary page
+	if not timings:
+		return
+	total = sum(t for _, t, _ in timings)
+	slow = sorted(timings, key=lambda x: -x[1])[:top]
+	failed = [name for name, _, ok in timings if not ok]
+	print(f"\n{len(timings)} test(s) in {total:.0f}s; slowest:")
+	for name, t, ok in slow:
+		print(f"  {t:7.1f}s  {name}" + ("" if ok else "  FAILED"))
+	path = os.environ.get("GITHUB_STEP_SUMMARY")
+	if path:
+		with open(path, "a") as f:
+			f.write(f"### Tests: {len(timings)} in {total:.0f}s" + (f", failed: {', '.join(failed)}" if failed else "") + "\n\n")
+			f.write("| test | time | |\n|---|---:|---|\n")
+			f.writelines(f"| `{name}` | {t:.1f}s | {'' if ok else 'FAILED'} |\n" for name, t, ok in slow)
 
 
 def testingProcess(node, name, selected, prefix=""):
@@ -488,7 +508,14 @@ def testingProcess(node, name, selected, prefix=""):
 		# "all.py" runs everything, "all.py math" a section, "all.py math ntt" one test
 		if (name == "." or prefix == name or prefix.startswith(name + DELIMITER)) and (selected is None or prefix in selected):
 			print(">> ", prefix)
-			node.process()
+			start, ok = time.time(), False
+			try:
+				node.process()
+				ok = True
+			finally:  # also when process() exits on a failure
+				seconds = time.time() - start
+				timings.append((prefix, seconds, ok))
+				print("<< ", prefix, f"{seconds:.1f}s", "" if ok else "FAILED")
 	elif isinstance(node, dict):
 		for key in node.keys():
 			testingProcess(node[key], name, selected, prefix + DELIMITER + key)
@@ -503,4 +530,7 @@ if __name__ == "__main__":  # ci.py imports the table without running anything
 	if args[:1] == ["--changed"]:
 		selected = select(args[1])
 		args = args[2:]
-	testingProcess(all_source_codes, DELIMITER + DELIMITER.join(args), selected)
+	try:
+		testingProcess(all_source_codes, DELIMITER + DELIMITER.join(args), selected)
+	finally:
+		report()

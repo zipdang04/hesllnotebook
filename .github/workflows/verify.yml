@@ -78,6 +78,8 @@ jobs:
   pdf:
     needs: verify                     # only build the PDF from code that passes
     runs-on: ubuntu-24.04
+    permissions:
+      contents: write                 # to update the "latest" release
     steps:
       - uses: actions/checkout@v4
 
@@ -91,7 +93,24 @@ jobs:
 
       - run: make pdf
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v4   # every run (PR previews), kept 90 days
         with:
           name: notebook
           path: tex/main.pdf
+
+      # main: a rolling "latest" release with a stable link:
+      # https://github.com/<owner>/<repo>/releases/download/latest/hesllnotebook.pdf
+      - name: Publish the "latest" release
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cp tex/main.pdf hesllnotebook.pdf
+          git tag -f latest && git push -f origin latest
+          notes="Notebook built from ${GITHUB_SHA::7} (run $GITHUB_RUN_NUMBER)."
+          if gh release view latest > /dev/null 2>&1; then
+            gh release edit latest --notes "$notes"
+          else
+            gh release create latest --title "Latest notebook" --notes "$notes"
+          fi
+          gh release upload latest hesllnotebook.pdf --clobber
