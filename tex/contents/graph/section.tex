@@ -4,23 +4,75 @@
 \setcurrentdir{graph}
 
 \subsection{Connectivity}
-\cpp[2]{2-SAT}{2sat.hpp}
-\entry{Lowlink: bridges, articulation points, BCC}
-\entry{Euler path / circuit}
+\cpp[4]{SCC + 2-SAT}{scc.hpp}[
+	\fld{Order} component ids are in topological order (edge $u\to v$ $\Rightarrow$ \texttt{comp[u]} $\le$ \texttt{comp[v]}).
+	\fld{Note} iterative, safe at $10^6$ vertices.
+	\fld{2-SAT} force $x$ true: \texttt{either(x, x)}; $x \Rightarrow y$: \texttt{either(\textasciitilde x, y)}.
+]
+\cpp[4]{Lowlink: bridges, cut vertices, BCC}{lowlink.hpp}[
+	\fld{Note} self-loops and multi-edges OK (parent skipped by edge id).
+	\fld{Stack} recursive: depth up to $n$ (needs a big stack for $n \approx 5\cdot10^5$).
+	\fld{Block-cut tree} join each block node to its vertices.
+]
+\cpp[4]{Euler path / circuit}{euler.hpp}[
+	\fld{Circuit} exists iff \texttt{solve()} and \texttt{vs[0] == vs.back()}.
+	\fld{Note} \texttt{false} also when edges lie in several components (isolated vertices are fine).
+]
 
 \subsection{Paths \& spanning trees}
 \cpp[4]{SPFA}{spfa.hpp}[
-	Path: walk \texttt{par} back from $t$ (edge ids, so keep each edge's tail). Other \texttt{adj}: filter edges (\texttt{if (w <= lim)}), change weights (min mean cycle: $w - \lambda$), implicit graphs (grids).
+	\fld{Path} walk \texttt{par} back from $t$ (edge ids, so keep each edge's tail).
+	\fld{Other \texttt{adj}} filter edges (\texttt{if (w <= lim)}), change weights (min mean cycle: $w - \lambda$), implicit graphs (grids).
 ]
-\entry{Directed MST}
-\entry{Manhattan MST}
+\cpp[4]{Directed MST}{dmst.hpp}[
+	\fld{Note} any weights (ll, tested $|w| \le 10^9$), self-loops and multi-edges OK.
+	\fld{Unreachable} with negative weights test \texttt{par.empty()}.
+	\fld{Returns} \texttt{par[r]} $= -1$; \texttt{solve} can be called again.
+]
+\cpp[4]{Manhattan MST}{manhattanmst.hpp}[
+	\fld{Note} exact with ll for $|x|,|y| \le 10^9$ (tested $0..10^9$; translation-invariant). Duplicate points OK.
+]
 \entry{Matrix-tree theorem}
+\small\tightdisplay
+\topic{Undirected}
+The number of spanning trees is the determinant of the Laplacian with any row and column $i$ removed (loops ignored):
+\[ L = D - A, \qquad A_{uv} = \#\text{edges } uv \]
+\topic{Directed}
+Remove row and column $r$; $A_{uv} = \#(u \to v)$.
+\begin{facts}
+\item Out-trees (edges away from $r$): $L = D_{\text{in}} - A$.
+\item In-trees: $L = D_{\text{out}} - A$.
+\end{facts}
+\topic{Weighted}
+Put weights in $A$ and $D$ to get the sum over trees:
+\[ \sum_T \prod_{e \in T} w_e \]
+Determinant mod $p$: Gauss--Jordan (\S6.2.1).
 
 \subsection{Trees}
-\entry{HLD}
-\entry{Centroid decomposition}
-\entry{Virtual tree}
+\cpp[4]{HLD}{hld.hpp}[
+	\fld{Needs} connected tree; \texttt{build()} once. Iterative (fine for $n = 5\cdot10^5$).
+	\fld{\texttt{f(l, r)}} half-open \texttt{pos} ranges in arbitrary order, direction lost: commutative aggregates only.
+	\fld{Edges} edge $(par_c, c)$ is stored at \texttt{pos[c]}.
+	\fld{Distance}
+	\[ d(u,v) = dep_u + dep_v - 2\,dep_{lca} \]
+]
+\cpp[4]{Centroid decomposition}{centroid.hpp}[
+	\fld{Note} forest OK. Only centroid recursion (depth $\le \log_2 n + 1$); sizes via BFS, safe at $n = 2\cdot10^5$ (path) on a default stack.
+	\fld{In \texttt{f(c)}} \texttt{bfs(c, -1)} = whole piece; \texttt{bfs(v, c)} per non-removed neighbour $v$ = one subtree; \texttt{dep} = distance to $c$.
+]
+\cpp[4]{Virtual tree}{virtualtree.hpp}[
+	\fld{Note} duplicates in $S$ OK; $|vs| \le 2|S|-1$.
+	\fld{Order} \texttt{pa[i] < i}: reverse index order is bottom-up for DP.
+	\fld{\texttt{id}} $O(n)$ once, reused without reset.
+	\fld{Weighted} lengths: use weighted depths instead of \texttt{dep}.
+]
 
 \subsection{Hard}
-\entry{Dominator tree}
-\entry{Max clique}
+\cpp[4]{Dominator tree}{dominator.hpp}[
+	\fld{Note} fully iterative (DFS and path compression), safe at $n = 2\cdot10^5$ with the default stack. Self-loops and multi-edges OK.
+	\fld{Meaning} $u$ dominates $v$ iff $u$ is an ancestor of $v$ in the tree.
+]
+\cpp[4]{Max clique}{maxclique.hpp}[
+	\fld{Reductions} max independent set = max clique of the complement; min vertex cover = the other $n - |\text{MIS}|$ vertices.
+	\fld{Note} \texttt{solve()} may be called again (graph is restored).
+]

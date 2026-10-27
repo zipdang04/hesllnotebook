@@ -1,6 +1,7 @@
+#pragma once
 #include "modint.hpp"
 
-// MOD=998244353=c*2^k+1 => ROOT=g^c, any g: gcd(g,MOD)=1
+// MOD=998244353=c*2^k+1 => ROOT=g^c, g a primitive root (3)
 namespace FFT{
 	constexpr int K_MOD = 23, BIT = 22, MAX_LEN = 1 << BIT;
 	constexpr int ROOT = 15311432;
@@ -33,10 +34,15 @@ namespace FFT{
 			modint a = v[beg+i], b = _root[k] * v[beg+i+jmp];
 			v[beg + i] = a + b; v[beg + i + jmp] = a - b;
 		}
-		if (invert) FOR(int, i, 0, len-1) v[i] /= len;
+		if (invert) {
+			modint inv = modint(len).inv();
+			FOR(int, i, 0, len-1) v[i] *= inv;
+		}
 	}
 	template<class T>
 	vector<modint> multiply(vector<T> &_a, vector<T> &_b) {
+		if (_a.empty() || _b.empty()) return {};
+		if (!_built) buildRoot();
 		int len = int(_a.size() + _b.size()) - 1;
 		len = 1 << (log2(len) + (cntBit(len) > 1));
 		vector<modint>a(_a.begin(),_a.end()); a.resize(len,0);

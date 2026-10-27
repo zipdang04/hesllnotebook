@@ -3,10 +3,40 @@
 \twolevels
 \setcurrentdir{geometry}
 
-\entry{Point / line primitives}
-\entry{Polygon}
-\entry{Convex hull}
-\entry{Circles}
-\entry{Half-plane intersection}
-\entry{Closest pair / kd-tree}
-\entry{3D}
+\cpp[4]{Point / line primitives}{point.hpp}[
+	\fld{Exact} \texttt{Point<ll>} for \texttt{orient}, \texttt{onSegment}, \texttt{segDist} up to $|x| \le 10^9$; for \texttt{segSegDist} up to $10^6$. \texttt{segInter} with ll: existence and overlap exact up to $10^6$, a crossing point needs \texttt{Point<ld>}.
+	\fld{Usage} use \texttt{Point<ld>} when a point is computed (projection, intersections, \texttt{rotate}). \texttt{sgn} uses $\varepsilon = 10^{-9}$: rescale it with the coordinate range.
+	\fld{Needs} \texttt{lineProj}, \texttt{lineInter}: $a \ne b$.
+]
+\cpp[4]{Polygon}{polygon.hpp}[
+	\fld{Exact} \texttt{Point<ll>}: \texttt{polyArea2}, \texttt{inPolygon} for $|x| \le 10^9$ (simple polygon, any orientation).
+	\fld{polygonCut} needs \texttt{Point<ld>}; works for non-convex polygons (pieces joined by zero-width bridges along the line, duplicate points possible), may return $< 3$ points: check before \texttt{polyArea2}.
+	\fld{Pick}
+	\[ A = I + B/2 - 1, \qquad B = \sum \gcd(|\Delta x|, |\Delta y|) \]
+]
+\cpp[4]{Convex hull}{hull.hpp}[
+	\fld{Returns} \texttt{convexHull} is ccw from the lexicographically smallest point; points on hull edges and duplicates are dropped.
+	\fld{Needs} \texttt{hullDiameter} and \texttt{inHull} need a non-empty \texttt{convexHull} output.
+	\fld{Exact} \texttt{Point<ll>} for $|x| \le 10^9$.
+]
+\cpp[4]{Circles}{circles.hpp}[
+	\fld{Usage} \texttt{P = Point<ld>}; tangency is decided with \texttt{sgn} and yields one point.
+	\fld{tangents} $-r_2$ gives the internal tangents, $r_2 = 0$ the tangents from point $c_2$; the number of common tangents is the sum of both sizes.
+	\fld{mec} $n \ge 1$, expected $O(n)$, tested up to $|x| \le 10^9$; the others up to $10^4$.
+]
+\cpp[4]{Half-plane intersection}{halfplane.hpp}[
+	\fld{Usage} half-plane $=$ left of $p \to p + d$.
+	\fld{Returns} intersection of the closed half-planes and the box $[-B, B]^2$ (unbounded inputs come back clipped), strictly convex, ccw; \texttt{\{\}} when its area is 0 (empty, point, segment).
+	\fld{Tested} $|x| \le 10^4$, $B \le 10^6$.
+]
+\cpp[4]{Closest pair / kd-tree}{closestpair.hpp}[
+	\fld{closestPair} $n \ge 2$, duplicates allowed; $O(n \log n)$ worst case.
+	\fld{nearest} $O(\log n)$ on random data but $O(n)$ worst case, so do not use $n$ queries for the closest pair. \texttt{nearest(q, skip)} returns $\{d^2, \text{index}\}$ ignoring input index \texttt{skip} (correct with duplicates), $\{\infty, -1\}$ if no point is left.
+	\fld{Exact} with \texttt{ll} for $|x| \le 10^9$ (queries too):
+	\[ d^2 \le 8 \cdot 10^{18} \]
+]
+\cpp[4]{3D hull}{hull3d.hpp}[
+	\fld{Returns} \texttt{hull3d} accepts any input (duplicates, coplanar points) and returns $\{\}$ iff $n < 4$ or all points are coplanar; flat faces come out triangulated.
+	\fld{Time} $O(n^2)$ time and memory.
+	\fld{Exact} \texttt{Point3<ll>} for $|x| \le 5 \cdot 10^5$; \texttt{polyVolume6} returns $6V$ and needs outward ccw faces.
+]

@@ -16,6 +16,7 @@ struct MinCostCirculation {
 	}
 
 	pair<bool, __int128> solve() {
+		g.assign(n, {}); p.assign(n, 0);
 		// 1. feasible circulation: lower-bound reduction + max flow
 		Flow f; f.init(n + 2, n, n + 1);
 		vector<ll> ex(n); ll need = 0;

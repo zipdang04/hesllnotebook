@@ -37,6 +37,7 @@ struct Flow{
 		return pushed;
 	}
 	ll calculate(){
+		if (s == t) return 0;
 		ll ans = 0;
 		for (ll lim = oo; lim; lim >>= 1)
 			while (bfs(lim)){ fill(ptr.begin(), ptr.end(), 0); ans += dfs(s, oo, lim); }

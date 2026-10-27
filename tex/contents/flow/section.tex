@@ -4,18 +4,73 @@
 \setcurrentdir{flow}
 
 \subsection{Flow}
-\cpp[4]{Dinic with scaling + min cut}{dinitzwscaling.hpp}
+\cpp[4]{Dinic with scaling + min cut}{dinitzwscaling.hpp}[
+	\fld{Needs} $s \ne t$. Caps $\le$ \texttt{oo} $= 2^{60}$ (use \texttt{oo} as $\infty$); total flow $< 9.2\cdot10^{18}$.
+	\fld{Min cut} after \texttt{calculate()}, $s$ side $= \{v : \texttt{level[v]} < 0\}$.
+	\fld{\texttt{capOf(id)}} residual cap.
+]
 \cpp[4]{MCMF}{mcmf.hpp}[
-	Uses SPFA (\S2.2.1). \texttt{calculate(F)}: cheapest flow of at most $F$; no limit = min-cost max-flow. Each augmentation is optimal for its flow value. No negative cycles; \texttt{MCMF<\_\_int128>} if the total cost can overflow.
+	\fld{Needs} SPFA (\S2.2.1). No negative cycles; \texttt{MCMF<\_\_int128>} if the total cost can overflow.
+	\fld{Usage} \texttt{calculate(F)}: cheapest flow of at most $F$; no limit = min-cost max-flow. Each augmentation is optimal for its flow value.
+	\fld{Note} \texttt{flowOn(id)} only after \texttt{calculate()}.
 ]
 \cpp[4]{Min-cost circulation (cost scaling)}{costscaling.hpp}[
-	Bounds $l \le f \le r$, any costs, no source/sink. $s \to t$ flow of exactly $F$: add $t \to s$ with $[F, F]$, cost 0. Supplies $b_v$: extra vertex $X$, edges $X \to v$ $[b_v, b_v]$ ($b_v > 0$), $v \to X$ $[-b_v, -b_v]$ ($b_v < 0$). Infeasible $\Rightarrow$ \texttt{solve().first = false}.
+	\fld{Model} bounds $l \le f \le r$, any costs, no source/sink.
+	\fld{Flow $F$} $s \to t$ flow of exactly $F$: add $t \to s$ with $[F, F]$, cost 0.
+	\fld{Supplies $b_v$} extra vertex $X$, edges $X \to v$ $[b_v, b_v]$ ($b_v > 0$), $v \to X$ $[-b_v, -b_v]$ ($b_v < 0$).
+	\fld{Infeasible} \texttt{solve().first = false}.
+	\fld{Limits} costs are scaled by $n+1$: keep
+	\[ (n+1)^2\max|c| \lesssim 10^{18}, \qquad \text{total cap} < 9.2\cdot10^{18} \]
+	Tested $|c| \le 10^9$, caps $\le 10^{12}$.
 ]
 \entry{Flow models}
-\entry{Global min cut (Stoer--Wagner)}
-\entry{Gomory--Hu tree}
+\small\tightdisplay
+\topic{Bounds $[l, r]$}
+Edge capacity $r - l$; the excess at each vertex is
+\[ d_v = \sum_{\text{in}} l - \sum_{\text{out}} l \]
+Add $S \to v$ with cap $d_v$ ($d_v > 0$) and $v \to T$ with cap $-d_v$ ($d_v < 0$).
+\begin{facts}
+\item Feasible iff $\text{maxflow}(S,T) = \sum_{d_v > 0} d_v$; the flow on an edge is $l + f$.
+\item With $s, t$: add $t \to s$ cap $\infty$. Max flow $= \text{maxflow}(s,t)$ on the residual (keep $t \to s$).
+\item Min flow $= f_{t \to s} - \text{maxflow}(t,s)$, computed without $t \to s$.
+\item Min cost: \S1.1.3.
+\end{facts}
+\topic{Vertex capacity}
+Split $v$: $v_{\text{in}} \to v_{\text{out}}$ with cap $c_v$.
+\topic{Closure}
+$S \to v$ cap $p_v > 0$, $v \to T$ cap $-p_v$; if $u$ needs $v$: $u \to v$ cap $\infty$. The best closure is the $S$ side of the min cut:
+\[ \max = \sum_{p_v > 0} p_v - \text{mincut} \]
+\topic{Bipartite}
+With max matching $M$:
+\[ \text{min vertex cover} = M, \qquad \text{max independent set} = |V| - M \]
+\begin{facts}
+\item K\"onig: cover $= (L \setminus Z) \cup (R \cap Z)$, $Z = S$ side.
+\item Hall: $L$ is matchable iff $|N(X)| \ge |X|$ for all $X \subseteq L$.
+\end{facts}
+\topic{DAG}
+\[ \text{min disjoint path cover} = n - M \quad (\text{edges } u_{\text{out}} v_{\text{in}}) \]
+On the transitive closure: min chain cover $=$ max antichain (Dilworth).
+
+\cpp[4]{Global min cut (Stoer--Wagner)}{stoerwagner.hpp}[
+	\fld{Needs} undirected, $w \ge 0$, self-loops ignored.
+	\fld{Returns} \texttt{run()} (call once) returns the cut weight and one side; $n = 1$ gives $\{0, \{\}\}$.
+]
+\cpp[4]{Gomory--Hu tree}{gomoryhu.hpp}[
+	\fld{Needs} Dinic (\S1.1.1). Undirected, $w \ge 0$, total $\le 10^{18}$.
+	\fld{Time} \texttt{run()} once, $n-1$ flows.
+	\fld{Query} min $u$--$v$ cut $=$ min \texttt{cut} on the tree path (Gusfield). Min cut sides: \S1.1.1.
+]
 
 \subsection{Matching}
-\entry{Hopcroft--Karp}
-\entry{Hungarian}
-\entry{General matching (blossom)}
+\cpp[4]{Hopcroft--Karp + min vertex cover}{hopcroftkarp.hpp}[
+	\fld{Warm start} \texttt{run()} again after more \texttt{addEdge} returns the extra pairs.
+	\fld{\texttt{cover()}} K\"onig min vertex cover (size = matching); its complement is a max independent set.
+]
+\cpp[4]{Hungarian (min-cost assignment)}{hungarian.hpp}[
+	\fld{Needs} $n \le m$ (transpose otherwise), negative costs fine; exact in ll for $|c| \le 10^9$, $n \le 500$.
+	\fld{Note} \texttt{run()} keeps \texttt{c}. Max weight: negate costs and the result.
+]
+\cpp[4]{General matching (blossom)}{blossom.hpp}[
+	\fld{Returns} \texttt{run()} (call once) returns the matching size; \texttt{mate[v]} is the partner of $v$, or $n$ if $v$ is unmatched.
+	\fld{Time} $O(VE)$; $n = 500$ dense in 0.04 s.
+]

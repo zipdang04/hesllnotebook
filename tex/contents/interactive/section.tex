@@ -5,14 +5,122 @@
 
 \subsection{Checklists}
 \entry{Interactive}
+{\small\tightdisplay\raggedright\parskip=2pt
+\topic{Protocol}
+\begin{checks}
+\item flush each query
+\item on \texttt{-1} or after the answer: exit at once
+\item local test: \texttt{./stress.sh interactive}
+\end{checks}
+\topic{Randomness}
+\begin{checks}
+\item clock seed beats a fixed answer
+\item adaptive judge (answer moves while consistent): only the worst case counts
+\end{checks}
+\topic{Query bound}
+\begin{checks}
+\item information bound:
+\[ q \ge \left\lceil \frac{\log \#\text{answers}}{\log \#\text{responses}} \right\rceil \]
+\item one lie (yes/no, $n$ candidates; Pelc): min $q$ with
+\[ n(q+1) \le 2^q \qquad (n \text{ odd: } n(q+1) + q - 1 \le 2^q) \]
+\end{checks}
+\par}
 \entry{Multi-pass}
+{\small\tightdisplay\raggedright\parskip=2pt
+\topic{Runs}
+\begin{checks}
+\item same binary reruns on input built from its output; TL/ML per run
+\item nothing carries over (files, statics)
+\item pass number: read the marker from the input
+\end{checks}
+\topic{Determinism}
+\begin{checks}
+\item seed fixed (\texttt{mt19937 rng(12345)}), never clock, \texttt{random\_device}, pointers
+\item order: sort; never iterate \texttt{unordered\_map}
+\end{checks}
+\topic{Capacity}
+\begin{checks}
+\item $\#$messages $\le$ $\#$channel states; Parrots:
+\[ \binom{L+255}{255} \ge 256^N \;\Rightarrow\; \text{rank / unrank} \]
+\end{checks}
+\topic{Testing}
+\begin{checks}
+\item pass 1 $\to$ own noisy channel $\to$ pass 2
+\end{checks}
+\par}
 \entry{Noise taxonomy}
+{\small\tightdisplay\raggedright\parskip=2pt
+Noise $\to$ remedy.
+\begin{facts}
+\item shuffled $\to$ rank / unrank, or index tags
+\item erased $\to$ Reed--Solomon (Lagrange), GF(2) code (\texttt{solveXor})
+\item 1 flip (detect 2) $\to$ Hamming SECDED
+\item $t$ flips $\to$ RS + Berlekamp--Welch, majority
+\item stuck (sender knows) $\to$ stuck-bit code
+\item only $0 \to 1$ $\to$ WOM, 2 bits twice in 3 cells
+\item delete 1 $\to$ VT
+\item unknown length $\to$ self-delimiting
+\item adversary owns positions $\to$ majority; header to find safe ones (IOI 2024 Message)
+\item complement / symmetry $\to$ send an invariant
+\item relabelled tree $\to$ AHU
+\item random noise $\to$ w.h.p.\ codes; adaptive $\to$ worst-case codes
+\end{facts}
+Verify decodes by rolling hash.
+\par}
 
 \subsection{Codes}
-\entry{Linear codes: Reed--Solomon, GF(2), stuck bits}
-\entry{Bit-level codes: self-delimiting, VT, pairs, checksum}
-\entry{Hamming SECDED}
+\entry{Linear codes: RS, GF(2), stuck}
+{\small\tightdisplay\raggedright\parskip=2pt
+\topic{Reed--Solomon}
+Prime $p \ge n$; the data are the values of $P$, $\deg P < k$, at $0..k{-}1$; send $P(0..n{-}1)$ (\texttt{lagrangeAt}). Any $k$ survivors give $P$ (\texttt{interpolate}). Correctable with $s$ erasures and $e$ errors iff
+\[ 2e + s \le n - k \]
+\topic{Berlekamp--Welch}
+$m$ points, $\le e$ wrong, $m \ge k + 2e$. Solve (Gauss mod $p$)
+\[ Q(x_i) = y_i E(x_i), \qquad \deg Q < k + e, \quad E \text{ monic}, \deg E = e \]
+then $P = Q / E$. Or try $k$-subsets, keep the $P$ agreeing on $\ge m - e$ points.
+\topic{GF(2) erasures}
+Shared random $k \times n$ matrix $G$ (fixed seed); send $mG$; solve on the $s$ survivors (\texttt{solveXor}).
+\[ \Pr[\text{fail}] \le 2^{k-s} \;\Rightarrow\; s \ge k + 20 \]
+\topic{Stuck bits}
+$s$ cells, sender knows them (JOI 2017 Broken Device). Receiver reads $m = Hx$, $H$ shared random $k \times n$; sender fixes the stuck $x_i$ and solves for the other $n - s$.
+\[ \Pr[\text{fail}] \le 2^{k-n+s} \;\Rightarrow\; n \ge k + s + 20 \]
+\par}
+\entry{Bit codes: Elias, VT, pairs}
+{\small\tightdisplay\raggedright\parskip=2pt
+\topic{Self-delimiting}
+Unary $1^N0$. Elias-$\gamma$ ($N \ge 1$): $\lfloor \log_2 N \rfloor$ zeros, then $N$ in binary;
+\[ \text{length} = 2\lfloor \log_2 N \rfloor + 1 \]
+Pad: append $10\ldots0$, cut at the last 1.
+\topic{Varshamov--Tenengolts (1 deletion)}
+Codewords $x \in \{0,1\}^n$ with
+\[ \textstyle\sum_{i=1}^n i x_i \equiv a \pmod{n+1} \]
+$a = 0$ gives $\ge 2^n/(n+1)$ words.
+\begin{facts}
+\item encode: data off the powers of 2, then
+\[ x_{2^j} = \text{bit } j \text{ of } \Bigl(a - \textstyle\sum i x_i\Bigr) \bmod (n+1) \]
+\item decode $y$: $w = \#$ones,
+\[ D = \Bigl(a - \textstyle\sum i y_i\Bigr) \bmod (n+1) \]
+$D \le w$: insert 0 with $D$ ones right of it; else insert 1 with $D - w - 1$ zeros left of it
+\end{facts}
+\topic{Pairs}
+$0 \to 01$, $1 \to 10$: a flip gives 00/11 (located erasure). Complement-proof: send $b$ as $0b$, read the XOR.
+\topic{Checksum}
+$h$-bit hash: garbage passes w.p.\ $\approx 2^{-h}$.
+\par}
+\cpp[4]{Hamming SECDED}{hamming.hpp}[
+	\fld{Layout} $n=2^r \ge 4$ bits carry $n-r-1$ data bits; positions $0,1,2,4,\dots$ are check bits (0 = overall parity).
+	\fld{Returns} status 1: one flip fixed, 2: two flips detected; $\ge3$ flips undefined.
+]
 
 \subsection{Encoding}
-\entry{Rank / unrank}
-\entry{Tree canonical form (AHU)}
+\cpp[4]{Tree canonical form (AHU)}{ahu.hpp}[
+	\fld{Usage} trees only. Equal ids $\Leftrightarrow$ isomorphic rooted trees.
+	\fld{Note} ids are comparable only within one \texttt{AHU} object (numbering depends on call order, so not across runs).
+	\fld{unrooted} root at the center(s), min id if two; \texttt{id[]} afterwards is for the last centre.
+	\fld{Time} $O(n\log n)$, iterative.
+]
+\cpp[4]{Rank / unrank}{rankunrank.hpp}[
+	\fld{Needs} Bigint (\S6.1.2) for T=bigint; T=ll: constructor size $\le 20$ (it computes $n!$).
+	\fld{Returns} lexicographic, 0-based ranks; $0\le r<\mathrm{count}$.
+	\fld{$k$-multiset} map $x_i \mapsto x_i+i$ to a subset of $n{+}k{-}1$ elements.
+]

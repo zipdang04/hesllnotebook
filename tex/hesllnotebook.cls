@@ -18,6 +18,8 @@
 \RequirePackage{multicol}
 \RequirePackage{amsmath}
 \RequirePackage{amssymb}
+\RequirePackage{enumitem}
+\RequirePackage{booktabs}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 2. margins %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \paperwidth=29.7cm
@@ -96,25 +98,42 @@
 % heading for an entry with no content yet
 \newcommand{\entry}[1]{\csname\entrylevel\endcsname{#1}}
 \newcommand{\setcurrentdir}[1]{\def\currentdir{contents/#1}}
+% Text layout (kactl-like). Code notes: one \fld{Label} line per fact, recurrences displayed with \[ \].
+\newcommand{\fld}[1]{\par\noindent\hangindent=1em\textbf{#1:}\ }
+\newcommand{\tightdisplay}{\setlength\abovedisplayskip{2pt}\setlength\belowdisplayskip{2pt}%
+  \setlength\abovedisplayshortskip{0pt}\setlength\belowdisplayshortskip{1pt}}
+% Prose: \topic{Heading} per topic, formulas displayed; checklists: \begin{checks}\item ...\end{checks}
+\newcommand{\topic}[1]{\par\smallskip\noindent\textbf{#1}\par\nopagebreak}
+\newlist{checks}{itemize}{1}
+\setlist[checks]{nosep,leftmargin=1.2em,label=$\square$}
+\newlist{facts}{itemize}{1}
+\setlist[facts]{nosep,leftmargin=1.1em,label=\textbullet}
+% \cpp entries show the hash of their printed lines (= contest/hash.sh) at the right of the title
+\def\entryhash{}
+\ExplSyntaxOn
+\NewDocumentCommand\sethash{mmm}{% file, firstline, lastline (empty = to the end)
+    \exp_args:Nx\sys_get_shell:nnN{sh~entryhash.sh~#1~#2~#3}{}\l_tmpa_tl
+    \tl_gset:Nx\entryhash{\exp_not:N\hfill{\exp_not:N\normalfont\exp_not:N\ttfamily\exp_not:N\scriptsize\l_tmpa_tl}}}
+\ExplSyntaxOff
 \NewDocumentCommand\othercodes{oommmo}{
-    \csname\entrylevel\endcsname{#3}
+    \csname\entrylevel\endcsname[#3]{#3\entryhash}\gdef\entryhash{}
     \IfNoValueTF{#6}{} {%
-        #6
+        {\footnotesize\raggedright\parskip=0pt\tightdisplay #6\par}
         \vspace*{-1em}
     } 
     \IfNoValueTF{#2}{%
-        \IfNoValueTF{#1}{%
-            \inputminted{#4}{\currentdir/#5}
-        } {%
-            \inputminted[firstline={#1}]{#4}{\currentdir/#5}
-        }
+        \IfNoValueTF{#1}{\def\hesll@lines{}}{\def\hesll@lines{firstline={#1}}}%
     } {%
-        \inputminted[firstline={#1},lastline={#2}]{#4}{\currentdir/#5}
-    }
+        \def\hesll@lines{firstline={#1},lastline={#2}}%
+    }%
+    % expand the lexer (\cpplexer) first: minted v2 passes it to pygmentize unexpanded
+    \expanded{\noexpand\inputminted[\hesll@lines]{#4}}{\currentdir/#5}
 }
 % minted v3 (2024+) names a custom lexer file.py:Class and needs it enabled in ~/.latexminted_config;
 % minted v2 passes the string to pygmentize with -x
 \@ifpackagelater{minted}{2024/01/01}
     {\def\cpplexer{customlexers/lexers.py:CustomLexer}}
     {\def\cpplexer{'customlexers/lexers.py -x'}}
-\NewDocumentCommand\cpp{oommo}{\othercodes[#1][#2]{#3}{\cpplexer}{#4}[#5]}
+\NewDocumentCommand\cpp{oommo}{%
+    \sethash{\currentdir/#4}{\IfNoValueTF{#1}{1}{#1}}{\IfNoValueTF{#2}{}{#2}}%
+    \othercodes[#1][#2]{#3}{\cpplexer}{#4}[#5]}

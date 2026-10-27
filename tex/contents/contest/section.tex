@@ -3,10 +3,61 @@
 \twolevels
 \setcurrentdir{contest}
 
-\cpp[3]{Template}{template.hpp}
-\othercodes{Shell: compile/run}{bash}{command.sh}
-\entry{Fast IO}
-\entry{stress.sh}
-\entry{Gen helper}
-\entry{Checker skeleton}
+\cpp[2]{Template}{template.hpp}
+\othercodes{Shell: compile/run, hash}{bash}{command.sh}
+\inputminted{bash}{\currentdir/hash.sh}
+\othercodes{stress.sh}{bash}{stress.sh}
+\cpp[2]{Gen helper}{gen.cpp}[
+	\fld{Usage} seed from \texttt{argv{[}1{]}} so a failing case can be replayed. Keep $n$ tiny ($\le 8$) first, then grow.
+]
+\cpp[2]{Checker skeleton}{checker.cpp}[
+	\fld{Usage} when several answers are valid: check the contestant's output itself (compare only the optimum with \texttt{ans}).
+]
 \entry{Troubleshoot + edge cases}
+{\small\tightdisplay\raggedright\parskip=2pt
+\topic{Hand-made first}
+A teammate writes small cases on paper (one \texttt{tests/} folder per problem), incl.\ the edge cases below.
+\topic{Stress}
+Use \texttt{stress.sh}, Gen helper and Checker skeleton after a WA, or at once if random input is always valid, the greedy/DP is unproven and a brute force takes $\le 5$ min. Small $n$ first. Under \texttt{-DSTRESS} shrink block sizes / thresholds to 1--3 (not \texttt{\#define}; \texttt{STRESS} defaults to 0):
+\par\noindent\hspace*{1em}\texttt{const int B = STRESS ? 2 : 300;}
+\topic{Edge cases}
+\begin{facts}
+\item size: min ($n = 1$, empty); max (TL / ML / overflow), generated, never hand-written
+\item values: 0, negative, $\pm10^9$, $2^{31}$, $10^{18}$; all equal, all distinct, sorted, reversed, many duplicates
+\item graphs: 1 vertex, disconnected, self-loops, multi-edges, path, star, complete, Y-shape
+\item answers: impossible, ties, several valid, at a boundary
+\item multitest: big case then small one (state not cleared)
+\item format: whitespace, YES/Yes, decimals and precision
+\item geometry: parallel / coincident lines, far intersections, circles meeting in 0/1/2 points, collinear or duplicate points, points on the axes
+\end{facts}
+\topic{Before submit}
+\begin{checks}
+\item overflow ($n^2$, sums), array sizes, 0/1-indexing
+\item cleared between tests, output format, right file
+\end{checks}
+\topic{WA}
+\begin{checks}
+\item re-read the statement
+\item print intermediate values; walk a tiny case by hand
+\item uninitialised variables; $n$/$m$, $i$/$j$ mixed up
+\item STL doing what you think?
+\item explain it to a teammate; stress
+\end{checks}
+\topic{RE}
+\begin{checks}
+\item out of bounds; division / mod by 0
+\item recursion depth ($\approx 10^6$ overflows the stack)
+\item invalidated iterators; non-void function returning nothing
+\item \texttt{assert}s; memory
+\end{checks}
+\topic{TLE}
+\begin{checks}
+\item infinite loop; real complexity; worst case generated
+\item \texttt{endl} in loops / slow IO; copies (pass by reference)
+\item \texttt{unordered\_map} under anti-hash tests
+\end{checks}
+\topic{MLE}
+\begin{checks}
+\item max memory needed; clearing structures between tests
+\end{checks}
+\par}

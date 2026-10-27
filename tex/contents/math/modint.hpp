@@ -1,3 +1,4 @@
+#pragma once
 #include "../contest/template.hpp"
 
 typedef unsigned long long ull;
@@ -39,7 +40,8 @@ NEWOP(+,+=);NEWOP(-,-=);NEWOP(*,*=);NEWOP(/,/=);
 #undef NEWOP
 #define NEWCMP(op) inline bool operator op\
 (modint a, modint b) {return a.v op b.v;}
-NEWCMP(==);NEWCMP(!=);NEWCMP(<);NEWCMP(>);NEWCMP(<=);NEWCMP(>=);
+NEWCMP(==); NEWCMP(!=); NEWCMP(<);
+NEWCMP(>); NEWCMP(<=); NEWCMP(>=);
 #undef NEWCMP
 inline modint operator - (modint a){return -a.v;}
 inline modint operator^(modint a, ll n){return a^=n;}

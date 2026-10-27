@@ -1,4 +1,6 @@
 #pragma once
+#pragma GCC optimize("O3,unroll-loops")
+//#pragma GCC target("avx2,bmi,bmi2,popcnt,lzcnt") // x86 only, some judges reject
 
 #include <bits/stdc++.h>
 #include <cassert>
@@ -17,19 +19,22 @@ template<class T1, class T2>
 void maximize(T1 &a, T2 b){ if (b > a) a = b; }
 template<class T1, class T2>
 void minimize(T1 &a, T2 b){ if (b < a) a = b; }
-template<class T> void read(T &number) {
-	bool negative = false; number = 0;
-	static int c = getchar();
-	while (c != '-' && !isalnum(c)) c = getchar();
-	if (c == '-') negative = true, c = getchar();
-	for (; (c >= '0' && c <= '9'); c = getchar())
-		number = number * 10 + c - '0';
-	if (negative) number = -number;
+// read(): buffered, stdin only, integers only; never mix with cin/scanf
+char _gc(){ // 0 at EOF
+	static char b[1<<16]; static size_t n = 0, p = 0;
+	if (p == n){ n = fread(b, 1, sizeof b, stdin); p = 0; if (!n) return 0; }
+	return b[p++];
 }
-template<class T, class ...Ts>
-void read(T &a, Ts&... args){
-	read(a); read(args...);
+template<class T> bool read(T &x){
+	char c = _gc(); bool neg = 0; x = 0;
+	while (c && c != '-' && (c < '0' || c > '9')) c = _gc();
+	if (!c) return 0;
+	if (c == '-') neg = 1, c = _gc();
+	for (; c >= '0' && c <= '9'; c = _gc()) x = x * 10 + (c - '0');
+	if (neg) x = -x;
+	return 1;
 }
+template<class T, class... Ts> bool read(T &x, Ts&... r){ return read(x) && read(r...); }
 
 #define fi first
 #define se second
@@ -46,12 +51,14 @@ void read(T &a, Ts&... args){
 #define CURRENT_TIMESTAMP chrono::steady_clock::now().time_since_epoch().count()
 #define randomize mt19937_64 mt(CURRENT_TIMESTAMP)
 
-/*
- * remember to fill in:
- * 	#define MAX ???
- * 	#define MOD ???
- *
- * 	int main() {
- * 		ios_base::sync_with_stdio(0); cin.tie(nullptr);
- * 	}
- */
+#ifndef STRESS
+#define STRESS 0
+#endif
+#ifdef LOCAL
+#define dbg(...) cerr << "[" << #__VA_ARGS__ << "] = ", _dbg(__VA_ARGS__)
+template<class T, class... Ts> void _dbg(const T &a, const Ts&... b){
+	cerr << a; ((cerr << ' ' << b), ...); cerr << endl;
+}
+#else
+#define dbg(...)
+#endif

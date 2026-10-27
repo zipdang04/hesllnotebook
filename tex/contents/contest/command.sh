@@ -1,5 +1,5 @@
-# compile
-g++ $1.cpp --std=c++17 -Wall -Wextra -O2 -o $1
-diff output.txt answer.txt
-# before running shell file
-chmod 700 any_shell_file.sh 
+# compile (-DLOCAL: dbg on), run, compare
+g++ -std=c++17 -Wall -Wextra -O2 -g -DLOCAL \
+	-fsanitize=address,undefined $1.cpp -o $1
+./$1 < in > out && diff -w out ans
+chmod +x *.sh   # before running shell files
