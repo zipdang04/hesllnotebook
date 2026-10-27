@@ -23,7 +23,7 @@ bigint randBig(int len){ // len digits, random sign
 void small(ll a, ll d){
 	bigint A(a), D(d);
 	if (str(A / D) != str((i128)a / d) || str(A % D) != str((i128)a % d)) fail("bigint/bigint vs i128", A, D);
-	if (abs((i128)d) <= (ll)1e17 && (str(A / d) != str((i128)a / d) || to_string(A % d) != str((i128)a % d)))
+	if (-(ll)1e17 <= d && d <= (ll)1e17 && (str(A / d) != str((i128)a / d) || to_string(A % d) != str((i128)a % d)))
 		fail("bigint/ll vs i128", A, D);
 }
 // identity check for big values
