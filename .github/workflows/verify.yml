@@ -27,6 +27,7 @@ jobs:
       - name: Run tests
         env:
           CXX: g++-14
+          COEF: ${{ vars.COEF || '2' }}   # time-limit multiplier (runners are slower than a laptop); override in repo Settings > Variables
           YUKICODER_TOKEN: ${{ secrets.YUKICODER_TOKEN }}
         run: make test
 

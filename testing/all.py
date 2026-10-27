@@ -25,6 +25,9 @@ def load_env(path=os.path.join(ROOT, ".env")):
 
 load_env()
 
+# COEF scales every time limit (e.g. COEF=2 on a slower CI runner); set it in the env or .env
+COEF = float(os.environ.get("COEF") or 1)
+
 
 def find_cxx():
 	for cxx in [os.environ.get("CXX"), "g++-16", "g++-15", "g++-14", "g++"]:
@@ -69,7 +72,7 @@ class TestCase:
 	def __init__(self, source_code, testing_folder, time_limit: float = 1):
 		self.source_code = source_code
 		self.testing_folder = testing_folder
-		self.time_limit = time_limit
+		self.time_limit = time_limit * COEF
 
 	def process(self):
 		env = dict(os.environ, CXX=find_cxx())
@@ -86,7 +89,7 @@ class OjTest:
 	def __init__(self, source_code, url, time_limit: float = 1, error=None):
 		self.source_code = source_code
 		self.url = url
-		self.time_limit = time_limit
+		self.time_limit = time_limit * COEF
 		self.error = error
 
 	def process(self):
@@ -115,7 +118,7 @@ class StressTest:
 
 	def __init__(self, source_code, time_limit: float = 10):
 		self.source_code = source_code
-		self.time_limit = time_limit
+		self.time_limit = time_limit * COEF
 
 	def process(self):
 		compile_command = [find_cxx(), self.source_code + ".cpp", "-O2", "-std=c++17", "-o", self.source_code]
@@ -138,7 +141,7 @@ class ShellTest:
 
 	def __init__(self, source_code, time_limit: float = 300):
 		self.source_code = source_code
-		self.time_limit = time_limit
+		self.time_limit = time_limit * COEF
 
 	def process(self):
 		env = dict(os.environ, CXX=find_cxx())

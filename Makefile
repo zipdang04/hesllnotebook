@@ -1,5 +1,6 @@
 # make test                     all tests (yukicoder ones need YUKICODER_TOKEN in .env or the env)
 # make test ARGS="flow dinitz"  one section or one test
+# make test COEF=2              multiply every time limit by 2 (slower machine)
 # make pdf                      build tex/main.pdf
 # make yukitoken <TOKEN>        save the yukicoder API token to .env (also: make yukitoken TOKEN=...)
 .PHONY: test pdf yukitoken
