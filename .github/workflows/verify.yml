@@ -1,5 +1,9 @@
 name: verify
-on: [push, pull_request, workflow_dispatch]
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
 
 jobs:
   verify:
@@ -13,16 +17,19 @@ jobs:
         with:
           python-version: "3.12"
 
-      - run: pip install online-judge-tools -r library-checker-problems/requirements.txt
+      - run: pip install setuptools online-judge-tools -r library-checker-problems/requirements.txt
 
-      # test data: oj/yukicoder downloads and Library Checker generated cases
-      - uses: actions/cache@v4
+      # test data: oj/yukicoder downloads and Library Checker generated cases (both skip what is already there).
+      # restore-keys: after an all.py edit start from the previous cache and fetch only the new tests.
+      - uses: actions/cache/restore@v4
+        id: testdata
         with:
           path: |
             testing/.oj-tests
             library-checker-problems/**/in
             library-checker-problems/**/out
           key: tests-${{ hashFiles('testing/all.py') }}
+          restore-keys: tests-
 
       - name: Run tests
         env:
@@ -30,6 +37,16 @@ jobs:
           COEF: ${{ vars.COEF || '2' }}   # time-limit multiplier (runners are slower than a laptop); override in repo Settings > Variables
           YUKICODER_TOKEN: ${{ secrets.YUKICODER_TOKEN }}
         run: make test
+
+      # save even when tests fail; only when all.py changed (the cache is ~6 GB)
+      - uses: actions/cache/save@v4
+        if: always() && steps.testdata.outputs.cache-hit != 'true'
+        with:
+          path: |
+            testing/.oj-tests
+            library-checker-problems/**/in
+            library-checker-problems/**/out
+          key: tests-${{ hashFiles('testing/all.py') }}
 
   pdf:
     needs: verify                     # only build the PDF from code that passes
