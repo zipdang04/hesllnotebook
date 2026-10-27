@@ -8,7 +8,8 @@ import time
 import urllib.request
 import json
 
-sys.stdout.reconfigure(line_buffering=True)  # CI pipes stdout: keep our lines in order with the tests' output
+if hasattr(sys.stdout, "reconfigure"):
+	sys.stdout.reconfigure(line_buffering=True)  # CI pipes stdout: keep our lines in order with the tests' output
 
 TESTING_DIR = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(TESTING_DIR)
@@ -459,7 +460,7 @@ def select(base):
 	deps = {name: dependencies(test) for name, test in tests}
 	chosen = set()
 	for f in files.split():
-		if f.startswith(NO_TESTS) or (f.endswith(NO_TESTS_EXT) and not f.startswith("testing/")):
+		if f.startswith(NO_TESTS) or (f.endswith(NO_TESTS_EXT) and not f.startswith("testing/")) or "__pycache__/" in f:
 			continue
 		if f == "Makefile" or f.startswith(".github/"):
 			print("--changed:", f, "-> smoke set")

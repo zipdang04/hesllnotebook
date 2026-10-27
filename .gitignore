@@ -13,6 +13,10 @@ build/
 # build output (CI publishes it as the "latest" release)
 tex/main.pdf
 
+# python bytecode (ci.py imports all.py)
+__pycache__/
+*.pyc
+
 # files for debugging
 *.txt
 tex/customlexers/*
