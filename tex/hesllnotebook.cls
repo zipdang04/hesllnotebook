@@ -122,14 +122,12 @@
         \vspace*{-1em}
     } 
     \IfNoValueTF{#2}{%
-        \IfNoValueTF{#1}{%
-            \inputminted{#4}{\currentdir/#5}
-        } {%
-            \inputminted[firstline={#1}]{#4}{\currentdir/#5}
-        }
+        \IfNoValueTF{#1}{\def\hesll@lines{}}{\def\hesll@lines{firstline={#1}}}%
     } {%
-        \inputminted[firstline={#1},lastline={#2}]{#4}{\currentdir/#5}
-    }
+        \def\hesll@lines{firstline={#1},lastline={#2}}%
+    }%
+    % expand the lexer (\cpplexer) first: minted v2 passes it to pygmentize unexpanded
+    \expanded{\noexpand\inputminted[\hesll@lines]{#4}}{\currentdir/#5}
 }
 % minted v3 (2024+) names a custom lexer file.py:Class and needs it enabled in ~/.latexminted_config;
 % minted v2 passes the string to pygmentize with -x
