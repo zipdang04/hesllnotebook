@@ -76,10 +76,43 @@ class TestCase:
 
 	def process(self):
 		env = dict(os.environ, CXX=find_cxx())
+		version = problem_version(self.testing_folder)
+		stamp = os.path.join(ROOT, SUBMODULE, self.testing_folder, "in", ".version")
+		if os.path.exists(stamp) and open(stamp).read() == version:
+			mark_fresh(self.testing_folder)
 		command = ["bash", "test.sh", self.source_code, self.testing_folder, str(self.time_limit)]
 		if subprocess.call(command, cwd=TESTING_DIR, env=env) != 0:
 			print("FAILED")
 			exit(1)
+		open(stamp, "w").write(version)
+
+
+# generate.py regenerates a problem whose in/out files are older than any of its sources. After a checkout
+# (CI) every source is new, so cached data always looked stale. Instead: in/.version holds a hash of the sources
+# (same files as generate.py's list_depending_files); if it still matches, touch in/out so generate.py skips them.
+def problem_version(folder):
+	import hashlib
+	lc = os.path.join(ROOT, SUBMODULE)
+	base = os.path.join(lc, folder)
+	paths = [os.path.join(lc, "generate.py")]
+	for top in (base, os.path.join(lc, "common")):
+		for d, dirs, files in os.walk(top):
+			if d == base:
+				dirs[:] = [x for x in dirs if x not in ("in", "out")]
+			paths += [os.path.join(d, f) for f in files if os.path.splitext(f)[1] and f != "params.h"]
+	digests = sorted(hashlib.sha256(open(f, "rb").read()).digest() for f in paths)
+	return hashlib.sha256(b"".join(digests)).hexdigest()
+
+
+def mark_fresh(folder):
+	for sub in ("in", "out"):
+		d = os.path.join(ROOT, SUBMODULE, folder, sub)
+		for f in os.listdir(d) if os.path.isdir(d) else []:
+			os.utime(os.path.join(d, f))
+
+
+def oj_dir(url):
+	return os.path.join(OJ_TESTS_DIR, re.sub(r"\W+", "_", url.split("://", 1)[-1]).strip("_"))
 
 
 class OjTest:
@@ -96,7 +129,7 @@ class OjTest:
 		if "yukicoder.me" in self.url and not os.environ.get("YUKICODER_TOKEN"):
 			print("SKIPPED (no YUKICODER_TOKEN)")
 			return
-		test_dir = os.path.join(OJ_TESTS_DIR, re.sub(r"\W+", "_", self.url.split("://", 1)[-1]).strip("_"))
+		test_dir = oj_dir(self.url)
 		if not os.path.isdir(test_dir) or not os.listdir(test_dir):
 			if "yukicoder.me" in self.url:
 				download_yukicoder(self.url, test_dir)
@@ -139,9 +172,10 @@ class StressTest:
 class ShellTest:
 	"""Shell self-test (testing/<sec>/<name>.sh), run with bash from testing/ with CXX set; exit 0 = pass."""
 
-	def __init__(self, source_code, time_limit: float = 300):
+	def __init__(self, source_code, time_limit: float = 300, uses=()):
 		self.source_code = source_code
 		self.time_limit = time_limit * COEF
+		self.uses = uses  # repo files the script runs (for --changed)
 
 	def process(self):
 		env = dict(os.environ, CXX=find_cxx())
@@ -158,7 +192,8 @@ class ShellTest:
 
 all_source_codes = {
 	"contest": {
-		"scripts": ShellTest("contest/scripts", 300),
+		"scripts": ShellTest("contest/scripts", 300, uses=["tex/contents/contest/stress.sh", "tex/contents/contest/hash.sh",
+			"tex/contents/contest/gen.cpp", "tex/contents/contest/checker.cpp", "tex/entryhash.sh"]),
 		"readtest": TestCase("contest/readtest", "sample/many_aplusb", 5),
 		"readstress": StressTest("contest/readstress", 10),
 		"dbg": StressTest("contest/dbg", 10),
@@ -323,22 +358,149 @@ all_source_codes = {
 	},
 }
 
+# ---------- all.py --changed BASE [section [test]]: only the tests the diff BASE...HEAD can affect ----------
+# test -> its .cpp/.sh + every header it #includes (transitively) + ShellTest.uses; anything unknown -> all tests.
+NO_TESTS = ("docs/", ".scrap/", ".agents/", ".claude/", ".github/ISSUE", "tex/main.pdf", "tex/customlexers/",
+			"GEMINI.md", ".mcp.json", ".gitignore", "README")
+NO_TESTS_EXT = (".tex", ".cls", ".sty", ".md")  # notebook text: the PDF job checks it
+EVERYTHING = ("Makefile", ".github/")
+SMOKE = {".contest.readtest", ".flow.dinitz", ".math.gauss", ".math.ntt", ".math.fpsexp"}  # for test.sh changes
+SUBMODULE = "library-checker-problems"
+
+
+def git(*args, cwd=ROOT):
+	r = subprocess.run(["git", *args], cwd=cwd, capture_output=True, text=True)
+	return r.stdout if r.returncode == 0 else None
+
+
+def includes(path, seen):
+	# repo-relative path -> itself and every quoted #include under it
+	if path in seen:
+		return seen
+	seen.add(path)  # kept even if missing: a test including a deleted header must run (and fail)
+	if not os.path.isfile(os.path.join(ROOT, path)):
+		return seen
+	for line in open(os.path.join(ROOT, path), errors="ignore"):
+		m = re.match(r'\s*#\s*include\s*"([^"]+)"', line)
+		if m:
+			includes(os.path.normpath(os.path.join(os.path.dirname(path), m.group(1))), seen)
+	return seen
+
+
+def all_tests(node=None, prefix=""):
+	node = all_source_codes if node is None else node
+	if isinstance(node, dict):
+		return [t for key in node for t in all_tests(node[key], prefix + DELIMITER + key)]
+	return [(prefix, node)]
+
+
+def dependencies(test):
+	if isinstance(test, ShellTest):
+		return {"testing/" + test.source_code + ".sh", *test.uses}
+	return includes("testing/" + test.source_code + ".cpp", set())
+
+
+def changed_entries(base):
+	# keys of all_source_codes added or changed since base; None if code outside the table changed
+	import ast
+	old = git("show", base + ":testing/all.py")  # base = the merge base
+	if old is None:
+		return None
+	def split(src):
+		tree = ast.parse(src)
+		table = {}
+		for stmt in tree.body:
+			if isinstance(stmt, ast.Assign) and getattr(stmt.targets[0], "id", "") == "all_source_codes":
+				for sec, entries in zip(stmt.value.keys, stmt.value.values):
+					for key, value in zip(entries.keys, entries.values):
+						table[DELIMITER + sec.value + DELIMITER + key.value] = ast.dump(value)
+				stmt.value = ast.Constant(None)
+		return table, ast.dump(tree)
+	(old_table, old_rest), (new_table, new_rest) = split(old), split(open(__file__).read())
+	if old_rest != new_rest:
+		return None
+	return {key for key, value in new_table.items() if old_table.get(key) != value}
+
+
+def changed_problems(base):
+	# Library Checker folders changed by a submodule bump; None = shared files changed (or unknown)
+	diff = git("diff", base, "--", SUBMODULE) or ""
+	commits = re.findall(r"^[-+]Subproject commit (\w+)", diff, re.M)
+	if len(commits) != 2:
+		return None
+	sub = os.path.join(ROOT, SUBMODULE)
+	git("fetch", "-q", "--depth=1", "origin", commits[0], cwd=sub)  # shallow CI checkouts lack the old commit
+	files = git("diff", "--name-only", commits[0], commits[1], cwd=sub)
+	if files is None:
+		return None
+	problems = set()
+	for f in files.split():
+		parts = f.split("/")
+		if len(parts) < 3 or parts[0] == "common":
+			return None
+		problems.add(parts[0] + "/" + parts[1])
+	return problems
+
+
+def select(base):
+	# set of test names to run, or None for all
+	# committed + uncommitted + untracked changes since the merge base (CI: the PR's changes)
+	merge_base = (git("merge-base", base, "HEAD") or "").strip()
+	files = git("diff", "--name-only", merge_base) if merge_base else None
+	if files is None:
+		print("--changed: cannot diff against", base, "-> running everything")
+		return None
+	files += git("ls-files", "--others", "--exclude-standard", "--", "testing", "tex") or ""
+	tests = all_tests()
+	deps = {name: dependencies(test) for name, test in tests}
+	chosen = set()
+	for f in files.split():
+		if f.startswith(NO_TESTS) or (f.endswith(NO_TESTS_EXT) and not f.startswith("testing/")):
+			continue
+		if f.startswith(EVERYTHING):
+			print("--changed:", f, "-> everything"); return None
+		if f == "testing/all.py":
+			keys = changed_entries(merge_base)
+			if keys is None:
+				print("--changed: testing/all.py (runner code) -> everything"); return None
+			chosen |= keys
+		elif f == "testing/test.sh":
+			chosen |= SMOKE
+		elif f == SUBMODULE:
+			problems = changed_problems(merge_base)
+			chosen |= {name for name, test in tests if isinstance(test, TestCase)
+					   and (problems is None or test.testing_folder in problems)}
+		else:
+			users = {name for name in deps if f in deps[name]}
+			gone = not os.path.exists(os.path.join(ROOT, f))
+			if not users and not gone and not f.startswith("tex/contents/"):
+				print("--changed:", f, "is not used by any test -> everything"); return None
+			chosen |= users  # an untested notebook file selects nothing
+	print("--changed:", len(chosen), "test(s):", " ".join(sorted(chosen)) or "none")
+	return chosen
+
+
 DELIMITER = "."
-name = DELIMITER + DELIMITER.join(sys.argv[1:])
 
 
-def testingProcess(node, prefix=""):
+def testingProcess(node, name, selected, prefix=""):
 	if isinstance(node, (TestCase, OjTest, StressTest, ShellTest)):
 		# "all.py" runs everything, "all.py math" a section, "all.py math ntt" one test
-		if name == "." or prefix == name or prefix.startswith(name + DELIMITER):
+		if (name == "." or prefix == name or prefix.startswith(name + DELIMITER)) and (selected is None or prefix in selected):
 			print(">> ", prefix)
 			node.process()
 	elif isinstance(node, dict):
 		for key in node.keys():
-			testingProcess(node[key], prefix + DELIMITER + key)
+			testingProcess(node[key], name, selected, prefix + DELIMITER + key)
 	else:
 		for testcase in node:
-			testingProcess(testcase, prefix)
+			testingProcess(testcase, name, selected, prefix)
 
 
-testingProcess(all_source_codes)
+if __name__ == "__main__":  # ci.py imports the table without running anything
+	args = sys.argv[1:]
+	selected = None
+	if args[:1] == ["--changed"]:
+		selected = select(args[1])
+		args = args[2:]
+	testingProcess(all_source_codes, DELIMITER + DELIMITER.join(args), selected)

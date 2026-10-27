@@ -12,6 +12,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: true
+          fetch-depth: 0              # history for --changed (merge base with the PR's target)
 
       - uses: actions/setup-python@v5
         with:
@@ -19,34 +20,60 @@ jobs:
 
       - run: pip install setuptools online-judge-tools -r library-checker-problems/requirements.txt
 
-      # test data: oj/yukicoder downloads and Library Checker generated cases (both skip what is already there).
-      # restore-keys: after an all.py edit start from the previous cache and fetch only the new tests.
-      - uses: actions/cache/restore@v4
-        id: testdata
+      # Test data caches. Keys change only when the tested problems / URLs change or the submodule moves;
+      # all.py's in/.version stamps make generate.py redo only the problems that actually changed.
+      # Restored from main's caches (PRs can read them); saved only on main (a PR's 6 GB copy would evict main's).
+      - name: Plan
+        id: plan
+        run: python3 testing/ci.py plan ${{ github.event_name == 'pull_request' && format('origin/{0}', github.base_ref) || '' }}
+
+      - name: Restore Library Checker data
+        id: lc
+        if: steps.plan.outputs.need_lc == 'true'      # PRs touching no Library Checker test skip the ~6 GB
+        uses: actions/cache/restore@v4
         with:
           path: |
-            testing/.oj-tests
             library-checker-problems/**/in
             library-checker-problems/**/out
-          key: tests-${{ hashFiles('testing/all.py') }}
-          restore-keys: tests-
+          key: ${{ steps.plan.outputs.lc_key }}
+          restore-keys: lc-
+
+      - name: Restore online-judge data
+        id: oj
+        uses: actions/cache/restore@v4
+        with:
+          path: testing/.oj-tests
+          key: ${{ steps.plan.outputs.oj_key }}
+          restore-keys: oj-
 
       - name: Run tests
         env:
           CXX: g++-14
           COEF: ${{ vars.COEF || '2' }}   # time-limit multiplier (runners are slower than a laptop); override in repo Settings > Variables
           YUKICODER_TOKEN: ${{ secrets.YUKICODER_TOKEN }}
-        run: make test
+          # PRs: only the tests the PR can affect (testing/all.py --changed); main and manual runs: everything
+          ARGS: ${{ github.event_name == 'pull_request' && format('--changed origin/{0}', github.base_ref) || '' }}
+        run: make test ARGS="$ARGS"
 
-      # save even when tests fail; only when all.py changed (the cache is ~6 GB)
-      - uses: actions/cache/save@v4
-        if: always() && steps.testdata.outputs.cache-hit != 'true'
+      - name: Drop data of removed problems
+        if: always() && github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        run: python3 testing/ci.py prune
+
+      - name: Save Library Checker data
+        if: always() && github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && steps.lc.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
         with:
           path: |
-            testing/.oj-tests
             library-checker-problems/**/in
             library-checker-problems/**/out
-          key: tests-${{ hashFiles('testing/all.py') }}
+          key: ${{ steps.plan.outputs.lc_key }}
+
+      - name: Save online-judge data
+        if: always() && github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && steps.oj.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: testing/.oj-tests
+          key: ${{ steps.plan.outputs.oj_key }}
 
   pdf:
     needs: verify                     # only build the PDF from code that passes
