@@ -364,8 +364,11 @@ all_source_codes = {
 NO_TESTS = ("docs/", ".scrap/", ".agents/", ".claude/", ".github/ISSUE", "tex/main.pdf", "tex/customlexers/",
 			"GEMINI.md", ".mcp.json", ".gitignore", "README")
 NO_TESTS_EXT = (".tex", ".cls", ".sty", ".md")  # notebook text: the PDF job checks it
-EVERYTHING = ("Makefile", ".github/")
-SMOKE = {".contest.readtest", ".flow.dinitz", ".math.gauss", ".math.ntt", ".math.fpsexp"}  # for test.sh changes
+# Makefile, .github/: how tests are run; a break shows up in any test, so the smoke set suffices
+# smoke set (test.sh, Makefile, .github/, all.py runner code): one of each kind; Library Checker ones cover a tight time limit
+# + recursion (dinitz, gauss), heavy code (ntt, fpsexp). Pushes to main still run everything.
+SMOKE = {".contest.readtest", ".flow.dinitz", ".math.gauss", ".math.ntt", ".math.fpsexp",
+		 ".math.extgcd", ".strings.hashstress", ".contest.scripts"}
 SUBMODULE = "library-checker-problems"
 
 
@@ -402,11 +405,11 @@ def dependencies(test):
 
 
 def changed_entries(base):
-	# keys of all_source_codes added or changed since base; None if code outside the table changed
+	# (keys of all_source_codes added or changed since base, whether code outside the table changed)
 	import ast
 	old = git("show", base + ":testing/all.py")  # base = the merge base
 	if old is None:
-		return None
+		return None, True
 	def split(src):
 		tree = ast.parse(src)
 		table = {}
@@ -418,9 +421,7 @@ def changed_entries(base):
 				stmt.value = ast.Constant(None)
 		return table, ast.dump(tree)
 	(old_table, old_rest), (new_table, new_rest) = split(old), split(open(__file__).read())
-	if old_rest != new_rest:
-		return None
-	return {key for key, value in new_table.items() if old_table.get(key) != value}
+	return {key for key, value in new_table.items() if old_table.get(key) != value}, old_rest != new_rest
 
 
 def changed_problems(base):
@@ -458,13 +459,15 @@ def select(base):
 	for f in files.split():
 		if f.startswith(NO_TESTS) or (f.endswith(NO_TESTS_EXT) and not f.startswith("testing/")):
 			continue
-		if f.startswith(EVERYTHING):
-			print("--changed:", f, "-> everything"); return None
-		if f == "testing/all.py":
-			keys = changed_entries(merge_base)
-			if keys is None:
-				print("--changed: testing/all.py (runner code) -> everything"); return None
-			chosen |= keys
+		if f == "Makefile" or f.startswith(".github/"):
+			print("--changed:", f, "-> smoke set")
+			chosen |= SMOKE
+		elif f == "testing/all.py":
+			keys, runner = changed_entries(merge_base)
+			if runner:
+				print("--changed: testing/all.py (runner code) -> smoke set")
+				chosen |= SMOKE
+			chosen |= keys or set()
 		elif f == "testing/test.sh":
 			chosen |= SMOKE
 		elif f == SUBMODULE:
