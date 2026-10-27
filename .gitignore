@@ -13,6 +13,9 @@ build/
 # build output (CI publishes it as the "latest" release)
 tex/main.pdf
 
+# test runner scratch (slowest-case time from test.sh)
+testing/.max_time
+
 # python bytecode (ci.py imports all.py)
 __pycache__/
 *.pyc

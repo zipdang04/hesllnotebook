@@ -19,7 +19,8 @@ createTest() {
 	fi
 }
 run() {
-	./$1 < $2 > $3 &
+	# bash's time keyword measures the solution (ms) into .build/time; the solution's stderr is left alone
+	( TIMEFORMAT=%R; { time ./$1 < $2 > $3 2>&4; } 4>&2 2> .build/time ) &
 	pid=$!
 	ticks=$(awk "BEGIN{printf \"%d\", $4 * 20}")
 	i=0
@@ -69,6 +70,7 @@ fi
 echo "Time limit: $TIME_LIMIT"
 
 FAILED=0
+MAX_TIME=0  # slowest case, for all.py's report (MAX_TIME_FILE)
 mkdir .build
 for file in `ls $test_dir/in`
 do
@@ -82,9 +84,11 @@ do
 	if [ $? -eq 1 ]
 	then
 		echo "Time limit exceeded!"
-		kill $pid; FAILED=1
+		pkill -P $pid; kill $pid; FAILED=1  # the solution is a child of the timing subshell
+		MAX_TIME=$TIME_LIMIT+
 		break
 	fi
+	MAX_TIME=$(awk -v a="$MAX_TIME" -v b="$(tail -n 1 .build/time)" 'BEGIN{print (b + 0 > a + 0) ? b : a}')
 
 	./$test_dir/checker $inp_file $out_file $ans_file
 	if [ $? -ne 0 ]
@@ -94,4 +98,6 @@ do
 	fi
 done
 rm -r .build
+echo "Slowest case: ${MAX_TIME}s (limit ${TIME_LIMIT}s)"
+[ -n "${MAX_TIME_FILE:-}" ] && echo "$MAX_TIME" > "$MAX_TIME_FILE"
 exit $FAILED

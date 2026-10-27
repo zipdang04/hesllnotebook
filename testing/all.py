@@ -84,8 +84,13 @@ class TestCase:
 		stamp = os.path.join(ROOT, SUBMODULE, self.testing_folder, "in", ".version")
 		if os.path.exists(stamp) and open(stamp).read() == version:
 			mark_fresh(self.testing_folder)
+		env["MAX_TIME_FILE"] = os.path.join(TESTING_DIR, ".max_time")  # test.sh writes its slowest case there
 		command = ["bash", "test.sh", self.source_code, self.testing_folder, str(self.time_limit)]
-		if subprocess.call(command, cwd=TESTING_DIR, env=env) != 0:
+		code = subprocess.call(command, cwd=TESTING_DIR, env=env)
+		if os.path.exists(env["MAX_TIME_FILE"]):
+			self.max_case = open(env["MAX_TIME_FILE"]).read().strip()  # "0.412", or "1.5+" after a TLE
+			os.remove(env["MAX_TIME_FILE"])
+		if code != 0:
 			print("FAILED")
 			exit(1)
 		open(stamp, "w").write(version)
@@ -147,7 +152,19 @@ class OjTest:
 									   "-d", test_dir, "-t", str(self.time_limit)]
 		if self.error is not None:
 			test_command += ["-e", str(self.error)]
-		run(test_command)
+		# stream oj's output and keep its per-case "time: X sec" lines
+		proc = subprocess.Popen(test_command, cwd=TESTING_DIR, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+		times = []
+		for line in proc.stdout:
+			print(line, end="")
+			m = re.search(r"time: ([\d.]+) sec", line)
+			if m:
+				times.append(float(m.group(1)))
+		if times:
+			self.max_case = f"{max(times):.3f}"
+		if proc.wait() != 0:
+			print("FAILED")
+			exit(1)
 
 
 class StressTest:
@@ -491,22 +508,41 @@ DELIMITER = "."
 timings = []  # (test, seconds, passed), for the report
 
 
+def limit_text(case, limit):
+	if case is None:
+		return ""
+	if case.endswith("+"):
+		return f"max case >{limit:g}s (TLE)"
+	return f"max case {float(case):.3f}s / {limit:g}s ({float(case) / limit:.0%})"
+
+
 def report(top=15):
-	# slowest tests and the total; on GitHub Actions also a table in the run's summary page
+	# slowest tests, tests closest to their time limit, and the total; on GitHub Actions also tables in the run's
+	# summary page. "% of limit" = slowest case / (time limit x COEF): COEF can go down to about max % x 1.3 x COEF.
 	if not timings:
 		return
-	total = sum(t for _, t, _ in timings)
+	total = sum(t[1] for t in timings)
 	slow = sorted(timings, key=lambda x: -x[1])[:top]
-	failed = [name for name, _, ok in timings if not ok]
+	ratio = lambda t: 2.0 if t[3].endswith("+") else float(t[3]) / t[4]
+	near = sorted((t for t in timings if t[3] is not None), key=ratio, reverse=True)[:top]
+	failed = [name for name, _, ok, _, _ in timings if not ok]
 	print(f"\n{len(timings)} test(s) in {total:.0f}s; slowest:")
-	for name, t, ok in slow:
+	for name, t, ok, case, limit in slow:
 		print(f"  {t:7.1f}s  {name}" + ("" if ok else "  FAILED"))
+	if near:
+		print(f"closest to the time limit (COEF={COEF:g}):")
+		for name, t, ok, case, limit in near:
+			print(f"  {name:28} {limit_text(case, limit)}")
 	path = os.environ.get("GITHUB_STEP_SUMMARY")
 	if path:
 		with open(path, "a") as f:
 			f.write(f"### Tests: {len(timings)} in {total:.0f}s" + (f", failed: {', '.join(failed)}" if failed else "") + "\n\n")
 			f.write("| test | time | |\n|---|---:|---|\n")
-			f.writelines(f"| `{name}` | {t:.1f}s | {'' if ok else 'FAILED'} |\n" for name, t, ok in slow)
+			f.writelines(f"| `{name}` | {t:.1f}s | {'' if ok else 'FAILED'} |\n" for name, t, ok, _, _ in slow)
+			if near:
+				f.write(f"\n### Closest to the time limit (COEF={COEF:g})\n\n| test | slowest case | limit | % |\n|---|---:|---:|---:|\n")
+				f.writelines(f"| `{name}` | {case}s | {limit:g}s | " + (">100%" if case.endswith("+") else f"{float(case) / limit:.0%}")
+							 + " |\n" for name, t, ok, case, limit in near)
 
 
 def testingProcess(node, name, selected, prefix=""):
@@ -520,8 +556,9 @@ def testingProcess(node, name, selected, prefix=""):
 				ok = True
 			finally:  # also when process() exits on a failure
 				seconds = time.time() - start
-				timings.append((prefix, seconds, ok))
-				print("<< ", prefix, f"{seconds:.1f}s", "" if ok else "FAILED")
+				case = getattr(node, "max_case", None)  # slowest case vs the time limit (Library Checker, oj)
+				timings.append((prefix, seconds, ok, case, node.time_limit))
+				print("<< ", prefix, f"{seconds:.1f}s", limit_text(case, node.time_limit), "" if ok else "FAILED")
 	elif isinstance(node, dict):
 		for key in node.keys():
 			testingProcess(node[key], name, selected, prefix + DELIMITER + key)
