@@ -86,6 +86,9 @@ jobs:
       # packages the medium scheme lacks; "path add" links the new latexminted into PATH (minted v3)
       - run: tlmgr install titlesec minted vntex && tlmgr path add
 
+      # GNU cpp for the per-entry hashes (tex/entryhash.sh = contest/hash.sh); the image has no C toolchain
+      - run: apt-get update -qq && apt-get install -y -qq --no-install-recommends cpp
+
       # minted v3 runs a custom lexer only if its hash is listed
       - name: Allow the custom lexer
         run: |
