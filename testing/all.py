@@ -8,6 +8,8 @@ import time
 import urllib.request
 import json
 
+sys.stdout.reconfigure(line_buffering=True)  # CI pipes stdout: keep our lines in order with the tests' output
+
 TESTING_DIR = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(TESTING_DIR)
 OJ_TESTS_DIR = os.path.join(TESTING_DIR, ".oj-tests")
