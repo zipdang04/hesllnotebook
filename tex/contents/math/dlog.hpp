@@ -28,7 +28,7 @@ ll dlog(ll a, ll b, ll m){
 }
 // x with x^2 = a (mod p) (Tonelli-Shanks), or -1; p prime <= 1e9, other root is p - x
 ll dsqrt(ll a, ll p){
-	if ((a %= p) < 2) return a;
+	if ((a = (a % p + p) % p) < 2) return a;
 	if (_pw(a, (p - 1) / 2, p) != 1) return -1;
 	ll q = p - 1, s = 0, z = 2;
 	for (; ~q & 1; q >>= 1) s++;

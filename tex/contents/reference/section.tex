@@ -78,7 +78,7 @@ $\varphi(n) = \#\{1 \le i \le n : (i,n) = 1\}$.
 \[ \sum_{i \le n,\, (i,n) = 1} i = \frac{n \varphi(n)}2 \ (n > 1) \qquad \sum_{i=1}^n \gcd(i,n) = \sum_{d \mid n} d\, \varphi(n/d) \]
 $a^{\varphi(m)} \equiv 1$ if $(a,m) = 1$; for any $a$ and $b \ge \varphi(m)$:
 \[ a^b \equiv a^{(b \bmod \varphi(m)) + \varphi(m)} \pmod m \]
-Fermat and Wilson, $p$ prime:
+Fermat ($p \nmid a$) and Wilson, $p$ prime:
 \[ a^{p-1} \equiv 1, \qquad (p-1)! \equiv -1 \pmod p \]
 $a \not\equiv 0$ is a square mod odd $p$ iff $a^{(p-1)/2} \equiv 1$ (else $-1$).\\
 $g$ is a primitive root mod $p$ iff $g^{(p-1)/q} \ne 1$ for every prime $q \mid p - 1$.
@@ -211,7 +211,7 @@ $a$ opposite $A$, $s = \frac{a+b+c}{2}$, circumradius $R$, inradius $r$.
 \[ \frac{a}{\sin A} = 2R \qquad c^2 = a^2 + b^2 - 2ab\cos C \]
 \[ \text{area} = \tfrac12 ab\sin C = \sqrt{s(s-a)(s-b)(s-c)} = rs = \frac{abc}{4R} \]
 \[ m_a = \tfrac12\sqrt{2b^2 + 2c^2 - a^2} \qquad \ell_a = \frac{2bc}{b+c}\cos\frac{A}{2} \]
-(median, bisector). Cyclic quadrilateral:
+(median, bisector). Cyclic quadrilateral, $s = \frac{a+b+c+d}{2}$:
 \[ \text{area} = \sqrt{(s-a)(s-b)(s-c)(s-d)} \]
 \topic{Pick, Euler}
 Lattice polygon: area $A$, $I$ interior and $B$ boundary points.

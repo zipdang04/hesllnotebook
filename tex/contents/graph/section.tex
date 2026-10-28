@@ -9,7 +9,7 @@
 	\fld{Note} iterative, safe at $10^6$ vertices.
 	\fld{2-SAT} force $x$ true: \texttt{either(x, x)}; $x \Rightarrow y$: \texttt{either(\textasciitilde x, y)}.
 ]
-\cpp[4]{Lowlink: bridges, cut vertices, BCC}{lowlink.hpp}[
+\cpp[3]{Lowlink: bridges, cut vertices, BCC}{lowlink.hpp}[
 	\fld{Note} self-loops and multi-edges OK (parent skipped by edge id).
 	\fld{Stack} recursive: depth up to $n$ (needs a big stack for $n \approx 5\cdot10^5$).
 	\fld{Block-cut tree} join each block node to its vertices.
@@ -49,7 +49,7 @@ Put weights in $A$ and $D$ to get the sum over trees:
 Determinant mod $p$: Gauss--Jordan (\S6.2.1).
 
 \subsection{Trees}
-\cpp[4]{HLD}{hld.hpp}[
+\cpp[3]{HLD}{hld.hpp}[
 	\fld{Needs} connected tree; \texttt{build()} once. Iterative (fine for $n = 5\cdot10^5$).
 	\fld{\texttt{f(l, r)}} half-open \texttt{pos} ranges in arbitrary order, direction lost: commutative aggregates only.
 	\fld{Edges} edge $(par_c, c)$ is stored at \texttt{pos[c]}.

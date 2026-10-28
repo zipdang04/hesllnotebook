@@ -4,7 +4,7 @@
 \setcurrentdir{strings}
 
 \cpp[4]{Z-function}{zfunc.hpp}
-\cpp[3]{Rolling hash}{strhash.hpp}[
+\cpp[4]{Rolling hash}{strhash.hpp}[
 	\fld{Usage} \texttt{getF(l, r)}, \texttt{getB(l, r)}: 1-indexed, inclusive (forward / reversed); $s[l..r]$ is a palindrome iff \texttt{getF(l, r) == getB(l, r)}.
 	\fld{Note} two random bases mod $2^{61}-1$ (clock seed); for multi-pass problems use a constant seed. Collision probability per comparison:
 	\[ \lesssim (n/2^{61})^2 \]

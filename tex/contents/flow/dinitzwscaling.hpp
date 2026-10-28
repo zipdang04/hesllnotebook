@@ -3,7 +3,7 @@
 
 struct Flow{
 	struct Edge{int dest, rev; ll capa;};
-	const ll oo = 1ll << 60;
+	static constexpr ll oo = 1ll << 60;
 	vector<vector<Edge>> adj;
 	vector<pair<int,int>> where;
 	int n, s, t;

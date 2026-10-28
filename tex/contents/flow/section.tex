@@ -11,7 +11,7 @@
 ]
 \cpp[4]{MCMF}{mcmf.hpp}[
 	\fld{Needs} SPFA (\S2.2.1). No negative cycles; \texttt{MCMF<\_\_int128>} if the total cost can overflow.
-	\fld{Usage} \texttt{calculate(F)}: cheapest flow of at most $F$; no limit = min-cost max-flow. Each augmentation is optimal for its flow value.
+	\fld{Usage} \texttt{calculate(F)}: flow $\min(F, \text{max flow})$ at minimum cost; no limit = min-cost max-flow. Each augmentation is optimal for its flow value.
 	\fld{Note} \texttt{flowOn(id)} only after \texttt{calculate()}.
 ]
 \cpp[4]{Min-cost circulation (cost scaling)}{costscaling.hpp}[
@@ -55,7 +55,7 @@ On the transitive closure: min chain cover $=$ max antichain (Dilworth).
 	\fld{Needs} undirected, $w \ge 0$, self-loops ignored.
 	\fld{Returns} \texttt{run()} (call once) returns the cut weight and one side; $n = 1$ gives $\{0, \{\}\}$.
 ]
-\cpp[4]{Gomory--Hu tree}{gomoryhu.hpp}[
+\cpp[5]{Gomory--Hu tree}{gomoryhu.hpp}[
 	\fld{Needs} Dinic (\S1.1.1). Undirected, $w \ge 0$, total $\le 10^{18}$.
 	\fld{Time} \texttt{run()} once, $n-1$ flows.
 	\fld{Query} min $u$--$v$ cut $=$ min \texttt{cut} on the tree path (Gusfield). Min cut sides: \S1.1.1.
@@ -72,5 +72,5 @@ On the transitive closure: min chain cover $=$ max antichain (Dilworth).
 ]
 \cpp[4]{General matching (blossom)}{blossom.hpp}[
 	\fld{Returns} \texttt{run()} (call once) returns the matching size; \texttt{mate[v]} is the partner of $v$, or $n$ if $v$ is unmatched.
-	\fld{Time} $O(VE)$; $n = 500$ dense in 0.04 s.
+	\fld{Time} $O(V^3)$; $n = 500$ dense in 0.04 s.
 ]

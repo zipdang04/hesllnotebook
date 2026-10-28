@@ -45,6 +45,7 @@ namespace FFT{
 		if (!_built) buildRoot();
 		int len = int(_a.size() + _b.size()) - 1;
 		len = 1 << (log2(len) + (cntBit(len) > 1));
+		assert(len <= MAX_LEN); // raise BIT (<= K_MOD) for longer products
 		vector<modint>a(_a.begin(),_a.end()); a.resize(len,0);
 		vector<modint>b(_b.begin(),_b.end()); b.resize(len,0);
 		transform(a, false); transform(b, false);

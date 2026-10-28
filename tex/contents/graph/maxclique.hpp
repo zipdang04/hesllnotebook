@@ -6,7 +6,7 @@ template<int N> struct MaxClique{
 	using B = bitset<N>;
 	int n; vector<B> g; vector<int> cur, best;
 	MaxClique(int n): n(n), g(n){}
-	void addEdge(int u, int v){ g[u][v] = g[v][u] = 1; }
+	void addEdge(int u, int v){ if (u != v) g[u][v] = g[v][u] = 1; }
 	void expand(B P){
 		if (P.none()){ if (cur.size() > best.size()) best = cur; return; }
 		vector<int> ord, col; B U = P;

@@ -24,6 +24,7 @@ template<class C = ll> struct MCMF{
 
 	pair<ll, C> calculate(ll limit = 1ll << 62){ // {flow, cost}, flow <= limit
 		resi = edges; ll flow = 0; C cost = 0;
+		if (s == t) return {0, 0};
 		auto residual = [&](int u, auto relax){
 			for (int idx: graph[u]) if (resi[idx].capa > 0) relax(resi[idx].dest, resi[idx].cost, idx);
 		};

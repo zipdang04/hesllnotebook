@@ -15,7 +15,7 @@ template<class T> vector<int> unrankMulti(RankUnrank<T> &R, T r, int n, int k){
 }
 
 template<class T> void run(){
-	RankUnrank<T> R(24);
+	RankUnrank<T> R(20); // ll: 20! is the largest factorial that fits
 	// exhaustive: permutations n<=7 in std::next_permutation order
 	FOR(int, n, 0, 7){
 		vector<int> p(n); iota(p.begin(), p.end(), 0); ll i = 0;
