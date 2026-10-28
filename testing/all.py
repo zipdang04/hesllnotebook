@@ -4,8 +4,12 @@ import re
 import shutil
 import subprocess
 import sys
+import time
 import urllib.request
 import json
+
+if hasattr(sys.stdout, "reconfigure"):
+	sys.stdout.reconfigure(line_buffering=True)  # CI pipes stdout: keep our lines in order with the tests' output
 
 TESTING_DIR = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(TESTING_DIR)
@@ -80,8 +84,13 @@ class TestCase:
 		stamp = os.path.join(ROOT, SUBMODULE, self.testing_folder, "in", ".version")
 		if os.path.exists(stamp) and open(stamp).read() == version:
 			mark_fresh(self.testing_folder)
+		env["MAX_TIME_FILE"] = os.path.join(TESTING_DIR, ".max_time")  # test.sh writes its slowest case there
 		command = ["bash", "test.sh", self.source_code, self.testing_folder, str(self.time_limit)]
-		if subprocess.call(command, cwd=TESTING_DIR, env=env) != 0:
+		code = subprocess.call(command, cwd=TESTING_DIR, env=env)
+		if os.path.exists(env["MAX_TIME_FILE"]):
+			self.max_case = open(env["MAX_TIME_FILE"]).read().strip()  # "0.412", or "1.5+" after a TLE
+			os.remove(env["MAX_TIME_FILE"])
+		if code != 0:
 			print("FAILED")
 			exit(1)
 		open(stamp, "w").write(version)
@@ -143,7 +152,19 @@ class OjTest:
 									   "-d", test_dir, "-t", str(self.time_limit)]
 		if self.error is not None:
 			test_command += ["-e", str(self.error)]
-		run(test_command)
+		# stream oj's output and keep its per-case "time: X sec" lines
+		proc = subprocess.Popen(test_command, cwd=TESTING_DIR, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+		times = []
+		for line in proc.stdout:
+			print(line, end="")
+			m = re.search(r"time: ([\d.]+) sec", line)
+			if m:
+				times.append(float(m.group(1)))
+		if times:
+			self.max_case = f"{max(times):.3f}"
+		if proc.wait() != 0:
+			print("FAILED")
+			exit(1)
 
 
 class StressTest:
@@ -363,8 +384,11 @@ all_source_codes = {
 NO_TESTS = ("docs/", ".scrap/", ".agents/", ".claude/", ".github/ISSUE", "tex/main.pdf", "tex/customlexers/",
 			"GEMINI.md", ".mcp.json", ".gitignore", "README")
 NO_TESTS_EXT = (".tex", ".cls", ".sty", ".md")  # notebook text: the PDF job checks it
-EVERYTHING = ("Makefile", ".github/")
-SMOKE = {".contest.readtest", ".flow.dinitz", ".math.gauss", ".math.ntt", ".math.fpsexp"}  # for test.sh changes
+# Makefile, .github/: how tests are run; a break shows up in any test, so the smoke set suffices
+# smoke set (test.sh, Makefile, .github/, all.py runner code): one of each kind; Library Checker ones cover a tight time limit
+# + recursion (dinitz, gauss), heavy code (ntt, fpsexp). Pushes to main still run everything.
+SMOKE = {".contest.readtest", ".flow.dinitz", ".math.gauss", ".math.ntt", ".math.fpsexp",
+		 ".math.extgcd", ".strings.hashstress", ".contest.scripts"}
 SUBMODULE = "library-checker-problems"
 
 
@@ -401,11 +425,11 @@ def dependencies(test):
 
 
 def changed_entries(base):
-	# keys of all_source_codes added or changed since base; None if code outside the table changed
+	# (keys of all_source_codes added or changed since base, whether code outside the table changed)
 	import ast
 	old = git("show", base + ":testing/all.py")  # base = the merge base
 	if old is None:
-		return None
+		return None, True
 	def split(src):
 		tree = ast.parse(src)
 		table = {}
@@ -417,9 +441,7 @@ def changed_entries(base):
 				stmt.value = ast.Constant(None)
 		return table, ast.dump(tree)
 	(old_table, old_rest), (new_table, new_rest) = split(old), split(open(__file__).read())
-	if old_rest != new_rest:
-		return None
-	return {key for key, value in new_table.items() if old_table.get(key) != value}
+	return {key for key, value in new_table.items() if old_table.get(key) != value}, old_rest != new_rest
 
 
 def changed_problems(base):
@@ -455,15 +477,17 @@ def select(base):
 	deps = {name: dependencies(test) for name, test in tests}
 	chosen = set()
 	for f in files.split():
-		if f.startswith(NO_TESTS) or (f.endswith(NO_TESTS_EXT) and not f.startswith("testing/")):
+		if f.startswith(NO_TESTS) or (f.endswith(NO_TESTS_EXT) and not f.startswith("testing/")) or "__pycache__/" in f:
 			continue
-		if f.startswith(EVERYTHING):
-			print("--changed:", f, "-> everything"); return None
-		if f == "testing/all.py":
-			keys = changed_entries(merge_base)
-			if keys is None:
-				print("--changed: testing/all.py (runner code) -> everything"); return None
-			chosen |= keys
+		if f == "Makefile" or f.startswith(".github/"):
+			print("--changed:", f, "-> smoke set")
+			chosen |= SMOKE
+		elif f == "testing/all.py":
+			keys, runner = changed_entries(merge_base)
+			if runner:
+				print("--changed: testing/all.py (runner code) -> smoke set")
+				chosen |= SMOKE
+			chosen |= keys or set()
 		elif f == "testing/test.sh":
 			chosen |= SMOKE
 		elif f == SUBMODULE:
@@ -481,6 +505,44 @@ def select(base):
 
 
 DELIMITER = "."
+timings = []  # (test, seconds, passed), for the report
+
+
+def limit_text(case, limit):
+	if case is None:
+		return ""
+	if case.endswith("+"):
+		return f"max case >{limit:g}s (TLE)"
+	return f"max case {float(case):.3f}s / {limit:g}s ({float(case) / limit:.0%})"
+
+
+def report(top=15):
+	# slowest tests, tests closest to their time limit, and the total; on GitHub Actions also tables in the run's
+	# summary page. "% of limit" = slowest case / (time limit x COEF): COEF can go down to about max % x 1.3 x COEF.
+	if not timings:
+		return
+	total = sum(t[1] for t in timings)
+	slow = sorted(timings, key=lambda x: -x[1])[:top]
+	ratio = lambda t: 2.0 if t[3].endswith("+") else float(t[3]) / t[4]
+	near = sorted((t for t in timings if t[3] is not None), key=ratio, reverse=True)[:top]
+	failed = [name for name, _, ok, _, _ in timings if not ok]
+	print(f"\n{len(timings)} test(s) in {total:.0f}s; slowest:")
+	for name, t, ok, case, limit in slow:
+		print(f"  {t:7.1f}s  {name}" + ("" if ok else "  FAILED"))
+	if near:
+		print(f"closest to the time limit (COEF={COEF:g}):")
+		for name, t, ok, case, limit in near:
+			print(f"  {name:28} {limit_text(case, limit)}")
+	path = os.environ.get("GITHUB_STEP_SUMMARY")
+	if path:
+		with open(path, "a") as f:
+			f.write(f"### Tests: {len(timings)} in {total:.0f}s" + (f", failed: {', '.join(failed)}" if failed else "") + "\n\n")
+			f.write("| test | time | |\n|---|---:|---|\n")
+			f.writelines(f"| `{name}` | {t:.1f}s | {'' if ok else 'FAILED'} |\n" for name, t, ok, _, _ in slow)
+			if near:
+				f.write(f"\n### Closest to the time limit (COEF={COEF:g})\n\n| test | slowest case | limit | % |\n|---|---:|---:|---:|\n")
+				f.writelines(f"| `{name}` | {case}s | {limit:g}s | " + (">100%" if case.endswith("+") else f"{float(case) / limit:.0%}")
+							 + " |\n" for name, t, ok, case, limit in near)
 
 
 def testingProcess(node, name, selected, prefix=""):
@@ -488,7 +550,15 @@ def testingProcess(node, name, selected, prefix=""):
 		# "all.py" runs everything, "all.py math" a section, "all.py math ntt" one test
 		if (name == "." or prefix == name or prefix.startswith(name + DELIMITER)) and (selected is None or prefix in selected):
 			print(">> ", prefix)
-			node.process()
+			start, ok = time.time(), False
+			try:
+				node.process()
+				ok = True
+			finally:  # also when process() exits on a failure
+				seconds = time.time() - start
+				case = getattr(node, "max_case", None)  # slowest case vs the time limit (Library Checker, oj)
+				timings.append((prefix, seconds, ok, case, node.time_limit))
+				print("<< ", prefix, f"{seconds:.1f}s", limit_text(case, node.time_limit), "" if ok else "FAILED")
 	elif isinstance(node, dict):
 		for key in node.keys():
 			testingProcess(node[key], name, selected, prefix + DELIMITER + key)
@@ -503,4 +573,7 @@ if __name__ == "__main__":  # ci.py imports the table without running anything
 	if args[:1] == ["--changed"]:
 		selected = select(args[1])
 		args = args[2:]
-	testingProcess(all_source_codes, DELIMITER + DELIMITER.join(args), selected)
+	try:
+		testingProcess(all_source_codes, DELIMITER + DELIMITER.join(args), selected)
+	finally:
+		report()
