@@ -41,7 +41,7 @@ struct Blossom{
 	}
 	int run(){ // max matching size
 		int res = 0;
-		EFOR(int, i, 0, n) if (mate[i] == n) res += augment(i);
+		FOR(int, i, 0, n - 1) if (mate[i] == n) res += augment(i);
 		return res;
 	}
 };

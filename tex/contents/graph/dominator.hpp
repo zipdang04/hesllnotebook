@@ -24,14 +24,14 @@ struct Dominator{
 			}
 			return mn[v];
 		};
-		EREV(int, w, t - 1, 0){
+		REV(int, w, t - 1, 1){
 			for (int u: rg[rv[w]]) if (id[u] >= 0) sd[w] = min(sd[w], sd[eval(id[u])]);
 			bk[sd[w]].push_back(w); int p = dsu[w] = par[w];
 			for (int v: bk[p]){ int u = eval(v); dom[v] = sd[u] < p ? u : p; }
 			bk[p].clear();
 		}
 		vector<int> idom(n, -1);
-		EFOR(int, w, 0, t){ if (w && dom[w] != sd[w]) dom[w] = dom[dom[w]]; idom[rv[w]] = rv[dom[w]]; }
+		FOR(int, w, 0, t - 1){ if (w && dom[w] != sd[w]) dom[w] = dom[dom[w]]; idom[rv[w]] = rv[dom[w]]; }
 		return idom;
 	}
 };

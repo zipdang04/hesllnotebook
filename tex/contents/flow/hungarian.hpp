@@ -9,14 +9,14 @@ struct Hungarian{
 		vector<ll> dist(m), pot(m); vector<int> match(n), rev(m, -1), cols(m), prv(m);
 		ll d = 0, nd, cost = 0; int col, s, r;
 		REV(int, i, n - 1, 0){
-			EFOR(int, j, 0, m) dist[j] = c[i][j], cols[j] = j, prv[j] = i;
+			FOR(int, j, 0, m - 1) dist[j] = c[i][j], cols[j] = j, prv[j] = i;
 			for (s = 0;;){   // Dijkstra over columns, cols[0..s) settled
-				EFOR(int, j, s, m){
+				FOR(int, j, s, m - 1){
 					col = cols[j]; nd = dist[col] - pot[col];
 					if (j == s || d > nd) d = nd, swap(cols[s], cols[j]);
 				}
 				if ((r = rev[col = cols[s++]]) == -1) break;   // free column reached
-				EFOR(int, j, 0, m) if (dist[j] > (nd = c[r][j] - c[r][col] + dist[col])) dist[j] = nd, prv[j] = r;
+				FOR(int, j, 0, m - 1) if (dist[j] > (nd = c[r][j] - c[r][col] + dist[col])) dist[j] = nd, prv[j] = r;
 			}
 			cost += dist[col];
 			while (s--) pot[cols[s]] = dist[cols[s]] - d;

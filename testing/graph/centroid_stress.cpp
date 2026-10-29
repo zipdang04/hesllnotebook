@@ -5,15 +5,15 @@ int n; vector<pair<int,int>> E;
 bool check(Centroid &cd, vector<int> &order, vector<vector<bool>> &remAt){
 	int lg = 0; while ((2 << lg) <= n) lg++; // floor(log2 n)
 	vector<int> when(n, -1);
-	EFOR(int, i, 0, (int)order.size()){ if (when[order[i]] >= 0) return 0; when[order[i]] = i; }
+	FOR(int, i, 0, (int)order.size() - 1){ if (when[order[i]] >= 0) return 0; when[order[i]] = i; }
 	if ((int)order.size() != n) return 0;
 	// S(c) = vertices whose centroid-ancestor chain contains c
 	vector<vector<int>> S(n);
-	EFOR(int, u, 0, n){
+	FOR(int, u, 0, n - 1){
 		int steps = 0;
 		for (int x = u; x >= 0; x = cd.par[x]){ S[x].push_back(u); if (++steps > n) return 0; }
 	}
-	EFOR(int, c, 0, n){
+	FOR(int, c, 0, n - 1){
 		int p = cd.par[c];
 		if (cd.lev[c] != (p < 0 ? 0 : cd.lev[p] + 1) || cd.lev[c] > lg) return 0;
 		if (p >= 0 && when[p] > when[c]) return 0;
@@ -51,12 +51,12 @@ bool check(Centroid &cd, vector<int> &order, vector<vector<bool>> &remAt){
 }
 int main(){
 	mt19937 rng(1);
-	EFOR(int, it, 0, 3000){
+	FOR(int, it, 0, 2999){
 		n = rng() % 30 + 1; E.clear();
 		Centroid cd(n);
 		vector<int> perm(n); iota(perm.begin(), perm.end(), 0); shuffle(perm.begin(), perm.end(), rng);
 		int shape = rng() % 3;
-		EFOR(int, i, 1, n){
+		FOR(int, i, 1, n - 1){
 			if (rng() % 6 == 0) continue; // forest
 			int j = shape == 0 ? rng() % i : shape == 1 ? i - 1 : max(0, i - 1 - (int)(rng() % 3));
 			E.push_back({perm[i], perm[j]}); cd.addEdge(perm[i], perm[j]);
@@ -71,7 +71,7 @@ int main(){
 	// big path and star: level bound floor(log2 n), each vertex visited once
 	for (int shape: {0, 1}){
 		n = 200000; Centroid cd(n);
-		EFOR(int, i, 1, n) cd.addEdge(shape ? 0 : i - 1, i);
+		FOR(int, i, 1, n - 1) cd.addEdge(shape ? 0 : i - 1, i);
 		int calls = 0, mx = 0;
 		cd.run([&](int c){ calls++; mx = max(mx, cd.lev[c]); });
 		if (calls != n || mx > 17){ printf("FAIL big shape=%d calls=%d maxlev=%d\n", shape, calls, mx); return 1; }

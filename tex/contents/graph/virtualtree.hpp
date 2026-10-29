@@ -9,10 +9,10 @@ struct VirtualTree{
 	void build(vector<int> S){
 		auto cmp = [&](int a, int b){ return h.pos[a] < h.pos[b]; };
 		sort(S.begin(), S.end(), cmp); vs = S;
-		EFOR(int, i, 1, (int)S.size()) vs.push_back(h.lca(S[i - 1], S[i]));
+		FOR(int, i, 1, (int)S.size() - 1) vs.push_back(h.lca(S[i - 1], S[i]));
 		sort(vs.begin(), vs.end(), cmp); vs.erase(unique(vs.begin(), vs.end()), vs.end());
 		pa.assign(vs.size(), -1);
-		EFOR(int, i, 0, (int)vs.size()) id[vs[i]] = i;
-		EFOR(int, i, 1, (int)vs.size()) pa[i] = id[h.lca(vs[i - 1], vs[i])];
+		FOR(int, i, 0, (int)vs.size() - 1) id[vs[i]] = i;
+		FOR(int, i, 1, (int)vs.size() - 1) pa[i] = id[h.lca(vs[i - 1], vs[i])];
 	}
 };

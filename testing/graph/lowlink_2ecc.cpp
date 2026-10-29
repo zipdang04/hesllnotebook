@@ -5,7 +5,7 @@ int main(){
 	while (m--){ int u, v; read(u, v); L.addEdge(u, v); }
 	L.run();
 	vector<vector<int>> c(L.k2);
-	EFOR(int, i, 0, n) c[L.two[i]].push_back(i);
+	FOR(int, i, 0, n - 1) c[L.two[i]].push_back(i);
 	string s = to_string(L.k2) + "\n";
 	for (auto &b: c){
 		s += to_string(b.size());

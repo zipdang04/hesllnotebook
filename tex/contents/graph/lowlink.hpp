@@ -24,5 +24,5 @@ struct Lowlink{
 		if (pe < 0 && !ch) bcc.push_back({u});
 		if (low[u] == num[u]){ int x; do x = st2.back(), st2.pop_back(), two[x] = k2; while (x != u); k2++; }
 	}
-	void run(){ EFOR(int, i, 0, n) if (!num[i]) dfs(i, -1), st.clear(); }
+	void run(){ FOR(int, i, 0, n - 1) if (!num[i]) dfs(i, -1), st.clear(); }
 };

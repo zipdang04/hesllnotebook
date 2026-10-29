@@ -12,7 +12,7 @@ struct Euler{
 	bool solve(vector<int> &vs, vector<int> &es){
 		if (!n){ vs.clear(); es.clear(); return m == 0; }
 		int s = 0;
-		EFOR(int, v, 0, n) if (g[v].size() && (g[s].empty() || (dir ? d[v] > 0 : d[v] & 1))) s = v;
+		FOR(int, v, 0, n - 1) if (g[v].size() && (g[s].empty() || (dir ? d[v] > 0 : d[v] & 1))) s = v;
 		vector<int> it(n), D(n), used(m); vector<pair<int, int>> st = {{s, -1}};
 		vs.clear(); es.clear(); D[s]++; // allows a path, not only a circuit
 		while (st.size()){

@@ -22,8 +22,8 @@ template<int N> struct MaxClique{
 	vector<int> solve(){ // vertices of a maximum clique
 		vector<int> id(n); iota(id.begin(), id.end(), 0); auto h = g;
 		sort(id.begin(), id.end(), [&](int a, int b){ return g[a].count() > g[b].count(); });
-		EFOR(int, i, 0, n) EFOR(int, j, 0, n) g[i][j] = h[id[i]][id[j]];
-		cur.clear(); best.clear(); B P; EFOR(int, i, 0, n) P[i] = 1;
+		FOR(int, i, 0, n - 1) FOR(int, j, 0, n - 1) g[i][j] = h[id[i]][id[j]];
+		cur.clear(); best.clear(); B P; FOR(int, i, 0, n - 1) P[i] = 1;
 		expand(P); g = h; for (int &v: best) v = id[v];
 		return best;
 	}

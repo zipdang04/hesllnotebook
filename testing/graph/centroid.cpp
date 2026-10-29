@@ -6,17 +6,17 @@ void _add(vector<ll> a, int sgn){ // ans += sgn * (a * a)
 	vector<ll> b;
 	if (a.size() <= 64){
 		b.assign(2 * a.size() - 1, 0);
-		EFOR(int, i, 0, (int)a.size()) EFOR(int, j, 0, (int)a.size()) b[i + j] += a[i] * a[j];
+		FOR(int, i, 0, (int)a.size() - 1) FOR(int, j, 0, (int)a.size() - 1) b[i + j] += a[i] * a[j];
 	} else {
 		vector<double> d(a.begin(), a.end()), r = conv(d, d);
-		b.resize(r.size()); EFOR(int, i, 0, (int)r.size()) b[i] = llround(r[i]);
+		b.resize(r.size()); FOR(int, i, 0, (int)r.size() - 1) b[i] = llround(r[i]);
 	}
-	EFOR(int, i, 0, (int)min(b.size(), ans.size())) ans[i] += sgn * b[i];
+	FOR(int, i, 0, ((int)min(b.size(), ans.size())) - 1) ans[i] += sgn * b[i];
 }
 int main(){
 	int n; read(n);
 	Centroid cd(n);
-	EFOR(int, i, 0, n - 1){ int a, b; read(a, b); cd.addEdge(a, b); }
+	FOR(int, i, 0, n - 2){ int a, b; read(a, b); cd.addEdge(a, b); }
 	ans.assign(n, 0);
 	auto cnt = [&](int r, int p){
 		vector<ll> a;
@@ -28,6 +28,6 @@ int main(){
 		for (int v: cd.g[c]) if (!cd.rem[v]) _add(cnt(v, c), -1);
 	});
 	string out;
-	EFOR(int, i, 1, n) out += to_string(ans[i] / 2) + (i + 1 < n ? " " : "");
+	FOR(int, i, 1, n - 1) out += to_string(ans[i] / 2) + (i + 1 < n ? " " : "");
 	puts(out.c_str());
 }

@@ -5,7 +5,7 @@
 
 \subsection{Segment trees}
 \cpp[4]{Lazy segment tree}{lazyseg.hpp}[
-	\fld{Usage} positions $1..n$, ranges inclusive. With HLD: \texttt{path(u, v, [\&](int l, int r)\{ seg.apply(l + 1, r, f); \})}, value of $v$ at \texttt{pos[v] + 1}.
+	\fld{Usage} positions $1..n$, ranges inclusive. With HLD: \texttt{path(u, v, [\&](int l, int r)\{ seg.apply(l, r, f); \})}, value of $v$ at \texttt{pos[v]}.
 	\fld{Needs}
 	\[ mp(f, x \cdot y) = mp(f,x) \cdot mp(f,y) \]
 	\fld{Note} keep the segment length in \texttt{S} if \texttt{mp} needs it (affine: $S = (sum, len)$, $cp(f,g)=f\circ g$).

@@ -25,7 +25,7 @@ struct DMST{
 		seen[r] = r;
 		vector<Edge> Q(n), in(n, {-1, -1, 0});
 		deque<tuple<int, int, vector<Edge>>> cycs;
-		EFOR(int, s, 0, n){
+		FOR(int, s, 0, n - 1){
 			int u = s, qi = 0, w;
 			while (seen[u] < 0){
 				if (!heap[u]) return {-1, {}};
@@ -40,14 +40,14 @@ struct DMST{
 					cycs.push_front({u, t, {&Q[qi], &Q[end]}});
 				}
 			}
-			EFOR(int, i, 0, qi) in[uf.find(Q[i].b)] = Q[i];
+			FOR(int, i, 0, qi - 1) in[uf.find(Q[i].b)] = Q[i];
 		}
 		for (auto &[u, t, comp]: cycs){ // expand cycles, newest first
 			uf.rollback(t); Edge inE = in[u];
 			for (auto &e: comp) in[uf.find(e.b)] = e;
 			in[uf.find(inE.b)] = inE;
 		}
-		EFOR(int, i, 0, n) par[i] = in[i].a;
+		FOR(int, i, 0, n - 1) par[i] = in[i].a;
 		return {res, par};
 	}
 };

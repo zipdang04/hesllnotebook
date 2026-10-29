@@ -10,7 +10,7 @@ struct Centroid{
 	// pa = BFS parent, dep[u] = dist(u, p) (dist(u, r) if p < 0)
 	vector<int> bfs(int r, int p){
 		vector<int> q{r}; pa[r] = p; dep[r] = p >= 0;
-		EFOR(int, i, 0, (int)q.size()){
+		FOR(int, i, 0, (int)q.size() - 1){
 			int u = q[i];
 			for (int v: g[u]) if (v != pa[u] && !rem[v]) pa[v] = u, dep[v] = dep[u] + 1, q.push_back(v);
 		}
@@ -25,5 +25,5 @@ struct Centroid{
 		for (int v: g[c]) if (!rem[v]) dec(v, c, f);
 	}
 	// f(c) once per centroid, top-down; during f(c), rem = {c} + its centroid ancestors (+ other branches)
-	template<class F> void run(F f){ EFOR(int, i, 0, n) if (!rem[i]) dec(i, -1, f); }
+	template<class F> void run(F f){ FOR(int, i, 0, n - 1) if (!rem[i]) dec(i, -1, f); }
 };

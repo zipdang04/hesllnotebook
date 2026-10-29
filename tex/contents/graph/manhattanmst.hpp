@@ -7,7 +7,7 @@ struct ManhattanMST{
 		int n = x.size(); vector<int> id(n), p(n);
 		vector<array<ll,3>> cand;  // <= 4n edges, contain an MST
 		iota(id.begin(), id.end(), 0); iota(p.begin(), p.end(), 0);
-		EFOR(int, k, 0, 4){
+		FOR(int, k, 0, 3){
 			sort(id.begin(), id.end(), [&](int i, int j){ return x[i] + y[i] < x[j] + y[j]; });
 			map<ll,int> sw;
 			for (int i: id){
@@ -18,7 +18,7 @@ struct ManhattanMST{
 				}
 				sw[-y[i]] = i;
 			}
-			EFOR(int, i, 0, n) if (k & 1) x[i] = -x[i]; else swap(x[i], y[i]);
+			FOR(int, i, 0, n - 1) if (k & 1) x[i] = -x[i]; else swap(x[i], y[i]);
 		}
 		sort(cand.begin(), cand.end());
 		auto f = [&](int v){ while (p[v] != v) v = p[v] = p[p[v]]; return v; };

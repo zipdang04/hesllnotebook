@@ -51,7 +51,7 @@ Determinant mod $p$: Gauss--Jordan (\S6.2.1).
 \subsection{Trees}
 \cpp[3]{HLD}{hld.hpp}[
 	\fld{Needs} connected tree; \texttt{build()} once. Iterative (fine for $n = 5\cdot10^5$).
-	\fld{\texttt{f(l, r)}} half-open \texttt{pos} ranges in arbitrary order, direction lost: commutative aggregates only.
+	\fld{\texttt{f(l, r)}} inclusive \texttt{pos} ranges (pos is $1..n$) in arbitrary order, direction lost: commutative aggregates only.
 	\fld{Edges} edge $(par_c, c)$ is stored at \texttt{pos[c]}.
 	\fld{Distance}
 	\[ d(u,v) = dep_u + dep_v - 2\,dep_{lca} \]

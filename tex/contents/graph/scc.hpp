@@ -8,7 +8,7 @@ struct SCC{
 	int run(){ // iterative Tarjan; comp[v] in [0, k), topological order: edge u->v => comp[u] <= comp[v]
 		vector<int> num(n), low(n), it(n), st, cs; comp.assign(n, -1); int t = k = 0;
 		auto visit = [&](int v){ num[v] = low[v] = ++t; st.push_back(v); cs.push_back(v); };
-		EFOR(int, s, 0, n) if (!num[s]) for (visit(s); !cs.empty();){
+		FOR(int, s, 0, n - 1) if (!num[s]) for (visit(s); !cs.empty();){
 			int u = cs.back();
 			if (it[u] < (int)g[u].size()){
 				int v = g[u][it[u]++];
@@ -35,7 +35,7 @@ struct TwoSat: SCC{
 	void either(int a, int b){ a = lit(a), b = lit(b); addEdge(a ^ 1, b); addEdge(b ^ 1, a); }
 	bool solve(){
 		run();
-		EFOR(int, i, 0, n / 2){
+		FOR(int, i, 0, n / 2 - 1){
 			if (comp[2 * i] == comp[2 * i + 1]) return 0;
 			val[i] = comp[2 * i] > comp[2 * i + 1];
 		}
