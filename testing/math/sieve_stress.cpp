@@ -15,7 +15,7 @@ int main(){
 		if (pr != s.primes){ printf("primes n=%d\n", n); exit(1); }
 	};
 	FOR(int, n, 1, 300) check(n);
-	EFOR(int, t, 0, 200) check(rng() % 100000 + 1);
+	FOR(int, t, 0, 199) check(rng() % 100000 + 1);
 	check(1000000);
 	puts("ok");
 }

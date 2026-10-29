@@ -2,7 +2,7 @@
 
 int main(){
 	pair<ll, ll> r{0, 1};
-	EFOR(int, i, 0, 3){
+	FOR(int, i, 0, 2){
 		ll x, y; cin >> x >> y;
 		if (r.se != -1) r = crt(r.fi, r.se, x, y);
 	}

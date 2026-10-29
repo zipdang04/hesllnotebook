@@ -25,7 +25,7 @@ struct bigint{
 	}
 	static V addAbs(V a, const V &b, int s){ // |a| + s|b|; s = -1 needs |a| >= |b|
 		a.resize(max(a.size(), b.size()) + 1); int c = 0;
-		EFOR(int, i, 0, (int)a.size()){
+		FOR(int, i, 0, (int)a.size() - 1){
 			a[i] += c + s * (i < (int)b.size() ? b[i] : 0);
 			c = a[i] < 0 ? -1 : a[i] > 9; a[i] -= 10 * c;
 		}
@@ -43,10 +43,10 @@ struct bigint{
 	friend bigint operator-(bigint a, R b){ return a -= b; }
 	friend bigint operator*(bigint a, bigint b){ // NTT: |a| + |b| - 1 <= 2^22 digits
 		int n = a.d.size(), m = b.d.size(); bigint r; r.d.assign(n + m, 0);
-		if (min(n, m) < 64) EFOR(int, i, 0, n) EFOR(int, j, 0, m) r.d[i + j] += a.d[i] * b.d[j];
+		if (min(n, m) < 64) FOR(int, i, 0, n - 1) FOR(int, j, 0, m - 1) r.d[i + j] += a.d[i] * b.d[j];
 		else{
 			vector<modint> p = FFT::multiply(a.d, b.d); // coefficients <= 81 min(n, m) < MOD
-			EFOR(int, i, 0, n + m - 1) r.d[i] = p[i].v;
+			FOR(int, i, 0, n + m - 2) r.d[i] = p[i].v;
 		}
 		int c = 0;
 		for (int &x: r.d) x += c, c = x / 10, x %= 10;

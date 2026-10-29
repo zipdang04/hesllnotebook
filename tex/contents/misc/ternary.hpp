@@ -12,7 +12,7 @@ template<class F> ll ternaryInt(ll l, ll r, F f){
 template<class F> double goldenSection(double a, double b, F f, int iters = 100){
 	const double g = (sqrt(5.0) - 1) / 2;
 	double x1 = b - g * (b - a), x2 = a + g * (b - a), f1 = f(x1), f2 = f(x2);
-	EFOR(int, it, 0, iters){
+	FOR(int, it, 0, iters - 1){
 		if (f1 < f2){ b = x2; x2 = x1; f2 = f1; x1 = b - g * (b - a); f1 = f(x1); }
 		else{ a = x1; x1 = x2; f1 = f2; x2 = a + g * (b - a); f2 = f(x2); }
 	}

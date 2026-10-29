@@ -11,11 +11,11 @@ void check(const vector<ll> &a, const vector<ll> &b, const vector<ll> &c, ll p, 
 	if ((int)c.size() != n + m - 1) fail(what, it, n, m);
 	if (big){
 		ll q = p ? p : P; // conv: exact values, compared mod P
-		EFOR(int, t, 0, 3){ ll r = rnd(1, q - 1); if (eval(c, r, q) != eval(a, r, q) * eval(b, r, q) % q) fail(what, it, n, m); }
+		FOR(int, t, 0, 2){ ll r = rnd(1, q - 1); if (eval(c, r, q) != eval(a, r, q) * eval(b, r, q) % q) fail(what, it, n, m); }
 		return;
 	}
-	EFOR(int, k, 0, n + m - 1){
-		ll s = 0; EFOR(int, i, max(0, k - m + 1), min(n, k + 1)) s = p ? (s + a[i] * b[k - i]) % p : s + a[i] * b[k - i];
+	FOR(int, k, 0, n + m - 2){
+		ll s = 0; FOR(int, i, max(0, k - m + 1), (min(n, k + 1)) - 1) s = p ? (s + a[i] * b[k - i]) % p : s + a[i] * b[k - i];
 		if (c[k] != s) fail(what, it, n, m);
 	}
 }

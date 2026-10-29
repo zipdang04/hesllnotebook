@@ -12,7 +12,7 @@ int main(){
 		// convolve + fwht round trip for all ops
 		for (char op: {'^', '|', '&'}){
 			vector<modint> a(A.begin(), A.end()), b(B.begin(), B.end()), c(n);
-			EFOR(int, i, 0, n) EFOR(int, j, 0, n){
+			FOR(int, i, 0, n - 1) FOR(int, j, 0, n - 1){
 				int k = op == '^' ? i ^ j : op == '|' ? i | j : i & j;
 				c[k] += a[i] * b[j];
 			}
@@ -24,9 +24,9 @@ int main(){
 		{
 			vector<modint> a(A.begin(), A.end()), o = a, d = a;
 			fwht(o, '|', 0); fwht(d, '&', 0);
-			EFOR(int, s, 0, n){
+			FOR(int, s, 0, n - 1){
 				modint so = 0, sd = 0;
-				EFOR(int, t, 0, n){
+				FOR(int, t, 0, n - 1){
 					if ((t & s) == t) so += a[t];
 					if ((t & s) == s) sd += a[t];
 				}
@@ -37,9 +37,9 @@ int main(){
 		for (int mx = 0; mx < 2; mx++) for (int sup = 0; sup < 2; sup++){
 			vector<ll> a = A;
 			sos(a, [&](ll p, ll q){ return mx ? max(p, q) : min(p, q); }, sup);
-			EFOR(int, s, 0, n){
+			FOR(int, s, 0, n - 1){
 				ll r = mx ? LLONG_MIN : LLONG_MAX;
-				EFOR(int, t, 0, n) if (sup ? (t & s) == s : (t & s) == t)
+				FOR(int, t, 0, n - 1) if (sup ? (t & s) == s : (t & s) == t)
 					r = mx ? max(r, A[t]) : min(r, A[t]);
 				if (a[s] != r) fail("sos max/min");
 			}

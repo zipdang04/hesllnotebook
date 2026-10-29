@@ -3,8 +3,8 @@
 int main(){
 	// dlog exhaustive check for m in 1..150
 	FOR(ll, m, 1, 150){
-		EFOR(ll, a, 0, m){
-			EFOR(ll, b, 0, m){
+		FOR(ll, a, 0, m - 1){
+			FOR(ll, b, 0, m - 1){
 				ll brute = -1;
 				ll cur = 1 % m;
 				for (ll x = 0; x < 2 * m + 5; x++){
@@ -24,9 +24,9 @@ int main(){
 	// dsqrt small primes
 	vector<ll> primes = {2, 3, 5, 7, 11, 13, 17, 97, 101, 257};
 	for (ll p : primes){
-		EFOR(ll, y, 0, p){
+		FOR(ll, y, 0, p - 1){
 			bool exists = false;
-			EFOR(ll, x, 0, p){
+			FOR(ll, x, 0, p - 1){
 				if (x * x % p == y){ exists = true; break; }
 			}
 			ll got = dsqrt(y, p);

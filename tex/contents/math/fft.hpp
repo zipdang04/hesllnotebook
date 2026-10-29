@@ -7,12 +7,12 @@ void fft(vector<C> &a){
 	static vector<C> rt(2, 1); // rt[k + j] = w_2k^j, each from cos/sin (no drift)
 	for (static int k = 2; k < n; k *= 2){
 		rt.resize(n);
-		EFOR(int, j, 0, k) rt[k + j] = polar(1.0L, acosl(-1) * j / k);
+		FOR(int, j, 0, k - 1) rt[k + j] = polar(1.0L, acosl(-1) * j / k);
 	}
 	vector<int> rev(n);
-	EFOR(int, i, 0, n) rev[i] = (rev[i / 2] | (i & 1) << L) / 2;
-	EFOR(int, i, 0, n) if (i < rev[i]) swap(a[i], a[rev[i]]);
-	for (int k = 1; k < n; k *= 2) for (int i = 0; i < n; i += 2 * k) EFOR(int, j, 0, k){
+	FOR(int, i, 0, n - 1) rev[i] = (rev[i / 2] | (i & 1) << L) / 2;
+	FOR(int, i, 0, n - 1) if (i < rev[i]) swap(a[i], a[rev[i]]);
+	for (int k = 1; k < n; k *= 2) for (int i = 0; i < n; i += 2 * k) FOR(int, j, 0, k - 1){
 		C z = rt[j + k] * a[i + j + k];
 		a[i + j + k] = a[i + j] - z; a[i + j] += z;
 	}
@@ -23,13 +23,13 @@ vector<double> conv(const vector<double> &a, const vector<double> &b){
 	vector<double> res(a.size() + b.size() - 1);
 	int n = 2 << log2(res.size());
 	vector<C> in(n), out(n);
-	EFOR(int, i, 0, a.size()) in[i].real(a[i]);
-	EFOR(int, i, 0, b.size()) in[i].imag(b[i]);
+	FOR(int, i, 0, (int)a.size() - 1) in[i].real(a[i]);
+	FOR(int, i, 0, (int)b.size() - 1) in[i].imag(b[i]);
 	fft(in);
 	for (C &x: in) x *= x;
-	EFOR(int, i, 0, n) out[i] = in[-i & (n - 1)] - conj(in[i]);
+	FOR(int, i, 0, n - 1) out[i] = in[-i & (n - 1)] - conj(in[i]);
 	fft(out);
-	EFOR(int, i, 0, res.size()) res[i] = imag(out[i]) / (4 * n);
+	FOR(int, i, 0, (int)res.size() - 1) res[i] = imag(out[i]) / (4 * n);
 	return res;
 }
 // a, b in [0, M), result mod M
@@ -42,16 +42,16 @@ template<int M> vector<ll> convMod(const vector<ll> &a, const vector<ll> &b){
 		if (x > M / 2) x -= M;
 		ll h = llround((double)x / cut); return C(h, x - h * cut);
 	};
-	EFOR(int, i, 0, a.size()) L[i] = split(a[i]);
-	EFOR(int, i, 0, b.size()) R[i] = split(b[i]);
+	FOR(int, i, 0, (int)a.size() - 1) L[i] = split(a[i]);
+	FOR(int, i, 0, (int)b.size() - 1) R[i] = split(b[i]);
 	fft(L); fft(R);
-	EFOR(int, i, 0, n){
+	FOR(int, i, 0, n - 1){
 		int j = -i & (n - 1);
 		outl[j] = (L[i] + conj(L[j])) * R[i] / (2.0 * n);
 		outs[j] = (L[i] - conj(L[j])) * R[i] / (2.0 * n) / C(0, 1);
 	}
 	fft(outl); fft(outs);
-	EFOR(int, i, 0, res.size()){
+	FOR(int, i, 0, (int)res.size() - 1){
 		ll hi = llround(real(outl[i])), lo = llround(imag(outs[i]));
 		ll mid = llround(imag(outl[i])) + llround(real(outs[i]));
 		res[i] = (((hi % M * cut + mid) % M * cut + lo) % M + M) % M;

@@ -15,7 +15,7 @@ template<class F> vector<ll> dncDP(int n, int K, F C){
 		}
 		self(self, l, m - 1, optl, best), self(self, m + 1, r, best, optr);
 	};
-	EFOR(int, i, 0, K) cur[0] = LLONG_MAX, rec(rec, 1, n, 0, n - 1), swap(prev, cur);
+	FOR(int, i, 0, K - 1) cur[0] = LLONG_MAX, rec(rec, 1, n, 0, n - 1), swap(prev, cur);
 	return prev;
 }
 // dp[l][r] = min_{l<=k<r} dp[l][k] + dp[k+1][r] + C(l, r), dp[i][i] = 0; dp[1][n] = answer

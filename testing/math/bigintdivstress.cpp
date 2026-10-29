@@ -16,7 +16,7 @@ mt19937_64 rng(7);
 bigint randBig(int len){ // len digits, random sign
 	string s = rng() % 2 ? "-" : "";
 	s += char('1' + rng() % 9);
-	EFOR(int, i, 1, len) s += char('0' + rng() % 10);
+	FOR(int, i, 1, len - 1) s += char('0' + rng() % 10);
 	return bigint(s);
 }
 // a vs __int128 (|a|, |d| < 2^63)
@@ -48,20 +48,20 @@ int main(){
 	for (ll a: corner) for (ll d: corner) if (d) small(a, d);
 	for (ll d: corner) if (d) small(LLONG_MIN, d);
 	uniform_int_distribution<ll> e18(-(ll)1e18 + 1, (ll)1e18 - 1), e3(-1000, 1000);
-	EFOR(int, it, 0, 200000){
+	FOR(int, it, 0, 199999){
 		ll a = e18(rng), d = it % 3 == 0 ? e3(rng) : e18(rng) >> (rng() % 60);
 		if (it % 5 == 0) d = it % 2 ? 1 : -1;
 		if (!d) d = 7;
 		small(a, d);
 	}
 	// big: zero dividend, divisor +-1, a = +-d, |d| > |a|, random lengths up to 3000 digits
-	EFOR(int, it, 0, 300){
+	FOR(int, it, 0, 299){
 		bigint a = randBig(1 + rng() % 3000), d = randBig(1 + rng() % 60);
 		big(bigint(0), d); big(a, bigint(1)); big(a, bigint(-1));
 		big(a, a); big(a, -a); big(d, a * a + 1); big(a, d);
 		big(a, randBig(1 + rng() % 18)); // fits the ll overload
 		big(a * d + randBig(1 + rng() % 5), d);
 	}
-	EFOR(int, it, 0, 10) big(randBig(2000 + rng() % 1000), randBig(1 + rng() % 2000));
+	FOR(int, it, 0, 9) big(randBig(2000 + rng() % 1000), randBig(1 + rng() % 2000));
 	puts("OK");
 }

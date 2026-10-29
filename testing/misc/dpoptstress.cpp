@@ -27,7 +27,7 @@ int main(){
 		// brute: f[i][j] = min cost of splitting a[1..j] into i groups (INF if impossible), i up to n + 2
 		vector<vector<ll>> f(n + 3, vector<ll>(n + 1, INF));
 		f[0][0] = 0;
-		FOR(int, i, 1, n + 2) FOR(int, j, 1, n) EFOR(int, k, 0, j) if (f[i - 1][k] < INF)
+		FOR(int, i, 1, n + 2) FOR(int, j, 1, n) FOR(int, k, 0, j - 1) if (f[i - 1][k] < INF)
 			f[i][j] = min(f[i][j], f[i - 1][k] + C(k + 1, j));
 
 		// 1) dncDP, K in [0, n + 2] (K > n: all INF), every j
@@ -44,7 +44,7 @@ int main(){
 			REV(int, l, n, 1) FOR(int, r, l, n){
 				if (l == r){ bf[l][r] = b[l]; continue; }
 				bf[l][r] = INF;
-				EFOR(int, k, l, r) bf[l][r] = min(bf[l][r], bf[l][k] + bf[k + 1][r] + C(l, r));
+				FOR(int, k, l, r - 1) bf[l][r] = min(bf[l][r], bf[l][k] + bf[k + 1][r] + C(l, r));
 			}
 			FOR(int, l, 1, n) FOR(int, r, l, n) if (dp[l][r] + sb[r] - sb[l - 1] != bf[l][r]) fail("knuth", seed);
 		}
@@ -55,7 +55,7 @@ int main(){
 		auto solve = [&](ll lam){
 			vector<pair<ll, ll>> g(n + 1, {INF, 0});
 			g[0] = {0, 0};
-			FOR(int, j, 1, n) EFOR(int, k, 0, j) g[j] = min(g[j], {g[k].fi + C(k + 1, j) + lam, g[k].se + 1});
+			FOR(int, j, 1, n) FOR(int, k, 0, j - 1) g[j] = min(g[j], {g[k].fi + C(k + 1, j) + lam, g[k].se + 1});
 			return g[n];
 		};
 		FOR(int, k, 1, n){

@@ -11,12 +11,12 @@ modint at(const poly &a, int i){ return i < (int)a.size() ? a[i] : 0; }
 poly naiveMul(const poly &a, const poly &b){
 	if (a.empty() || b.empty()) return {};
 	poly c(a.size() + b.size() - 1);
-	EFOR(int, i, 0, (int)a.size()) EFOR(int, j, 0, (int)b.size()) c[i+j] += a[i] * b[j];
+	FOR(int, i, 0, (int)a.size() - 1) FOR(int, j, 0, (int)b.size() - 1) c[i+j] += a[i] * b[j];
 	return c;
 }
 poly naiveInv(const poly &a, int n){
 	poly b(n); modint i0 = a[0].inv();
-	EFOR(int, i, 0, n){
+	FOR(int, i, 0, n - 1){
 		modint s = i == 0 ? 1 : 0;
 		FOR(int, j, 1, i) s -= at(a, j) * b[i-j];
 		b[i] = s * i0;
@@ -25,16 +25,16 @@ poly naiveInv(const poly &a, int n){
 }
 poly naiveLog(const poly &a, int n){ // i b_i = i a_i - sum_{k<i} k b_k a_{i-k}
 	poly b(n);
-	EFOR(int, i, 1, n){
+	FOR(int, i, 1, n - 1){
 		modint s = at(a, i) * i;
-		EFOR(int, k, 1, i) s -= b[k] * k * at(a, i-k);
+		FOR(int, k, 1, i - 1) s -= b[k] * k * at(a, i-k);
 		b[i] = s / i;
 	}
 	return b;
 }
 poly naiveExp(const poly &a, int n){ // i e_i = sum_{k=1..i} k a_k e_{i-k}
 	poly e(n); e[0] = 1;
-	EFOR(int, i, 1, n){
+	FOR(int, i, 1, n - 1){
 		modint s = 0;
 		FOR(int, k, 1, i) s += at(a, k) * k * e[i-k];
 		e[i] = s / i;
@@ -47,7 +47,7 @@ pair<poly, poly> naiveDiv(poly a, const poly &b){
 	poly q(n-m+1); modint ib = b.back().inv();
 	REV(int, i, n-m, 0){
 		q[i] = a[i+m-1] * ib;
-		EFOR(int, j, 0, m) a[i+j] -= q[i] * b[j];
+		FOR(int, j, 0, m - 1) a[i+j] -= q[i] * b[j];
 	}
 	a.resize(m-1); return {q, a};
 }
@@ -55,7 +55,7 @@ void fail(const char *what, int n, int len){
 	printf("FAIL %s n=%d |a|=%d\n", what, n, len); exit(1);
 }
 int main(){
-	FOR(int, n, 1, 300) EFOR(int, rep, 0, 3){
+	FOR(int, n, 1, 300) FOR(int, rep, 0, 2){
 		int len = 1 + rng() % (n + 6); // shorter, equal or longer than n
 		poly a = rndPoly(len), b = rndPoly(1 + rng() % (n + 6));
 		if (FPS::mul(a, b) != naiveMul(a, b)) fail("mul", n, len);

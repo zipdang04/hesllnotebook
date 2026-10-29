@@ -10,7 +10,7 @@ template<class F> double simpson(F f, double a, double b, double eps = 1e-9){
 		return self(self, l, m, fl, flm, fm, s1, e / 2, d - 1) + self(self, m, r, fm, fmr, fr, s2, e / 2, d - 1);
 	};
 	const int P = 16; double h = (b - a) / P, res = 0;  // 16 initial pieces: avoids false early stops
-	EFOR(int, i, 0, P){
+	FOR(int, i, 0, P - 1){
 		double l = a + i * h, r = l + h, fl = f(l), fm = f((l + r) / 2), fr = f(r);
 		res += rec(rec, l, r, fl, fm, fr, S(l, r, fl, fm, fr), eps / P, 20);
 	}
@@ -19,6 +19,6 @@ template<class F> double simpson(F f, double a, double b, double eps = 1e-9){
 // composite Simpson on 2n intervals, error O(h^4 f'''')
 template<class F> double simpsonN(F f, double a, double b, int n = 1000){
 	double h = (b - a) / (2 * n), v = f(a) + f(b);
-	EFOR(int, i, 1, 2 * n) v += f(a + i * h) * (i & 1 ? 4 : 2);
+	FOR(int, i, 1, 2 * n - 1) v += f(a + i * h) * (i & 1 ? 4 : 2);
 	return v * h / 3;
 }

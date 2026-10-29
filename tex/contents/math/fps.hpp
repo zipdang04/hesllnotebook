@@ -21,7 +21,7 @@ namespace FPS{
 	}
 	poly log(const poly &a, int n){ // a[0] == 1; log a = int a'/a
 		poly d;
-		EFOR(int, i, 1, min((int)a.size(), n)) d.push_back(a[i] * i);
+		FOR(int, i, 1, min((int)a.size(), n) - 1) d.push_back(a[i] * i);
 		d = mul(d, inv(a, n)); d.resize(n);
 		REV(int, i, n-1, 1) d[i] = d[i-1] / i;
 		d[0] = 0; return d;
@@ -30,7 +30,7 @@ namespace FPS{
 		poly r{1};
 		for (int k = 1; k < n; k *= 2){ // r = r (1 + a - log r) mod x^2k
 			poly t = log(r, 2*k);
-			EFOR(int, i, 0, 2*k) t[i] = (i < (int)a.size() ? a[i] : 0) - t[i];
+			FOR(int, i, 0, 2*k - 1) t[i] = (i < (int)a.size() ? a[i] : 0) - t[i];
 			t[0] += 1; r = mul(r, t); r.resize(2*k);
 		}
 		r.resize(n); return r;
@@ -43,7 +43,7 @@ namespace FPS{
 		reverse(q.begin(), q.end());
 		reverse(a.begin(), a.end()); reverse(b.begin(), b.end());
 		poly r = mul(b, q); r.resize(m-1);
-		EFOR(int, i, 0, m-1) r[i] = a[i] - r[i];
+		FOR(int, i, 0, m - 2) r[i] = a[i] - r[i];
 		return {q, r};
 	}
 }

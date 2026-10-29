@@ -18,7 +18,7 @@ ll dlog(ll a, ll b, ll m){
 	if (b == c) return k;
 	ll n = sqrtl(m) + 1, t = b, s = _pw(a, n, m);
 	unordered_map<ll, ll> mp; // baby steps: b a^j -> largest j
-	EFOR(int, j, 0, n) mp[t] = j, t = t * a % m;
+	FOR(int, j, 0, n - 1) mp[t] = j, t = t * a % m;
 	t = c;
 	FOR(int, i, 1, n){
 		t = t * s % m;
@@ -38,7 +38,7 @@ ll dsqrt(ll a, ll p){
 		ll i = 0, u = t;
 		for (; u != 1; i++) u = u * u % p;
 		ll b = c;
-		EFOR(int, j, 0, s - i - 1) b = b * b % p;
+		FOR(int, j, 0, s - i - 2) b = b * b % p;
 		x = x * b % p, c = b * b % p, t = t * c % p, s = i;
 	}
 	return x;
