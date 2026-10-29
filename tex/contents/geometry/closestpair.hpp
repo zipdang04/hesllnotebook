@@ -21,7 +21,7 @@ struct KDTree{
 	typedef Point<ll> P;
 	vector<pair<P, int>> t; // (point, input index), median-split on x / y alternately
 	KDTree(const vector<P>& v){
-		EFOR(int, i, 0, (int)v.size()) t.push_back({v[i], i});
+		FOR(int, i, 0, (int)v.size() - 1) t.push_back({v[i], i});
 		build(0, t.size(), 0);
 	}
 	void build(int l, int r, bool d){

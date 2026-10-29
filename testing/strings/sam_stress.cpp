@@ -1,12 +1,12 @@
 #include "../../tex/contents/strings/sam.hpp"
 int main(){
 	mt19937 rng(1);
-	EFOR(int, seed, 0, 20000){
+	FOR(int, seed, 0, 19999){
 		int A = rng() % 3 + 1, n = rng() % (seed % 10 == 0 ? 60 : 12) + 1;
-		string s; EFOR(int, i, 0, n) s += char('a' + rng() % A);
+		string s; FOR(int, i, 0, n - 1) s += char('a' + rng() % A);
 		SuffixAutomaton<3> sam;
 		set<string> all;
-		EFOR(int, i, 0, n){
+		FOR(int, i, 0, n - 1){
 			sam.extend(s[i]);
 			FOR(int, j, 0, i) all.insert(s.substr(j, i - j + 1));
 			if ((ll)all.size() != sam.distinct()){ printf("distinct %s %d\n", s.c_str(), i); return 1; }
@@ -22,7 +22,7 @@ int main(){
 			return true;
 		};
 		for (auto &p: all) if (!chk(p)) return 1;
-		EFOR(int, k, 0, 20){ string p; int m = rng() % 8 + 1; EFOR(int, i, 0, m) p += char('a' + rng() % 3); if (!chk(p)) return 1; }
+		FOR(int, k, 0, 19){ string p; int m = rng() % 8 + 1; FOR(int, i, 0, m - 1) p += char('a' + rng() % 3); if (!chk(p)) return 1; }
 	}
 	SuffixAutomaton<26> big(string(500000, 'z'));
 	if (big.distinct() != 500000){ puts("big"); return 1; }

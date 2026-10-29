@@ -17,10 +17,10 @@ int main(){
 			bool ok = (int)c.size() == n;
 			vector<int> c2 = c, out;
 			ok = ok && h.decode(c2, out) == 0 && out == d && c2 == c;
-			EFOR(int, a, 0, n){
+			FOR(int, a, 0, n - 1){
 				c2 = c; c2[a] ^= 1;
 				ok = ok && h.decode(c2, out) == 1 && out == d && c2 == c;
-				EFOR(int, b, a + 1, n){
+				FOR(int, b, a + 1, n - 1){
 					c2 = c; c2[a] ^= 1; c2[b] ^= 1;
 					auto c3 = c2;
 					ok = ok && h.decode(c2, out) == 2 && c2 == c3;

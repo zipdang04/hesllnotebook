@@ -39,11 +39,11 @@ template<class P> P ccCenter(P a, P b, P c){ // circumcentre; a, b, c not collin
 template<class P> pair<P, ld> mec(vector<P> ps){ // minimum enclosing circle {centre, radius}
 	shuffle(ps.begin(), ps.end(), mt19937(CURRENT_TIMESTAMP));
 	P o = ps[0]; ld r = 0, E = 1 + 1e-9;
-	EFOR(int, i, 0, (int)ps.size()) if ((o - ps[i]).dist() > r * E){
+	FOR(int, i, 0, (int)ps.size() - 1) if ((o - ps[i]).dist() > r * E){
 		o = ps[i], r = 0;
-		EFOR(int, j, 0, i) if ((o - ps[j]).dist() > r * E){
+		FOR(int, j, 0, i - 1) if ((o - ps[j]).dist() > r * E){
 			o = (ps[i] + ps[j]) / 2, r = (o - ps[i]).dist();
-			EFOR(int, k, 0, j) if ((o - ps[k]).dist() > r * E)
+			FOR(int, k, 0, j - 1) if ((o - ps[k]).dist() > r * E)
 				o = ccCenter(ps[i], ps[j], ps[k]), r = (o - ps[i]).dist();
 		}
 	}

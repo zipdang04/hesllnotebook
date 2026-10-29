@@ -19,25 +19,25 @@ template<class P> vector<array<int, 3>> hull3d(const vector<P>& p){
 	int n = p.size();
 	auto vol = [&](int a, int b, int c, int d){ return sgn((p[b] - p[a]).cross(p[c] - p[a]).dot(p[d] - p[a])); };
 	vector<int> o{0};
-	EFOR(int, i, 1, n){
+	FOR(int, i, 1, n - 1){
 		int k = o.size();
 		if (k == 1 ? !(p[i] == p[0]) : k == 2 ? !((p[o[1]] - p[0]).cross(p[i] - p[0]) == P()) : k == 3 && vol(0, o[1], o[2], i))
 			o.push_back(i);
 	}
 	if (o.size() < 4) return {};
 	vector<array<int, 3>> F;
-	EFOR(int, i, 0, 4){ // initial tetrahedron, faces oriented away from the 4th point
+	FOR(int, i, 0, 3){ // initial tetrahedron, faces oriented away from the 4th point
 		array<int, 3> f; int k = 0;
-		EFOR(int, j, 0, 4) if (j != i) f[k++] = o[j];
+		FOR(int, j, 0, 3) if (j != i) f[k++] = o[j];
 		if (vol(f[0], f[1], f[2], o[i]) > 0) swap(f[1], f[2]);
 		F.push_back(f);
 	}
 	vector<vector<int>> E(n, vector<int>(n, -1)); // E[a][b] = i: edge a->b on a face visible from i
-	EFOR(int, i, 0, n){
+	FOR(int, i, 0, n - 1){
 		vector<array<int, 3>> keep, vis;
 		for (auto& f: F) (vol(f[0], f[1], f[2], i) > 0 ? vis : keep).push_back(f);
-		for (auto& f: vis) EFOR(int, j, 0, 3) E[f[j]][f[(j + 1) % 3]] = i;
-		for (auto& f: vis) EFOR(int, j, 0, 3){
+		for (auto& f: vis) FOR(int, j, 0, 2) E[f[j]][f[(j + 1) % 3]] = i;
+		for (auto& f: vis) FOR(int, j, 0, 2){
 			int a = f[j], b = f[(j + 1) % 3];
 			if (E[b][a] != i) keep.push_back({a, b, i}); // horizon edge
 		}

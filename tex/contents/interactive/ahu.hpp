@@ -19,7 +19,7 @@ struct AHU{
 	}
 	int unrooted(const vector<vector<int>> &g){ // min over the center(s)
 		int n = g.size(); vector<int> d(n), q, c;
-		EFOR(int, v, 0, n) if ((d[v] = g[v].size()) <= 1) q.push_back(v);
+		FOR(int, v, 0, n - 1) if ((d[v] = g[v].size()) <= 1) q.push_back(v);
 		for (int i = 0, left = n; left > 0;){
 			c.assign(q.begin() + i, q.end()); left -= q.size() - i;
 			for (int e = q.size(); i < e; i++) for (int w: g[q[i]]) if (--d[w] == 1) q.push_back(w);

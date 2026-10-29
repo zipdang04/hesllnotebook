@@ -11,12 +11,12 @@ struct AddMin{ // range add, range min
 int main(){
 	mt19937 rng(1);
 	auto rnd = [&](ll a, ll b){ return uniform_int_distribution<ll>(a, b)(rng); };
-	EFOR(int, it, 0, 3000){
+	FOR(int, it, 0, 2999){
 		int n = it % 3 == 0 ? 0 : rnd(1, it < 2000 ? 8 : 60);
 		vector<ll> b(n); for (ll& x: b) x = rnd(-1e9, 1e9);
 		Treap<AddMin> tr = n || rnd(0, 1) ? Treap<AddMin>(b) : Treap<AddMin>();
 		auto fail = [&](const char* w){ printf("FAIL %s it=%d n=%d\n", w, it, n); exit(1); };
-		EFOR(int, op, 0, 300){
+		FOR(int, op, 0, 299){
 			int m = b.size(), ty = rnd(0, 5);
 			if (tr.size() != m) fail("size");
 			if (ty == 0 || m == 0){ int i = rnd(1, m + 1); ll x = rnd(-1e9, 1e9); tr.insert(i, x); b.insert(b.begin() + i - 1, x); continue; }

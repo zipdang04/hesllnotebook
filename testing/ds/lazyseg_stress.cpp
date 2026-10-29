@@ -12,14 +12,14 @@ mt19937 rng(1);
 ll rnd(ll a, ll b){ return uniform_int_distribution<ll>(a, b)(rng); }
 void fail(const char* w, int n){ printf("FAIL %s n=%d\n", w, n); exit(1); }
 int main(){
-	EFOR(int, it, 0, 3000){
+	FOR(int, it, 0, 2999){
 		int n = it < 2000 ? rnd(1, 8) : rnd(1, 60);
 		vector<ll> a(n + 1), h(n + 1); // brute, 1-indexed
 		FOR(int, i, 1, n) a[i] = rnd(-1e9, 1e9), h[i] = rnd(0, 5);
 		LazySeg<_exampleAddMin> s1(vector<ll>(a.begin() + 1, a.end()));
 		vector<Hash::S> hv; FOR(int, i, 1, n) hv.push_back({h[i], B, 1});
 		LazySeg<Hash> s2(hv);
-		EFOR(int, qq, 0, 300){
+		FOR(int, qq, 0, 299){
 			int L = rnd(1, n), R = rnd(1, n); if (L > R) swap(L, R);
 			int op = rnd(0, 5);
 			if (op == 0){ ll f = rnd(-1e9, 1e9); s1.apply(L, R, f); FOR(int, i, L, R) a[i] += f; }

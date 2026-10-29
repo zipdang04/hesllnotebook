@@ -11,7 +11,7 @@ struct HalfPlane{
 vector<Point<ld>> halfPlaneInter(vector<HalfPlane> h, ld B = 1e6){
 	typedef Point<ld> P;
 	P c[4] = {P(B, B), P(-B, B), P(-B, -B), P(B, -B)};
-	EFOR(int, i, 0, 4) h.push_back({c[i], c[(i + 1) % 4] - c[i]});
+	FOR(int, i, 0, 3) h.push_back({c[i], c[(i + 1) % 4] - c[i]});
 	sort(h.begin(), h.end(), [](auto& a, auto& b){ return a.d.angle() < b.d.angle(); });
 	deque<HalfPlane> q;
 	for (auto& x: h){
@@ -28,6 +28,6 @@ vector<Point<ld>> halfPlaneInter(vector<HalfPlane> h, ld B = 1e6){
 	while (q.size() > 2 && q.back().out(q[0].inter(q[1]))) q.pop_front();
 	if (q.size() < 3) return {};
 	vector<P> r;
-	EFOR(int, i, 0, (int)q.size()) r.push_back(q[i].inter(q[(i + 1) % q.size()]));
+	FOR(int, i, 0, (int)q.size() - 1) r.push_back(q[i].inter(q[(i + 1) % q.size()]));
 	return r;
 }

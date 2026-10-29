@@ -6,7 +6,7 @@ typedef __int128 L;
 bool brute(const vector<P>& p, ll& v6, ld& area){
 	int n = p.size(); v6 = 0; area = 0;
 	set<array<ll, 4>> seen; bool any = false;
-	EFOR(int, i, 0, n) EFOR(int, j, 0, n) EFOR(int, k, 0, n){
+	FOR(int, i, 0, n - 1) FOR(int, j, 0, n - 1) FOR(int, k, 0, n - 1){
 		P nv = (p[j] - p[i]).cross(p[k] - p[i]);
 		if (nv == P()) continue;
 		int pos = 0, neg = 0;
@@ -20,7 +20,7 @@ bool brute(const vector<P>& p, ll& v6, ld& area){
 		array<ll, 4> key{nv.x, nv.y, nv.z, nv.dot(p[i])};
 		if (!seen.insert(key).second) continue;
 		vector<int> S;
-		EFOR(int, t, 0, n) if (nv.dot(p[t] - p[i]) == 0) S.push_back(t);
+		FOR(int, t, 0, n - 1) if (nv.dot(p[t] - p[i]) == 0) S.push_back(t);
 		// project: drop axis with largest |normal|
 		int ax = llabs(nv.x) >= llabs(nv.y) && llabs(nv.x) >= llabs(nv.z) ? 0 : llabs(nv.y) >= llabs(nv.z) ? 1 : 2;
 		vector<pair<Point<ll>, int>> q;
@@ -33,7 +33,7 @@ bool brute(const vector<P>& p, ll& v6, ld& area){
 		// orient outward
 		P fn = (p[poly[1]] - p[poly[0]]).cross(p[poly[2]] - p[poly[0]]);
 		if (fn.dot(nv) < 0) reverse(poly.begin(), poly.end());
-		EFOR(int, t, 1, (int)poly.size() - 1){
+		FOR(int, t, 1, (int)poly.size() - 2){
 			P c = (p[poly[t]] - p[poly[0]]).cross(p[poly[t + 1]] - p[poly[0]]);
 			area += sqrtl((ld)c.x * c.x + (ld)c.y * c.y + (ld)c.z * c.z) / 2;
 			L a1[3] = {p[poly[0]].x - p[0].x, p[poly[0]].y - p[0].y, p[poly[0]].z - p[0].z};
@@ -50,14 +50,14 @@ int main(){
 	auto rnd = [&](ll a, ll b){ return (ll)(mt() % (b - a + 1)) + a; };
 	const ll C = 500000;
 	int ITER = 30000;
-	EFOR(int, it, 0, ITER){
+	FOR(int, it, 0, ITER - 1){
 		int n = rnd(1, it % 5 ? 14 : 6);
 		int shape = it % 6;
 		ll K = vector<ll>{1, 2, 3, 10, 1000}[it % 5];
 		vector<P> p;
 		P base;
 		if (it % 4 == 1) base = P(rnd(0,1) ? C - K : -C + K, rnd(0,1) ? C - K : -C + K, rnd(0,1) ? C - K : -C + K);
-		EFOR(int, i, 0, n){
+		FOR(int, i, 0, n - 1){
 			P q(rnd(-K, K), rnd(-K, K), rnd(-K, K));
 			if (shape == 1) q.z = 0;                       // all coplanar
 			if (shape == 2) q.z = q.x + q.y;               // coplanar, tilted
@@ -65,7 +65,7 @@ int main(){
 			if (shape == 4 && i % 2) q.z = rnd(0, 1) ? -K : K; // many on two planes
 			p.push_back(base + q);
 		}
-		if (it % 9 == 4) EFOR(int, i, 0, n) p[i] = P(rnd(0,1) ? C : -C, rnd(0,1) ? C : -C, rnd(0,1) ? C : -C);
+		if (it % 9 == 4) FOR(int, i, 0, n - 1) p[i] = P(rnd(0,1) ? C : -C, rnd(0,1) ? C : -C, rnd(0,1) ? C : -C);
 		if (shape == 5 && n > 1) p[rnd(0, n - 1)] = p[0];    // duplicate
 		ll bv; ld ba; bool full = brute(p, bv, ba);
 		auto F = hull3d(p);
@@ -78,7 +78,7 @@ int main(){
 				P nv = (p[f[1]] - p[f[0]]).cross(p[f[2]] - p[f[0]]);
 				if (nv == P()) ok = false;
 				for (auto& q: p) if ((L)nv.dot(q - p[f[0]]) > 0) ok = false;
-				EFOR(int, j, 0, 3) E[{f[j], f[(j + 1) % 3]}]++;
+				FOR(int, j, 0, 2) E[{f[j], f[(j + 1) % 3]}]++;
 			}
 			for (auto& [e, c]: E) if (c != 1 || !E.count({e.se, e.fi})) ok = false;
 			if (polyVolume6(p, F) != bv) ok = false;
@@ -92,7 +92,7 @@ int main(){
 	}
 	// timing: n = 2000 random points on a sphere-ish shell
 	vector<P> big;
-	EFOR(int, i, 0, 2000){ ld a = rnd(0, 1e9) / 1e9 * 6.283, b = rnd(0, 1e9) / 1e9 * 3.1415;
+	FOR(int, i, 0, 1999){ ld a = rnd(0, 1e9) / 1e9 * 6.283, b = rnd(0, 1e9) / 1e9 * 3.1415;
 		big.push_back(P(llroundl(C * cosl(a) * sinl(b)), llroundl(C * sinl(a) * sinl(b)), llroundl(C * cosl(b)))); }
 	auto t0 = clock(); auto F = hull3d(big);
 	printf("n=2000 shell: %zu faces, %.3fs\n", F.size(), (double)(clock() - t0) / CLOCKS_PER_SEC);

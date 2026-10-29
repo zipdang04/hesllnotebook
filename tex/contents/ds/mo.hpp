@@ -16,7 +16,7 @@ template<class A, class D, class C> auto mo(const vector<pair<int,int>>& Q, A ad
 	};
 	int q = Q.size(), L = 1, R = 0;
 	vector<int> s(q); vector<ll> h(q); vector<decltype(calc())> res(q);
-	EFOR(int, i, 0, q) s[i] = i, h[i] = hil(Q[i].fi, Q[i].se);
+	FOR(int, i, 0, q - 1) s[i] = i, h[i] = hil(Q[i].fi, Q[i].se);
 	sort(s.begin(), s.end(), [&](int a, int b){ return h[a] < h[b]; });
 	for (int i: s){
 		auto [l, r] = Q[i];

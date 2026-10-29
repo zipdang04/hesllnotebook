@@ -6,16 +6,16 @@ int main(){
 	for (auto &a: p) read(a[0], a[1], a[2]), ys.push_back(a[1]);
 	sort(p.begin(), p.end());
 	sort(ys.begin(), ys.end()); ys.erase(unique(ys.begin(), ys.end()), ys.end());
-	auto rk = [&](int y){ return int(lower_bound(ys.begin(), ys.end(), y) - ys.begin()); };
+	auto rk = [&](int y){ return int(lower_bound(ys.begin(), ys.end(), y) - ys.begin()) + 1; };
 	PSeg<ll> t(ys.size()); t.L.reserve(n * 20 + 9); t.R.reserve(n * 20 + 9); t.v.reserve(n * 20 + 9);
 	vector<int> root{0};
 	for (auto [x, y, w]: p){
 		int k = rk(y);
-		root.push_back(t.upd(root.back(), k, t.qry(root.back(), k, k + 1) + w));
+		root.push_back(t.upd(root.back(), k, t.qry(root.back(), k, k) + w));
 	}
 	auto cnt = [&](int x, int d, int u){ // sum over points with x' < x, y in [d, u)
 		int k = lower_bound(p.begin(), p.end(), array<int, 3>{x, -1, -1}) - p.begin();
-		return t.qry(root[k], rk(d), rk(u));
+		return t.qry(root[k], rk(d), rk(u) - 1);
 	};
 	while (q--){
 		int l, d, r, u; read(l, d, r, u);

@@ -7,7 +7,7 @@ int main(){
 		iota(lab.begin(), lab.end(), 0);
 		vector<pair<int, vector<int>>> snap;
 		auto fail = [&](){ printf("FAIL seed %d\n", seed); exit(1); };
-		EFOR(int, op, 0, 200){
+		FOR(int, op, 0, 199){
 			int r = rng() % 10;
 			if (r < 5){
 				int a = rng() % n, b = rng() % n;
@@ -20,9 +20,9 @@ int main(){
 				uf.rollback(snap[k].fi); lab = snap[k].se;
 				snap.resize(k + (rng() & 1));
 			}
-			EFOR(int, x, 0, n){
+			FOR(int, x, 0, n - 1){
 				int c = 0;
-				EFOR(int, y, 0, n){
+				FOR(int, y, 0, n - 1){
 					c += lab[y] == lab[x];
 					if ((uf.find(x) == uf.find(y)) != (lab[x] == lab[y])) fail();
 				}

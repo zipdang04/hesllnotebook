@@ -4,7 +4,7 @@ mt19937_64 mt(7);
 ll rnd(ll a, ll b){ return uniform_int_distribution<ll>(a, b)(mt); }
 bool simple(const vector<P>& v){
 	int n = v.size();
-	EFOR(int, i, 0, n) EFOR(int, j, i + 1, n){
+	FOR(int, i, 0, n - 1) FOR(int, j, i + 1, n - 1){
 		P a = v[i], b = v[(i + 1) % n], c = v[j], d = v[(j + 1) % n];
 		auto s = segInter(a, b, c, d);
 		bool adj = j == i + 1 || (i == 0 && j == n - 1);
@@ -27,7 +27,7 @@ vector<P> gen(int n, ll C){ // random simple polygon (star-shaped around lowest 
 // brute classification: exact ray cast to +x with rationals
 int bruteIn(const vector<P>& v, P a){
 	int n = v.size(), c = 0;
-	EFOR(int, i, 0, n){
+	FOR(int, i, 0, n - 1){
 		P p = v[i], q = v[(i + 1) % n];
 		if (p.cross(q, a) == 0 && min(p.x, q.x) <= a.x && a.x <= max(p.x, q.x) && min(p.y, q.y) <= a.y && a.y <= max(p.y, q.y)) return 0;
 		if ((p.y > a.y) != (q.y > a.y)){
@@ -39,7 +39,7 @@ int bruteIn(const vector<P>& v, P a){
 	}
 	return c ? 1 : -1;
 }
-__int128 area128(const vector<P>& v){ __int128 a = 0; int n = v.size(); EFOR(int, i, 0, n) a += (__int128)v[i].x * v[(i+1)%n].y - (__int128)v[i].y * v[(i+1)%n].x; return a; }
+__int128 area128(const vector<P>& v){ __int128 a = 0; int n = v.size(); FOR(int, i, 0, n - 1) a += (__int128)v[i].x * v[(i+1)%n].y - (__int128)v[i].y * v[(i+1)%n].x; return a; }
 ld cutArea(vector<Q> v, Q s, Q e){ auto r = polygonCut(v, s, e); return r.size() < 3 ? 0 : polyArea2(r) / 2; }
 int cuts=0, maxn=0;
 int main(){
@@ -53,13 +53,13 @@ int main(){
 			if (r != b){ printf("FAIL inPolygon it=%d\n", it); return 1; }
 			I += r == 1; B += r == 0;
 		}
-		ll Bg = 0; EFOR(int, i, 0, n) Bg += __gcd(llabs(v[i].x - v[(i+1)%n].x), llabs(v[i].y - v[(i+1)%n].y));
+		ll Bg = 0; FOR(int, i, 0, n - 1) Bg += __gcd(llabs(v[i].x - v[(i+1)%n].x), llabs(v[i].y - v[(i+1)%n].y));
 		if (Bg != B || llabs(polyArea2(v)) != 2 * I + B - 2){ printf("FAIL pick it=%d\n", it); return 1; }
 		// cut on non-convex: compare with fan decomposition of triangles (signed)
 		vector<Q> w; for (P p: v) w.push_back(Q(p.x, p.y));
 		Q s(rnd(-C, C), rnd(-C, C)), e(rnd(-C, C), rnd(-C, C)); if (s == e) continue;
 		cuts++; maxn=max(maxn,n); ld got = cutArea(w, s, e), exp = 0;
-		EFOR(int, i, 0, n){
+		FOR(int, i, 0, n - 1){
 			vector<Q> t = {w[0] * 0 + Q(-C - 3, -C - 3), w[i], w[(i + 1) % n]};
 			ld sg = polyArea2(t) > 0 ? 1 : -1; if (sg < 0) swap(t[1], t[2]);
 			exp += sg * cutArea(t, s, e);
@@ -70,8 +70,8 @@ int main(){
 	FOR(int, it, 1, 3000){
 		ll C = 1000000000; int n = rnd(3, 8); auto v = gen(n, C);
 		vector<P> qs;
-		EFOR(int, i, 0, n){ P p = v[i], q = v[(i + 1) % n]; qs.push_back(p); qs.push_back(P((p.x + q.x) / 2, (p.y + q.y) / 2)); qs.push_back(p + P(rnd(-1, 1), rnd(-1, 1))); }
-		EFOR(int, k, 0, 10) qs.push_back(P(rnd(-C, C), rnd(-C, C)));
+		FOR(int, i, 0, n - 1){ P p = v[i], q = v[(i + 1) % n]; qs.push_back(p); qs.push_back(P((p.x + q.x) / 2, (p.y + q.y) / 2)); qs.push_back(p + P(rnd(-1, 1), rnd(-1, 1))); }
+		FOR(int, k, 0, 9) qs.push_back(P(rnd(-C, C), rnd(-C, C)));
 		for (P a: qs) if (llabs(a.x) <= C && llabs(a.y) <= C && inPolygon(v, a) != bruteIn(v, a)){ printf("FAIL big inPolygon\n"); return 1; }
 		if ((__int128)polyArea2(v) != area128(v)){ printf("FAIL big area simple\n"); return 1; }
 	}

@@ -4,7 +4,7 @@ int main(){
 	ios_base::sync_with_stdio(false); cin.tie(nullptr);
 	int n, q; cin >> n >> q;
 	ordSet<int> s;
-	EFOR(int, i, 0, n){ int a; cin >> a; s.insert(a); }
+	FOR(int, i, 0, n - 1){ int a; cin >> a; s.insert(a); }
 	string out;
 	while (q--){
 		int t, x; cin >> t >> x;

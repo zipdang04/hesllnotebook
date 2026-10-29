@@ -18,7 +18,7 @@ template<class P> vector<P> convexHull(vector<P> pts){
 template<class P> array<P, 2> hullDiameter(const vector<P>& h){
 	int n = h.size(), j = n < 2 ? 0 : 1;
 	array<P, 2> r{h[0], h[0]};
-	EFOR(int, i, 0, j) for (;; j = (j + 1) % n){
+	FOR(int, i, 0, j - 1) for (;; j = (j + 1) % n){
 		if ((h[i] - h[j]).dist2() > (r[0] - r[1]).dist2()) r = {h[i], h[j]};
 		if (sgn((h[(j + 1) % n] - h[j]).cross(h[i + 1] - h[i])) >= 0) break;
 	}

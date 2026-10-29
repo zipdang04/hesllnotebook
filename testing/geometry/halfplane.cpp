@@ -2,14 +2,14 @@
 typedef Point<ld> P; typedef __int128 L; typedef Point<ll> I;
 mt19937 mt(1);
 ll rnd(ll a, ll b){ return uniform_int_distribution<ll>(a, b)(mt); }
-ld area(const vector<P>& v){ ld s = 0; EFOR(int,i,0,(int)v.size()) s += v[i].cross(v[(i+1)%v.size()]); return s/2; }
+ld area(const vector<P>& v){ ld s = 0; FOR(int, i, 0, (int)v.size() - 1) s += v[i].cross(v[(i+1)%v.size()]); return s/2; }
 L cr(L ax, L ay, L bx, L by){ return ax*by - ay*bx; }
 // exact: all pairwise line intersections inside every half-plane, hull area
 ld brute(vector<pair<I,I>> h, ll B, bool& degen){
 	I c[4] = {I(B,B), I(-B,B), I(-B,-B), I(B,-B)};
-	EFOR(int,i,0,4) h.push_back({c[i], I(c[(i+1)%4].x - c[i].x, c[(i+1)%4].y - c[i].y)});
+	FOR(int, i, 0, 3) h.push_back({c[i], I(c[(i+1)%4].x - c[i].x, c[(i+1)%4].y - c[i].y)});
 	int n = h.size(); vector<P> pts; set<array<L,3>> seen;
-	EFOR(int,i,0,n) EFOR(int,j,i+1,n){
+	FOR(int, i, 0, n - 1) FOR(int, j, i+1, n - 1){
 		auto [pi, di] = h[i]; auto [pj, dj] = h[j];
 		L D = cr(di.x, di.y, dj.x, dj.y); if (!D) continue;
 		L T = cr(dj.x, dj.y, pi.x - pj.x, pi.y - pj.y);
@@ -30,11 +30,11 @@ ld brute(vector<pair<I,I>> h, ll B, bool& degen){
 }
 int main(){ ll CC = 10000, BB = 1000000; mt.seed(1);
 	int T = 300000; long long fails=0, degen=0, unb=0;
-	EFOR(int, it, 0, T){
+	FOR(int, it, 0, T - 1){
 		int mode = it % 4; ll C = mode==0 ? 3 : mode==1 ? 10 : mode==2 ? 1000 : CC; ll B = mode==3 ? BB : 10*C;
 		int n = rnd(0, mode==0 ? 6 : 10);
 		vector<pair<I,I>> h;
-		EFOR(int,i,0,n){ I a(rnd(-C,C), rnd(-C,C)), b; do b = I(rnd(-C,C), rnd(-C,C)); while (b == a);
+		FOR(int, i, 0, n - 1){ I a(rnd(-C,C), rnd(-C,C)), b; do b = I(rnd(-C,C), rnd(-C,C)); while (b == a);
 			h.push_back({a, b - a}); if (rnd(0,4)==0) h.push_back(h[rnd(0,(int)h.size()-1)]);
 			int t = rnd(0,7); auto x = h.back();
 			if (t==0) h.push_back({x.fi + x.se*2, x.se*-1});           // same line reversed
@@ -48,7 +48,7 @@ int main(){ ll CC = 10000, BB = 1000000; mt.seed(1);
 		auto r = halfPlaneInter(hh, B);
 		ld ra = r.empty() ? 0 : area(r);
 		bool ok = fabsl(ea - ra) <= 1e-9 * max((ld)1, ea) + 1e-12L*B*B && (r.empty() || r.size() >= 3);
-		EFOR(int,i,0,(int)r.size()) if (orient(r[i], r[(i+1)%r.size()], r[(i+2)%r.size()]) <= 0) ok = false;
+		FOR(int, i, 0, (int)r.size() - 1) if (orient(r[i], r[(i+1)%r.size()], r[(i+2)%r.size()]) <= 0) ok = false;
 		for (auto& q: r) for (auto& x: hh) if (x.d.cross(q - x.p) / x.d.dist() < -1e-6) ok = false;
 		if (ea > 0.9L*4*B*B) unb++;
 		if (dg) degen++;
@@ -70,11 +70,11 @@ int main(){ ll CC = 10000, BB = 1000000; mt.seed(1);
 	for (auto v: e){ poly.push_back(cur); cur = cur + P(v.x, v.y); }
 	for (auto p: poly) mx = max({mx, fabsl(p.x), fabsl(p.y)});
 	vector<HalfPlane> h; mt19937 mt(3);
-	EFOR(int,r,0,200000/(int)poly.size()+1) EFOR(int,i,0,(int)poly.size()) h.push_back({poly[i], poly[(i+1)%poly.size()]-poly[i]});
+	FOR(int, r, 0, 200000/(int)poly.size()) FOR(int, i, 0, (int)poly.size() - 1) h.push_back({poly[i], poly[(i+1)%poly.size()]-poly[i]});
 	shuffle(h.begin(), h.end(), mt);
-	ld A=0; EFOR(int,i,0,(int)poly.size()) A += poly[i].cross(poly[(i+1)%poly.size()]); A/=2;
+	ld A=0; FOR(int, i, 0, (int)poly.size() - 1) A += poly[i].cross(poly[(i+1)%poly.size()]); A/=2;
 	auto res = halfPlaneInter(h, 1e6); 
-	ld R=0; EFOR(int,i,0,(int)res.size()) R += res[i].cross(res[(i+1)%res.size()]); R/=2;
+	ld R=0; FOR(int, i, 0, (int)res.size() - 1) R += res[i].cross(res[(i+1)%res.size()]); R/=2;
 	printf("big n=%zu verts=%zu got=%zu maxc=%Lg A=%.3Lf R=%.3Lf\n", h.size(), poly.size(), res.size(), mx, A, R); if (res.size() != poly.size() || fabsl(A - R) > 1e-6L * A) fails++;
 	}
 	return fails != 0;

@@ -6,9 +6,9 @@ ld brute(vector<P> &ps){ // O(n^4): best circle through 2 (diameter) or 3 points
 	int n = ps.size(); ld best = 1e30;
 	auto ok = [&](P o, ld r){ for (P p: ps) if ((p - o).dist() > r * (1 + 1e-12) + 1e-12) return false; return true; };
 	if (n == 1) return 0;
-	EFOR(int, i, 0, n) EFOR(int, j, i, n){
+	FOR(int, i, 0, n - 1) FOR(int, j, i, n - 1){
 		P o = (ps[i] + ps[j]) / 2; ld r = (o - ps[i]).dist(); if (r < best && ok(o, r)) best = r;
-		EFOR(int, k, j + 1, n){
+		FOR(int, k, j + 1, n - 1){
 			P a = ps[i], b = ps[j], c = ps[k]; ld D = 2 * (b - a).cross(c - a); if (D == 0) continue;
 			// solve |o-a|=|o-b|=|o-c| by Cramer
 			ld b1 = b.dist2() - a.dist2(), c1 = c.dist2() - a.dist2();
@@ -23,7 +23,7 @@ int main(int argc, char **argv){
 	FOR(int, it, 1, 20000){
 		int n = rnd(1, 12), sh = rnd(0, 3); ll R = C[rnd(0, 4)];
 		vector<P> ps;
-		EFOR(int, i, 0, n){
+		FOR(int, i, 0, n - 1){
 			if (sh == 0) ps.push_back(P(rnd(-R, R), rnd(-R, R)));
 			else if (sh == 1) { ll t = rnd(-R, R); ps.push_back(P(t, 2 * t / 3)); } // collinear-ish
 			else if (sh == 2) ps.push_back(i ? ps[0] : P(rnd(-R, R), rnd(-R, R)));
@@ -36,6 +36,6 @@ int main(int argc, char **argv){
 	}
 	puts("OK");
 	// timing
-	vector<P> ps; EFOR(int, i, 0, 1000000) ps.push_back(P(rnd(-1e9, 1e9), rnd(-1e9, 1e9)));
+	vector<P> ps; FOR(int, i, 0, 999999) ps.push_back(P(rnd(-1e9, 1e9), rnd(-1e9, 1e9)));
 	auto t0 = clock(); auto [o, r] = mec(ps); printf("1e6 pts: %.3fs r=%.3Lf\n", (double)(clock() - t0) / CLOCKS_PER_SEC, r);
 }

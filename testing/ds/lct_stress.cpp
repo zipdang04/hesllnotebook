@@ -2,7 +2,7 @@
 int main(){
 	mt19937 rng(1);
 	auto rnd = [&](int a, int b){ return (int)(rng() % (b - a + 1)) + a; };
-	EFOR(int, seed, 0, 3000){
+	FOR(int, seed, 0, 2999){
 		int n = rnd(1, 12); LCT lct(n);
 		vector<ll> a(n, 0); vector<set<int>> g(n); vector<pair<int,int>> edges;
 		auto bfs = [&](int r, vector<int>& par, vector<int>& dep){ // par = -2 if unreachable
@@ -10,7 +10,7 @@ int main(){
 			while (qu.size()){ int u = qu.front(); qu.pop(); for (int v: g[u]) if (par[v] == -2) par[v] = u, dep[v] = dep[u] + 1, qu.push(v); }
 		};
 		auto fail = [&](const char* what){ printf("seed %d: %s\n", seed, what); exit(1); };
-		EFOR(int, it, 0, 300){
+		FOR(int, it, 0, 299){
 			int ty = rnd(0, 5), u = rnd(0, n - 1), v = rnd(0, n - 1), r = rnd(0, n - 1);
 			vector<int> par, dep; bfs(u, par, dep);
 			if (ty == 0){ // link if possible

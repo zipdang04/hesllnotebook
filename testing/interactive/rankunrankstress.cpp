@@ -5,12 +5,12 @@ template<class T> bool same(T a, ll b){ return a == T(b); }
 
 // Multiset mapping helpers (stars and bars: x_i -> x_i + i, sorted)
 template<class T> T rankMulti(RankUnrank<T> &R, vector<int> m, int n){
-	EFOR(int, i, 0, (int)m.size()) m[i] += i;
+	FOR(int, i, 0, (int)m.size() - 1) m[i] += i;
 	return R.rankSubset(m, n + (int)m.size() - 1);
 }
 template<class T> vector<int> unrankMulti(RankUnrank<T> &R, T r, int n, int k){
 	vector<int> m = R.unrankSubset(r, n + k - 1, k);
-	EFOR(int, i, 0, k) m[i] -= i;
+	FOR(int, i, 0, k - 1) m[i] -= i;
 	return m;
 }
 
@@ -29,10 +29,10 @@ template<class T> void run(){
 		vector<int> cur;
 		function<void(int)> go = [&](int x){
 			if ((int)cur.size() == k){ all.push_back(cur); return; }
-			EFOR(int, y, x, n){ cur.push_back(y); go(y+1); cur.pop_back(); }
+			FOR(int, y, x, n - 1){ cur.push_back(y); go(y+1); cur.pop_back(); }
 		};
 		go(0); // lexicographic order by construction
-		EFOR(int, i, 0, all.size()){
+		FOR(int, i, 0, (int)all.size() - 1){
 			assert(same(R.rankSubset(all[i], n), i)); assert(R.unrankSubset(T(i), n, k) == all[i]);
 		}
 	}
@@ -41,10 +41,10 @@ template<class T> void run(){
 		vector<vector<int>> all; vector<int> cur;
 		function<void(int)> go = [&](int x){
 			if ((int)cur.size() == k){ all.push_back(cur); return; }
-			EFOR(int, y, x, n){ cur.push_back(y); go(y); cur.pop_back(); }
+			FOR(int, y, x, n - 1){ cur.push_back(y); go(y); cur.pop_back(); }
 		};
 		go(0);
-		EFOR(int, i, 0, all.size()){
+		FOR(int, i, 0, (int)all.size() - 1){
 			assert(same(rankMulti(R, all[i], n), i)); assert(unrankMulti(R, T(i), n, k) == all[i]);
 		}
 	}
@@ -65,11 +65,11 @@ int main(){
 	// big cases (bigint only): perms of 30, C(100,50), multiset
 	RankUnrank<bigint> B(120);
 	mt19937 rng(1);
-	EFOR(int, it, 0, 200){
+	FOR(int, it, 0, 199){
 		int n = 30; vector<int> p(n); iota(p.begin(), p.end(), 0); shuffle(p.begin(), p.end(), rng);
 		bigint r = B.rankPerm(p); assert(B.unrankPerm(r, n) == p);
 		assert(r < B.f[n]);
-		vector<int> c; EFOR(int, x, 0, 100) if (rng()%2) c.push_back(x);
+		vector<int> c; FOR(int, x, 0, 99) if (rng()%2) c.push_back(x);
 		int k = c.size(), nn = 100;
 		bigint s = B.rankSubset(c, nn); assert(B.unrankSubset(s, nn, k) == c); assert(s < B.C[nn][k]);
 		vector<int> m(20); for (int &v: m) v = rng()%100; sort(m.begin(), m.end());

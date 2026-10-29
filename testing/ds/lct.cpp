@@ -2,8 +2,8 @@
 int main(){
 	int n, q; read(n, q);
 	LCT lct(n);
-	EFOR(int, i, 0, n){ ll a; read(a); lct.set(i, a); }
-	EFOR(int, i, 0, n - 1){ int u, v; read(u, v); lct.link(u, v); }
+	FOR(int, i, 0, n - 1){ ll a; read(a); lct.set(i, a); }
+	FOR(int, i, 0, n - 2){ int u, v; read(u, v); lct.link(u, v); }
 	string out;
 	while (q--){
 		int ty; read(ty);
