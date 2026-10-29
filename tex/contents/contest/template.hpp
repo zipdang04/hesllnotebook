@@ -5,20 +5,27 @@
 #include <bits/stdc++.h>
 #include <cassert>
 using namespace std;
-/*
-#include <ext/pb_ds/assoc_container.hpp>
-#include <ext/pb_ds/tree_policy.hpp>
-using namespace __gnu_pbds;
-typedef tree<int, null_type, less<int>, rb_tree_tag, tree_order_statistics_node_update> ordered_set;
-*/
 typedef long long ll;
 typedef long double ld;
 template<class T> using PQMax = priority_queue<T>;
 template<class T> using PQMin = priority_queue<T, vector<T>, greater<T>>;
-template<class T1, class T2>
-void maximize(T1 &a, T2 b){ if (b > a) a = b; }
-template<class T1, class T2>
-void minimize(T1 &a, T2 b){ if (b < a) a = b; }
+// maximize/minimize(a, b): a = max/min(a, b), true if a changed. Compile warning if b may not fit in a's type
+template<class T, class U, class = void> struct _narrows : true_type {};
+template<class T, class U> struct _narrows<T, U, void_t<decltype(T{declval<U>()})>> : false_type {};
+template<class T, class U> using _fits = enable_if_t<!is_integral_v<T> || !_narrows<T, U>::value, int>;
+template<class T, class U> using _narrow = enable_if_t<is_integral_v<T> && _narrows<T, U>::value, int>;
+#define _NARROW [[deprecated("the value may not fit in the variable's type")]]
+template<class T1, class T2, _fits<T1, T2> = 0> bool maximize(T1 &a, T2 b){ return b > a ? (a = b, 1) : 0; }
+template<class T1, class T2, _fits<T1, T2> = 0> bool minimize(T1 &a, T2 b){ return b < a ? (a = b, 1) : 0; }
+#ifdef LOCAL
+#define _FITS(T1, T2, b) assert(T2(T1(b)) == b) // debug build: stop if b really does not fit
+#else
+#define _FITS(T1, T2, b)
+#endif
+template<class T1, class T2, _narrow<T1, T2> = 0> _NARROW bool maximize(T1 &a, T2 b){
+	_FITS(T1, T2, b); return b > a ? (a = b, 1) : 0; }
+template<class T1, class T2, _narrow<T1, T2> = 0> _NARROW bool minimize(T1 &a, T2 b){
+	_FITS(T1, T2, b); return b < a ? (a = b, 1) : 0; }
 // read(): buffered, stdin only, integers only; never mix with cin/scanf
 char _gc(){ // 0 at EOF
 	static char b[1<<16]; static size_t n = 0, p = 0;
@@ -38,18 +45,18 @@ template<class T, class... Ts> bool read(T &x, Ts&... r){ return read(x) && read
 
 #define fi first
 #define se second
-#define FOR(type,i,a,b) for(type i=(a); i<=(b); i++)
-#define REV(type,i,b,a) for(type i=(b); i>=(a); i--)
+#define FOR(type,i,a,b) for(type i=(a); i<=(type)(b); i++)
+#define REV(type,i,b,a) for(type i=(b); i>=(type)(a); i--)
 #define EFOR(type,i,a,b) for(type i=(a); i<(b); i++)
 #define EREV(type,i,b,a) for(type i=(b); i>(a); i--)
 
 #define testBit(n, bit) (((n) >> (bit)) & 1)
 #define flipBit(n, bit) ((n) ^ (1ll << (bit)))
 #define cntBit(n) __builtin_popcountll(n)
+// log2(n) = floor(log2 n) for integers; replaces std::log2 (do not call it on doubles)
 #define log2(n) (63 - __builtin_clzll(n))
 
 #define CURRENT_TIMESTAMP chrono::steady_clock::now().time_since_epoch().count()
-#define randomize mt19937_64 mt(CURRENT_TIMESTAMP)
 
 #ifndef STRESS
 #define STRESS 0

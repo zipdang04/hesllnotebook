@@ -33,8 +33,10 @@ its `section.tex`.
 
 - `#pragma once`, then `#include "../contest/template.hpp"` (plus any other entry it uses).
 - One struct per entry, built with its size (`init(n, …)` or a constructor); no globals.
-- Indexing depends on the use: sequence ranges are 1-indexed inclusive, math and bit arrays are
-  0-indexed, graphs take `n` vertices.
+- Indexing: array range structures (lazy/persistent segment tree, Mo, treap positions, HLD `pos`) are 1-indexed
+  with inclusive ranges; strings, graphs, math, geometry and the Li Chao tree are 0-indexed.
+- Loops: `FOR(type, i, a, b)` = a..b and `REV(type, i, b, a)` = b down to a, both inclusive; write sizes as
+  `(int)v.size() - 1`.
 
 ## Building the PDF
 

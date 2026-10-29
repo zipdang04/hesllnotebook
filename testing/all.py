@@ -218,6 +218,8 @@ all_source_codes = {
 		"readtest": TestCase("contest/readtest", "sample/many_aplusb", 5),
 		"readstress": StressTest("contest/readstress", 10),
 		"dbg": StressTest("contest/dbg", 10),
+		"maxmin": StressTest("contest/maxmin", 10),
+		"maxminwarn": ShellTest("contest/maxminwarn", 60, uses=["tex/contents/contest/template.hpp"]),
 	},
 	"flow": {
 		"stoerwagner": StressTest("flow/stoerwagner", 10),

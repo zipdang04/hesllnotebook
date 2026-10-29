@@ -5,7 +5,7 @@ int main() {
 	int n, m, s, t; cin >> n >> m >> s >> t;
 	vector<vector<array<ll, 3>>> g(n); vector<int> from(m);
 	FOR(int, i, 0, m - 1) { int u, v, w; cin >> u >> v >> w; g[u].push_back({v, w, i}); from[i] = u; }
-	randomize;
+	mt19937_64 mt(CURRENT_TIMESTAMP);
 	for (auto &e: g) shuffle(e.begin(), e.end(), mt);
 	SPFA sp;
 	sp.run(n, s, [&](int u, auto relax) { for (auto [v, w, id]: g[u]) relax(v, w, id); });
