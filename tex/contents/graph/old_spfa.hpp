@@ -13,7 +13,7 @@ constexpr ll oo = (1e18+1);
 bool in[MAX]; int cnt[MAX];
 ll d[MAX], trace[MAX];
 deque<int> q;
-randomize;
+mt19937_64 mt(CURRENT_TIMESTAMP);
 
 void spfa(int root, bool detect){
 	FOR(int, i, 0, n)

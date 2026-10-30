@@ -47,8 +47,6 @@ template<class T, class... Ts> bool read(T &x, Ts&... r){ return read(x) && read
 #define se second
 #define FOR(type,i,a,b) for(type i=(a); i<=(type)(b); i++)
 #define REV(type,i,b,a) for(type i=(b); i>=(type)(a); i--)
-#define EFOR(type,i,a,b) for(type i=(a); i<(b); i++)
-#define EREV(type,i,b,a) for(type i=(b); i>(a); i--)
 
 #define testBit(n, bit) (((n) >> (bit)) & 1)
 #define flipBit(n, bit) ((n) ^ (1ll << (bit)))
