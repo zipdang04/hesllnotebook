@@ -1,47 +1,60 @@
 #pragma once
 #include "../contest/template.hpp"
-
-struct Flow{
-	struct Edge{int dest, rev; ll capa;};
+struct Dinic{
+	struct Edge{ int to, rev; ll cap; };
 	static constexpr ll oo = 1ll << 60;
-	vector<vector<Edge>> adj;
-	vector<pair<int,int>> where;
 	int n, s, t;
+	vector<vector<Edge>> g;
+	vector<pair<int, int>> at;
 	vector<int> level, ptr;
-	void init(int n, int s, int t){ this->n=n; this->s=s; this->t=t; adj.assign(n,{}); where.clear(); level.resize(n); ptr.resize(n); }
-	void addEdge(int u, int v, ll c){
-		where.push_back({u, (int)adj[u].size()});
-		adj[u].push_back({v, (int)adj[v].size(), c});
-		adj[v].push_back({u, (int)adj[u].size() - 1, 0});
+	Dinic(int n): n(n), g(n), level(n), ptr(n){}
+	int addEdge(int u, int v, ll c){
+		at.push_back({u, (int)g[u].size()});
+		g[u].push_back({v, (int)g[v].size(), c});
+		g[v].push_back({u, (int)g[u].size() - 1, 0});
+		return (int)at.size() - 1;
 	}
+	// level[v] = residual distance from v to t
 	bool bfs(ll lim){
 		fill(level.begin(), level.end(), -1);
-		queue<int> q; q.push(t); level[t] = 0;
+		queue<int> q({t});
+		level[t] = 0;
 		while (!q.empty() && level[s] < 0){
 			int v = q.front(); q.pop();
-			for (auto &e: adj[v])
-				if (level[e.dest] < 0 && adj[e.dest][e.rev].capa >= lim)
-					level[e.dest] = level[v] + 1, q.push(e.dest);
+			for (Edge &e: g[v]){
+				if (level[e.to] >= 0) continue;
+				if (g[e.to][e.rev].cap < lim) continue;
+				level[e.to] = level[v] + 1;
+				q.push(e.to);
+			}
 		}
 		return level[s] >= 0;
 	}
 	ll dfs(int v, ll f, ll lim){
 		if (v == t) return f;
 		ll pushed = 0;
-		for (int &i = ptr[v]; i < (int)adj[v].size(); i++){
-			Edge &e = adj[v][i];
-			if (e.capa < lim || level[e.dest] != level[v] - 1) continue;
-			ll got = dfs(e.dest, min(f - pushed, e.capa) / lim * lim, lim);
-			if (got){ e.capa -= got; adj[e.dest][e.rev].capa += got; pushed += got; if (pushed == f) return pushed; }
+		for (int &i = ptr[v]; i < (int)g[v].size(); i++){
+			Edge &e = g[v][i];
+			if (e.cap < lim) continue;
+			if (level[e.to] != level[v] - 1) continue;
+			ll x = min(f - pushed, e.cap) / lim * lim;
+			ll got = dfs(e.to, x, lim);
+			e.cap -= got; g[e.to][e.rev].cap += got;
+			pushed += got;
+			if (pushed == f) break;
 		}
 		return pushed;
 	}
-	ll calculate(){
+	ll maxflow(int s, int t){
+		this->s = s; this->t = t;
 		if (s == t) return 0;
-		ll ans = 0;
+		ll flow = 0;
 		for (ll lim = oo; lim; lim >>= 1)
-			while (bfs(lim)){ fill(ptr.begin(), ptr.end(), 0); ans += dfs(s, oo, lim); }
-		return ans;
+			while (bfs(lim)){
+				fill(ptr.begin(), ptr.end(), 0);
+				flow += dfs(s, oo, lim);
+			}
+		return flow;
 	}
-	ll capOf(int id){ return adj[where[id].first][where[id].second].capa; }
+	ll cap(int id){ return g[at[id].fi][at[id].se].cap; }
 };

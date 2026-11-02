@@ -35,7 +35,7 @@ int main(){
 		// min-cut side check for a random pair
 		if (n >= 2){
 			int s = rnd(0, n-1), t = rnd(0, n-2); if (t >= s) t++;
-			Flow f = g.base; f.s = s; f.t = t; ll fl = f.calculate(); int mask = 0;
+			Dinic f = g.base; ll fl = f.maxflow(s, t); int mask = 0;
 			FOR(int, v, 0, n - 1) if (f.level[v] < 0) mask |= 1 << v;
 			if (!(mask >> s & 1) || (mask >> t & 1) || cw[mask] != fl){ ok = false; printf("seed %d side bad\n", seed); }
 		}

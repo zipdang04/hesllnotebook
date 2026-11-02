@@ -4,10 +4,11 @@
 \setcurrentdir{flow}
 
 \subsection{Flow}
-\cpp[4]{Dinic with scaling + min cut}{dinitzwscaling.hpp}[
-	\fld{Needs} $s \ne t$. Caps $\le$ \texttt{oo} $= 2^{60}$ (use \texttt{oo} as $\infty$); total flow $< 9.2\cdot10^{18}$.
-	\fld{Min cut} after \texttt{calculate()}, $s$ side $= \{v : \texttt{level[v]} < 0\}$.
-	\fld{\texttt{capOf(id)}} residual cap.
+\cpp[3]{Dinic with scaling + min cut}{dinitzwscaling.hpp}[
+	Maximum flow from $s$ to $t$ in a directed graph, with capacity scaling.
+	\fld{Usage} \texttt{Dinic d(n)}; \texttt{addEdge(u, v, c)} returns the edge id; \texttt{d.maxflow(s, t)} returns the flow value. Afterwards \texttt{cap(id)} is the residual capacity of an edge, and the vertices with \texttt{level[v] < 0} form the $s$ side of a minimum cut. Capacities are at most \texttt{oo} $= 2^{60}$ (use \texttt{oo} for infinite edges).
+	\fld{Time} $O(V E \log U)$, $U$ = largest capacity.
+	\fld{Note} the total flow must stay below $9.2 \cdot 10^{18}$. \texttt{maxflow} changes the capacities; copy the object to run it again.
 ]
 \cpp[4]{MCMF}{mcmf.hpp}[
 	\fld{Needs} SPFA (\S2.2.1). No negative cycles; \texttt{MCMF<\_\_int128>} if the total cost can overflow.

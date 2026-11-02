@@ -18,18 +18,18 @@ struct MinCostCirculation {
 	pair<bool, __int128> solve() {
 		g.assign(n, {}); p.assign(n, 0);
 		// 1. feasible circulation: lower-bound reduction + max flow
-		Flow f; f.init(n + 2, n, n + 1);
+		Dinic f(n + 2);
 		vector<ll> ex(n); ll need = 0;
 		for (auto &e: in) if (e.s != e.t) f.addEdge(e.s, e.t, e.r - e.l), ex[e.t] += e.l, ex[e.s] -= e.l;
 		for (int v = 0; v < n; v++)
 			if (ex[v] > 0) f.addEdge(n, v, ex[v]), need += ex[v];
 			else if (ex[v] < 0) f.addEdge(v, n + 1, -ex[v]);
-		if (f.calculate() != need) return {false, 0};
+		if (f.maxflow(n, n + 1) != need) return {false, 0};
 		// 2. residual graph, costs scaled by n+1 so that eps <= 1 means optimal
 		pos.assign(in.size(), -1);
 		for (int i = 0, k = 0; i < (int)in.size(); i++) {
 			auto &e = in[i]; if (e.s == e.t) continue;
-			ll cur = e.r - f.capOf(k++);                      // flow on e, in [l, r]
+			ll cur = e.r - f.cap(k++);                      // flow on e, in [l, r]
 			pos[i] = g[e.s].size();
 			g[e.s].push_back({e.t, (int)g[e.t].size(), e.r - cur, e.c * (n + 1)});
 			g[e.t].push_back({e.s, pos[i], cur - e.l, -e.c * (n + 1)});

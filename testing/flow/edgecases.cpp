@@ -44,17 +44,15 @@ int main() {
 
 	// 2. Dinic s == t returns 0
 	{
-		Flow f;
-		f.init(2, 0, 0);
+		Dinic f(2);
 		f.addEdge(0, 1, 5);
-		assert(f.calculate() == 0);
+		assert(f.maxflow(0, 0) == 0);
 
-		Flow f2;
-		f2.init(5, 3, 3);
+		Dinic f2(5);
 		f2.addEdge(3, 1, 10);
 		f2.addEdge(1, 3, 10);
 		f2.addEdge(3, 3, 10);
-		assert(f2.calculate() == 0);
+		assert(f2.maxflow(3, 3) == 0);
 	}
 
 	// 3. LazySeg on an empty vector constructs
