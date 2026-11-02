@@ -21,7 +21,7 @@ int main() {
 EOF
 
 # Compile and capture stderr
-OUT=$($CXX -std=c++17 -c "$W/warn_test.cpp" -o "$W/warn_test.o" 2>&1 || fail "compilation failed")
+OUT=$($CXX -std=gnu++20 -c "$W/warn_test.cpp" -o "$W/warn_test.o" 2>&1 || fail "compilation failed")
 
 # Check that "may not fit" appears exactly once
 CNT=$(echo "$OUT" | grep -c "may not fit" || true)
@@ -48,13 +48,13 @@ int main() {
 EOF
 
 # Build with -DLOCAL: must fail at runtime (assert)
-$CXX -std=c++17 -DLOCAL -Wno-deprecated-declarations "$W/assert_test.cpp" -o "$W/run_local" || fail "compilation with -DLOCAL failed"
+$CXX -std=gnu++20 -DLOCAL -Wno-deprecated-declarations "$W/assert_test.cpp" -o "$W/run_local" || fail "compilation with -DLOCAL failed"
 if "$W/run_local" 2>/dev/null; then
     fail "expected abort under -DLOCAL, but exited 0"
 fi
 
 # Build without -DLOCAL: must exit 0
-$CXX -std=c++17 -Wno-deprecated-declarations "$W/assert_test.cpp" -o "$W/run_nolocal" || fail "compilation without -DLOCAL failed"
+$CXX -std=gnu++20 -Wno-deprecated-declarations "$W/assert_test.cpp" -o "$W/run_nolocal" || fail "compilation without -DLOCAL failed"
 if ! "$W/run_nolocal"; then
     fail "expected exit 0 without -DLOCAL, but failed"
 fi

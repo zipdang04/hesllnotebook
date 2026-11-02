@@ -32,7 +32,7 @@ its `section.tex`.
 ## Code conventions (new code; older files are being brought in line)
 
 - `#pragma once`, then `#include "../contest/template.hpp"` (plus any other entry it uses).
-- One struct per entry, built with its size (`init(n, …)` or a constructor); no globals.
+- One struct per entry, built by a constructor taking its size (`Dinic d(n);`); no `init()`, no globals.
 - Indexing: array range structures (lazy/persistent segment tree, Mo, treap positions, HLD `pos`) are 1-indexed
   with inclusive ranges; strings, graphs, math, geometry and the Li Chao tree are 0-indexed.
 - Loops: `FOR(type, i, a, b)` = a..b and `REV(type, i, b, a)` = b down to a, both inclusive; write sizes as
@@ -66,7 +66,7 @@ the right lexer name for either version.
 In `tex/contents/<section>/section.tex`:
 
 ```latex
-\cpp[4]{Dinic with scaling + min cut}{dinitzwscaling.hpp}   % print from line 4
+\cpp[3]{Dinic with scaling + min cut}{dinitzwscaling.hpp}   % print from line 3
 \cpp[3]{SPFA}{spfa.hpp}[A note printed under the title.]
 \entry{Hopcroft--Karp}                                      % heading only, no code yet
 ```

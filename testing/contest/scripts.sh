@@ -7,7 +7,7 @@ CXX=${CXX:-g++}; export CXX
 W=$(mktemp -d); trap 'rm -rf "$W"' EXIT
 fail(){ echo "FAIL: $*"; exit 1; }
 ok(){ echo "ok: $*"; }
-build(){ $CXX -std=c++17 -O2 -x c++ - -o "$1" || fail "compile $1"; }   # source on stdin
+build(){ $CXX -std=gnu++20 -O2 -x c++ - -o "$1" || fail "compile $1"; }   # source on stdin
 # sanitizers: keep stress.sh's default if this compiler supports them, else disable
 echo 'int main(){}' | $CXX -fsanitize=address,undefined -x c++ - -o "$W/san" 2>/dev/null && "$W/san" || export SAN=
 # gcc's cpp for hash.sh (Apple's cpp is clang and rejects -fpreprocessed)
@@ -29,8 +29,8 @@ F=$TEX/contents/contest/gen.cpp
 ok "hash.sh / entryhash.sh"
 
 # ---------- gen.cpp + checker.cpp (built from the notebook files) ----------
-$CXX -std=c++17 -O2 "$C/gen.cpp" -o "$W/gen" || fail "compile gen"
-$CXX -std=c++17 -O2 "$C/checker.cpp" -o "$W/checker" || fail "compile checker"
+$CXX -std=gnu++20 -O2 "$C/gen.cpp" -o "$W/gen" || fail "compile gen"
+$CXX -std=gnu++20 -O2 "$C/checker.cpp" -o "$W/checker" || fail "compile checker"
 build "$W/valid" <<'CPP'
 #include <bits/stdc++.h>
 using namespace std;

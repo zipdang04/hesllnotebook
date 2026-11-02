@@ -3,7 +3,7 @@
 compile() {
 	# stack size: linker flag on macOS, ulimit elsewhere
 	if [ "$(uname)" = Darwin ]; then STACK="-Wl,-stack_size,0x10000000"; else STACK=""; ulimit -s unlimited 2> /dev/null; fi
-	${CXX:-g++-16} $1.cpp -O2 -lm -fmax-errors=5 -march=native $STACK -s -o $1 2> /dev/null
+	${CXX:-g++-16} $1.cpp -std=gnu++20 -O2 -Wall -lm -fmax-errors=5 -march=native $STACK -s -o $1
 	if [ $? -ne 0 ]
 	then
 		echo "Error during compilation"

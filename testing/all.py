@@ -64,6 +64,14 @@ def download_yukicoder(url, test_dir):
 				f.write(get(kind + "/" + name))
 
 
+def compile_command(source_code, extra=()):
+	# same standard as the contest judge (DOMjudge / ICPC: g++ -O2 -std=gnu++20); test.sh uses the same flags
+	command = [find_cxx(), source_code + ".cpp", "-std=gnu++20", "-O2", "-Wall", *extra, "-o", source_code]
+	if platform.system() == "Darwin":
+		command.append("-Wl,-stack_size,0x10000000")
+	return command
+
+
 def run(command):
 	if subprocess.call(command, cwd=TESTING_DIR) != 0:
 		print("FAILED")
@@ -140,14 +148,16 @@ class OjTest:
 			return
 		test_dir = oj_dir(self.url)
 		if not os.path.isdir(test_dir) or not os.listdir(test_dir):
+			# download into tmp and rename when complete: a cut-off download (Ctrl-C, network) must not look cached
+			tmp = test_dir + ".tmp"
+			shutil.rmtree(tmp, ignore_errors=True)
 			if "yukicoder.me" in self.url:
-				download_yukicoder(self.url, test_dir)
+				download_yukicoder(self.url, tmp)
 			else:
-				run(oj_command() + ["download", "--system", "--silent", self.url, "-d", test_dir])
-		compile_command = [find_cxx(), self.source_code + ".cpp", "-O2", "-std=c++17", "-o", self.source_code]
-		if platform.system() == "Darwin":
-			compile_command.append("-Wl,-stack_size,0x10000000")
-		run(compile_command)
+				run(oj_command() + ["download", "--system", "--silent", self.url, "-d", tmp])
+			shutil.rmtree(test_dir, ignore_errors=True)
+			os.rename(tmp, test_dir)
+		run(compile_command(self.source_code))
 		test_command = oj_command() + ["test", "--silent", "-c", "./" + self.source_code,
 									   "-d", test_dir, "-t", str(self.time_limit)]
 		if self.error is not None:
@@ -172,13 +182,12 @@ class StressTest:
 
 	def __init__(self, source_code, time_limit: float = 10):
 		self.source_code = source_code
-		self.time_limit = time_limit * COEF
+		self.time_limit = time_limit * COEF * 3  # the sanitizer below makes stress tests 2-4x slower
 
 	def process(self):
-		compile_command = [find_cxx(), self.source_code + ".cpp", "-O2", "-std=c++17", "-o", self.source_code]
-		if platform.system() == "Darwin":
-			compile_command.append("-Wl,-stack_size,0x10000000")
-		run(compile_command)
+		# an out-of-bounds [] on vector/string/array or an overflow fails the test even when the answers agree
+		# (~2x slower; address sanitizer + _GLIBCXX_DEBUG would be ~10x)
+		run(compile_command(self.source_code, ["-fsanitize=undefined", "-fno-sanitize-recover", "-D_GLIBCXX_ASSERTIONS"]))
 		try:
 			code = subprocess.call(["./" + self.source_code], cwd=TESTING_DIR, timeout=self.time_limit)
 		except subprocess.TimeoutExpired:
@@ -243,7 +252,6 @@ all_source_codes = {
 		"spfa": TestCase("graph/spfa", "graph/shortest_path", 1),
 		"spfa_aoj": OjTest("graph/spfa_aoj", "https://onlinejudge.u-aizu.ac.jp/problems/GRL_1_B", 1),
 		"spfadetect": StressTest("graph/spfadetect", 10),
-		"old_spfa": TestCase("graph/old_spfa", "graph/shortest_path", 1),
 		"lowlink": TestCase("graph/lowlink", "graph/biconnected_components", 2),
 		"lowlink_2ecc": TestCase("graph/lowlink_2ecc", "graph/two_edge_connected_components", 2),
 		"lowlink_stress": StressTest("graph/lowlink_stress", 10),
