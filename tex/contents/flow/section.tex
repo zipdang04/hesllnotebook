@@ -74,7 +74,8 @@ On the transitive closure: min chain cover $=$ max antichain (Dilworth).
 	\fld{Note} exact in \texttt{ll} for $|c| \le 10^9$ and $n \le 500$.
 
 ]
-\cpp[4]{General matching (blossom)}{blossom.hpp}[
-	\fld{Returns} \texttt{run()} (call once) returns the matching size; \texttt{mate[v]} is the partner of $v$, or $n$ if $v$ is unmatched.
-	\fld{Time} $O(V^3)$; $n = 500$ dense in 0.04 s.
+\cpp[3]{General matching (blossom)}{blossom.hpp}[
+	Maximum matching in a general (non-bipartite) graph, by Edmonds' blossom algorithm.
+	\fld{Usage} \texttt{Blossom b(n)}; \texttt{addEdge(u, v)} adds an undirected edge, vertices $0 \dots n-1$; \texttt{b.run()} (call once) returns the size of a maximum matching. Afterwards \texttt{mate[v]} is the partner of $v$, or $n$ if $v$ is unmatched.
+	\fld{Time} $O(V^3)$.
 ]
