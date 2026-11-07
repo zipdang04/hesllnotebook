@@ -10,7 +10,7 @@ int main() {
 			int mid = (lo + hi) / 2;
 			int L = pos - mid, R = pos + mid;
 			L = (L + L % 2) / 2 + 1, R = (R - R % 2) / 2 + 1;
-			if (str.getF(L, R) == str.getB(L, R)) ans = mid, lo = mid + 1;
+			if (str.getF(L - 1, R) == str.getB(L - 1, R)) ans = mid, lo = mid + 1;
 			else hi = mid - 1;
 		}
 		int L = pos - ans, R = pos + ans;

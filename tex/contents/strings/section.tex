@@ -4,10 +4,11 @@
 \setcurrentdir{strings}
 
 \cpp[4]{Z-function}{zfunc.hpp}
-\cpp[4]{Rolling hash}{strhash.hpp}[
-	\fld{Usage} \texttt{getF(l, r)}, \texttt{getB(l, r)}: 1-indexed, inclusive (forward / reversed); $s[l..r]$ is a palindrome iff \texttt{getF(l, r) == getB(l, r)}.
-	\fld{Note} two random bases mod $2^{61}-1$ (clock seed); for multi-pass problems use a constant seed. Collision probability per comparison:
-	\[ \lesssim (n/2^{61})^2 \]
+\cpp[3]{Rolling hash}{strhash.hpp}[
+	Polynomial hash of substrings modulo $2^{61}-1$; compares substrings of one string or of different strings.
+	\fld{Usage} \texttt{HashString h(s)}; \texttt{h.getF(l, r)} is the hash of $s{[}l, r)$; \texttt{h.getB(l, r)} is the hash of the reversed $s{[}l, r)$; $s{[}l, r)$ is a palindrome iff the two are equal. Indexing is 0-based, $0 \le l \le r \le |s|$. Hashes of different \texttt{HashString} objects are comparable.
+	\fld{Time} $O(|s|)$ to build, $O(1)$ per query.
+	\fld{Note} one random base shared by all objects, so a collision has probability $\lesssim n/2^{61}$ per comparison. For multi-pass problems, where two runs must agree, replace \texttt{CURRENT\_TIMESTAMP} by a constant seed.
 ]
 \cpp[4]{Suffix array + LCP}{suffixarray.hpp}[
 	\fld{Needs} chars in 1..127.
