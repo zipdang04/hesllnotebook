@@ -56,10 +56,11 @@ On the transitive closure: min chain cover $=$ max antichain (Dilworth).
 	\fld{Needs} undirected, $w \ge 0$, self-loops ignored.
 	\fld{Returns} \texttt{run()} (call once) returns the cut weight and one side; $n = 1$ gives $\{0, \{\}\}$.
 ]
-\cpp[5]{Gomory--Hu tree}{gomoryhu.hpp}[
-	\fld{Needs} Dinic (\S1.1.1). Undirected, $w \ge 0$, total $\le 10^{18}$.
-	\fld{Time} \texttt{run()} once, $n-1$ flows.
-	\fld{Query} min $u$--$v$ cut $=$ min \texttt{cut} on the tree path (Gusfield). Min cut sides: \S1.1.1.
+\cpp[3]{Gomory--Hu tree}{gomoryhu.hpp}[
+	Gomory--Hu tree: the minimum cut between every pair of vertices of an undirected graph, from $n-1$ max flows (Gusfield). Uses Dinic (\S1.1.1).
+	\fld{Usage} \texttt{GomoryHu t(n)}; \texttt{addEdge(u, v, w)} with $w \ge 0$; \texttt{t.run()} (call once). The tree has the edges $(i, \texttt{par[i]})$ of weight \texttt{cut[i]} for $i \ge 1$. The minimum $u$--$v$ cut is the smallest \texttt{cut} on the tree path between $u$ and $v$.
+	\fld{Time} $n-1$ calls of Dinic.
+	\fld{Note} the sum of all weights must stay below $10^{18}$.
 ]
 
 \subsection{Matching}
