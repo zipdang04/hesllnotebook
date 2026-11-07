@@ -14,14 +14,12 @@
 	Minimum-cost flow from $s$ to $t$ by successive shortest paths with a queue-based Bellman--Ford; costs may be negative but the graph must have no negative cycle.
 	\fld{Usage} \texttt{MCMF<> mf(n)}; \texttt{addEdge(u, v, cap, cost)} returns the edge id; \texttt{mf.run(s, t, limit)} returns \texttt{\{flow, cost\}}, where the flow is the smaller of \texttt{limit} and the maximum flow, sent at minimum cost. Without \texttt{limit} it is a min-cost max-flow. Afterwards \texttt{flow(id)} is the flow on an edge. Use \texttt{MCMF<\_\_int128>} if the total cost can overflow \texttt{ll}.
 	\fld{Time} $O(F V E)$ worst case for $F$ augmentations, much faster in practice.
-
 ]
 \cpp[3]{Min-cost circulation (cost scaling)}{costscaling.hpp}[
 	Minimum-cost circulation with bounds $l \le f \le r$ on every edge and arbitrary costs, by cost-scaling push-relabel.
 	\fld{Usage} \texttt{MinCostCirculation mc(n)}; \texttt{addEdge(u, v, l, r, c)} returns the edge id; \texttt{mc.run()} returns \texttt{\{feasible, cost\}}, and the cost is an \texttt{\_\_int128}. Afterwards \texttt{flow(id)} is the flow on an edge and \texttt{p} holds the dual potentials. For an $s$--$t$ flow of exactly $F$, add the edge $t \to s$ with bounds $[F, F]$ and cost $0$. For supplies $b_v$, add a vertex $X$ and the edges $X \to v$ with $[b_v, b_v]$ if $b_v > 0$, or $v \to X$ with $[-b_v, -b_v]$ if $b_v < 0$.
 	\fld{Time} $O(V^2 E \log(V C))$, independent of the capacities.
 	\fld{Note} costs are scaled by $n + 1$, so keep $(n+1)^2 \max|c| \lesssim 10^{18}$ and the total capacity below $9.2 \cdot 10^{18}$. Tested with $|c| \le 10^9$ and capacities up to $10^{12}$.
-
 ]
 \entry{Flow models}
 \small\tightdisplay
@@ -66,7 +64,7 @@ On the transitive closure: min chain cover $=$ max antichain (Dilworth).
 \subsection{Matching}
 \cpp[3]{Hopcroft--Karp + min vertex cover}{hopcroftkarp.hpp}[
 	Maximum matching in a bipartite graph, and a minimum vertex cover.
-	\fld{Usage} \texttt{HopcroftKarp hk(n, m)} with $n$ left and $m$ right vertices; \texttt{addEdge(u, v)} for left $u \in [0, n)$ and right $v \in [0, m)$; \texttt{hk.run()} returns the number of new pairs, so calling it again after more \texttt{addEdge} calls extends the matching. Afterwards \texttt{matchL[u]} and \texttt{matchR[v]} are the partners, or $-1$ if free. \texttt{cover()} returns a minimum vertex cover \texttt{\{left, right\}} (K\"onig); its complement is a maximum independent set.
+	\fld{Usage} \texttt{HopcroftKarp hk(n, m)} with $n$ left and $m$ right vertices; \texttt{addEdge(u, v)} for left $u \in {[}0, n)$ and right $v \in {[}0, m)$; \texttt{hk.run()} returns the number of new pairs, so calling it again after more \texttt{addEdge} calls extends the matching. Afterwards \texttt{matchL[u]} and \texttt{matchR[v]} are the partners, or $-1$ if free. \texttt{cover()} returns a minimum vertex cover \texttt{\{left, right\}} (K\"onig); its complement is a maximum independent set.
 	\fld{Time} $O(E \sqrt V)$.
 ]
 \cpp[3]{Hungarian (min-cost assignment)}{hungarian.hpp}[
@@ -74,7 +72,6 @@ On the transitive closure: min chain cover $=$ max antichain (Dilworth).
 	\fld{Usage} \texttt{Hungarian h(n, m)}; fill \texttt{h.c[i][j]} (negative costs are fine); \texttt{h.run()} returns the total cost and a vector \texttt{match} with \texttt{match[i]} the column of row $i$. \texttt{run} keeps \texttt{c}. For a maximum weight, negate the costs and the result.
 	\fld{Time} $O(n^2 m)$.
 	\fld{Note} exact in \texttt{ll} for $|c| \le 10^9$ and $n \le 500$.
-
 ]
 \cpp[3]{General matching (blossom)}{blossom.hpp}[
 	Maximum matching in a general (non-bipartite) graph, by Edmonds' blossom algorithm.
