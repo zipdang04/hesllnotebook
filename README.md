@@ -29,14 +29,9 @@ Sections: `contest` (0), `flow` (1), `graph` (2), `ds` (3), `strings` (4), `geom
 `interactive` (7), `misc` (8), `reference` (9). Folders stay flat; groups inside a section exist only in
 its `section.tex`.
 
-## Code conventions (new code; older files are being brought in line)
+## Code conventions
 
-- `#pragma once`, then `#include "../contest/template.hpp"` (plus any other entry it uses).
-- One struct per entry, built by a constructor taking its size (`Dinic d(n);`); no `init()`, no globals.
-- Indexing: array range structures (lazy/persistent segment tree, Mo, treap positions, HLD `pos`) are 1-indexed
-  with inclusive ranges; strings, graphs, math, geometry and the Li Chao tree are 0-indexed.
-- Loops: `FOR(type, i, a, b)` = a..b and `REV(type, i, b, a)` = b down to a, both inclusive; write sizes as
-  `(int)v.size() - 1`.
+See [`docs/STYLE.md`](docs/STYLE.md): layout, comments, interface, indexing, loops, and the note under each entry.
 
 ## Building the PDF
 
