@@ -64,9 +64,10 @@ On the transitive closure: min chain cover $=$ max antichain (Dilworth).
 ]
 
 \subsection{Matching}
-\cpp[4]{Hopcroft--Karp + min vertex cover}{hopcroftkarp.hpp}[
-	\fld{Warm start} \texttt{run()} again after more \texttt{addEdge} returns the extra pairs.
-	\fld{\texttt{cover()}} K\"onig min vertex cover (size = matching); its complement is a max independent set.
+\cpp[3]{Hopcroft--Karp + min vertex cover}{hopcroftkarp.hpp}[
+	Maximum matching in a bipartite graph, and a minimum vertex cover.
+	\fld{Usage} \texttt{HopcroftKarp hk(n, m)} with $n$ left and $m$ right vertices; \texttt{addEdge(u, v)} for left $u \in [0, n)$ and right $v \in [0, m)$; \texttt{hk.run()} returns the number of new pairs, so calling it again after more \texttt{addEdge} calls extends the matching. Afterwards \texttt{matchL[u]} and \texttt{matchR[v]} are the partners, or $-1$ if free. \texttt{cover()} returns a minimum vertex cover \texttt{\{left, right\}} (K\"onig); its complement is a maximum independent set.
+	\fld{Time} $O(E \sqrt V)$.
 ]
 \cpp[3]{Hungarian (min-cost assignment)}{hungarian.hpp}[
 	Minimum-cost assignment of $n$ rows to distinct columns of an $n \times m$ cost matrix, $n \le m$.

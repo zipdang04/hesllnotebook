@@ -25,5 +25,5 @@ int main() {
 		if (!inA[a[i]] && !inB[b[i]]) return 1;
 	cout << k << '\n';
 	FOR(int, u, 0, L - 1)
-		if (hk.l[u] != -1) cout << u << ' ' << hk.l[u] << '\n';
+		if (hk.matchL[u] != -1) cout << u << ' ' << hk.matchL[u] << '\n';
 }
