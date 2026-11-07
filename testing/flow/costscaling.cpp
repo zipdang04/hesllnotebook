@@ -18,9 +18,9 @@ int main() {
 		if (b[v] > 0) mc.addEdge(X, v, b[v], b[v], 0);
 		if (b[v] < 0) mc.addEdge(v, X, -b[v], -b[v], 0);
 	}
-	auto [ok, cost] = mc.solve();
+	auto [ok, cost] = mc.run();
 	if (!ok) { cout << "infeasible\n"; return 0; }
 	cout << str(cost) << '\n';
 	FOR(int, v, 0, n - 1) cout << mc.p[v] << '\n';
-	FOR(int, e, 0, m - 1) cout << mc.flowOf(id[e]) << '\n';
+	FOR(int, e, 0, m - 1) cout << mc.flow(id[e]) << '\n';
 }

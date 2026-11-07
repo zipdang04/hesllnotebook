@@ -4,11 +4,11 @@
 int main() {
 	ios_base::sync_with_stdio(false); cin.tie(nullptr);
 	int n, m; ll f; cin >> n >> m >> f;
-	MCMF<> g; g.init(n, 0, n - 1);
+	MCMF<> g(n);
 	FOR(int, _, 1, m) {
 		int u, v; ll c, d; cin >> u >> v >> c >> d;
 		g.addEdge(u, v, c, d);
 	}
-	auto [flow, cost] = g.calculate(f);
+	auto [flow, cost] = g.run(0, n - 1, f);
 	cout << (flow < f ? -1 : cost) << '\n';
 }

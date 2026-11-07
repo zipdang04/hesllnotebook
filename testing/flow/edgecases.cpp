@@ -5,16 +5,16 @@
 #include "../../tex/contents/graph/hld.hpp"
 
 int main() {
-	// 1. costscaling solve() twice gives equal results
+	// 1. costscaling run() twice gives equal results
 	{
 		MinCostCirculation mc(3);
 		mc.addEdge(0, 1, 0, 5, -2);
 		mc.addEdge(1, 2, 0, 5, -3);
 		mc.addEdge(2, 0, 0, 3, 1);
-		auto res1 = mc.solve();
-		ll f0_1 = mc.flowOf(0);
-		auto res2 = mc.solve();
-		ll f0_2 = mc.flowOf(0);
+		auto res1 = mc.run();
+		ll f0_1 = mc.flow(0);
+		auto res2 = mc.run();
+		ll f0_2 = mc.flow(0);
 		assert(res1.first == true && res2.first == true);
 		assert(res1.second == res2.second);
 		assert(f0_1 == f0_2);
@@ -28,13 +28,13 @@ int main() {
 				ll cap = rng() % 10 + 1, cost = (ll)(rng() % 21) - 10;
 				mc1.addEdge(u, v, 0, cap, cost);
 			}
-			auto a = mc1.solve();
+			auto a = mc1.run();
 			vector<ll> flows_a(m);
-			for (int i = 0; i < m; i++) flows_a[i] = mc1.flowOf(i);
+			for (int i = 0; i < m; i++) flows_a[i] = mc1.flow(i);
 
-			auto b = mc1.solve();
+			auto b = mc1.run();
 			vector<ll> flows_b(m);
-			for (int i = 0; i < m; i++) flows_b[i] = mc1.flowOf(i);
+			for (int i = 0; i < m; i++) flows_b[i] = mc1.flow(i);
 
 			assert(a.first == b.first);
 			assert(a.second == b.second);

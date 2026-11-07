@@ -3,11 +3,10 @@
 
 int main() {
 	mt19937_64 rng(1337);
-	// Part 1: DAG graphs with negative costs, testing calculate(limit) and default calculate(), flowOn conservation, vs costscaling
+	// Part 1: DAG graphs with negative costs, testing run(s, t, limit) and the default limit, flow(id) conservation, vs costscaling
 	for (int it = 0; it < 10000; it++) {
 		int n = rng() % 6 + 2, m = rng() % 10;
-		MCMF<ll> f;
-		f.init(n, 0, n - 1);
+		MCMF<ll> f(n);
 		MinCostCirculation mc(n);
 		vector<array<ll, 4>> E;
 		for (int i = 0; i < m; i++) {
@@ -22,14 +21,14 @@ int main() {
 		// alternate between explicit random limit and default limit (min-cost max-flow)
 		bool useDef = (rng() % 2 == 0);
 		ll lim = useDef ? (1ll << 62) : (ll)(rng() % 6);
-		auto [fl, co] = useDef ? f.calculate() : f.calculate(lim);
+		auto [fl, co] = useDef ? f.run(0, n - 1) : f.run(0, n - 1, lim);
 
-		// Check flow conservation and flowOn
+		// Check flow conservation and flow(id)
 		vector<ll> ex(n);
 		ll cc = 0;
 		for (int i = 0; i < (int)E.size(); i++) {
-			ll x = f.flowOn(i);
-			if (x < 0 || x > E[i][2]) { puts("flowOn out of bounds"); return 1; }
+			ll x = f.flow(i);
+			if (x < 0 || x > E[i][2]) { puts("flow out of bounds"); return 1; }
 			ex[E[i][0]] -= x;
 			ex[E[i][1]] += x;
 			cc += x * E[i][3];
@@ -39,7 +38,7 @@ int main() {
 
 		// Compare with circulation forcing flow fl
 		mc.addEdge(n - 1, 0, fl, fl, 0);
-		auto [feas, c2] = mc.solve();
+		auto [feas, c2] = mc.run();
 		if (!feas || (ll)c2 != co) ok = false;
 		if (!ok) {
 			printf("FAIL part 1 it %d fl %lld co %lld cc %lld c2 %lld feas %d\n", it, fl, co, cc, (ll)c2, feas);
@@ -50,8 +49,7 @@ int main() {
 	// Part 2: MCMF<__int128> with large costs (|w| <= 1e9) and large caps (c <= 1e12) vs MinCostCirculation
 	for (int it = 0; it < 1000; it++) {
 		int n = rng() % 7 + 2, m = rng() % 15;
-		MCMF<__int128> f;
-		f.init(n, 0, n - 1);
+		MCMF<__int128> f(n);
 		MinCostCirculation mc(n);
 		for (int i = 0; i < m; i++) {
 			int u = rng() % n, v = rng() % n;
@@ -61,9 +59,9 @@ int main() {
 			f.addEdge(u, v, c, w);
 			mc.addEdge(u, v, 0, c, w);
 		}
-		auto [fl, co] = f.calculate(); // default limit
+		auto [fl, co] = f.run(0, n - 1); // default limit
 		mc.addEdge(n - 1, 0, fl, fl, 0);
-		auto [feas, c2] = mc.solve();
+		auto [feas, c2] = mc.run();
 		if (!feas || c2 != co) {
 			printf("FAIL part 2 it %d fl %lld feas %d\n", it, fl, feas);
 			return 1;

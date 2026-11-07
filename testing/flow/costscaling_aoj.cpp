@@ -6,6 +6,6 @@ int main() {
 	MinCostCirculation mc(n);
 	FOR(int, _, 1, m) { int u, v; ll c, d; cin >> u >> v >> c >> d; mc.addEdge(u, v, 0, c, d); }
 	mc.addEdge(n - 1, 0, f, f, 0);
-	auto [ok, cost] = mc.solve();
+	auto [ok, cost] = mc.run();
 	cout << (ok ? (ll)cost : -1) << '\n';
 }
