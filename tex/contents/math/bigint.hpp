@@ -41,11 +41,14 @@ struct bigint{
 	bigint &operator-=(R o){ return *this += -o; }
 	friend bigint operator+(bigint a, R b){ return a += b; }
 	friend bigint operator-(bigint a, R b){ return a -= b; }
-	friend bigint operator*(bigint a, bigint b){ // NTT: |a| + |b| - 1 <= 2^22 digits
+	friend bigint operator*(bigint a, bigint b){ // NTT: |a| + |b| - 1 <= 2^23 digits
 		int n = a.d.size(), m = b.d.size(); bigint r; r.d.assign(n + m, 0);
 		if (min(n, m) < 64) FOR(int, i, 0, n - 1) FOR(int, j, 0, m - 1) r.d[i + j] += a.d[i] * b.d[j];
 		else{
-			vector<modint> p = FFT::multiply(a.d, b.d); // coefficients <= 81 min(n, m) < MOD
+			// coefficients <= 81 min(n, m) < MOD
+			vector<modint> x(a.d.begin(), a.d.end());
+			vector<modint> y(b.d.begin(), b.d.end());
+			vector<modint> p = conv(x, y);
 			FOR(int, i, 0, n + m - 2) r.d[i] = p[i].v;
 		}
 		int c = 0;

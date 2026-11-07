@@ -1,55 +1,39 @@
 #pragma once
 #include "modint.hpp"
-
-// MOD=998244353=c*2^k+1 => ROOT=g^c, g a primitive root (3)
-namespace FFT{
-	constexpr int K_MOD = 23, BIT = 22, MAX_LEN = 1 << BIT;
-	constexpr int ROOT = 15311432;
-
-	modint _root[MAX_LEN + 1];
-	vector<int> _rev[BIT + 1];
-	bool _built = false;
-	void buildRoot() {
-		if (_built) return; _built = true;
-		_root[0] = 1; modint mul=ROOT; 
-		FOR(int, i, 1, K_MOD-BIT) mul*=mul;
-		FOR(int, i, 1, MAX_LEN) _root[i] = _root[i-1] * mul;
-		for (int bit=0, len=1; len<=MAX_LEN; bit++, len*=2) {
-			_rev[bit].resize((1 << bit), 0);
-			for (int i = 1; i < (1 << bit); i++)
-				_rev[bit][i]=((i&1)<<(bit-1))|_rev[bit-1][i/2];
-		}
+void ntt(vector<modint> &a){
+	int n = a.size(), L = log2(n);
+	static vector<modint> rt(2, 1);
+	for (static int k = 2; k < n; k *= 2){
+		rt.resize(n);
+		modint z = modint(3) ^ (modint::MOD - 1) / (2 * k);
+		FOR(int, j, k, 2 * k - 1)
+			rt[j] = j & 1 ? rt[j / 2] * z : rt[j / 2];
 	}
-
-	void transform(vector<modint> &v, bool invert){
-		const int len = v.size(), coef = MAX_LEN / len; 
-		const int bit = log2(len); 
-		FOR(int, i, 0, len-1) if (i < _rev[bit][i])
-			swap(v[i], v[_rev[bit][i]]);
-		
-		for (int jmp=1, span=2; span<=len; jmp*=2, span*=2)
-		for (int beg = 0; beg < len; beg += span)
-		for (int i = 0; i < jmp; i++) {
-			int k=coef*len/jmp*i/2; if (invert) k=MAX_LEN-k;
-			modint a = v[beg+i], b = _root[k] * v[beg+i+jmp];
-			v[beg + i] = a + b; v[beg + i + jmp] = a - b;
-		}
-		if (invert) {
-			modint inv = modint(len).inv();
-			FOR(int, i, 0, len-1) v[i] *= inv;
-		}
+	vector<int> rev(n);
+	FOR(int, i, 0, n - 1){
+		rev[i] = (rev[i / 2] | (i & 1) << L) / 2;
+		if (i < rev[i]) swap(a[i], a[rev[i]]);
 	}
-	template<class T>
-	vector<modint> multiply(vector<T> &_a, vector<T> &_b) {
-		if (_a.empty() || _b.empty()) return {};
-		if (!_built) buildRoot();
-		int len = int(_a.size() + _b.size()) - 1;
-		len = 1 << (log2(len) + (cntBit(len) > 1));
-		assert(len <= MAX_LEN); // raise BIT (<= K_MOD) for longer products
-		vector<modint>a(_a.begin(),_a.end()); a.resize(len,0);
-		vector<modint>b(_b.begin(),_b.end()); b.resize(len,0);
-		transform(a, false); transform(b, false);
-		FOR(int, i, 0, len - 1) a[i] *= b[i];
-		transform(a, true); return a;
-	}
+	for (int k = 1; k < n; k *= 2)
+		for (int i = 0; i < n; i += 2 * k)
+			FOR(int, j, 0, k - 1){
+				modint z = rt[j + k] * a[i + j + k];
+				a[i + j + k] = a[i + j] - z;
+				a[i + j] += z;
+			}
+}
+void intt(vector<modint> &a){
+	reverse(a.begin() + 1, a.end()); ntt(a);
+	// n | MOD - 1, and n (MOD - (MOD - 1) / n) = 1 mod MOD
+	modint inv = modint::MOD - (modint::MOD - 1) / a.size();
+	for (modint &x: a) x *= inv;
+}
+vector<modint> conv(vector<modint> a, vector<modint> b){
+	if (a.empty() || b.empty()) return {};
+	int s = a.size() + b.size() - 1, n = 1;
+	while (n < s) n *= 2;
+	a.resize(n); b.resize(n);
+	ntt(a); ntt(b);
+	FOR(int, i, 0, n - 1) a[i] *= b[i];
+	intt(a); a.resize(s); return a;
 }

@@ -4,12 +4,15 @@
 \setcurrentdir{math}
 
 \subsection{Number theory}
-\cpp[4]{Modint}{modint.hpp}[
-	\fld{Needs} \texttt{MOD} prime, $< 2^{30}$; NTT, FPS, BM need $998244353$.
+\cpp[3]{Modint}{modint.hpp}[
+	Integers mod a prime, multiplied with Barrett reduction instead of \texttt{\%}.
+	\fld{Usage} \texttt{modint a = x;} takes any \texttt{ll}. Operators \texttt{+ - * /} and \texttt{a\textasciicircum e} (power, put it in parentheses), \texttt{inv()}, \texttt{a.v} in ${[}0, \texttt{MOD})$, \texttt{==}, \texttt{cin}, \texttt{cout}.
+	\fld{Time} $O(1)$ for \texttt{+ - *}; $O(\log \texttt{MOD})$ for \texttt{inv} and power.
+	\fld{Note} \texttt{MOD} is a variable (default $998244353$): a prime $< 2^{31}$, set once before any value is built. NTT, FPS and BM need $998244353$.
 ]
 \cpp[5]{Bigint}{bigint.hpp}[
 	\fld{Base} 10.
-	\fld{\texttt{*}} NTT (\S6.3.2) if both $\ge 64$ digits; needs $|a|+|b| \le 2^{22}+1$ digits. \textbf{Time:} $2\cdot10^6 \times 2\cdot10^6$ digits 0.8\,s.
+	\fld{\texttt{*}} NTT (\S6.3.2) if both $\ge 64$ digits; needs $|a|+|b| \le 2^{23}+1$ digits. \textbf{Time:} $2\cdot10^6 \times 2\cdot10^6$ digits 0.8\,s.
 	\fld{\texttt{/}, \texttt{\%} by \texttt{ll}} $0<|b|\le10^{17}$. \textbf{Time:} $O(|a|)$.
 	\fld{\texttt{/}, \texttt{\%} by bigint} \textbf{Time:} $O(|q|\,|b|)$; $10^4/5\cdot10^3$ digits 0.5\,s, $2\cdot10^4/10^4$ 1.9\,s.
 	\fld{Signs} as in C++: $q$ truncates toward 0, $r$ has the sign of $a$.
@@ -58,10 +61,11 @@
 	\fld{convMod} $a_i, b_i \in {[0, M)}$, tested $M \le 10^9+7$, $|a|=|b|=2^{19}$ (0.25\,s).
 	\fld{Note} balanced digits keep rounding error $\le 0.2$ in pure \texttt{double} (plain {$[0,\sqrt M)$} digits fail).
 ]
-\cpp[4]{NTT}{ntt.hpp}[
-	\fld{Needs} $p = c \cdot 2^k + 1$ and $g$ a primitive root mod $p$ (3 for $998244353 = 119 \cdot 2^{23} + 1$).
-	\fld{Roots} $\omega = g^c$ is a primitive $2^k$-th root of unity, so lengths up to $2^k$; the code allocates $2^{\texttt{BIT}} = 2^{22}$ roots plus bit-reversal tables ($\approx$ 48 MB).
-	\fld{Note} other primes: \S9.2.
+\cpp[3]{NTT}{ntt.hpp}[
+	Number-theoretic transform and convolution mod $998244353 = 119 \cdot 2^{23} + 1$ (primitive root 3), written like \texttt{fft}.
+	\fld{Usage} \texttt{conv(a, b)} returns exactly $|a|+|b|-1$ values $c_k = \sum_i a_i b_{k-i}$, or {\texttt{\{\}}} if either input is empty. \texttt{ntt(a)} is in place for $|a| = 2^k$; \texttt{intt(a)} undoes it.
+	\fld{Time} $O(n \log n)$ with $n \ge |a|+|b|-1$ a power of two; memory $O(n)$.
+	\fld{Note} $|a|+|b|-1 \le 2^{23}$. Another prime $p = c \cdot 2^k + 1$ needs its primitive root in place of 3 and $|a|+|b|-1 \le 2^k$ (\S9.2).
 ]
 \cpp[4]{FWHT (xor/and/or), SOS}{fwht.hpp}[
 	\fld{Usage} $|a|=2^k$. \textbf{Time:} $O(n\log n)$.
@@ -71,7 +75,7 @@
 	\fld{Needs} mod $998244353$ only. Results have exactly $n$ terms ($a$ may be shorter/longer).
 	\fld{inv} $a_0 \ne 0$. \quad \textbf{log:} $a_0 = 1$. \quad \textbf{exp:} $a_0 = 0$.
 	\fld{divMod} $b$ has no leading zero; $q, r$ untrimmed.
-	\fld{Time} $n = 5\cdot10^5$: exp 4\,s, others $< 2$\,s.
+	\fld{Time} $n = 5\cdot10^5$: exp $< 1$\,s, others $< 0.5$\,s.
 ]
 \cpp[5]{Berlekamp--Massey + Bostan--Mori}{bm.hpp}[
 	\fld{Needs} mod $998244353$ only.

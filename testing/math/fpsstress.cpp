@@ -58,7 +58,7 @@ int main(){
 	FOR(int, n, 1, 300) FOR(int, rep, 0, 2){
 		int len = 1 + rng() % (n + 6); // shorter, equal or longer than n
 		poly a = rndPoly(len), b = rndPoly(1 + rng() % (n + 6));
-		if (FPS::mul(a, b) != naiveMul(a, b)) fail("mul", n, len);
+		if (conv(a, b) != naiveMul(a, b)) fail("mul", n, len);
 		a[0] = rnd(true);
 		if (FPS::inv(a, n) != naiveInv(a, n)) fail("inv", n, len);
 		a[0] = 1;
@@ -72,11 +72,11 @@ int main(){
 		auto qr = FPS::divMod(f, g);
 		if (qr != naiveDiv(f, g)) fail("divMod", (int)f.size(), (int)g.size());
 	}
-	if (!FPS::mul({}, {1}).empty()) fail("mul empty", 0, 0);
+	if (!conv({}, {1}).empty()) fail("mul empty", 0, 0);
 	// large: identities at n = 2^17 + 3 (non power of two)
 	int n = (1 << 17) + 3;
 	poly a = rndPoly(n); a[0] = 1;
-	poly one = FPS::mul(a, FPS::inv(a, n)); one.resize(n);
+	poly one = conv(a, FPS::inv(a, n)); one.resize(n);
 	poly e(n); e[0] = 1;
 	if (one != e) fail("inv large", n, n);
 	if (FPS::exp(FPS::log(a, n), n) != a) fail("exp(log) large", n, n);

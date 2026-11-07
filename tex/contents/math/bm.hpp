@@ -21,17 +21,20 @@ FPS::poly berlekampMassey(const FPS::poly &s){ // shortest c
 	return C;
 }
 modint bostanMori(FPS::poly P, FPS::poly Q, ll k){ // [x^k] P/Q, Q[0] != 0
-	FFT::buildRoot(); int q = Q.size(); modint h = (modint::MOD + 1) / 2;
+	int q = Q.size(); modint h = (modint::MOD + 1) / 2;
 	for (; k; k /= 2){ // P/Q = P(x)Q(-x) / Q(x)Q(-x), keep exponents of parity k
 		int n = 2, m = (P.size() + q) / 2;
 		while (n < max((int)P.size(), q) + q) n *= 2;
-		P.resize(n); Q.resize(n); FFT::transform(P, 0); FFT::transform(Q, 0);
-		FOR(int, i, 0, n/2 - 1){ // value at -w^i is at index i + n/2; _root[..] = w^-i
+		P.resize(n); Q.resize(n); ntt(P); ntt(Q);
+		modint w = 1, z = modint(3) ^ (modint::MOD - 1) / n;
+		z = z.inv();
+		// -w^i is at index i + n/2; w = z^i
+		FOR(int, i, 0, n/2 - 1){
 			modint a = P[i] * Q[i+n/2], b = P[i+n/2] * Q[i];
-			P[i] = k & 1 ? (a - b) * h * FFT::_root[(n-i) * (FFT::MAX_LEN/n)] : (a + b) * h;
-			Q[i] *= Q[i+n/2];
+			P[i] = k & 1 ? (a - b) * h * w : (a + b) * h;
+			Q[i] *= Q[i+n/2]; w *= z;
 		}
-		P.resize(n/2); Q.resize(n/2); FFT::transform(P, 1); FFT::transform(Q, 1);
+		P.resize(n/2); Q.resize(n/2); intt(P); intt(Q);
 		P.resize(m); Q.resize(q);
 	}
 	return P.empty() ? 0 : P[0] / Q[0];
@@ -39,6 +42,6 @@ modint bostanMori(FPS::poly P, FPS::poly Q, ll k){ // [x^k] P/Q, Q[0] != 0
 modint kthTerm(const FPS::poly &a, const FPS::poly &c, ll k){ // a: first |c| terms
 	int d = c.size(); FPS::poly Q(d+1); Q[0] = 1;
 	FOR(int, j, 0, d - 1) Q[j+1] = -c[j];
-	FPS::poly P = FPS::mul(a, Q); P.resize(d);
+	FPS::poly P = conv(a, Q); P.resize(d);
 	return bostanMori(P, Q, k);
 }
