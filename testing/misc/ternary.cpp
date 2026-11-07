@@ -56,7 +56,7 @@ int main(){
 		}
 	}
 
-	// Check 4: 100000 seeds goldenSection real search
+	// Check 4: 100000 seeds golden real search
 	double worst = 0;
 	for (int sd = 0; sd < 100000; sd++){
 		double a = ((ll)(rg() % 2000) - 1000) / 10.0;
@@ -65,7 +65,7 @@ int main(){
 		double c = a + (b - a) * (rg() % 10001) / 10000.0;
 		double k = 1 + rg() % 5;
 		auto f = [&](double x){ return sd % 2 ? fabs(x - c) * k : (x - c) * (x - c) * k + 3; };
-		double x = goldenSection(a, b, f);
+		double x = golden(a, b, f);
 		double tol = sd % 2 ? 1e-9 * (1 + fabs(c)) : 2e-8 * (1 + fabs(c)); // printed note: ~1e-8 (1 + |x|)
 		worst = max(worst, fabs(x - c));
 		if (fabs(x - c) > tol || x < a || x > b){
@@ -85,10 +85,10 @@ int main(){
 		}
 	}
 
-	// Check 5: goldenSection(2,2,f) == 2
+	// Check 5: golden(2,2,f) == 2
 	{
 		auto f = [](double x){ return (x - 2) * (x - 2); };
-		double x = goldenSection(2.0, 2.0, f);
+		double x = golden(2.0, 2.0, f);
 		if (fabs(x - 2.0) > 1e-15){
 			puts("CHECK 5 FAIL: a == b did not return 2");
 			return 1;
@@ -99,12 +99,18 @@ int main(){
 	{
 		using P = array<double, 2>;
 		auto en = [](const P &p){ return (p[0] - 3) * (p[0] - 3) + (p[1] + 2) * (p[1] + 2); };
-		auto nb = [](const P &p, double T, mt19937_64 &g){
+		P p{0, 0}, b = p;
+		double cur = en(p), best = cur;
+		anneal(0.2, 1, 1e-9, [&](auto &ok, mt19937_64 &g){
 			normal_distribution<double> nd(0, 1);
-			double st = max(1e-6, sqrt(T));
-			return P{p[0] + nd(g) * st, p[1] + nd(g) * st};
-		};
-		P b = anneal(P{0, 0}, en, nb, 0.2, 10, 1e-9);
+			double st = exp(-(int)(g() % 1000) / 70.0);
+			P q{p[0] + nd(g) * st, p[1] + nd(g) * st};
+			double d = en(q) - cur;
+			if (ok(d)){
+				p = q; cur += d;
+				if (cur < best){ best = cur; b = p; }
+			}
+		});
 		if (en(b) >= 1e-6){
 			printf("CHECK 6 FAIL: convex energy %g >= 1e-6\n", en(b));
 			return 1;
@@ -132,16 +138,18 @@ int main(){
 				opt = min(opt, len(p));
 			} while (next_permutation(p.begin() + 1, p.end()));
 			iota(p.begin(), p.end(), 0);
-			auto nb = [&](const vector<int> &q, double, mt19937_64 &g){
-				auto r = q;
+			double cur = len(p), best = cur;
+			anneal(0.1, 100, 1e-3, [&](auto &ok, mt19937_64 &g){
 				int i = g() % n, j = g() % n;
 				if (i > j) swap(i, j);
-				reverse(r.begin() + i, r.begin() + j + 1);
-				return r;
-			};
-			auto b = anneal(p, len, nb, 0.1, 100, 1e-3);
-			if (len(b) > opt + 1e-9){
-				printf("CHECK 7 FAIL: instance %d got %g, opt %g\n", sd, len(b), opt);
+				reverse(p.begin() + i, p.begin() + j + 1);
+				double d = len(p) - cur;
+				if (ok(d)){
+					cur += d; best = min(best, cur);
+				}else reverse(p.begin() + i, p.begin() + j + 1);
+			});
+			if (best > opt + 1e-9){
+				printf("CHECK 7 FAIL: instance %d got %g, opt %g\n", sd, best, opt);
 				return 1;
 			}
 		}
@@ -158,14 +166,12 @@ int main(){
 		}
 	}
 
-	// Check 9: anneal with seconds=0 returns initial state unchanged
+	// Check 9: anneal with sec=0 never calls step
 	{
-		int start = 42;
-		auto en = [](int x) -> double { return x * x; };
-		auto nb = [](int x, double, mt19937_64 &) -> int { return x + 1; };
-		int res = anneal(start, en, nb, 0.0);
-		if (res != start){
-			printf("CHECK 9 FAIL: seconds=0 got %d expected %d\n", res, start);
+		bool called = false;
+		anneal(0.0, 1, 1e-3, [&](auto &, mt19937_64 &){ called = true; });
+		if (called){
+			puts("CHECK 9 FAIL: sec=0 called step");
 			return 1;
 		}
 	}

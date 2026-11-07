@@ -12,7 +12,7 @@
 ]
 \cpp[3]{Persistent segment tree}{ps_seg.hpp}[
 	\fld{Usage} \texttt{upd} returns a new root and leaves the old one valid; positions $1..n$, ranges ${[}a,b{]}$ inclusive; root 0 = all identity.
-	\fld{Memory} $O(n+q\log n)$ nodes (about 16 bytes each for \texttt{ll}).
+	\fld{Memory} $O((n+q)\log n)$ nodes (the initial array costs $n$ updates); about 16 bytes per node for \texttt{ll}.
 ]
 \cpp[4]{Li Chao tree}{lichao.hpp}[
 	\fld{Usage} all query $x$ known up front, and every queried $x$ must be in the constructor's list (lines fully online); segment ${[}lo, hi)$ in $x$ values. Max: negate $a, b$ and the answer.
@@ -37,14 +37,14 @@
 	\fld{Note} no path compression (undo needs it). \texttt{rollback(t)} only to a \texttt{time()} not yet undone below.
 	\fld{Usage} offline dynamic connectivity: segment tree over time, DFS with \texttt{time()}/\texttt{rollback}.
 ]
-\cpp[4]{pb\_ds}{pbds.hpp}[
+\cpp[3]{pb\_ds}{pbds.hpp}[
 	\fld{Map} \texttt{null\_type} $\to$ value type.
 	\fld{Multiset} store \texttt{pair(x, id)}.
 	\fld{Hash} \texttt{chash} hashes integers; combine pair keys first. Presize: \texttt{hashMap<K,V> h(\{\},\{\},\{\},\{\},\{1<<20\})}.
 ]
-\cpp[4]{Mo's algorithm}{mo.hpp}[
-	\fld{Usage} sequence $1..n$, queries $[l, r]$ inclusive. \texttt{e} tells which end moves (needed when order matters, e.g.\ inversions with a BIT).
-	\fld{Blocks} alternative: sort by $(l/B, \pm r)$ with
-	\[ B \approx n/\sqrt q \]
+\cpp[3]{Mo's algorithm}{mo.hpp}[
+	Answers offline range queries on a sequence by moving a window between queries in block order.
+	\fld{Usage} \texttt{auto res = mo(Q, add, del, calc)}. \texttt{Q} is a vector of pairs $(l, r)$, one per query, each 1-indexed and inclusive; the window starts empty. \texttt{add(i, e)} puts element $i$ into the window and \texttt{del(i, e)} takes it out; \texttt{e} is $0$ at the left end and $1$ at the right end (it matters when order counts, e.g.\ inversions with a BIT). \texttt{calc()} returns the answer for the current window. \texttt{res[i]} is the value of \texttt{calc()} for \texttt{Q[i]}.
+	\fld{Time} $O((n+q)\sqrt n \cdot \text{cost})$ for $n$ = largest $r$, where cost is one \texttt{add}/\texttt{del}/\texttt{calc}.
 	\fld{Not here} Mo on trees (Euler tour, toggle vertices); Mo with updates (time as 3rd coordinate, $B \approx n^{2/3}$, $O(n^{5/3})$).
 ]

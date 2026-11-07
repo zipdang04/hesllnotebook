@@ -4,12 +4,12 @@
 \setcurrentdir{misc}
 
 \cpp[3]{Ternary search, annealing}{ternary.hpp}[
-	\fld{Needs} $f$ strictly decreasing then increasing (flat only at the minimum); for max pass $-f$.
-	\fld{ternaryInt} $|l|, |r| \le 4\cdot10^{18}$.
-	\fld{Golden} $x$ within $\sim10^{-8}(1+|x|)$.
-	\fld{anneal} heuristic, clock-seeded (fix the seed for multi-pass); set $T_0$ to a typical $|\Delta E|$.
+	Finds the minimum of a unimodal function (integers, reals) and runs simulated annealing.
+	\fld{Usage} \texttt{ternaryInt(l, r, f)} returns the smallest argmin of \texttt{ll f(ll)} on the integers ${[}l, r{]}$. \texttt{golden(a, b, f)} returns the argmin of \texttt{double f(double)} on the reals ${[}a, b{]}$, 100 iterations, one call of \texttt{f} each. For a maximum pass $-f$. \texttt{anneal(sec, T0, T1, step)} runs for \texttt{sec} seconds with the temperature falling from $T_0$ to $T_1$. \texttt{step(ok, rng)} picks a random move, computes the energy change $d$ and applies the move iff \texttt{ok(d)} is true. The caller keeps the current and the best answer. Take $T_0$ about a typical $|d|$ and $T_1 \approx T_0/10^3$.
+	\fld{Time} $O(\log(r-l))$ calls of \texttt{f}; \texttt{golden}: 100 calls; \texttt{anneal}: as many steps as fit in \texttt{sec}.
+	\fld{Note} $f$ must be strictly decreasing then increasing (flat only at the minimum). $|l|, |r| \le 4\cdot10^{18}$. \texttt{golden} is exact to about $10^{-8}(1+|x|)$. \texttt{anneal} is clock-seeded; fix the seed for multi-pass tasks.
 ]
-\cpp[4]{DP opt: D\&C, Knuth, Aliens}{dpopt.hpp}[
+\cpp[3]{DP opt: D\&C, Knuth, Aliens}{dpopt.hpp}[
 	\fld{All} 1-based; $C(l,r)$ = cost of $a[l..r]$ inclusive. QI (quadrangle inequality), for $a \le b \le c \le d$:
 	\[ C(a,c) + C(b,d) \le C(a,d) + C(b,c) \]
 	\fld{QI costs} $(a_l+\dots+a_r)^2$ with $a \ge 0$; sum of $w \ge 0$ over sub-intervals of $[l,r]$; plain range sum.
@@ -18,7 +18,7 @@
 	\fld{Needs} QI. \textbf{Time:} $O(Kn\log n)$. \textbf{Returns:} $dp_K[0..n]$, \texttt{LLONG\_MAX} where $j < K$.
 	\fld{Knuth} merge adjacent, optimal BST; $dp[i][i] = 0$:
 	\[ dp[l][r] = \min_{l \le k < r}\; dp[l][k] + dp[k+1][r] + C(l,r) \]
-	\fld{Needs} QI and $C(b,c) \le C(a,d)$ for $a \le b \le c \le d$. \textbf{Time:} $O(n^2)$; memory $(n+1)^2$ (ll + int).
+	\fld{Needs} QI and $C(b,c) \le C(a,d)$ for $a \le b \le c \le d$. \textbf{Time:} $O(n^2)$; memory $(n+1)^2$ \texttt{ll} (about 200 MB at $n = 5000$).
 	\fld{Base} $dp[i][i] = b_i$: add $b_l+\dots+b_r$ to $dp[l][r]$. OBST: positions = dummies $q_0..q_n$, $C$ = subtree weight, then $+\sum q$.
 	\fld{Aliens} $f(k)$ = min with exactly $k$ items, convex in $k$ (e.g.\ $k$ groups, QI cost); binary search on $\lambda$.
 	\fld{solve($\lambda$)} $+\lambda$ per item; returns \{min, \emph{smallest} count among minimisers\} (ties!). Only the value is recovered.

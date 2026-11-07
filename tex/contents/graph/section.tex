@@ -11,7 +11,7 @@
 ]
 \cpp[3]{Lowlink: bridges, cut vertices, BCC}{lowlink.hpp}[
 	\fld{Note} self-loops and multi-edges OK (parent skipped by edge id).
-	\fld{Stack} recursive: depth up to $n$ (needs a big stack for $n \approx 5\cdot10^5$).
+	\fld{Stack} recursive, about 130 B of stack per level: an 8 MB stack overflows on a path of $7\cdot10^4$; $n = 10^6$ needs about 150 MB.
 	\fld{Block-cut tree} join each block node to its vertices.
 ]
 \cpp[4]{Euler path / circuit}{euler.hpp}[
@@ -28,6 +28,7 @@
 	\fld{Note} any weights (ll, tested $|w| \le 10^9$), self-loops and multi-edges OK.
 	\fld{Unreachable} with negative weights test \texttt{par.empty()}.
 	\fld{Returns} \texttt{par[r]} $= -1$; \texttt{solve} can be called again.
+	\fld{Needs} Rollback DSU (\S3.3.1).
 ]
 \cpp[4]{Manhattan MST}{manhattanmst.hpp}[
 	\fld{Note} exact with ll for $|x|,|y| \le 10^9$ (tested $0..10^9$; translation-invariant). Duplicate points OK.
@@ -65,6 +66,7 @@ Determinant mod $p$: Gauss--Jordan (\S6.2.1).
 	\fld{Order} \texttt{pa[i] < i}: reverse index order is bottom-up for DP.
 	\fld{\texttt{id}} $O(n)$ once, reused without reset.
 	\fld{Weighted} lengths: use weighted depths instead of \texttt{dep}.
+	\fld{Needs} HLD (\S2.3.1).
 ]
 
 \subsection{Hard}

@@ -15,7 +15,8 @@ template<class T> vector<int> unrankMulti(RankUnrank<T> &R, T r, int n, int k){
 }
 
 template<class T> void run(){
-	RankUnrank<T> R(20); // ll: 20! is the largest factorial that fits
+	// ll: subsets fit up to n = 66, permutations up to n = 20
+	RankUnrank<T> R(20);
 	// exhaustive: permutations n<=7 in std::next_permutation order
 	FOR(int, n, 0, 7){
 		vector<int> p(n); iota(p.begin(), p.end(), 0); ll i = 0;
@@ -61,14 +62,33 @@ int main(){
 		assert(L.unrankPerm(2432902008176640000LL - 1, 20) == q);
 		assert(L.C[20][10] == 184756);
 	}
+	// ll subsets up to n = 66: C(66, 33) fits
+	{
+		RankUnrank<ll> L(66);
+		vector<int> c(33); iota(c.begin(), c.end(), 33);
+		ll last = L.C[66][33] - 1;
+		assert(L.rankSubset(c, 66) == last);
+		assert(L.unrankSubset(last, 66, 33) == c);
+	}
+	// permutations need no table: n = 0 works, n = 1000 is fast
+	{
+		RankUnrank<bigint> Z(0);
+		mt19937 rg(7);
+		vector<int> p(1000); iota(p.begin(), p.end(), 0); shuffle(p.begin(), p.end(), rg);
+		assert(Z.unrankPerm(Z.rankPerm(p), 1000) == p);
+		RankUnrank<ll> Y(0);
+		vector<int> q(20); iota(q.begin(), q.end(), 0); shuffle(q.begin(), q.end(), rg);
+		assert(Y.unrankPerm(Y.rankPerm(q), 20) == q);
+	}
 
 	// big cases (bigint only): perms of 30, C(100,50), multiset
 	RankUnrank<bigint> B(120);
+	auto fact = [](int n){ bigint f(1); FOR(int, i, 1, n) f = f * bigint(i); return f; };
 	mt19937 rng(1);
 	FOR(int, it, 0, 199){
 		int n = 30; vector<int> p(n); iota(p.begin(), p.end(), 0); shuffle(p.begin(), p.end(), rng);
 		bigint r = B.rankPerm(p); assert(B.unrankPerm(r, n) == p);
-		assert(r < B.f[n]);
+		assert(r < fact(n));
 		vector<int> c; FOR(int, x, 0, 99) if (rng()%2) c.push_back(x);
 		int k = c.size(), nn = 100;
 		bigint s = B.rankSubset(c, nn); assert(B.unrankSubset(s, nn, k) == c); assert(s < B.C[nn][k]);
@@ -79,10 +99,10 @@ int main(){
 	vector<int> id(30); iota(id.begin(), id.end(), 0);
 	assert(B.rankPerm(id) == bigint(0));
 	reverse(id.begin(), id.end());
-	assert(B.rankPerm(id) + bigint(1) == B.f[30]);
+	assert(B.rankPerm(id) + bigint(1) == fact(30));
 	vector<int> c50(50); iota(c50.begin(), c50.end(), 50);
 	assert(B.rankSubset(c50, 100) + bigint(1) == B.C[100][50]);
 	assert(B.C[100][50] == bigint("100891344545564193334812497256"));
-	assert(B.f[30] == bigint("265252859812191058636308480000000"));
+	assert(fact(30) == bigint("265252859812191058636308480000000"));
 	puts("OK");
 }

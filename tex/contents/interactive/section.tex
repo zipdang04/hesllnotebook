@@ -119,8 +119,9 @@ $h$-bit hash: garbage passes w.p.\ $\approx 2^{-h}$.
 	\fld{unrooted} root at the center(s), min id if two; \texttt{id[]} afterwards is for the last centre.
 	\fld{Time} $O(n\log n)$, iterative.
 ]
-\cpp[4]{Rank / unrank}{rankunrank.hpp}[
-	\fld{Needs} Bigint (\S6.1.2) for T=bigint; T=ll: constructor size $\le 20$ (it computes $n!$).
-	\fld{Returns} lexicographic, 0-based ranks; $0\le r<\mathrm{count}$.
-	\fld{$k$-multiset} map $x_i \mapsto x_i+i$ to a subset of $n{+}k{-}1$ elements.
+\cpp[3]{Rank / unrank}{rankunrank.hpp}[
+	Ranks and unranks $k$-subsets and permutations in lexicographic order, with 0-based ranks $0\le r<\mathrm{count}$.
+	\fld{Usage} \texttt{RankUnrank}$\langle T\rangle$ \texttt{R(n)} with \texttt{T} = \texttt{ll} or Bigint (\S6.1.2). \texttt{rankSubset(c, n)} and \texttt{unrankSubset(r, n, k)} work on a sorted $k$-subset of ${[}0, n)$ and need $n$ at most the constructor's $n$. \texttt{rankPerm(p)} and \texttt{unrankPerm(r, n)} work on a permutation of ${[}0, n)$ and need no table, so build with $n = 0$ if you only use permutations.
+	\fld{Time} constructor $O(n^2)$ time and memory; subsets $O(nk)$ per call; permutations $O(n^2)$ per call (Bigint: times its cost per digit).
+	\fld{Note} \texttt{ll} fits subsets for $n \le 66$ and permutations for $n \le 20$. A $k$-multiset: map $x_i \mapsto x_i+i$ to a subset of $n{+}k{-}1$ elements.
 ]
