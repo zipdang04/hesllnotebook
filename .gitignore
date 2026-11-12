@@ -331,3 +331,7 @@ TSWLatexianTemp*
 .env
 testing/.oj-tests/
 .worktrees/
+.agents/
+.claude/
+.mcp.json
+GEMINI.md
