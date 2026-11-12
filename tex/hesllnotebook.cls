@@ -24,10 +24,10 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 2. margins %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \paperwidth=29.7cm
 \paperheight=21cm
-\textwidth=28cm %-1cm
+\textwidth=28.3cm
 \textheight=19.3cm
 
-\hoffset=-3.8cm % one inch + \hoffset
+\hoffset=-3.95cm % one inch + \hoffset
 \voffset=-2.04cm % one inch + \voffset
 \topmargin=0cm
 \headheight=0.5cm
@@ -36,7 +36,7 @@
 
 \parindent=0mm
 \parskip=1ex
-\columnsep=10pt
+\columnsep=5pt
 \columnseprule=1pt
 \renewcommand\baselinestretch{1}
 
@@ -88,7 +88,7 @@
 \renewcommand{\tableofcontents}{{\setlength{\parskip}{0pt}\hesll@tableofcontents}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 5. codes %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\setminted{xleftmargin=11pt, resetmargins, numbersep=4pt, breaklines, breakbefore=. , stripnl, linenos, tabsize=2, fontsize=\footnotesize, firstnumber=1}
+\setminted{xleftmargin=9pt, resetmargins, numbersep=4pt, breaklines, breakbefore=. , stripnl, linenos, tabsize=2, fontsize=\footnotesize, firstnumber=1}
 
 \def\currentdir{}
 % entry heading level: \twolevels (section -> entry) or \threelevels (section -> group -> entry)
