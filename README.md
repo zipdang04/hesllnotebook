@@ -5,7 +5,7 @@ ICPC team notebook for **HUS.HAD** (Hanoi University of Science): a 25-page land
 `testing/` checks against [Library Checker](https://judge.yosupo.jp) problems.
 
 The planned table of contents (sections, entries, status, line budgets) is in
-[`docs/TOC-draft.md`](docs/TOC-draft.md).
+[`docs/TOC.md`](docs/TOC.md).
 
 ## Layout
 
@@ -20,7 +20,7 @@ testing/
   all.py                 registry: test → Library Checker problem + time limit
   test.sh                compile, generate tests, run, check
 library-checker-problems/  submodule (zipdang04's fork of yosupo06/library-checker-problems)
-docs/TOC-draft.md        planned ToC
+docs/TOC.md        planned ToC
 Makefile                 make test / make pdf / make yukitoken (CI runs the same targets)
 .github/workflows/       verify.yml: tests, then the PDF as a downloadable artifact
 ```
