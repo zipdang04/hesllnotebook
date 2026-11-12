@@ -10,7 +10,8 @@
 
 \subsection{Paths \& spanning trees}
 \cpp[4]{SPFA}{spfa.hpp}[
-	Path: walk \texttt{par} back from $t$ (edge ids, so keep each edge's tail). Other \texttt{adj}: filter edges (\texttt{if (w <= lim)}), change weights (min mean cycle: $w - \lambda$), implicit graphs (grids).
+	Path: walk \texttt{par} back from $t$ (edge ids, so keep each edge's tail). Other \texttt{adj}: filter edges (\texttt{if (w <= lim)}), change weights (min mean cycle: $w - \lambda$), implicit graphs (grids).\\
+	Print the negative cycle: \texttt{par} here need not contain it yet, so use Bellman--Ford ($n$ passes over all edges, also keeping \texttt{par}); take any $x$ relaxed in pass $n$, set $x \gets$ tail of \texttt{par[$x$]} $n$ times (now $x$ is on the cycle), then walk on until $x$ repeats.
 ]
 \entry{Directed MST}
 \entry{Manhattan MST}
