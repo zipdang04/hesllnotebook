@@ -33,26 +33,30 @@ NOTEBOOK (25 pp)  —  section → entry, or section → group → entry where a
 │   │   random tree (random parent + relabel)
 │   ├── 0.6 Checker skeleton: reads in/out/ans,            CODE       ~8
 │   │   exit 0 = OK
-│   └── 0.7 Troubleshoot + edge cases + when to stress:    TEXT       ~37
-│       hand-made cases first (teammate writes them on paper,
-│       one tests/ folder per problem); stress after WA, or when
-│       random input is always valid + greedy/DP unproven + brute
-│       ≤ 5 min; small n first; under -DSTRESS shrink block sizes /
-│       thresholds to 1–3 (const int, not #define).
-│       Edge cases — size: min (n=1, empty), max (TL/ML/overflow,
-│       generated, not hand-written); values: 0, negative, ±1e9,
-│       2³¹, 1e18, all equal, all distinct, sorted, reversed, many
-│       duplicates; graphs: 1 vertex, disconnected, self-loops,
-│       multi-edges, path, star, complete, Y-shape; answers:
-│       impossible, ties, several valid, at a boundary; multitest:
-│       big case then small (state not cleared); format: whitespace,
-│       YES/Yes, decimals; geometry: parallel/coincident lines, far
-│       intersections, circles at 0/1/2 points, collinear, on axes
+│   ├── 0.7 Troubleshoot + edge cases + when to stress:    TEXT       ~37
+│   │   hand-made cases first (teammate writes them on paper,
+│   │   one tests/ folder per problem); stress after WA, or when
+│   │   random input is always valid + greedy/DP unproven + brute
+│   │   ≤ 5 min; small n first; under -DSTRESS shrink block sizes /
+│   │   thresholds to 1–3 (const int, not #define).
+│   │   Edge cases — size: min (n=1, empty), max (TL/ML/overflow,
+│   │   generated, not hand-written); values: 0, negative, ±1e9,
+│   │   2³¹, 1e18, all equal, all distinct, sorted, reversed, many
+│   │   duplicates; graphs: 1 vertex, disconnected, self-loops,
+│   │   multi-edges, path, star, complete, Y-shape; answers:
+│   │   impossible, ties, several valid, at a boundary; multitest:
+│   │   big case then small (state not cleared); format: whitespace,
+│   │   YES/Yes, decimals; geometry: parallel/coincident lines, far
+│   │   intersections, circles at 0/1/2 points, collinear, on axes
+│   ├── 0.8 Practice-session checklist                 TEXT       ~8
+│   │   (judge + exact compile line, stack/memory, stderr, tools)
+│   └── 0.9 gdb card (-O0 to step)                     TEXT       ~10
 │
 ├── 1. Flow & Matching  (3 levels) ................................ ~345 lines · 2 pp (over by ~85)
 │   ├── 1.1 Flow
 │   │   ├── 1.1.1 Dinic with scaling + min cut             CODE       ~45
 │   │   │   (reverse BFS from t, multi-push DFS)
+│   │   │   bipartite matching O(E√V); König: min VC from the cut
 │   │   ├── 1.1.2 MCMF (SSP + SPFA)                        CODE       ~45  uses: SPFA (§2.2.1)
 │   │   ├── 1.1.3 Min-cost circulation, cost scaling       CODE       ~73  uses: Dinic
 │   │   │   (bounds, any costs; O(V²E log VC), beats anti-SSP)
@@ -64,13 +68,12 @@ NOTEBOOK (25 pp)  —  section → entry, or section → group → entry where a
 │   │   ├── 1.1.5 O(V³) Global min cut, Stoer–Wagner       CODE       ~25              [7/7]
 │   │   └── 1.1.6 Gomory–Hu tree                           CODE       ~15  uses: Dinic [3/7+]
 │   └── 1.2 Matching
-│       ├── 1.2.1 O(E√V) Hopcroft–Karp                     CODE       ~25
-│       ├── 1.2.2 O(V³) Hungarian                          CODE       ~35              [6/7]
-│       └── 1.2.3 O(V³) General matching (blossom)         CODE       ~65              [6/7]
+│       ├── 1.2.1 O(V³) Hungarian                          CODE       ~35              [6/7]
+│       └── 1.2.2 O(V³) General matching (blossom)         CODE       ~65              [6/7]
 │
 ├── 2. Graph  (3 levels; trees live here) ......................... ~422 lines · 3.25 pp
 │   ├── 2.1 Connectivity
-│   │   ├── 2.1.1 SCC + 2-SAT, iterative Tarjan            CODE       ~50
+│   │   ├── 2.1.1 SCC + 2-SAT (recursive Tarjan)           CODE       ~50
 │   │   ├── 2.1.2 Lowlink: bridges, articulation points,   CODE       ~40              [6/7]
 │   │   │   BCC
 │   │   └── 2.1.3 Euler path / circuit                     CODE       ~25
@@ -103,7 +106,7 @@ NOTEBOOK (25 pp)  —  section → entry, or section → group → entry where a
 │       ├── 3.3.1 Rollback DSU                             CODE       ~20
 │       ├── 3.3.2 pb_ds order-statistic tree +             CODE       ~15
 │       │   gp_hash_table with custom hash
-│       └── 3.3.3 Mo's algorithm (+ Hilbert order)         CODE       ~35
+│       └── 3.3.3 Mo's algorithm (Hilbert: note only)      CODE       ~35
 │
 ├── 4. Strings  (2 levels) ........................................ ~291 lines · 2.25 pp
 │   ├── 4.1 Z-function (KMP omitted by the user's rule)    CODE       ~10
@@ -195,7 +198,7 @@ NOTEBOOK (25 pp)  —  section → entry, or section → group → entry where a
 ```
 
 Budget: the PDF is 25 pages (cover + content pages labelled 1–24); no reserve page is left.
-Estimated content: ~3,060 lines ≈ 23.5 pp at 130 lines/page. §1 is ~85 lines over its 2 pp (Hopcroft–Karp, cost scaling).
+Estimated content: ~3,060 lines ≈ 23.5 pp at 130 lines/page. §1 is ~85 lines over its 2 pp (cost scaling).
 
 Status (synced with the PDF, 2026-10-26): all 83 entries are written and printed, in the order above
 (§7.3: AHU then Rank/unrank; §8: Ternary then DP optimisation). Printed titles are shortened versions of these.
