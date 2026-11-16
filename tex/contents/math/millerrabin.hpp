@@ -1,39 +1,34 @@
+#pragma once
 #include "../contest/template.hpp"
 
-#define MAX 1000001
-#define MOD 1000000007
-
-namespace MillerRabin{
-	typedef __int128_t i128;
-	constexpr int SMALL_PRIMES[12] = {2,3,5,7,11,13,17,19,23,29,31,37};
-
-	inline ll _power(ll a, ll n, ll mod) {
-		ll ans = 1;
-		while (n) {
-			if (n & 1) ans = (i128)ans * a % mod;
-			a = (i128)a * a % mod; n >>= 1;
+// mulMod, powMod: a, b, n >= 0, 1 <= m < 2^63; r in 0..m-1.
+// isPrime: any ll; 7 powMods, O(log n) mulMods each.
+ll mulMod(ll a, ll b, ll m){
+	return (__int128)a * b % m;
+}
+ll powMod(ll a, ll n, ll m){
+	ll r = 1 % m;
+	for(; n; n >>= 1, a = mulMod(a, a, m))
+		if(n & 1) r = mulMod(r, a, m);
+	return r;
+}
+bool isPrime(ll n){
+	if(n < 2) return false;
+	if(n < 4) return true;
+	if(n % 2 == 0) return false;
+	int twos = __builtin_ctzll(n - 1);
+	ll odd = (n - 1) >> twos;
+	ll bases[] = {2, 325, 9375, 28178, 450775, 9780504,
+		1795265022};
+	for(ll a: bases){
+		if(a % n == 0) continue; // says nothing
+		ll x = powMod(a, odd, n);
+		if(x == 1 || x == n - 1) continue;
+		FOR(i, 1, twos - 1){
+			x = mulMod(x, x, n);
+			if(x == n - 1) break;
 		}
-		return ans;
+		if(x != n - 1) return false;
 	}
-	inline bool _fermatCheck(ll n, ll a, ll pw, int p2) {
-		ll num = _power(a, pw, n);
-		if (num == 1 || num == n - 1) return true;	
-		FOR(int, i, 1, p2-1) {
-			num = (i128) num * num % n;
-			if (num == n - 1) return true;
-		}
-		return false;
-	}
-
-	inline bool checkPrime(const ll n) {
-		if (n == 2 || n == 3 || n == 5 || n == 7) return true;
-		if (n < 11 || (n & 1) == 0) return false;
-		ll d = n-1; int p2 = 0;
-		while ((d & 1) == 0) d >>= 1, p2++;
-		for (int a: SMALL_PRIMES)
-			if (n == a) return true;
-			else if (not _fermatCheck(n, a, d, p2)) 
-				return false;
-		return true;
-	}
+	return true;
 }

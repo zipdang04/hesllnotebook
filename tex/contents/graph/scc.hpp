@@ -1,34 +1,30 @@
+#pragma once
 #include "../contest/template.hpp"
 
-struct Node{
-	int dest, idx;
-	Node(int dest, int idx): dest(dest), idx(idx) {}
-	Node(): Node(0, 0) {}
-};
-const int MAX = 500005;
-int n, m;
-vector<Node> graph[MAX];
-namespace Tarjan {
-	int low[MAX], num[MAX], time;
-	vector<int> scc[MAX]; int root[MAX];
-	stack<int> tmp;
-	void dfs(int node) {
-		low[node] = num[node] = ++time; tmp.push(node);
-		for (Node ch: graph[node]) {
-			int child = ch.dest;
-			if (num[child]) 
-				minimize(low[node], num[child]);
-			else {
-				dfs(child);
-				minimize(low[node], low[child]);
-			}
+// SCC by Tarjan, O(V + E), vertices 1..n; ids 1..cnt.
+// Edge u -> v implies comp[u] >= comp[v] (reverse topo).
+// Recursive, depth <= V.
+struct SCC{
+	int cnt = 0, timer = 0;
+	vector<int> comp, num, low, stk;
+	SCC(const vector<vector<int>> &g):
+			comp(g.size()), num(g.size()), low(g.size()){
+		FOR(u, 1, (int)g.size() - 1) if(!num[u]) dfs(u, g);
+	}
+	void dfs(int u, const vector<vector<int>> &g){
+		low[u] = num[u] = ++timer;
+		stk.push_back(u);
+		for(int v: g[u]) if(!comp[v]){
+			if(!num[v]) dfs(v, g);
+			low[u] = min(low[u], low[v]);
 		}
-		if (low[node] == num[node]) {
-			int cur; do {
-				cur = tmp.top(); tmp.pop();
-				root[cur] = node; scc[node].push_back(cur);
-				num[cur] = low[cur] = INT_MAX; // done: ignored by later min()
-			} while (cur != node);
+		if(low[u] == num[u]){
+			cnt++;
+			int v;
+			do{
+				v = stk.back(); stk.pop_back();
+				comp[v] = cnt;
+			}while(v != u);
 		}
 	}
-}
+};

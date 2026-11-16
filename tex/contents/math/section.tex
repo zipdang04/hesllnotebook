@@ -8,8 +8,16 @@
 \cpp{Bigint}{bigint.hpp}
 \entry{Ext-gcd, CRT}
 \cpp[3]{Sieve (factorable)}{eratos_factorable.cpp}
-\cpp[3]{Miller--Rabin}{millerrabin.hpp}
-\cpp{Pollard rho}{pollardrho.hpp}
+\cpp[4]{Miller--Rabin}{millerrabin.hpp}[
+	\fld{Use} \texttt{bool p = isPrime(n);}
+	\fld{Result} exact for every \texttt{ll} $n$, false below 2: the 7 bases are proven for all $n < 2^{64}$.
+]\label{millerrabin}
+\cpp[4]{Pollard rho}{pollardrho.hpp}[
+	\fld{Use} \texttt{vector<ll> f = factorize(n);}
+	\fld{Result} prime factors with multiplicity, unsorted; $n = 1$ gives none.
+	\fld{Needs} $1 \le n < 2^{62}$. Uses \texttt{isPrime} (\S\ref{millerrabin}).
+	\fld{findDivisor} a divisor $d$ of a composite $n$, $1 < d < n$, not always prime. It never returns on a prime $n$.
+]\label{pollardrho}
 \entry{Discrete log / discrete sqrt}
 \entry{Floor sum}
 

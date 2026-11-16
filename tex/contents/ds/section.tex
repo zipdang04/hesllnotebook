@@ -6,7 +6,13 @@
 \subsection{Segment trees}
 \entry{Lazy segment tree}
 \cpp[3]{Persistent segment tree}{ps_seg.hpp}
-\entry{Li Chao tree}
+\cpp[4]{Li Chao tree}{lichao.hpp}[
+	\fld{Use} \texttt{LiChao lc(xs); lc.addLine(a, b); lc.addSegment(a, b, l, r); lc.get(x);}
+	\fld{Result} \texttt{get(x)} is the minimum of $ax + b$ over the lines that cover $x$, or \texttt{LiChao::oo}.
+	For the maximum, add $(-a, -b)$ and negate the answer.
+	\fld{Needs} every queried $x$ is in \texttt{xs} (offline); any other $x$ gives a wrong answer silently. $ax + b$ fits in \texttt{ll} and is below \texttt{oo}.
+	\fld{addSegment} covers only $l \le x \le r$; it does nothing when no point of \texttt{xs} is in $[l, r]$.
+]\label{lichao}
 
 \subsection{Balanced trees}
 \entry{Implicit treap}
