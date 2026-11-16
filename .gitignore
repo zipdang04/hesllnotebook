@@ -335,3 +335,6 @@ testing/.oj-tests/
 .claude/
 .mcp.json
 GEMINI.md
+
+# brace-guide display copies (tex/braceguides.py)
+tex/_bg/

@@ -20,12 +20,12 @@ template<class T> using PQMax = priority_queue<T>;
 template<class T> using PQMin =
 	priority_queue<T, vector<T>, greater<T>>;
 template<class T1, class T2>
-void maximize(T1 &a, T2 b){ if (b > a) a = b; }
+void maximize(T1 &a, T2 b){ if(b > a) a = b; }
 template<class T1, class T2>
-void minimize(T1 &a, T2 b){ if (b < a) a = b; }
+void minimize(T1 &a, T2 b){ if(b < a) a = b; }
 
-#define FOR(i, a, b) for (auto i = (a); i <= (b); i++)
-#define REV(i, b, a) for (auto i = (b); i >= (a); i--)
+#define FOR(i, a, b) for(auto i = (a); i <= (b); i++)
+#define REV(i, b, a) for(auto i = (b); i >= (a); i--)
 
 #define testBit(n, bit) (((n) >> (bit)) & 1)
 #define flipBit(n, bit) ((n) ^ (1ll << (bit)))
@@ -48,7 +48,7 @@ ostream& operator<<(ostream& o, const pair<A, B>& p){
 template<class T, class, class>
 ostream& operator<<(ostream& o, const T& v){
 	o << '{'; string s;
-	for (auto&& x: v) o << s << x, s = ", ";
+	for(auto&& x: v) o << s << x, s = ", ";
 	return o << '}';
 }
 #define dbg(...) cerr << "[" #__VA_ARGS__ "]:", \

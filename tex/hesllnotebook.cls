@@ -35,9 +35,9 @@
 % \footskip=0pt
 
 \parindent=0mm
-\parskip=1ex
+\parskip=0pt plus 1pt
 \columnsep=5pt
-\columnseprule=1pt
+\columnseprule=0.4pt
 \renewcommand\baselinestretch{1}
 
 % \newlength{\hesllHUGE} 
@@ -74,9 +74,13 @@
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 4. section %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
-\titlespacing*{\section} {0pt}{1ex}{0.75ex}
-\titlespacing*{\subsection} {0pt}{0.75ex}{0.5ex}
-\titlespacing*{\subsubsection}{0pt}{0.5ex}{0.25ex}
+\titleformat{\section}{\normalfont\large\bfseries}{\thesection}{0.6em}{}
+\titleformat{\subsection}{\normalfont\normalsize\bfseries}{\thesubsection}{0.6em}{}
+\titleformat{\subsubsection}{\normalfont\small\bfseries}{\thesubsubsection}{0.6em}{}
+\titlespacing*{\section}{0pt}{4pt plus 2pt}{1pt}
+\titlespacing*{\subsection}{0pt}{3pt plus 2pt}{0pt}
+\titlespacing*{\subsubsection}{0pt}{3pt plus 2pt}{0pt}
+\raggedcolumns
 \setcounter{tocdepth}{3}
 % compact ToC: footnotesize, no paragraph skip, little space between entries.
 % Lengths in pt (em differs between the indent and the footnotesize label): each level's number
@@ -88,12 +92,18 @@
 \renewcommand{\tableofcontents}{{\setlength{\parskip}{0pt}\hesll@tableofcontents}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 5. codes %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\setminted{xleftmargin=9pt, resetmargins, numbersep=4pt, breaklines, breakbefore=. , stripnl, linenos, tabsize=2, fontsize=\footnotesize, firstnumber=1}
+\setminted{xleftmargin=9pt, resetmargins, numbersep=2.5pt, breaklines, breakbefore=. , stripnl, linenos, tabsize=2, fontsize=\footnotesize, firstnumber=1}
+% Short line numbers: units digit only; every 10th line shows its full number, smaller and nudged right.
+\newcommand{\hesll@lineno}[1]{%
+  \ifnum\numexpr#1-((#1-5)/10)*10\relax=0
+    {\fontsize{4.5pt}{4.5pt}\selectfont\number#1\kern-1.5pt}
+  \else\number\numexpr#1-((#1-5)/10)*10\relax\fi}
+\renewcommand{\theFancyVerbLine}{{\tiny\hesll@lineno{\value{FancyVerbLine}}}}
 
 \def\currentdir{}
 % entry heading level: \twolevels (section -> entry) or \threelevels (section -> group -> entry)
 \def\entrylevel{subsection}
-\newcommand{\twolevels}{\def\entrylevel{subsection}}
+\newcommand{\twolevels}{\def\entrylevel{subsection}\titleformat{\subsection}{\normalfont\small\bfseries}{\thesubsection}{0.6em}{}}
 \newcommand{\threelevels}{\def\entrylevel{subsubsection}}
 % heading for an entry with no content yet
 \newcommand{\entry}[1]{\csname\entrylevel\endcsname{#1}}
@@ -116,10 +126,10 @@
     \tl_gset:Nx\entryhash{\exp_not:N\hfill{\exp_not:N\normalfont\exp_not:N\ttfamily\exp_not:N\scriptsize\l_tmpa_tl}}}
 \ExplSyntaxOff
 \NewDocumentCommand\othercodes{oommmo}{
+    \par\vskip 0pt plus 5\baselineskip\penalty-200\vskip 0pt plus -5\baselineskip % keep heading + first rows together
     \csname\entrylevel\endcsname[#3]{#3\entryhash}\gdef\entryhash{}
     \IfNoValueTF{#6}{} {%
         {\footnotesize\raggedright\parskip=0pt\tightdisplay #6\par}
-        \vspace*{-1em}
     } 
     \IfNoValueTF{#2}{%
         \IfNoValueTF{#1}{\def\hesll@lines{}}{\def\hesll@lines{firstline={#1}}}%
@@ -127,8 +137,22 @@
         \def\hesll@lines{firstline={#1},lastline={#2}}%
     }%
     % expand the lexer (\cpplexer) first: minted v2 passes it to pygmentize unexpanded
-    \expanded{\noexpand\inputminted[\hesll@lines]{#4}}{\currentdir/#5}
+    {\topsep=1pt \partopsep=0pt \parskip=0pt
+     \expanded{\noexpand\inputminted[\hesll@lines\hesll@codeopts]{#4}}{\hesll@codedir\currentdir/#5}}
 }
+% Brace guides: \cpp prints the copy braceguides.py writes to _bg/ (block `}` lines dropped);
+% its `@\G{cols}{ticks}@` escapes record which guides/ticks a line gets, FancyVerbFormatLine draws them
+\def\hesll@codedir{}\def\hesll@codeopts{}
+\newbox\hesll@gbox\newdimen\hesll@cw
+\def\hesll@gc{}\def\hesll@gt{}
+\newcommand\G[2]{\gdef\hesll@gc{#1}\gdef\hesll@gt{#2}}
+\renewcommand\FancyVerbFormatLine[1]{%
+  \setbox\hesll@gbox\hbox{#1}\settowidth\hesll@cw{0}%
+  \edef\hesll@do{\noexpand\@tfor\noexpand\hesll@c:=\hesll@gc}\hesll@do\do{\rlap{\color{black!20}\hskip\dimexpr\hesll@cw*(4*\hesll@c+1)/2\relax
+    \vrule width .35pt height \ht\hesll@gbox depth \dp\hesll@gbox}}%
+  \edef\hesll@do{\noexpand\@tfor\noexpand\hesll@c:=\hesll@gt}\hesll@do\do{\rlap{\color{black!50}\hskip\dimexpr\hesll@cw*(4*\hesll@c+1)/2\relax
+    \lower\dp\hesll@gbox\hbox{\vrule width \hesll@cw height .5pt}}}%
+  \box\hesll@gbox\gdef\hesll@gc{}\gdef\hesll@gt{}}
 % minted v3 (2024+) names a custom lexer file.py:Class and needs it enabled in ~/.latexminted_config;
 % minted v2 passes the string to pygmentize with -x
 \@ifpackagelater{minted}{2024/01/01}
@@ -136,4 +160,6 @@
     {\def\cpplexer{'customlexers/lexers.py -x'}}
 \NewDocumentCommand\cpp{oommo}{%
     \sethash{\currentdir/#4}{\IfNoValueTF{#1}{1}{#1}}{\IfNoValueTF{#2}{}{#2}}%
-    \othercodes[#1][#2]{#3}{\cpplexer}{#4}[#5]}
+    \immediate\write18{python3 braceguides.py \currentdir/#4 _bg/\currentdir/#4}%
+    {\def\hesll@codedir{_bg/}\def\hesll@codeopts{,escapeinside=@@}%
+    \othercodes[#1][#2]{#3}{\cpplexer}{#4}[#5]}}

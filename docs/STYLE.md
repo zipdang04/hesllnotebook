@@ -64,16 +64,16 @@ comment of 23 characters is reported as 35.
 
 | Where | Write | Not |
 |---|---|---|
-| Keywords | `if (x)`, `for (..)`, `while (..)`, `switch (..)` | `if(x)` |
+| Keywords | `if(x)`, `for(..)`, `while(..)`, `switch(..)` | `if (x)` |
 | Opening brace | `){`, `struct SCC{`, `do{` | `) {` |
-| `else` | `}else{`, `}else if (x){` | `} else {` |
-| `do` loop | `do{ .. }while (x);` | |
+| `else` | `}else{`, `}else if(x){` | `} else {` |
+| `do` loop | `do{ .. }while(x);` | |
 | One-line body in braces | `[&](ll v){ return v * v; }`, empty: `{}` | `{return v;}` |
 | Assignment, comparison, logic, `?:` | `a = b`, `a += b`, `a <= b`, `a && b`, `c ? a : b` | `a=b` |
 | Arithmetic, shifts, bit operators | `a * x + b`, `n >> 1`, `id ^ 1` | `a*x+b` (but see 1.3) |
 | Unary operators and casts | `!x`, `-x`, `i++`, `(int)v.size()`, `(__int128)a * b` | `! x`, `(int) v.size()` |
-| Comma, and `;` in a `for` head | `f(a, b)`, `for (; n; n >>= 1)` | `f(a,b)` |
-| Range `for` | `for (int v: g[u])`, `for (auto [v, w]: g[u])` | `for (int v : g[u])` |
+| Comma, and `;` in a `for` head | `f(a, b)`, `for(; n; n >>= 1)` | `f(a,b)` |
+| Range `for` | `for(int v: g[u])`, `for(auto [v, w]: g[u])` | `for(int v : g[u])` |
 | Inside `()` and `[]` | `f(a)`, `a[i]` | `f( a )` |
 | References and pointers | `const string &s`, `int &x` | `const string& s` |
 | Templates | `template<class T>`, `vector<vector<int>>` | `template <class T>` |
@@ -105,12 +105,33 @@ Why: "fine in short arguments" was read broadly in the trial (`(lo + hi)/2`, `4*
 |---|---|---|
 | One idea per line. Two or three short statements may share a line when they are one step. | A line number names one thing, and a debug print fits between two lines. | `stk.push_back(u); onStk[u] = 1;` |
 | Statements joined by a comma are fine for one step. | Same. | `x = f(x), y = f(f(y));` |
-| A short body may stay on the line of its `if`, `for` or `while`. | Less to type. | `if (lo == hi) return res;` |
-| One `for` or `while` may be followed by one `if` on the same line. | Common "for each, if" shape. | `for (int v: g[u]) if (!comp[v]){` |
-| One closing brace per line. | On paper nobody can see which block `} } }` closes. | |
+| A short body may stay on the line of its `if`, `for` or `while`. | Less to type. | `if(lo == hi) return res;` |
+| One `for` or `while` may be followed by one `if` on the same line. | Common "for each, if" shape. | `for(int v: g[u]) if(!comp[v]){` |
+| A body of one statement goes on the next line, one tab deeper, without braces. A body of two or more statements is braced. | One statement needs no `}` to type back; a braced body gets a guide (1.5). | `for(auto &e: g[u]) if(e.rem > 0)` then `eps = max(eps, -rc(e, u));` |
+| Prefer an early `return`, `continue` or a loop condition to an `if` around the rest of a block. | One guide fewer, shorter lines. | `if(low[u] < num[u]) return;` |
+| Past 4 guide levels inside a function, look for a natural helper (one step of the algorithm). If there is none, keep the nesting. Advice, not checked. | Several ticks on one line are hard to count back. | cost scaling: `while(refine());` |
+| No comment after an opening `{`: put it on its own line above. | A `{` followed by a comment keeps its braces and gets no guide. | |
+| Inside functions, `//` comments or a one-line `/* .. */` only. | The guide marker would land inside a multi-line comment and print as text. | |
+| In bodies use the template's `sz(x)` and `all(x)`. Public signatures spell types out. | Shorter lines. | `FOR(i, 0, sz(in) - 1)`, `sort(all(xs))` |
 | No blank lines inside a function or struct. | See 1.1. | |
 
-### 1.5 Breaking a long line
+### 1.5 Brace guides (printed form)
+
+The source keeps every brace; it compiles and is tested as written. The PDF prints a
+display copy (`tex/braceguides.py`, called by `\cpp`):
+
+| Block | Printed | Typed back |
+|---|---|---|
+| Function body, `for`, `while`, `if`, `else`, `do`..`while` | no `{` at the end of the header and no `}` line; a thin gray guide down the body and a tick under its last line; `}while(c);` prints as `while(c);` after the tick | `{` after the header, one `}` per tick |
+| `struct` / `class`, lambda, one-line block, brace initialiser | as written, braces included | nothing |
+| `contest/template.hpp` | as written, no guides | nothing |
+
+A `}` is dropped only when it is alone on its line (or followed by `else` / a do-while's
+`while`), its `{` ends the header line, and the body is indented deeper. Line numbers count
+printed lines. The printed hash is computed from the source, braces included, so code typed
+back with its braces matches it.
+
+### 1.6 Breaking a long line
 
 Break after a comma or before a binary operator. The rest goes **one tab deeper**. If the
 statement opens a block, it goes **two tabs deeper**, so that it does not line up with the body.
@@ -128,15 +149,15 @@ void dfs(int u, int pe,
 
 A trailing comment that does not fit goes on the line above the code.
 
-### 1.6 Plain over short
+### 1.7 Plain over short
 
 When the two conflict, the form a contestant recognises wins over the shorter one.
 
 | Do not | Do |
 |---|---|
-| a recursive call inside an argument: `minimize(low[u], num[v] ? num[v] : dfs(g, v));` | `if (!num[v]) dfs(v, g);` then `low[u] = min(low[u], low[v]);` |
-| an assignment inside a condition: `if ((q = mulMod(prd, d, n))) prd = q;` | `ll q = mulMod(prd, d, n);` then `if (q) prd = q;` |
-| a flag tested at the loop head: `if (ok) break;` | `continue` / `break` / `return` at the point where the fact is known |
+| a recursive call inside an argument: `minimize(low[u], num[v] ? num[v] : dfs(g, v));` | `if(!num[v]) dfs(v, g);` then `low[u] = min(low[u], low[v]);` |
+| an assignment inside a condition: `if((q = mulMod(prd, d, n))) prd = q;` | `ll q = mulMod(prd, d, n);` then `if(q) prd = q;` |
+| a flag tested at the loop head: `if(ok) break;` | `continue` / `break` / `return` at the point where the fact is known |
 | deep nesting | an early `continue` or `return`; aim for at most 3 levels inside a function |
 
 The line range in a spec is a **ceiling, not a target**. Never golf to reach it.
@@ -157,7 +178,7 @@ section 9.
 | State that lives across functions gets a word. | A letter gives no hint there. | `dist`, `par`, `excess`; not `p`, `ex` |
 | No leading underscore. | `_X` and global `_x` are reserved in C++. | `build`, not `_build` |
 | Do not reuse a name the template defines. | Some are macros and replace your name silently. | list in [Appendix A](#appendix-a-what-the-template-provides) |
-| Infinity is `oo`. | One word after every entry. | `if (sp.dist[t] == oo)` |
+| Infinity is `oo`. | One word after every entry. | `if(sp.dist[t] == oo)` |
 
 ### Shared names
 
@@ -232,7 +253,7 @@ The code follows the comment directly: one struct, or a few free functions. Noth
 file scope. Section 4 says which.
 
 File names are lower case without separators (`lowlink.hpp`, `pollardrho.hpp`) and are unique
-across the whole notebook, because the file name is also the entry's label (8.4).
+across the whole notebook, because the file name is also the entry's label (8.5).
 
 ---
 
@@ -286,7 +307,7 @@ struct SCC{
 	vector<int> comp, num, low, stk;
 	SCC(const vector<vector<int>> &g):
 			comp(g.size()), num(g.size()), low(g.size()){
-		FOR(u, 1, (int)g.size() - 1) if (!num[u]) dfs(u, g);
+		FOR(u, 1, (int)g.size() - 1) if(!num[u]) dfs(u, g);
 	}
 	void dfs(int u, const vector<vector<int>> &g){
 		..
@@ -396,7 +417,7 @@ it has its own copy of the loop.
 | No `unsigned`, except for hash values and bit sets. | Mixed signs are a silent bug. | |
 | No `size_t` variable. Cast a size where it is used. | See 7.2. | `(int)v.size()` |
 | `vector<char>` for flags written in an inner loop; `vector<bool>` only for results. | `vector<bool>` is slow to write. | |
-| Pairs: `pii`/`pll` in bodies, members as `.fi`/`.se`. In a loop over pairs, unpack with names instead. | `.fi` is short; `[v, w]` says what the fields mean. | `p.fi + p.se`; `for (auto [v, w]: g[u])` |
+| Pairs: `pii`/`pll` in bodies, members as `.fi`/`.se`. In a loop over pairs, unpack with names instead. | `.fi` is short; `[v, w]` says what the fields mean. | `p.fi + p.se`; `for(auto [v, w]: g[u])` |
 
 ### `oo`
 
@@ -526,8 +547,8 @@ Both are **inclusive**. The type of `i` is the type of the **start value**.
 | A loop with unit steps over a fixed range uses `FOR` or `REV`. | `FOR(u, 1, n)`, `REV(c, scc.cnt, 1)` |
 | An exclusive upper bound is written as `- 1`. There is no `EFOR`. | `FOR(i, 0, n - 1)` |
 | A `ll` loop needs a `ll` start. | `FOR(x, 1LL, n)`, `FOR(i, 0LL, k)` |
-| Use a range `for` when the index is not needed. | `for (int v: g[u])` |
-| Anything else is a plain `for` or `while`: other steps, two variables, a bound that moves. | `for (; n; n >>= 1)` |
+| Use a range `for` when the index is not needed. | `for(int v: g[u])` |
+| Anything else is a plain `for` or `while`: other steps, two variables, a bound that moves. | `for(; n; n >>= 1)` |
 
 ### 7.2 Traps
 
@@ -549,9 +570,9 @@ It is not a `FOR`.
 
 ```cpp
 // BFS over a vector used as a queue
-for (int i = 0; i < (int)q.size(); i++){
+for(int i = 0; i < (int)q.size(); i++){
 	int u = q[i];
-	for (int v: g[u]) if (!seen[v]) seen[v] = 1, q.push_back(v);
+	for(int v: g[u]) if(!seen[v]) seen[v] = 1, q.push_back(v);
 }
 ```
 
@@ -571,50 +592,76 @@ For the same reason the body of a `FOR` never changes its loop variable or its b
 |---|---|---|
 | English or Vietnamese, both are fine. | The team reads both. | `// v đã xong` |
 | The top comment is 1 to 3 lines (3.2). | It is what the typist needs. | |
-| A trailing comment gives a reason or an invariant, after one space. No padding to a column. | Padding is what makes lines wrap. | `if (a % n == 0) continue; // says nothing` |
+| A trailing comment gives a reason or an invariant, after one space. No padding to a column. | Padding is what makes lines wrap. | `if(a % n == 0) continue; // says nothing` |
 | If code and comment do not fit in 60 columns, the comment goes on the line above. | Same. | |
 | A constant with a reason gets the reason. | Otherwise somebody "fixes" it. | `// prd = 2 covers n = 4` |
 | No comment that repeats the code. | Noise. | |
 
 Comments do not change the printed hash.
 
-### 8.2 The note
+### 8.2 What goes where
 
-Longer text is the note: the fifth argument of `\cpp`, typeset under the title with real
-formulas.
+| Content | Place |
+|---|---|
+| What it computes, index base, complexity, recursion depth | The top comment (3.2). **Not repeated in the note.** |
+| How to call it, what comes back, preconditions | The note. |
+| A trick that turns the *problem* into this entry's input (bounds, vertex capacity, closure, "max: negate") | A text entry next to it. The note has one line: `\fld{Models} \S\ref{flowmodels}`. |
+| A formula sheet, a checklist, a taxonomy | A text entry. |
+
+### 8.3 The note
+
+The note is the fifth argument of `\cpp`, typeset under the title with real formulas.
 
 ```tex
+\cpp[4]{SCC}{scc.hpp}[
+	\fld{Use} \texttt{vector<vector<int>> g(n + 1); g[u].push\_back(v); SCC scc(g);}
+	\fld{Result} \texttt{scc.cnt} components; \texttt{scc.comp[u]} is in $1..\texttt{cnt}$.
+	An edge $u \to v$ has $\texttt{comp[u]} \ge \texttt{comp[v]}$: ids $\texttt{cnt}, \dots, 1$ are a topological order.
+	\fld{Needs} nothing: self-loops, multi-edges and isolated vertices are fine.
+]\label{scc}
+
 \cpp[4]{Pollard rho}{pollardrho.hpp}[
-	\fld{findDivisor} a divisor $d$ of a composite $n$, $1 < d < n$. About $n^{1/4}$ \texttt{mulMod}s.
-	\fld{factorize} prime factors with multiplicity, unsorted. Recursion depth $\le 62$.
+	\fld{Use} \texttt{vector<ll> f = factorize(n);}
+	\fld{Result} prime factors with multiplicity, unsorted.
 	\fld{Needs} $1 \le n < 2^{62}$. Uses \texttt{isPrime} (\S\ref{millerrabin}).
+	\fld{findDivisor} a divisor $d$ of a composite $n$, $1 < d < n$.
 ]\label{pollardrho}
 ```
 
-| Rule | Why |
+| Rule | Value |
 |---|---|
-| One `\fld{Label}` line per fact. The macro prints the label in bold and adds the colon. | A reader finds a fact by its label, as in kactl. |
-| A formula or recurrence that matters is displayed with `\[ .. \]`. | Readable on paper. |
-| Code words are `\texttt{..}`; an underscore is `\_`. | |
-| Never pack the note to save space. Use more `\fld` lines. | Page count does not matter now. |
+| Labels, in this order | `Use`, `Result`, `Needs`, then one line per other public function, labelled with its name. Each one only when it has content. |
+| Other labels | None, except `Time` when the top comment has no room, and `Models` for the cross-reference of 8.2. |
+| `Use` | **One line of code** in `\texttt`: the shortest full call, with the sizing (`g(n + 1)`, `Dinic d(n + 1)`). |
+| Each line | One fact; at most **2 printed rows**. |
+| The whole note | At most **5 labels and 8 printed rows**. Longer means part of it belongs in a text entry. |
+| Sentences | A verb in every line; at most one semicolon; no arrow as a verb; no problem name as an explanation; an abbreviation is expanded where it first appears in the entry. |
+| Limits | Numbers, not words: "sums below $9 \cdot 10^{18}$", not "may overflow". |
+| A formula or recurrence | Displayed with `\[ .. \]`; every symbol in it is named in the line above. |
+| Code words | `\texttt{..}`; an underscore is `\_`. |
+| Space | Never pack the note to save space. If it does not fit the limits, ask what to move out. |
 
-### 8.3 Labels for `\fld`
+The macro `\fld` prints the label in bold and adds the colon.
 
-| Label | Content |
+### 8.4 Text entries
+
+Text sections (contest checklists, formula sheets, flow models) follow these rules.
+
+| Rule | Value |
 |---|---|
-| `\fld{<function>}` | In an entry with several functions: one line per function, labelled with the function's name. |
-| `\fld{Needs}` | Preconditions: value ranges, "`x` must be in `pts`", "no negative cycle". |
-| `\fld{Use}` | The call, for a struct: how to build the input and what to construct. |
-| `\fld{Result}` | The public members and what they mean. |
-| `\fld{Time}` | The complexity, when the top comment has no room for all of it. |
+| Structure | `\topic{Heading}` per topic. Under it: **one plain sentence** that says when to use it. Then the steps or the formula. |
+| Steps of a construction | A `facts` list, one step per item, in the order you would type them. |
+| Formulas | Displayed, one per line. Inline math only for single symbols and short terms; at most **2 inline formulas per sentence**. |
+| After a formula | One line that names the symbols, if any is new. |
+| Value lists (Catalan, Bell, primes) | A ruled table with a header row when there are more than about 8 values, not a run of numbers in a sentence. |
+| Checklists | `checks`, grouped under `\topic` headings; an item is a short imperative. |
+| Taxonomies ("noise → remedy") | A two-column table with headings, not arrows in a list. |
+| A worked example per model | One line with numbers: "edge $u \to v$ with bounds $[2, 5]$: capacity 3, $d_v$ += 2, $d_u$ −= 2". |
+| Density | No paragraph longer than **3 printed rows**; no sentence with more than one semicolon; never two topics under one heading. |
+| Font | `\small` with `\tightdisplay`. |
+| Page count | Never a reason to merge paragraphs. If it is too long, ask what to cut. |
 
-The first two are fixed. The other three are the usual ones; another word is fine when it
-names the fact better (`Edit`, `Path`, `Cut`).
-
-Text sections (troubleshooting, formula sheets) use `\topic{Heading}` for each topic, and the
-`checks` and `facts` lists from the class file.
-
-### 8.4 Cross-references
+### 8.5 Cross-references
 
 Section numbers are never typed by hand.
 
@@ -673,6 +720,7 @@ cd testing && python3 all.py <section> <name>
 | **Library Checker first.** Use another judge (AOJ and others) only when Library Checker has no problem for the entry. Use a self-made stress test against a brute force only when no judge has one, or in addition. | Judge data is stronger than anything written by hand. |
 | The first line of the test is `#include "../../tex/contents/<section>/<file>"`. Nothing comes before it except a comment. | It proves that the entry needs no setup: no macro, no `using`, no global. |
 | The test includes the printed file itself, unchanged. | What is tested is what is typed. |
+| A test that uses `assert` has `#include <cassert>` as line 2. | The template does not include it, and GCC 16's `bits/stdc++.h` does not either. |
 | **Conversions live in the test.** Library Checker is 0-based: the test adds 1 when it reads and subtracts 1 when it prints. The entry never converts. | The entry stays as the contestant will use it. |
 | The test follows this style too (60 columns, spacing, `FOR`). | Tests are read as usage examples. |
 | Do not change a time limit or a registration line that the spec gives. | |
@@ -741,7 +789,7 @@ public interface.
 | `all(x)`, `vi`, `pii`, `sz(x)` | keep: the template defines them (Appendix A) |
 | `pb`, `fst`, `snd` | `push_back`, `fi`, `se` |
 | `) {`, 2-space indent, lines over 60 columns | section 1 |
-| several statements packed on a line; a call or an assignment inside a condition | split them (1.4, 1.6) |
+| several statements packed on a line; a call or an assignment inside a condition | split them (1.4, 1.7) |
 | the kactl header (`Description`, `Time`, `Usage`) | base, complexity and depth → top comment; the rest → the note |
 | a random generator at file scope, leaked `#define`s | a deterministic walk, or a `static` generator inside the function |
 
@@ -790,7 +838,7 @@ Run this on every `.hpp` and every test you wrote. Each line is a yes or no.
 
 **Layout and names**
 
-- [x] `if (`, `for (`, `while (`, `}else{`, `v: g`, `'\n'`.
+- [ ] `if(`, `for(`, `while(`, `}else{`, `v: g`, `'\n'`.
 - [ ] Tight arithmetic only inside `[]` or as a one-operator call argument.
 - [ ] No recursive call or assignment inside an argument or a condition.
 - [ ] No name collides with the template ([Appendix A](#appendix-a-what-the-template-provides)).
@@ -809,8 +857,8 @@ Run this on every `.hpp` and every test you wrote. Each line is a yes or no.
 **Comment and note**
 
 - [ ] The top comment has 1 to 3 lines: what, base, complexity, **recursion depth**.
-- [ ] The note is the spec's text; `\fld{<function>}` for each function, `\fld{Needs}` for
-      preconditions.
+- [ ] The note is the spec's text, in the format of 8.3: labels `Use`, `Result`, `Needs`,
+      then function names; at most 5 labels and 8 printed rows; nothing from the top comment.
 - [ ] The entry has `\label{<file>}`; no section number is typed by hand.
 
 **Tests**
@@ -854,7 +902,7 @@ Run this on every `.hpp` and every test you wrote. Each line is a yes or no.
 
 Changes to make in the template:
 
-- **remove** `#include <cassert>` (it is in `bits/stdc++.h`), both `read()` overloads (Fast IO,
+- **remove** `#include <cassert>` (printed code has no `assert`; GCC 16's `bits/stdc++.h` does not provide it, so a test that asserts includes `<cassert>` itself), both `read()` overloads (Fast IO,
   §0.3, replaces them), `EFOR`, `EREV`;
 - **remove** the "remember to fill in `#define MAX` / `#define MOD`" lines of the closing
   comment. Following them breaks entries. The `main` reminder stays;
@@ -910,7 +958,7 @@ the class as it is, under `\threelevels`. All four placements gave the right num
 | `\cpp[4]{C}{c.hpp}[\label{c} .. ]` (inside the note) | yes |
 | `\entry{E}\label{e}` | yes |
 
-The rule in 8.4 uses the first two forms, because one place then fits entries with and without
+The rule in 8.5 uses the first two forms, because one place then fits entries with and without
 a note.
 
 Optional, **not checked**: to make the label automatic, append `\label{#5}` to the heading
