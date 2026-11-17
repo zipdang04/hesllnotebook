@@ -892,7 +892,7 @@ Run this on every `.hpp` and every test you wrote. Each line is a yes or no.
 | `ll`, `ld` | typedef | `long long`, `long double` |
 | `oo` | `const ll oo = 1e18;` | **new** |
 | `PQMax<T>`, `PQMin<T>` | alias | |
-| `maximize(a, b)`, `minimize(a, b)` | function | |
+| `maximize(a, b)`, `minimize(a, b)` | function | returns `bool`: whether `a` changed. Relax with `if(minimize(d[v], d[u] + w)) par[v] = u;`; prefer them to `a = min(a, b)` |
 | `fi`, `se` | macro | `first`, `second` |
 | `FOR(i, a, b)`, `REV(i, b, a)` | macro | **changed**: `auto`, no type argument (7.1) |
 | `testBit`, `flipBit`, `cntBit`, `log2` | macro | `log2(n)` is the integer log of a positive integer |
