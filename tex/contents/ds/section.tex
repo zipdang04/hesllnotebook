@@ -18,6 +18,11 @@
 \entry{Link-cut tree}
 
 \subsection{Other}
-\entry{Rollback DSU}
+\cpp[4]{Rollback DSU}{rollbackdsu.hpp}[
+	\fld{Use} \texttt{RollbackDsu dsu(n + 1); int t = dsu.time(); dsu.unite(u, v); dsu.rollback(t);}
+	\fld{Result} \texttt{time()} is the number of joins kept, so $1..n$ has $n - \texttt{time()}$ components. \texttt{size(u)} is the size of the component of $u$.
+	\fld{unite} returns false, and records nothing, if $u$ and $v$ are already together.
+	\fld{rollback} \texttt{rollback(t)} undoes every join made after \texttt{t = time()}; a later \texttt{t} does nothing.
+]\label{rollbackdsu}
 \entry{pb\_ds}
 \entry{Mo's algorithm}
