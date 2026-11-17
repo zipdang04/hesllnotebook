@@ -7,7 +7,7 @@
 \cpp[4]{Dinic with scaling + min cut}{dinic.hpp}[
 	\fld{Use} \texttt{Dinic d(n + 1); int id = d.addEdge(u, v, cap); ll f = d.maxFlow(s, t);}
 	\fld{Result} the flow this call adds from $s$ to $t$. Vertices $0..n$ are all usable.
-	\fld{Needs} $s \ne t$; cap, rcap $\ge 0$; cap + rcap + flow $< 9 \cdot 10^{18}$.
+	\fld{Needs} $s \ne t$ and capacities $\ge 0$, with \texttt{cap + rcap} plus the total flow below $9 \cdot 10^{18}$.
 	\fld{flowOf} \texttt{flowOf(id)} is the flow on a directed edge. Matching: unit edges source--left--right--sink; a left--right edge of flow 1 is a pair.
 	\fld{sideS} \texttt{sideS(v)} is true on the source side of a min cut. K\"onig: left $v$ with it false and right $v$ with it true are a min vertex cover.
 ]\label{dinic}
