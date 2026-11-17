@@ -242,6 +242,8 @@ all_source_codes = {
 		),
 		"millerrabin": TestCase("math/millerrabin", "number_theory/primality_test", 3),
 		"pollardrho": TestCase("math/pollardrho", "number_theory/factorize", 2),
+		"sieve": StressTest("math/sieve", 10),
+		"sieve_stress": StressTest("math/sieve_stress", 10),
 		"gauss": TestCase("math/gauss", "linear_algebra/system_of_linear_equations", 0.5),
 		"fft": TestCase("math/fft", "convolution/convolution_mod_1000000007", 3),
 		"ntt": TestCase("math/ntt", "convolution/convolution_mod"),
