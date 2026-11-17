@@ -495,6 +495,7 @@ There is no alias for these types. The entry reads the number of vertices from t
 | Vertex 0 is never touched and never counted. `g[0]` is not read. | A component count must not include it. | loops are `FOR(u, 1, n)` |
 | Ids the entry gives out start at 1; 0 means "none" or "not yet". | The zero-filled vector is the initial state. | `comp[0] == 0` always |
 | A builder that owns its graph is sized like a vector. | Same habit as `g(n + 1)`. | `Dinic d(n + 1);` |
+| Exception: in a flow struct every vertex `0..N-1` is real, so a super source or sink can be any free index. `maxFlow(s, t)` takes any `s != t`. | Flow models add extra vertices; reserving 0 buys nothing there. | `Dinic d(n + 3); d.maxFlow(n + 1, n + 2);` |
 
 ### 6.4 Strings
 

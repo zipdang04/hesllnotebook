@@ -11,6 +11,8 @@
 \cpp[4]{Miller--Rabin}{millerrabin.hpp}[
 	\fld{Use} \texttt{bool p = isPrime(n);}
 	\fld{Result} exact for every \texttt{ll} $n$, false below 2: the 7 bases are proven for all $n < 2^{64}$.
+	\fld{mulMod} returns $a \cdot b \bmod m$.
+	\fld{powMod} returns $a^n \bmod m$.
 ]\label{millerrabin}
 \cpp[4]{Pollard rho}{pollardrho.hpp}[
 	\fld{Use} \texttt{vector<ll> f = factorize(n);}

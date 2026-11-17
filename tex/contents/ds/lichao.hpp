@@ -8,7 +8,7 @@ struct LiChao{
 	static constexpr ll oo = LLONG_MAX;
 	struct Line{
 		ll a, b;
-		ll at(ll x){ return a * x + b; }
+		ll eval(ll x){ return a * x + b; }
 	};
 	int n;
 	vector<ll> xs;
@@ -22,11 +22,11 @@ struct LiChao{
 	void insert(int id, int lo, int hi, Line f){
 		int mid = (lo + hi) / 2;
 		Line &g = tree[id];
-		if(f.at(xs[mid]) < g.at(xs[mid])) swap(f, g);
+		if(f.eval(xs[mid]) < g.eval(xs[mid])) swap(f, g);
 		if(lo == hi) return;
-		if(f.at(xs[lo]) < g.at(xs[lo]))
+		if(f.eval(xs[lo]) < g.eval(xs[lo]))
 			insert(2 * id, lo, mid, f);
-		else if(f.at(xs[hi]) < g.at(xs[hi]))
+		else if(f.eval(xs[hi]) < g.eval(xs[hi]))
 			insert(2 * id + 1, mid + 1, hi, f);
 	}
 	void add(int id, int lo, int hi, int i, int j, Line f){
@@ -52,7 +52,7 @@ struct LiChao{
 		int p = lower_bound(b0, e0, x) - b0;
 		ll res = oo;
 		while(true){
-			res = min(res, tree[id].at(x));
+			res = min(res, tree[id].eval(x));
 			if(lo == hi) return res;
 			int mid = (lo + hi) / 2;
 			if(p <= mid) id = 2 * id, hi = mid;

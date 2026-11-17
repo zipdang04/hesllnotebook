@@ -7,11 +7,10 @@
 \entry{Lazy segment tree}
 \cpp[3]{Persistent segment tree}{ps_seg.hpp}
 \cpp[4]{Li Chao tree}{lichao.hpp}[
-	\fld{Use} \texttt{LiChao lc(xs); lc.addLine(a, b); lc.addSegment(a, b, l, r); lc.get(x);}
-	\fld{Result} \texttt{get(x)} is the minimum of $ax + b$ over the lines that cover $x$, or \texttt{LiChao::oo}.
-	For the maximum, add $(-a, -b)$ and negate the answer.
-	\fld{Needs} every queried $x$ is in \texttt{xs} (offline); any other $x$ gives a wrong answer silently. $ax + b$ fits in \texttt{ll} and is below \texttt{oo}.
-	\fld{addSegment} covers only $l \le x \le r$; it does nothing when no point of \texttt{xs} is in $[l, r]$.
+	\fld{Use} \texttt{LiChao lc(pts); lc.addLine(a, b); ll y = lc.get(x);}
+	\fld{Result} \texttt{get(x)} is the minimum of $ax + b$ over the lines covering $x$, or \texttt{LiChao::oo} if none does. For the maximum, add $(-a, -b)$ and negate.
+	\fld{Needs} \texttt{pts} holds every $x$ ever asked (any order, duplicates fine, not empty); any other $x$ gives a wrong answer silently. For each line and each covered $x$ of \texttt{pts}, $ax$ and $ax + b$ fit in \texttt{ll} and $ax + b < \texttt{oo}$.
+	\fld{addSegment} \texttt{addSegment(a, b, l, r)} adds $ax + b$ only for $l \le x \le r$; it does nothing if no point of \texttt{pts} is in $[l, r]$.
 ]\label{lichao}
 
 \subsection{Balanced trees}
