@@ -225,10 +225,7 @@ all_source_codes = {
 	"geometry": {
 	},
 	"math": {
-		"modint": TestCase(
-			"math/combinatorics",
-			"enumerative_combinatorics/binomial_coefficient_prime_mod",
-		),
+		"modint": TestCase("math/modint", "linear_algebra/inverse_matrix", 3),
 		"bigint": TestCase(
 			"math/bigint", "big_integer/multiplication_of_big_integers", 2
 		),
@@ -251,7 +248,7 @@ PENDING = {
 	".graph.spfa", ".graph.spfa_aoj", ".graph.old_spfa", ".graph.2sat",
 	".ds.hash", ".ds.ps_seg",
 	".strings.suffixarray", ".strings.ahocorasick",
-	".math.modint", ".math.bigint", ".math.gauss", ".math.fft", ".math.ntt",
+	".math.bigint", ".math.gauss", ".math.fft", ".math.ntt",
 }
 
 # ---------- all.py --changed BASE [section [test]]: only the tests the diff BASE...HEAD can affect ----------

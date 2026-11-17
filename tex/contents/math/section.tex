@@ -4,7 +4,12 @@
 \setcurrentdir{math}
 
 \subsection{Number theory}
-\cpp[3]{Modint}{modint.hpp}
+\cpp[4]{Modint}{modint.hpp}[
+	\fld{Use} \texttt{Mint<1000000007> a = 3; a = a * b / c; cout << a.pow(k) << a.inv();}
+	\fld{Result} \texttt{a.v} holds the residue, $0 \le \texttt{v} < \texttt{MOD}$. An \texttt{ll} converts to \texttt{Mint}, so \texttt{2 * a} and \texttt{a == 0} work.
+	\fld{Needs} a prime \texttt{MOD}; divisors and arguments of \texttt{inv} are nonzero; \texttt{pow(n)} takes $n \ge 0$.
+	\fld{MintN} is \texttt{Mint<998244353>}, the type NTT, FPS and the linear recurrence use. Other moduli can be used next to it.
+]\label{modint}
 \cpp{Bigint}{bigint.hpp}
 \entry{Ext-gcd, CRT}
 \cpp[3]{Sieve (factorable)}{eratos_factorable.cpp}
