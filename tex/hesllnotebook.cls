@@ -128,6 +128,7 @@
 \NewDocumentCommand\othercodes{oommmo}{
     \par\vskip 0pt plus 5\baselineskip\penalty-200\vskip 0pt plus -5\baselineskip % keep heading + first rows together
     \csname\entrylevel\endcsname[#3]{#3\entryhash}\gdef\entryhash{}
+    \global\let\hesll@lbl\@currentlabel % \cpp's group would reset it: a \label after \cpp names this entry
     \IfNoValueTF{#6}{} {%
         {\footnotesize\raggedright\parskip=0pt\tightdisplay #6\par}
     } 
@@ -162,4 +163,4 @@
     \sethash{\currentdir/#4}{\IfNoValueTF{#1}{1}{#1}}{\IfNoValueTF{#2}{}{#2}}%
     \immediate\write18{python3 braceguides.py \currentdir/#4 _bg/\currentdir/#4}%
     {\def\hesll@codedir{_bg/}\def\hesll@codeopts{,escapeinside=@@}%
-    \othercodes[#1][#2]{#3}{\cpplexer}{#4}[#5]}}
+    \othercodes[#1][#2]{#3}{\cpplexer}{#4}[#5]}\let\@currentlabel\hesll@lbl}
