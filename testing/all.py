@@ -217,7 +217,8 @@ all_source_codes = {
 		"rollbackdsu": TestCase("ds/rollbackdsu", "data_structure/persistent_unionfind", 2),
 	},
 	"strings": {
-		"hash": TestCase("strings/hash", "string/enumerate_palindromes"),
+		"strhash": TestCase("strings/strhash", "string/enumerate_palindromes", 2),
+		"strhash_stress": StressTest("strings/strhash_stress", 10),
 		"suffixarray": TestCase("strings/suffixarray", "string/suffixarray", 5),
 		"ahocorasick": OjTest("strings/ahocorasick", "https://yukicoder.me/problems/no/430", 2),
 	},
@@ -249,7 +250,7 @@ PENDING = {
 	".flow.dinitz", ".flow.mcmf_aoj", ".flow.costscaling", ".flow.costscaling_aoj",
 	".graph.spfa", ".graph.spfa_aoj", ".graph.old_spfa", ".graph.2sat",
 	".ds.hash", ".ds.ps_seg",
-	".strings.hash", ".strings.suffixarray", ".strings.ahocorasick",
+	".strings.suffixarray", ".strings.ahocorasick",
 	".math.modint", ".math.bigint", ".math.gauss", ".math.fft", ".math.ntt",
 }
 

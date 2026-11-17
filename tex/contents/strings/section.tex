@@ -4,12 +4,42 @@
 \setcurrentdir{strings}
 
 \entry{Z-function}
-\cpp[3]{Rolling hash}{strhash.hpp}
+\cpp[4]{Rolling hash}{strhash.hpp}[
+	\fld{Use} \texttt{StrHash h(s); if(h.get(l1, r1) == h.get(l2, r2))}
+	\fld{Result} \texttt{get(l, r)} hashes $s_l \dots s_r$; \texttt{get(l, l - 1)} is 0, the empty string.
+	All objects share the base, so hashes of two strings compare.
+	A 0-based start $p$ and length $L$ is the range \texttt{get(p + 1, p + L)}.
+	\fld{Needs} character codes 1 to 127; a collision has probability about $n / 2^{61}$ per comparison.
+	\fld{getRev} returns the hash of $s_r s_{r-1} \dots s_l$; $s_l \dots s_r$ is a palindrome with high probability when \texttt{getRev(l, r) == get(l, r)}.
+]\label{strhash}
+{\small\tightdisplay
+\topic{Palindrome test}
+To ask whether $s_l \dots s_r$ is a palindrome, in $O(1)$:
+\[ \mathrm{pal}(l, r) \iff \texttt{h.get(l, r) == h.getRev(l, r)}. \]
+\topic{Longest palindrome per centre}
+For all maximal palindromes or the longest palindromic substring (Manacher's output), in $O(n \log n)$:
+\begin{facts}
+	\item A palindrome minus its two ends is a palindrome, so the radius $k$ is monotone: binary search it.
+	\item Odd centre $c \in 1..n$: the largest $k \le \min(c - 1, n - c)$ with $\mathrm{pal}(c - k, c + k)$; length $2k + 1$, 0-based start $c - k - 1$.
+	\item Even centre between $c$ and $c + 1$, $c \in 1..n-1$: the largest $k \le \min(c, n - c)$ with $\mathrm{pal}(c - k + 1, c + k)$; length $2k$, 0-based start $c - k$.
+\end{facts}
+\topic{Counting palindromic substrings}
+To count palindromes with multiplicity, sum the radii $k$ of the previous topic:
+\[ \text{total} = \sum_{\text{odd } c} (k_c + 1) + \sum_{\text{even } c} k_c. \]
+Distinct palindromes: eertree (\S\ref{eertree}).
+\topic{LCP, order and period of substrings}
+To compare two substrings with 0-based starts $i$, $j$:
+\begin{facts}
+	\item Binary search the largest $L \le n - \max(i, j)$ with \texttt{get(i + 1, i + L) == get(j + 1, j + L)}: the common prefix.
+	\item If a character is left in both, $s_{i+L}$ against $s_{j+L}$ (0-based) decides the order; otherwise the shorter one is smaller.
+	\item $d$ is a period of $s_l \dots s_r$ when \texttt{get(l, r - d) == get(l + d, r)}.
+\end{facts}
+}
 \entry{Suffix array + LCP}
 \cpp[4]{Aho--Corasick}{ahocorasick.hpp}[
 	Per-pattern counts: \texttt{hit[u]++} at each step of the scan, then for $u$ in reverse \texttt{order}: \texttt{hit[link[u]] += hit[u]}; pattern $i$ occurs \texttt{hit[end$_i$]} times.\\
 	Online inserts: $\log$ groups of sizes $2^k$; insert = merge the smaller groups and rebuild; a query sums over all groups.
 ]
 \entry{Suffix automaton}
-\entry{Eertree}
+\entry{Eertree}\label{eertree}
 \entry{Lyndon factorisation (Duval)}
