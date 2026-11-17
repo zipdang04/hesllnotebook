@@ -1,54 +1,50 @@
 #pragma once
 #include "modint.hpp"
 
-// MOD=998244353=c*2^k+1 => ROOT=g^c, g a primitive root (3)
-namespace FFT{
-	constexpr int K_MOD = 23, BIT = 22, MAX_LEN = 1 << BIT;
-	constexpr int ROOT = 15311432;
-
-	modint _root[MAX_LEN + 1];
-	vector<int> _rev[BIT + 1];
-	bool _built = false;
-	void buildRoot() {
-		if (_built) return; _built = true;
-		_root[0] = 1; modint mul=ROOT; 
-		FOR(int, i, 1, K_MOD-BIT) mul*=mul;
-		FOR(int, i, 1, MAX_LEN) _root[i] = _root[i-1] * mul;
-		for (int bit=0, len=1; len<=MAX_LEN; bit++, len*=2) {
-			_rev[bit].resize((1 << bit), 0);
-			for (int i = 1; i < (1 << bit); i++)
-				_rev[bit][i]=((i&1)<<(bit-1))|_rev[bit-1][i/2];
-		}
+// ntt: in place, size 2^k <= 2^23 over MintN (root 3);
+// ntt(a, true) is the inverse. convNtt: polynomial product,
+// O(n log n); naive when one side has <= 32 terms.
+void ntt(vector<MintN> &a, bool inv = false){
+	int n = sz(a), L = log2(n);
+	// the table persists across calls
+	static vector<MintN> rt(2, 1);
+	for(static int k = 2, s = 2; k < n; k *= 2, s++){
+		rt.resize(n);
+		// MintN(-1).v is MOD - 1
+		MintN z[] = {1, MintN(3).pow(MintN(-1).v >> s)};
+		FOR(i, k, 2 * k - 1) rt[i] = rt[i / 2] * z[i & 1];
 	}
-
-	void transform(vector<modint> &v, bool invert){
-		const int len = v.size(), coef = MAX_LEN / len; 
-		const int bit = log2(len); 
-		FOR(int, i, 0, len-1) if (i < _rev[bit][i])
-			swap(v[i], v[_rev[bit][i]]);
-		
-		for (int jmp=1, span=2; span<=len; jmp*=2, span*=2)
-		for (int beg = 0; beg < len; beg += span)
-		for (int i = 0; i < jmp; i++) {
-			int k=coef*len/jmp*i/2; if (invert) k=MAX_LEN-k;
-			modint a = v[beg+i], b = _root[k] * v[beg+i+jmp];
-			v[beg + i] = a + b; v[beg + i + jmp] = a - b;
-		}
-		if (invert) {
-			modint inv = modint(len).inv();
-			FOR(int, i, 0, len-1) v[i] *= inv;
-		}
+	vector<int> rev(n);
+	FOR(i, 0, n - 1) rev[i] = (rev[i / 2] | (i & 1) << L) / 2;
+	FOR(i, 0, n - 1) if(i < rev[i]) swap(a[i], a[rev[i]]);
+	for(int k = 1; k < n; k *= 2)
+		for(int i = 0; i < n; i += 2 * k)
+			FOR(j, 0, k - 1){
+				MintN z = rt[j + k] * a[i + j + k];
+				a[i + j + k] = a[i + j] - z;
+				a[i + j] += z;
+			}
+	if(!inv) return;
+	reverse(a.begin() + 1, a.end());
+	MintN invN = MintN(n).inv();
+	for(MintN &x: a) x *= invN;
+}
+vector<MintN> convNtt(vector<MintN> a, vector<MintN> b){
+	if(a.empty() || b.empty()) return {};
+	int s = sz(a) + sz(b) - 1, n = 1;
+	const int NAIVE = 32;
+	if(min(sz(a), sz(b)) <= NAIVE){
+		vector<MintN> c(s);
+		FOR(i, 0, sz(a) - 1)
+			FOR(j, 0, sz(b) - 1)
+				c[i + j] += a[i] * b[j];
+		return c;
 	}
-	template<class T>
-	vector<modint> multiply(vector<T> &_a, vector<T> &_b) {
-		if (_a.empty() || _b.empty()) return {};
-		if (!_built) buildRoot();
-		int len = int(_a.size() + _b.size()) - 1;
-		len = 1 << (log2(len) + (cntBit(len) > 1));
-		vector<modint>a(_a.begin(),_a.end()); a.resize(len,0);
-		vector<modint>b(_b.begin(),_b.end()); b.resize(len,0);
-		transform(a, false); transform(b, false);
-		FOR(int, i, 0, len - 1) a[i] *= b[i];
-		transform(a, true); return a;
-	}
+	while(n < s) n <<= 1;
+	a.resize(n), b.resize(n);
+	ntt(a), ntt(b);
+	FOR(i, 0, n - 1) a[i] *= b[i];
+	ntt(a, true);
+	a.resize(s);
+	return a;
 }

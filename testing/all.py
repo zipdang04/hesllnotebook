@@ -259,7 +259,7 @@ PENDING = {
 	".graph.spfa", ".graph.spfa_aoj", ".graph.old_spfa", ".graph.2sat",
 	".ds.hash", ".ds.ps_seg",
 	".strings.suffixarray", ".strings.ahocorasick",
-	".math.bigint", ".math.gauss", ".math.fft", ".math.ntt",
+	".math.bigint", ".math.gauss", ".math.fft",
 }
 
 # ---------- all.py --changed BASE [section [test]]: only the tests the diff BASE...HEAD can affect ----------
