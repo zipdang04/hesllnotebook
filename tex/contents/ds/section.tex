@@ -11,7 +11,31 @@
 	\fld{apply} composes \texttt{t} after \texttt{id}'s tag. For ``set'', reserve an unused \texttt{Tag} value and return at once on it.
 	\fld{combine} \texttt{combine(x, y)} has \texttt{x} left of \texttt{y}; it need not commute.
 ]\label{lazyseg}
-\cpp[3]{Persistent segment tree}{ps_seg.hpp}
+\cpp[4]{Persistent segment tree}{perseg.hpp}[
+	\fld{Use} \texttt{vector<PerSeg::Node> a(n + 1); PerSeg s(a); int v = s.update(0, p, \{x\});}
+	\fld{Result} \texttt{update(v, p, x)} returns the id of a new version: version \texttt{v} with $a_p = x$. Old versions never change.
+	\fld{Needs} \texttt{a} is not empty. \texttt{Node()} is neutral for \texttt{combine(x, y)}, which has \texttt{x} left of \texttt{y} and need not commute.
+	\fld{get} \texttt{s.get(v, l, r).sum} is $a_l + \dots + a_r$ in version \texttt{v}; \texttt{get(v, l, l - 1)} is \texttt{Node()}.
+	\fld{update} Point add is \texttt{update(v, p, \{get(v, p, p).sum + x\})}. Range add: the next topic.
+]\label{perseg}
+{\small\tightdisplay
+\topic{Range add with never-pushed tags}
+To add $x$ on $[l, r]$ in a new version, give every node a tag \texttt{add} that covers its whole range and is never pushed.
+\begin{facts}
+	\item \texttt{sum} of a node includes its own \texttt{add}, not its ancestors'. Let $\mathit{len} = \mathit{hi} - \mathit{lo} + 1$ be the node's length.
+	\item \texttt{update(id, lo, hi, l, r, x)} returns \texttt{id} on no overlap and copies every other visited node. Full cover: \texttt{sum += x * len}, \texttt{add += x}, stop. Partial: recurse into both children, then
+	\[ \mathit{sum} = \mathit{sum}_L + \mathit{sum}_R + \mathit{add} \cdot \mathit{len}. \]
+	\item \texttt{get} carries $c$, the sum of the ancestors' \texttt{add} (0 at the root), and passes $c + \mathit{add}$ to the children. Full cover returns
+	\[ \mathit{sum} + c \cdot \mathit{len}. \]
+	\item Store a returned child id in a local before writing it into the arena: the arena may move during the call.
+\end{facts}
+\topic{Assign or affine on a range}
+When tags do not commute (assign, $x \to bx + c$), their order matters, so push them down with copying.
+\begin{facts}
+	\item Before entering the children of a node, copy both children, apply the node's tag to the copies, point the node at them and clear its tag (\texttt{push} of \S\ref{lazyseg}).
+	\item \texttt{get} pushes too, so a query also makes $O(\log n)$ nodes. The pushed node may stay shared: its contents do not change.
+\end{facts}
+}
 \cpp[4]{Li Chao tree}{lichao.hpp}[
 	\fld{Use} \texttt{LiChao lc(pts); lc.addLine(a, b); ll y = lc.get(x);}
 	\fld{Result} \texttt{get(x)} is the minimum of $ax + b$ over the lines covering $x$, or \texttt{LiChao::oo} if none does. For the maximum, add $(-a, -b)$ and negate.

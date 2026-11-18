@@ -239,7 +239,9 @@ all_source_codes = {
 		"lazyseg": TestCase("ds/lazyseg", "data_structure/range_affine_range_sum", 5),
 		"lazyseg_stress": StressTest("ds/lazyseg_stress", 10),
 		"lazyseg_order": ShellTest("ds/lazyseg_order", uses=("tex/contents/ds/lazyseg.hpp",)),
-		"ps_seg": TestCase("ds/ps_seg", "data_structure/rectangle_sum", 5),
+		"perseg": TestCase("ds/perseg", "data_structure/rectangle_sum", 5),
+		"perseg_stress": StressTest("ds/perseg_stress", 10),
+		"perseg_order": StressTest("ds/perseg_order", 10),
 		"lichao_line": TestCase("ds/lichao_line", "data_structure/line_add_get_min", 2),
 		"lichao_seg": TestCase("ds/lichao_seg", "data_structure/segment_add_get_min", 2),
 		"treap": TestCase("ds/treap", "data_structure/dynamic_sequence_range_affine_range_sum", 5),
@@ -320,7 +322,6 @@ all_source_codes = {
 # Entries not yet rewritten for second-main (old macros, do not compile): skipped until their batch lands.
 # Remove a name when its rewrite is merged.
 PENDING = {
-	".ds.ps_seg",
 }
 
 # ---------- all.py --changed BASE [section [test]]: only the tests the diff BASE...HEAD can affect ----------
