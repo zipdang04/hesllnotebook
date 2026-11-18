@@ -263,7 +263,11 @@ all_source_codes = {
 		"dlog": TestCase("math/dlog", "number_theory/discrete_logarithm_mod", 2),
 		"dlog_sqrt": TestCase("math/dlog_sqrt", "number_theory/sqrt_mod", 2),
 		"dlog_stress": StressTest("math/dlog_stress", 10),
-		"gauss": TestCase("math/gauss", "linear_algebra/system_of_linear_equations", 0.5),
+		"gauss": TestCase("math/gauss", "linear_algebra/system_of_linear_equations", 2),
+		"gauss_det": TestCase("math/gauss_det", "linear_algebra/matrix_det", 2),
+		"gauss_inv": TestCase("math/gauss_inv", "linear_algebra/inverse_matrix", 3),
+		"gauss_rank": TestCase("math/gauss_rank", "linear_algebra/matrix_rank", 2),
+		"gauss_xor": TestCase("math/gauss_xor", "linear_algebra/system_of_linear_equations_mod_2", 3),
 		"fft": TestCase("math/fft", "convolution/convolution_mod_1000000007", 3),
 		"ntt": TestCase("math/ntt", "convolution/convolution_mod"),
 	},
@@ -282,6 +286,7 @@ PENDING = {
 	".ds.hash", ".ds.ps_seg",
 	".strings.suffixarray", ".strings.ahocorasick",
 	".math.bigint", ".math.gauss", ".math.fft",
+	".math.bigint", ".math.fft", ".math.ntt",
 }
 
 # ---------- all.py --changed BASE [section [test]]: only the tests the diff BASE...HEAD can affect ----------

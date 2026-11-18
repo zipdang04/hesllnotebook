@@ -43,7 +43,20 @@
 \entry{Floor sum}
 
 \subsection{Linear algebra}
-\cpp{Gauss--Jordan}{gauss.hpp}
+\cpp[4]{Gauss--Jordan}{gauss.hpp}[
+	\fld{Use} \texttt{auto [rank, det] = gauss(a, c);}
+	\fld{Result} reduces $n \times m$ \texttt{Mint<MOD>} matrix \texttt{a} on columns $0..c-1$. Set $c = m$ for rank, $c = n = m$ for determinant (0 if singular).
+	\fld{solveLinear} solves $Ax = b$, $n \ge 1$: empty if impossible, else \texttt{s[0]} solves it and \texttt{s[1..]} span the kernel ($Ax = 0$).
+	\fld{matInverse} sets \texttt{a} to $A^{-1}$; singular: false, \texttt{a} undefined.
+	\fld{solveXor} solves over $\mathrm{GF}(2)$ likewise, with \texttt{bitset} rows; use width $\max(4097, m + 1)$.
+]\label{gauss}
+\topic{Real numbers}
+For a system over \texttt{double} (probabilities, expected values), copy \texttt{gauss} and make these edits.
+\begin{facts}
+	\item Drop \texttt{template<int MOD>} and write \texttt{double} for \texttt{Mint<MOD>}; \texttt{x.inv()} becomes \texttt{1 / x}.
+	\item Pivot on the row with the largest $|a_{r,\mathrm{col}}|$, not on the first nonzero one.
+	\item Treat $|x| < 10^{-9}$ as zero, in the pivot search and in the no-solution test.
+\end{facts}
 \entry{Simplex}
 
 \subsection{Polynomials \& transforms}
