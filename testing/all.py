@@ -256,6 +256,7 @@ all_source_codes = {
 		"suffixarray_stress": StressTest("strings/suffixarray_stress", 10),
 		"ahocorasick": OjTest("strings/ahocorasick", "https://yukicoder.me/problems/no/430", 2),
 		"lyndon": TestCase("strings/lyndon", "string/lyndon_factorization", 2),
+		"ahocorasick_stress": StressTest("strings/ahocorasick_stress", 10),
 	},
 	"geometry": {
 		"angless": TestCase("geometry/angless", "geo/sort_points_by_argument", 2),
@@ -315,7 +316,6 @@ all_source_codes = {
 # Remove a name when its rewrite is merged.
 PENDING = {
 	".ds.ps_seg",
-	".strings.ahocorasick",
 }
 
 # ---------- all.py --changed BASE [section [test]]: only the tests the diff BASE...HEAD can affect ----------

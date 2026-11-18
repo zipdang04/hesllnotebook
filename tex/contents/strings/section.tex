@@ -44,9 +44,13 @@ To compare two substrings with 0-based starts $i$, $j$:
 	For the longest common substring of $s$ and $t$, use \texttt{s + '\#' + t + '\$'} with final \texttt{'\$'}.
 ]\label{suffixarray}
 \cpp[4]{Aho--Corasick}{ahocorasick.hpp}[
-	Per-pattern counts: \texttt{hit[u]++} at each step of the scan, then for $u$ in reverse \texttt{order}: \texttt{hit[link[u]] += hit[u]}; pattern $i$ occurs \texttt{hit[end$_i$]} times.\\
-	Online inserts: $\log$ groups of sizes $2^k$; insert = merge the smaller groups and rebuild; a query sums over all groups.
-]
+	\fld{Use} \texttt{Aho a; for(auto \&p: ps) e.push\_back(a.add(p)); a.build();}
+	\fld{Result} \texttt{t[u].nxt[c]} is the goto table; \texttt{t[u].cnt} counts pattern suffixes of $u$.
+	At scan node $u$, increment \texttt{hit[u]}.
+	In reverse \texttt{order}, add \texttt{hit[u]} to \texttt{hit[t[u].link]}; pattern $i$ occurs \texttt{hit[e[i]]} times.
+	\fld{Needs} Non-empty patterns over \texttt{FIRST}..\texttt{FIRST + K - 1}; all \texttt{add} calls before \texttt{build}.
+	\fld{countMatch} Counts all pattern occurrences in \texttt{s}.
+]\label{ahocorasick}
 \entry{Suffix automaton}
 \entry{Eertree}\label{eertree}
 \cpp[4]{Lyndon factorisation (Duval)}{lyndon.hpp}[
