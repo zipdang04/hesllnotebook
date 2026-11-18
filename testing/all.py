@@ -313,7 +313,6 @@ all_source_codes = {
 PENDING = {
 	".ds.ps_seg",
 	".strings.suffixarray", ".strings.ahocorasick",
-	".math.fft",
 }
 
 # ---------- all.py --changed BASE [section [test]]: only the tests the diff BASE...HEAD can affect ----------
