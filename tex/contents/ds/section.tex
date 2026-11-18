@@ -36,5 +36,11 @@
 	\fld{unite} returns false, and records nothing, if $u$ and $v$ are already together.
 	\fld{rollback} \texttt{rollback(t)} undoes every join made after \texttt{t = time()}; a later \texttt{t} does nothing.
 ]\label{rollbackdsu}
-\entry{pb\_ds}
+\cpp[4]{pb\_ds}{pbds.hpp}[
+	\fld{Use} \texttt{OrderedSet<int> s; gp\_hash\_table<ll,int,CustomHash> mp;}
+	\fld{Result} \texttt{s.order\_of\_key(x)} counts keys $< x$: $x$'s rank, even if absent.
+	\fld{Needs} distinct keys; for a multiset use \texttt{OrderedSet<pii>} with unique \texttt{.se}. Pack pair keys of \texttt{mp} into one \texttt{ll}.
+	\fld{find\_by\_order} \texttt{s.find\_by\_order(k)} points at rank $k$, or \texttt{end()} if $k \ge \texttt{s.size()}$; test before \texttt{*}.
+	\fld{CustomHash} also serves \texttt{unordered\_map<ll, int, CustomHash>}; its seed is random per run.
+]\label{pbds}
 \entry{Mo's algorithm}

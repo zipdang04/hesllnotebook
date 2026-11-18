@@ -234,7 +234,8 @@ all_source_codes = {
 		"hld_stress": StressTest("graph/hld_stress", 10),
 	},
 	"ds": {
-		"hash": TestCase("ds/hash", "data_structure/associative_array", 5),
+		"pbds": TestCase("ds/pbds", "data_structure/ordered_set", 5),
+		"pbds_hash": TestCase("ds/pbds_hash", "data_structure/associative_array", 5),
 		"lazyseg": TestCase("ds/lazyseg", "data_structure/range_affine_range_sum", 5),
 		"lazyseg_stress": StressTest("ds/lazyseg_stress", 10),
 		"lazyseg_order": ShellTest("ds/lazyseg_order", uses=("tex/contents/ds/lazyseg.hpp",)),
@@ -309,7 +310,7 @@ all_source_codes = {
 # Entries not yet rewritten for second-main (old macros, do not compile): skipped until their batch lands.
 # Remove a name when its rewrite is merged.
 PENDING = {
-	".ds.hash", ".ds.ps_seg",
+	".ds.ps_seg",
 	".strings.suffixarray", ".strings.ahocorasick",
 	".math.fft",
 }
