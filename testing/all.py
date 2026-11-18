@@ -285,14 +285,9 @@ all_source_codes = {
 # Entries not yet rewritten for second-main (old macros, do not compile): skipped until their batch lands.
 # Remove a name when its rewrite is merged.
 PENDING = {
-	".flow.costscaling", ".flow.costscaling_aoj",
-	".flow.mcmf_aoj",
-	".graph.spfa", ".graph.spfa_aoj", ".graph.old_spfa",
-	".graph.2sat",
 	".ds.hash", ".ds.ps_seg",
 	".strings.suffixarray", ".strings.ahocorasick",
-	".math.bigint", ".math.gauss", ".math.fft",
-	".math.bigint", ".math.fft", ".math.ntt",
+	".math.bigint", ".math.fft",
 }
 
 # ---------- all.py --changed BASE [section [test]]: only the tests the diff BASE...HEAD can affect ----------
