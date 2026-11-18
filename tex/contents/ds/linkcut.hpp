@@ -1,8 +1,8 @@
 #pragma once
 #include "../contest/template.hpp"
 
-// Link-cut tree: a dynamic forest, vertices 1..n, node 0 =
-// null. Amortised O(log n) per call, no recursion.
+// Link-cut forest, 1..n, node 0 = null. Amortised O(log n);
+// no recursion. connected, lca, update(u, x): no re-root.
 struct LinkCut{
 	// ---- EDIT: node value, pending tag, two functions ----
 	// x -> x + add. Tag() must change nothing.

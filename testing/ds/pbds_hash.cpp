@@ -22,7 +22,7 @@ int main(){
 		assert(mp2.find(7) == mp2.end());
 		unordered_map<ll, int, CustomHash> um;
 		um[1] = 2;
-		assert(um.find(1)->second == 2);
+		assert(um.find(1)->se == 2);
 	}
 	gp_hash_table<ll, ll, CustomHash> mp;
 	int q;

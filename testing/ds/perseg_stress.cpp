@@ -2,16 +2,6 @@
 #include <cassert>
 
 int main(){
-	// Never-pushed range add: parent tag 3, left child +2.
-	ll left = 1 + 2, right = 2, add = 3;
-	ll sum = left + right + add * 2;
-	assert(sum == 11 && left + add == 6);
-	// Push an old assignment before a newer affine update.
-	ll oldLeft = 1, oldRight = 2, assign = 4;
-	left = right = assign;
-	left = 2 * left + 1;
-	assert(left + right == 13);
-	assert(oldLeft == 1 && oldRight == 2);
 	mt19937_64 rng(123456789);
 	FOR(n, 1, 20){
 		int limit = 1, leaves = 1;
