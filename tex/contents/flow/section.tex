@@ -32,7 +32,11 @@
 	\fld{Models} \S\ref{flowmodels}
 ]\label{costscaling}
 \entry{Flow models}\label{flowmodels}
-\entry{Gomory--Hu tree}
+\cpp[4]{Gomory--Hu tree}{gomoryhu.hpp}[
+	\fld{Use} \texttt{vector<array<ll, 3>> t = gomoryHu(g);} with \texttt{g[u]} $= \{v, w\}$, each edge in both lists.
+	\fld{Result} $n - 1$ edges \texttt{\{u, v, c\}}. The min cut between any $x, y$ is the smallest $c$ on the tree path from $x$ to $y$. Uses Dinic (\S\ref{dinic}).
+	\fld{Needs} $w \ge 0$.
+]\label{gomoryhu}
 
 \subsection{Matching}
 \cpp[4]{Hungarian}{hungarian.hpp}[

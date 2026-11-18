@@ -211,6 +211,8 @@ all_source_codes = {
 		"hungarian_stress": StressTest("flow/hungarian_stress", 10),
 		"stoerwagner": StressTest("flow/stoerwagner", 2),
 		"stoerwagner_stress": StressTest("flow/stoerwagner_stress", 10),
+		"gomoryhu": StressTest("flow/gomoryhu", 2),
+		"gomoryhu_stress": StressTest("flow/gomoryhu_stress", 10),
 	},
 	"graph": {
 		"spfa": TestCase("graph/spfa", "graph/shortest_path", 1),
