@@ -19,13 +19,18 @@
 	\fld{Models} \S\ref{flowmodels}.
 ]\label{mcmf}
 \cpp[4]{Min-cost circulation (cost scaling)}{costscaling.hpp}[
-	Bounds $l \le f \le r$, any costs, no source/sink. $s \to t$ flow of exactly $F$: add $t \to s$ with $[F, F]$, cost 0. Supplies $b_v$: extra vertex $X$, edges $X \to v$ $[b_v, b_v]$ ($b_v > 0$), $v \to X$ $[-b_v, -b_v]$ ($b_v < 0$). Infeasible $\Rightarrow$ \texttt{solve().first = false}.
-]
 \cpp[4]{Global min cut (Stoer--Wagner)}{stoerwagner.hpp}[
 	\fld{Use} \texttt{auto [cut, side] = globalMinCut(g);} with \texttt{g[u]} $= \{v, w\}$, each edge in both lists.
 	\fld{Result} the minimum total weight of edges between \texttt{side} and the rest; \texttt{side} lists the vertices of one part.
 	\fld{Needs} $w \ge 0$ and $n \ge 2$ ($n = 1$ gives \texttt{\{oo, \{\}\}}). Multi-edges add up; self-loops are ignored.
 ]\label{stoerwagner}
+\entry{Flow models}\label{flowmodels}
+	\fld{Use} \texttt{MinCostCirc mc(n + 1); int id = mc.addEdge(u, v, lo, hi, c); bool ok = mc.solve();}
+	\fld{Result} \texttt{ok} is false if infeasible. \texttt{mc.total} (\texttt{\_\_int128}) is the min cost.
+	\fld{Needs} $\texttt{lo} \le \texttt{hi}$, any signs, and one \texttt{solve} per object. With $N$ the constructor size, $4N(N + 1) \max |c| < 9 \cdot 10^{18}$. Uses Dinic (\S\ref{dinic}).
+	\fld{flowOf} \texttt{mc.flowOf(id)} is the flow on the edge. \texttt{mc.pot} are optimal duals: $c + \texttt{pot[u]} - \texttt{pot[v]} \ge 0$ on every arc with room.
+	\fld{Models} \S\ref{flowmodels}
+]\label{costscaling}
 \entry{Flow models}\label{flowmodels}
 \entry{Gomory--Hu tree}
 

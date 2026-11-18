@@ -1,74 +1,104 @@
 #pragma once
-#include "dinitzwscaling.hpp"
+#include "dinic.hpp"
 
-// Min-cost circulation with bounds l <= f <= r and any costs; cost-scaling push-relabel (koosaga).
-// O(V^2 E log(VC)), independent of capacities. After solve(): flowOf(i), p = duals.
-struct MinCostCirculation {
-	struct In { int s, t; ll l, r, c; };
-	struct Edge { int to, rev; ll rem, c; };
-	int n; vector<In> in; vector<vector<Edge>> g; vector<int> pos; vector<ll> p;
-	MinCostCirculation(int n): n(n), g(n), p(n) {}
-	int addEdge(int s, int t, ll l, ll r, ll c) { in.push_back({s, t, l, r, c}); return in.size() - 1; }
-	ll flowOf(int i) {
-		auto &e = in[i];
-		if (e.s == e.t) return e.c < 0 ? e.r : e.l;            // self-loops never enter the graph
-		return e.r - g[e.s][pos[i]].rem;
+// Min-cost circulation, lo <= f <= hi, any costs: cost
+// scaling push-relabel, O(V^2 E log(VC)). mc(N): vertices
+// 0..N-1. Feasibility by Dinic: recursive, depth <= V.
+struct MinCostCirc{
+	struct Edge{ int to; ll cap, cost; };
+	int n;
+	vector<Edge> edges; // edges[id ^ 1] = reverse of id
+	vector<vector<int>> adj; // ids of arcs out of u
+	vector<ll> low, pot; // low[id / 2]; pot = duals
+	__int128 total = 0; // min cost; exceeds ll
+	MinCostCirc(int n_): n(n_), adj(n_), pot(n_){}
+	// A self-loop stays out of adj. Returns the arc id.
+	int addEdge(int u, int v, ll lo, ll hi, ll cost){
+		int id = sz(edges);
+		edges.push_back({v, hi - lo, cost});
+		edges.push_back({u, 0, -cost}), low.push_back(lo);
+		if(u != v)
+			adj[u].push_back(id), adj[v].push_back(id + 1);
+		return id;
 	}
-
-	pair<bool, __int128> solve() {
-		g.assign(n, {}); p.assign(n, 0);
-		// 1. feasible circulation: lower-bound reduction + max flow
-		Flow f; f.init(n + 2, n, n + 1);
-		vector<ll> ex(n); ll need = 0;
-		for (auto &e: in) if (e.s != e.t) f.addEdge(e.s, e.t, e.r - e.l), ex[e.t] += e.l, ex[e.s] -= e.l;
-		for (int v = 0; v < n; v++)
-			if (ex[v] > 0) f.addEdge(n, v, ex[v]), need += ex[v];
-			else if (ex[v] < 0) f.addEdge(v, n + 1, -ex[v]);
-		if (f.calculate() != need) return {false, 0};
-		// 2. residual graph, costs scaled by n+1 so that eps <= 1 means optimal
-		pos.assign(in.size(), -1);
-		for (int i = 0, k = 0; i < (int)in.size(); i++) {
-			auto &e = in[i]; if (e.s == e.t) continue;
-			ll cur = e.r - f.capOf(k++);                      // flow on e, in [l, r]
-			pos[i] = g[e.s].size();
-			g[e.s].push_back({e.t, (int)g[e.t].size(), e.r - cur, e.c * (n + 1)});
-			g[e.t].push_back({e.s, pos[i], cur - e.l, -e.c * (n + 1)});
-		}
-		// 3. refine: eps /= 8 per phase; saturate negative edges, then push-relabel the excess away
-		auto rc = [&](Edge &e, int u) { return e.c + p[u] - p[e.to]; };
-		for (ll eps; ; ) {
-			eps = 0;
-			for (int u = 0; u < n; u++) for (auto &e: g[u]) if (e.rem > 0) eps = max(eps, -rc(e, u));
-			if (eps <= 1) break;
-			eps = max(1ll, eps >> 3);
-			vector<ll> excess(n); vector<int> ptr(n); queue<int> q;
-			auto push = [&](Edge &e, int u, ll x) {
-				e.rem -= x; g[e.to][e.rev].rem += x; excess[u] -= x; excess[e.to] += x;
-				if (excess[e.to] > 0 && excess[e.to] <= x) q.push(e.to);   // just became active
-			};
-			for (int u = 0; u < n; u++) for (auto &e: g[u]) if (e.rem > 0 && rc(e, u) < 0) push(e, u, e.rem);
-			while (!q.empty()) {
-				int u = q.front(); q.pop();
-				while (excess[u] > 0) {
-					for (; ptr[u] < (int)g[u].size() && excess[u] > 0; ptr[u]++) {
-						Edge &e = g[u][ptr[u]];
-						if (e.rem > 0 && rc(e, u) < 0) push(e, u, min(e.rem, excess[u]));
-					}
-					if (excess[u] > 0) {                      // relabel: cheapest residual edge gets rc = -eps
-						ptr[u] = 0; p[u] = LLONG_MIN / 4;
-						for (auto &e: g[u]) if (e.rem > 0) p[u] = max(p[u], p[e.to] - e.c - eps);
-					}
+	ll reducedCost(int u, int id){
+		return edges[id].cost + pot[u] - pot[edges[id].to];
+	}
+	// Refine by eps / 8; false means already optimal.
+	bool refine(){
+		ll eps = 0;
+		FOR(u, 0, n - 1) for(int id: adj[u])
+			if(edges[id].cap > 0)
+				eps = max(eps, -reducedCost(u, id));
+		if(eps <= 1) return false;
+		eps = max(1LL, eps >> 3);
+		vector<ll> excess(n); vector<int> ptr(n); queue<int> q;
+		auto push = [&](int u, int id, ll x){
+			int v = edges[id].to;
+			edges[id].cap -= x, edges[id ^ 1].cap += x;
+			excess[u] -= x, excess[v] += x;
+			if(excess[v] > 0 && excess[v] <= x) q.push(v);
+		};
+		FOR(u, 0, n - 1) for(int id: adj[u])
+			if(edges[id].cap > 0 && reducedCost(u, id) < 0)
+				push(u, id, edges[id].cap);
+		while(!q.empty()){
+			int u = q.front(); q.pop();
+			while(excess[u] > 0){
+				for(; ptr[u] < sz(adj[u]) && excess[u]; ptr[u]++){
+					int id = adj[u][ptr[u]];
+					if(edges[id].cap > 0 && reducedCost(u, id) < 0)
+						push(u, id, min(edges[id].cap, excess[u]));
 				}
+				if(excess[u] == 0) break;
+				// Below every candidate; subtraction stays in ll.
+				ptr[u] = 0, pot[u] = LLONG_MIN / 4;
+				for(int id: adj[u]) if(edges[id].cap > 0)
+					pot[u] = max(pot[u],
+						pot[edges[id].to] - edges[id].cost - eps);
 			}
 		}
-		// 4. duals (Bellman-Ford on the residual graph, real costs) and the answer
-		for (auto &v: g) for (auto &e: v) e.c /= n + 1;
-		fill(p.begin(), p.end(), 0);
-		for (bool upd = true; upd; ) { upd = false;
-			for (int u = 0; u < n; u++) for (auto &e: g[u])
-				if (e.rem > 0 && p[u] + e.c < p[e.to]) p[e.to] = p[u] + e.c, upd = true; }
-		__int128 ans = 0;
-		for (int i = 0; i < (int)in.size(); i++) ans += (__int128)in[i].c * flowOf(i);
-		return {true, ans};
+		return true;
+	}
+	bool solve(){
+		Dinic f(n + 2); vector<ll> ex(n); ll need = 0;
+		for(int id = 0; id < sz(edges); id += 2){
+			int u = edges[id ^ 1].to, v = edges[id].to;
+			f.addEdge(u, v, edges[id].cap);
+			ex[v] += low[id / 2], ex[u] -= low[id / 2];
+		}
+		FOR(v, 0, n - 1)
+			if(ex[v] > 0)
+				f.addEdge(n, v, ex[v]), need += ex[v];
+			else if(ex[v] < 0)
+				f.addEdge(v, n + 1, -ex[v]);
+		if(f.maxFlow(n, n + 1) < need) return false;
+		FOR(id, 0, sz(edges) - 1)
+			edges[id].cap = f.edges[id].cap;
+		for(int id = 0; id < sz(edges); id += 2){
+			Edge &e = edges[id], &r = edges[id ^ 1];
+			if(e.to == r.to && e.cost < 0) swap(e.cap, r.cap);
+		}
+		// costs * (n + 1): eps <= 1 is then optimal
+		for(Edge &e: edges)
+			e.cost *= n + 1;
+		while(refine());
+		for(Edge &e: edges)
+			e.cost /= n + 1;
+		fill(all(pot), 0);
+		for(bool upd = true; upd; ){
+			upd = false;
+			FOR(u, 0, n - 1) for(int id: adj[u]){
+				Edge &e = edges[id];
+				if(e.cap > 0 && pot[u] + e.cost < pot[e.to])
+					pot[e.to] = pot[u] + e.cost, upd = true;
+			}
+		}
+		for(int id = 0; id < sz(edges); id += 2)
+			total += (__int128)edges[id].cost * flowOf(id);
+		return true;
+	}
+	ll flowOf(int id){
+		return low[id / 2] + edges[id ^ 1].cap;
 	}
 };
