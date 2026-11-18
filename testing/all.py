@@ -228,6 +228,10 @@ all_source_codes = {
 		"euler_directed": TestCase("graph/euler_directed", "graph/eulerian_trail_directed", 2),
 		"euler_undirected": TestCase("graph/euler_undirected", "graph/eulerian_trail_undirected", 2),
 		"euler_stress": StressTest("graph/euler_stress", 10),
+		"hld": TestCase("graph/hld", "tree/vertex_add_path_sum", 3),
+		"hld_lca": TestCase("graph/hld_lca", "tree/lca", 2),
+		"hld_subtree": TestCase("graph/hld_subtree", "tree/vertex_add_subtree_sum", 3),
+		"hld_stress": StressTest("graph/hld_stress", 10),
 	},
 	"ds": {
 		"hash": TestCase("ds/hash", "data_structure/associative_array", 5),

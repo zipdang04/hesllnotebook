@@ -1,0 +1,47 @@
+#include "../../tex/contents/graph/hld.hpp"
+#include <cassert>
+
+struct Fenwick{
+	vector<ll> bit;
+	Fenwick(int n): bit(n + 1){}
+	void add(int u, ll x){
+		for(; u < sz(bit); u += u & -u)
+			bit[u] += x;
+	}
+	ll get(int u){
+		ll res = 0;
+		for(; u; u -= u & -u)
+			res += bit[u];
+		return res;
+	}
+};
+int main(){
+	ios_base::sync_with_stdio(false); cin.tie(nullptr);
+	int n, q; cin >> n >> q;
+	vector<ll> a(n + 1);
+	FOR(u, 1, n)
+		cin >> a[u];
+	vector<vector<int>> g(n + 1);
+	FOR(i, 1, n - 1){
+		int u, v; cin >> u >> v; u++; v++;
+		g[u].push_back(v); g[v].push_back(u);
+	}
+	HLD hld(g); Fenwick bit(n);
+	FOR(u, 1, n)
+		bit.add(hld.pos[u], a[u]);
+	while(q--){
+		int type, u; cin >> type >> u; u++;
+		if(type == 0){
+			ll x; cin >> x;
+			bit.add(hld.pos[u], x);
+		}else{
+			int v; cin >> v; v++;
+			auto ranges = hld.path(u, v);
+			assert(sz(ranges) <= 2 * log2(n) + 2);
+			ll sum = 0;
+			for(auto [l, r]: ranges)
+				sum += bit.get(r) - bit.get(l - 1);
+			cout << sum << '\n';
+		}
+	}
+}

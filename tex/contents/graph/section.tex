@@ -61,7 +61,13 @@ Use it to minimise the average weight $\bar w(C)$ of a cycle $C$. Fix an integer
 \entry{Matrix-tree theorem}
 
 \subsection{Trees}
-\entry{HLD}
+\cpp[4]{HLD}{hld.hpp}[
+	\fld{Use} \texttt{HLD hld(g); for(auto [l, r]: hld.path(u, v)) s += seg.get(l, r).sum;}
+	\fld{Result} \texttt{par}, \texttt{depth}, \texttt{head}, \texttt{sub} (subtree size); \texttt{par[root]} $= 0$.
+	\fld{Needs} Build \texttt{seg} from \texttt{a[hld.pos[u]] = \{value, 1\}} (\S\ref{lazyseg}).
+	\fld{lca} \texttt{lca(u, v)} is the lowest common ancestor.
+	\fld{path} covers $u \leadsto v$ by closed \texttt{pos} ranges, unordered: operations must commute. \texttt{edge = true} stores $(\texttt{par[v]}, v)$ at $v$, omitting the LCA.
+]\label{hld}
 \entry{Centroid decomposition}
 \entry{Virtual tree}
 
