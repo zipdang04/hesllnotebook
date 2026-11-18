@@ -57,7 +57,12 @@ For a system over \texttt{double} (probabilities, expected values), copy \texttt
 	\item Pivot on the row with the largest $|a_{r,\mathrm{col}}|$, not on the first nonzero one.
 	\item Treat $|x| < 10^{-9}$ as zero, in the pivot search and in the no-solution test.
 \end{facts}
-\entry{Simplex}
+\cpp[4]{Simplex}{simplex.hpp}[
+	\fld{Use} \texttt{Simplex lp(A, b, c);} then test \texttt{lp.val} against \texttt{-oo} and \texttt{oo}.
+	\fld{Result} \texttt{lp.x} reaches \texttt{lp.val}. It is empty for \texttt{-oo} and some feasible point for \texttt{oo}.
+	\fld{Needs} negate $c$ for a minimum, negate a row for $\ge$, and give two rows for $=$.
+	It runs fastest when $b \ge 0$, so that $x = 0$ is feasible. Results are doubles: compare them with a tolerance.
+]\label{simplex}
 
 \subsection{Polynomials \& transforms}
 \cpp[4]{FFT}{fft.hpp}[

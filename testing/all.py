@@ -280,6 +280,8 @@ all_source_codes = {
 		"gauss_inv": TestCase("math/gauss_inv", "linear_algebra/inverse_matrix", 3),
 		"gauss_rank": TestCase("math/gauss_rank", "linear_algebra/matrix_rank", 2),
 		"gauss_xor": TestCase("math/gauss_xor", "linear_algebra/system_of_linear_equations_mod_2", 3),
+		"simplex": StressTest("math/simplex", 2),
+		"simplex_stress": StressTest("math/simplex_stress", 10),
 		"fft": TestCase("math/fft", "convolution/convolution_mod_1000000007", 3),
 		"fft_stress": StressTest("math/fft_stress", 10),
 		"ntt": TestCase("math/ntt", "convolution/convolution_mod"),
