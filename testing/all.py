@@ -281,6 +281,7 @@ all_source_codes = {
 		"gauss_rank": TestCase("math/gauss_rank", "linear_algebra/matrix_rank", 2),
 		"gauss_xor": TestCase("math/gauss_xor", "linear_algebra/system_of_linear_equations_mod_2", 3),
 		"fft": TestCase("math/fft", "convolution/convolution_mod_1000000007", 3),
+		"fft_stress": StressTest("math/fft_stress", 10),
 		"ntt": TestCase("math/ntt", "convolution/convolution_mod"),
 	},
 	"interactive": {
@@ -294,7 +295,7 @@ all_source_codes = {
 PENDING = {
 	".ds.hash", ".ds.ps_seg",
 	".strings.suffixarray", ".strings.ahocorasick",
-	".math.bigint", ".math.fft",
+	".math.bigint",
 }
 
 # ---------- all.py --changed BASE [section [test]]: only the tests the diff BASE...HEAD can affect ----------

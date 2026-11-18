@@ -60,7 +60,14 @@ For a system over \texttt{double} (probabilities, expected values), copy \texttt
 \entry{Simplex}
 
 \subsection{Polynomials \& transforms}
-\cpp{FFT}{fft.hpp}
+\cpp[4]{FFT}{fft.hpp}[
+	\fld{Use} \texttt{vector<ll> c = convMod(a, b, mod);}
+	\fld{Result} $|a| + |b| - 1$ terms in ${[0, \texttt{mod})}$, empty when an input is empty:
+	\[ c_k = \sum_i a_i b_{k-i} \bmod \texttt{mod} \]
+	\fld{Needs} $0 \le a_i, b_i < \texttt{mod} \le 2^{30}$ and $|a| + |b| - 1 \le 2^{20}$.
+	\fld{conv} the same product in \texttt{double}, exact after \texttt{llround} while $(\sum a_i^2 + \sum b_i^2) \log_2(|a| + |b|) < 9 \cdot 10^{14}$.
+	\fld{fft} forward only; the inverse is \texttt{fft(a)}, \texttt{reverse(a.begin() + 1, a.end())}, then divide by $n$.
+]\label{fft}
 \cpp[4]{NTT}{ntt.hpp}[
 	\fld{Use} \texttt{vector<MintN> c = convNtt(a, b);}
 	\fld{Result} $|a| + |b| - 1$ terms, empty when an input is empty:
