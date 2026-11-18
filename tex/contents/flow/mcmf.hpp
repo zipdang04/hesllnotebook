@@ -1,45 +1,78 @@
 #pragma once
-#include "../graph/spfa.hpp"
+#include "../contest/template.hpp"
 
-// successive shortest paths (SPFA on the residual graph); no negative cycles. C = type of the total cost
-template<class C = ll> struct MCMF{
-	struct Edge{int from, dest, oppo; ll capa, cost;};
-	vector<Edge> edges, resi;
-	vector<vector<int>> graph;
-	SPFA sp;
-	int n, s, t;
-
-	void init(int n, int s, int t){
-		this -> n = n; this -> s = s; this -> t = t;
-		edges.clear(); graph.assign(n, {});
+// Min-cost flow: successive shortest paths, Dijkstra with
+// potentials, Bellman-Ford once per run. MCMF mf(N):
+// vertices 0..N-1. O(VE + F E log V). No recursion.
+struct MCMF{
+	struct Edge{ int to; ll cap, cost; };
+	vector<Edge> edges;
+	vector<vector<int>> adj;
+	vector<ll> pot, dist;
+	vector<int> par;
+	MCMF(int n_): adj(n_), pot(n_), dist(n_), par(n_){}
+	void setPot(){
+		fill(all(pot), 0);
+		FOR(i, 0, sz(adj) - 1){
+			bool changed = false;
+			FOR(u, 0, sz(adj) - 1)
+				for(int id: adj[u]){
+					auto &e = edges[id];
+					if(!e.cap || pot[e.to] <= pot[u] + e.cost)
+						continue;
+					pot[e.to] = pot[u] + e.cost; changed = true;
+				}
+			if(!changed)
+				break;
+		}
 	}
-
-	int addEdge(int u, int v, ll capa, ll cost){ // returns edge id
-		int m = edges.size();
-		edges.push_back({u, v, m + 1, capa, cost});
-		edges.push_back({v, u, m, 0, -cost});
-		graph[u].push_back(m); graph[v].push_back(m + 1);
-		return m / 2;
-	}
-
-	pair<ll, C> calculate(ll limit = 1ll << 62){ // {flow, cost}, flow <= limit
-		resi = edges; ll flow = 0; C cost = 0;
-		auto residual = [&](int u, auto relax){
-			for (int idx: graph[u]) if (resi[idx].capa > 0) relax(resi[idx].dest, resi[idx].cost, idx);
-		};
-		while (flow < limit){
-			sp.run(n, s, residual);
-			if (sp.dist[t] >= SPFA::oo) break;
-			ll push = limit - flow;
-			for (int v = t; v != s; v = resi[sp.par[v]].from) push = min(push, resi[sp.par[v]].capa);
-			for (int v = t; v != s; v = resi[sp.par[v]].from){
-				int e = sp.par[v];
-				resi[e].capa -= push; resi[resi[e].oppo].capa += push;
+	bool dijkstra(int s, int t){
+		// Costs may exceed oo.
+		fill(all(dist), LLONG_MAX); dist[s] = 0;
+		PQMin<pll> pq; pq.push({0, s});
+		while(!pq.empty()){
+			auto [d, u] = pq.top(); pq.pop();
+			if(d != dist[u])
+				continue;
+			for(int id: adj[u]){
+				auto &e = edges[id];
+				if(!e.cap)
+					continue;
+				ll val = d + e.cost + pot[u] - pot[e.to];
+				if(val >= dist[e.to])
+					continue;
+				dist[e.to] = val; par[e.to] = id;
+				pq.push({val, e.to});
 			}
-			flow += push; cost += (C)push * sp.dist[t];
+		}
+		return dist[t] != LLONG_MAX;
+	}
+	// Returns the arc id (0, 2, 4, ..).
+	int addEdge(int u, int v, ll cap, ll cost){
+		int id = sz(edges);
+		edges.push_back({v, cap, cost});
+		edges.push_back({u, 0, -cost});
+		adj[u].push_back(id); adj[v].push_back(id ^ 1);
+		return id;
+	}
+	pair<ll, ll> maxFlow(int s, int t, ll limit = oo){
+		if(s == t) return {0, 0};
+		ll flow = 0, cost = 0;
+		setPot();
+		while(flow < limit && dijkstra(s, t)){
+			// Unreached stay so; never add LLONG_MAX.
+			FOR(v, 0, sz(adj) - 1) if(dist[v] != LLONG_MAX)
+				pot[v] += dist[v];
+			ll push = limit - flow;
+			for(int v = t; v != s; v = edges[par[v] ^ 1].to)
+				push = min(push, edges[par[v]].cap);
+			for(int v = t; v != s; v = edges[par[v] ^ 1].to){
+				edges[par[v]].cap -= push;
+				edges[par[v] ^ 1].cap += push;
+			}
+			flow += push; cost += push * (pot[t] - pot[s]);
 		}
 		return {flow, cost};
 	}
-
-	ll flowOn(int id){ return resi[2 * id + 1].capa; }
+	ll flowOf(int id){ return edges[id ^ 1].cap; }
 };

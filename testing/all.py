@@ -198,6 +198,7 @@ all_source_codes = {
 		"dinic_aoj": OjTest("flow/dinic_aoj", "https://onlinejudge.u-aizu.ac.jp/problems/GRL_6_A", 1),
 		"dinic_stress": StressTest("flow/dinic_stress", 10),
 		"mcmf_aoj": OjTest("flow/mcmf_aoj", "https://onlinejudge.u-aizu.ac.jp/problems/GRL_6_B", 1),
+		"mcmf_stress": StressTest("flow/mcmf_stress", 10),
 		"costscaling": TestCase("flow/costscaling", "graph/min_cost_b_flow", 10),
 		"costscaling_aoj": OjTest("flow/costscaling_aoj", "https://onlinejudge.u-aizu.ac.jp/problems/GRL_6_B", 1),
 		"hungarian": TestCase("flow/hungarian", "graph/assignment", 2),
@@ -267,7 +268,7 @@ all_source_codes = {
 # Entries not yet rewritten for second-main (old macros, do not compile): skipped until their batch lands.
 # Remove a name when its rewrite is merged.
 PENDING = {
-	".flow.mcmf_aoj", ".flow.costscaling", ".flow.costscaling_aoj",
+	".flow.costscaling", ".flow.costscaling_aoj",
 	".graph.spfa", ".graph.spfa_aoj", ".graph.old_spfa", ".graph.2sat",
 	".ds.hash", ".ds.ps_seg",
 	".strings.suffixarray", ".strings.ahocorasick",
