@@ -293,6 +293,9 @@ all_source_codes = {
 		"fps_exp": TestCase("math/fps_exp", "polynomial/exp_of_formal_power_series", 5),
 		"fps_div": TestCase("math/fps_div", "polynomial/division_of_polynomials", 5),
 		"fps_stress": StressTest("math/fps_stress", 10),
+		"linearrec": TestCase("math/linearrec", "other/find_linear_recurrence", 5),
+		"linearrec_kth": TestCase("math/linearrec_kth", "other/kth_term_of_linearly_recurrent_sequence", 10),
+		"linearrec_stress": StressTest("math/linearrec_stress", 10),
 	},
 	"interactive": {
 	},

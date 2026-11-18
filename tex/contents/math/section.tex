@@ -87,7 +87,6 @@ For a system over \texttt{double} (probabilities, expected values), copy \texttt
 	\fld{Needs} $1 \le n \le 2^{22}$; $a_0 \ne 0$ for \texttt{fpsInv}, $a_0 = 1$ for \texttt{fpsLog}, $a_0 = 0$ for \texttt{fpsExp}. Uses NTT (\S\ref{ntt}).
 	\fld{polyDiv} \texttt{q = polyDiv(a, b)} has $|a| - |b| + 1$ terms, none if $|a| < |b|$; the last term of $b$ is nonzero. The remainder is the first $|b| - 1$ terms of $a - bq$.
 ]\label{fps}
-\entry{Berlekamp--Massey + Bostan--Mori}
 \cpp[4]{Lagrange interpolation}{lagrange.hpp}[
 	\fld{Use} \texttt{vector<MintN> c = interpolate(x, y);}
 	\fld{Result} the coefficients of the unique $f$ with $f(x_i) = y_i$; a repeated $x_i$ gives a wrong $f$ silently.
@@ -97,6 +96,13 @@ For a system over \texttt{double} (probabilities, expected values), copy \texttt
 \topic{Formula}
 Evaluate the interpolating polynomial by hand, or check a coefficient, with
 \[ f(t) = \sum_i y_i \prod_{j \ne i} \frac{t - x_j}{x_i - x_j}. \]
+\cpp[4]{Berlekamp--Massey + Bostan--Mori}{linearrec.hpp}[
+	\fld{Use} \texttt{vector<MintN> c = berlekampMassey(s); MintN x = kthTerm(s, c, k);}
+	\fld{Result} \texttt{c} is the shortest recurrence of \texttt{s}, of order $d = |c|$, and \texttt{x} is $s_k$:
+	\[ s_i = \sum_{j=0}^{d-1} c_j \, s_{i-1-j} \quad (i \ge d). \]
+	\fld{Needs} for a sequence of order $d$, at least $2d$ terms find it; \texttt{kthTerm} needs $|s| \ge d$ and $0 \le k \le 10^{18}$. Uses NTT (\S\ref{ntt}).
+	\fld{kthTerm} \texttt{kthTerm(\{0, 1\}, \{1, 1\}, k)} is the $k$-th Fibonacci number. For another prime, retype \texttt{MintN}; then \texttt{kthTerm} needs $d \le 31$.
+]\label{linearrec}
 
 \subsection{Numerical}
 \cpp[4]{Simpson integration}{simpson.hpp}[
