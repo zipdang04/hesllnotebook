@@ -248,6 +248,7 @@ all_source_codes = {
 		"strhash_stress": StressTest("strings/strhash_stress", 10),
 		"suffixarray": TestCase("strings/suffixarray", "string/suffixarray", 5),
 		"ahocorasick": OjTest("strings/ahocorasick", "https://yukicoder.me/problems/no/430", 2),
+		"lyndon": TestCase("strings/lyndon", "string/lyndon_factorization", 2),
 	},
 	"geometry": {
 		"angless": TestCase("geometry/angless", "geo/sort_points_by_argument", 2),

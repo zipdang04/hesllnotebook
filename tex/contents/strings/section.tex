@@ -42,4 +42,7 @@ To compare two substrings with 0-based starts $i$, $j$:
 ]
 \entry{Suffix automaton}
 \entry{Eertree}\label{eertree}
-\entry{Lyndon factorisation (Duval)}
+\cpp[4]{Lyndon factorisation (Duval)}{lyndon.hpp}[
+	\fld{Use} \texttt{vector<int> st = duval(s);}
+	\fld{Result} factor $k$ is $s$ from \texttt{st[k]} to \texttt{st[k + 1] - 1}; the last one ends at $n - 1$.
+]\label{lyndon}
