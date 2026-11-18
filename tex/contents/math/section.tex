@@ -11,12 +11,17 @@
 	\fld{MintN} is \texttt{Mint<998244353>}, the type NTT, FPS and the linear recurrence use. Other moduli can be used next to it.
 ]\label{modint}
 \cpp{Bigint}{bigint.hpp}
-\entry{Ext-gcd, CRT}
 \cpp[4]{Sieve (factorable)}{sieve.hpp}[
 	\fld{Use} \texttt{Sieve sv(n);} then \texttt{sv.primes}, \texttt{sv.minDiv[x]}, \texttt{sv.factorize(x)}.
 	\fld{Result} \texttt{factorize(x)} lists the prime factors of $x$ with multiplicity; $x = 1$ gives none.
 	\fld{Needs} $n \le 10^8$ in 512 MB: 4 bytes per number. Add $\varphi$ or $\mu$ in the inner loop (\S\ref{mathnt}).
 ]\label{sieve}
+\cpp[4]{Ext-gcd, CRT}{crt.hpp}[
+	\fld{Use} \texttt{ll g = extGcd(a, b, x, y); auto [r, l] = crt(a, m, b, n);}
+	\fld{Result} \texttt{extGcd}: $ax + by = g = \gcd(a, b)$; if $g = 1$, $x$ is $a^{-1} \bmod b$.
+	\fld{crt} Returns $r \equiv a \pmod m$, $r \equiv b \pmod n$, $0 \le r < l = \mathrm{lcm}(m, n)$; \texttt{\{-1, -1\}} if none.
+	\endgraf\noindent For many congruences, fold from \texttt{\{0, 1\}} and stop at $-1$.
+]\label{crt}
 \cpp[4]{Miller--Rabin}{millerrabin.hpp}[
 	\fld{Use} \texttt{bool p = isPrime(n);}
 	\fld{Result} exact for every \texttt{ll} $n$, false below 2: the 7 bases are proven for all $n < 2^{64}$.
