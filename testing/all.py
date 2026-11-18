@@ -245,6 +245,7 @@ all_source_codes = {
 		"treap": TestCase("ds/treap", "data_structure/dynamic_sequence_range_affine_range_sum", 5),
 		"treap_stress": StressTest("ds/treap_stress", 10),
 		"rollbackdsu": TestCase("ds/rollbackdsu", "data_structure/persistent_unionfind", 2),
+		"mo": TestCase("ds/mo", "data_structure/static_range_inversions_query", 5),
 	},
 	"strings": {
 		"strhash": TestCase("strings/strhash", "string/enumerate_palindromes", 2),

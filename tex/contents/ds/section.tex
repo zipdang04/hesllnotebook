@@ -43,4 +43,9 @@
 	\fld{find\_by\_order} \texttt{s.find\_by\_order(k)} points at rank $k$, or \texttt{end()} if $k \ge \texttt{s.size()}$; test before \texttt{*}.
 	\fld{CustomHash} also serves \texttt{unordered\_map<ll, int, CustomHash>}; its seed is random per run.
 ]\label{pbds}
-\entry{Mo's algorithm}
+\cpp[4]{Mo's algorithm}{mo.hpp}[
+	\fld{Use} \texttt{vector<ll> ans = moQueries(q, add, del, [\&]\{ return cur; \});} with \texttt{q[i] = \{l, r\}}.
+	\fld{Result} \texttt{ans[i]} is \texttt{get()} on the window $a_l, \dots, a_r$ of \texttt{q[i]}.
+	\fld{Needs} $1 \le l \le r$ in every query, and \texttt{del} undoes \texttt{add} on the same side.
+	\fld{del} is called only on a window that still contains \texttt{q[i]}'s range, so it never empties the window.
+]\label{mo}
