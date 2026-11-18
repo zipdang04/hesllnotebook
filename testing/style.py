@@ -49,7 +49,7 @@ def check(path):
 			problems.append((i, "trailing blank"))
 		code = code_part(line)
 		if is_entry:
-			word = FORBIDDEN.search(re.sub(r"template<class\b|<class ", "", code))
+			word = FORBIDDEN.search(re.sub(r"template<[^<>]*(<[^<>]*>[^<>]*)*>|<class ", "", code))
 			if word:
 				problems.append((i, f"forbidden word '{word.group(1)}' (STYLE §4)"))
 			if "/*" in code and "*/" not in code:
