@@ -282,7 +282,7 @@ all_source_codes = {
 PENDING = {
 	".flow.costscaling", ".flow.costscaling_aoj",
 	".flow.mcmf_aoj",
-	".graph.spfa", ".graph.spfa_aoj", ".graph.old_spfa", ".graph.2sat",
+	".graph.spfa", ".graph.spfa_aoj", ".graph.old_spfa",
 	".ds.hash", ".ds.ps_seg",
 	".strings.suffixarray", ".strings.ahocorasick",
 	".math.bigint", ".math.gauss", ".math.fft",

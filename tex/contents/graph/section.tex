@@ -10,7 +10,12 @@
 	An edge $u \to v$ has $\texttt{comp[u]} \ge \texttt{comp[v]}$: ids $\texttt{cnt}, \dots, 1$ are a topological order.
 	\fld{Needs} nothing: self-loops, multi-edges and isolated vertices are fine.
 ]\label{scc}
-\cpp[2]{2-SAT}{2sat.hpp}
+\cpp[4]{2-SAT}{2sat.hpp}[
+	\fld{Use} \texttt{TwoSat ts(n); ts.either(a, b); if(ts.solve()) .. ts.val[x]}
+	\fld{Result} \texttt{solve()} says whether all clauses hold at once; then \texttt{val[x]} is a satisfying value of $x \in 1..n$.
+	\fld{Needs} literals $\pm x$ with $1 \le x \le n$. Uses SCC (\S\ref{scc}).
+	\fld{either} \texttt{either(a, b)} adds $a \lor b$. Implication $a \Rightarrow b$ is \texttt{either(-a, b)}; forcing $x$ is \texttt{either(x, x)}.
+]\label{2sat}
 \cpp[4]{Lowlink: bridges, articulation points, BCC}{lowlink.hpp}[
 	\fld{Use} \texttt{g[u].push\_back(\{v, id\}); g[v].push\_back(\{u, id\}); LowLink low(g, m);}
 	\fld{Result} \texttt{isBridge[id]}; \texttt{isCut[u]}; \texttt{bcc[id]} $\in 1..\texttt{bccCnt}$ is the biconnected component of edge $id$.
