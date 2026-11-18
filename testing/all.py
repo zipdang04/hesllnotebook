@@ -288,6 +288,11 @@ all_source_codes = {
 		"simpson": StressTest("math/simpson", 2),
 		"lagrange": StressTest("math/lagrange", 2),
 		"lagrange_stress": StressTest("math/lagrange_stress", 10),
+		"fps_inv": TestCase("math/fps_inv", "polynomial/inv_of_formal_power_series", 5),
+		"fps_log": TestCase("math/fps_log", "polynomial/log_of_formal_power_series", 5),
+		"fps_exp": TestCase("math/fps_exp", "polynomial/exp_of_formal_power_series", 5),
+		"fps_div": TestCase("math/fps_div", "polynomial/division_of_polynomials", 5),
+		"fps_stress": StressTest("math/fps_stress", 10),
 	},
 	"interactive": {
 	},
