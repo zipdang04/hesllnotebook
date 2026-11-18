@@ -3,10 +3,53 @@
 \twolevels
 \setcurrentdir{contest}
 
-\cpp[3]{Template}{template.hpp}
-\othercodes{Shell: compile/run}{bash}{command.sh}
-\entry{Fast IO}
-\entry{stress.sh}
-\entry{Gen helper}
-\entry{Checker skeleton}
+\cpp[3]{Template}{template.hpp}[
+	\fld{Use} \texttt{dbg(a, v, p);} under \texttt{-DLOCAL} prints \texttt{[a, v, p]: 3 \{1, 2\} (4, x)} to \texttt{cerr}.
+	\fld{Result} prints nested containers, pairs, C arrays, strings, \texttt{vector<bool>}. Without \texttt{-DLOCAL}: empty, arguments unevaluated.
+	\fld{Needs} no call the program needs inside \texttt{dbg}. The judge does not define \texttt{ONLINE\_JUDGE}.
+	\fld{pragma} the two lines stay comments until the practice session shows that \texttt{avx2} runs on the judge.
+]\label{template}
+\othercodes{Shell: compile/run + hash}{bash}{command.sh}\label{command}
+\cpp[4]{Fast IO}{fastio.hpp}[
+	\fld{Use} \texttt{int n; ll m; read(n, m); while(read(x)) ..}
+	\fld{Needs} integers $> -2^{63}$ must fit their type. No \texttt{cin}/\texttt{scanf}. Use for $\gtrsim 10^7$ numbers; else \texttt{cin}+\texttt{sync\_with\_stdio(0)} suffices.
+	\fld{readChar} returns the next byte of the input, $-1$ at the end.
+]\label{fastio}
+\othercodes{stress.sh}{bash}{stress.sh}[
+	\fld{Use} \texttt{./stress.sh p -n 500 -t 2}, or \texttt{-m tests}, \texttt{-m inter}, \texttt{-m multi -c chk}.
+	\fld{Result} \texttt{OK n tests}; or \texttt{FAIL seed i} with the test saved in \texttt{tests/fail\_i.\{in,out,ans\}}, which the next \texttt{-m tests} run includes.
+	\fld{Needs} \texttt{timeout}, \texttt{mkfifo} (inter), \texttt{chmod +x stress.sh}. Sanitizers are slow: raise \texttt{-t} before trusting a TLE.
+]\label{stress}
+{\small\tightdisplay
+\topic{Modes}
+\begin{tabular}{@{}l p{2.5cm} p{4.9cm}@{}}
+\toprule
+Mode & Files & One round \\
+\midrule
+\texttt{stress} & \texttt{p gen brute} & \texttt{gen seed}, \texttt{brute}, \texttt{p}, compare \\
+\texttt{tests} & \texttt{p}, \texttt{tests/*.in, .ans} & \texttt{p} on every file: PASS, FAIL, TLE or RE \\
+\texttt{inter} & \texttt{p interactor} & \texttt{p} and \texttt{interactor seed} talk through a fifo \\
+\texttt{multi} & \texttt{p gen noise}, \texttt{-c chk} & \texttt{p}, \texttt{noise seed}, \texttt{p}, checker \\
+\bottomrule
+\end{tabular}
+\topic{Rules for the helper programs}
+\begin{facts}
+	\item Compare is \texttt{./chk in out ans} with \texttt{-c chk} (\S\ref{chk}), else \texttt{diff -b out ans}.
+	\item Everything is built with \texttt{-DSTRESS} and sanitizers, without \texttt{-DLOCAL}.
+	\item Interactor: reads the solution on stdin, answers on stdout with a flush, debug text to stderr; \texttt{return 0} for accepted, \texttt{1} otherwise, also when a read fails.
+	\item Interactive solution: flush after every line; no fast reader.
+	\item \texttt{multi}: the checker gets pass 1's output as \texttt{ans}; without \texttt{-c} the run means nothing.
+	\item Name samples \texttt{tests/0a.in}, \texttt{tests/0b.in}: they run first.
+\end{facts}
+}
+\cpp{Gen helper}{gen.cpp}[
+	\fld{Use} \texttt{./gen 7 > in}; edit \texttt{main}, keep \texttt{rnd(l, r)} (inclusive) and the seed line.
+	\fld{Result} a random tree: \texttt{n}, then $n - 1$ edges \texttt{u v} on $1..n$, labels and edge directions shuffled.
+	\fld{Needs} \texttt{n} in $1..8$ first: a small failing test can be traced by hand.
+]\label{gen}
+\cpp{Checker skeleton}{chk.cpp}[
+	\fld{Use} \texttt{./stress.sh p -c chk}, or by hand \texttt{./chk in out ans; echo \$?}.
+	\fld{Result} exit 0 when \texttt{out} is one integer equal to \texttt{ans}; missing or extra output is a wrong answer.
+	\fld{Needs} reals use $|x - y| \le 10^{-6} \max(1, |y|)$; for multiple valid answers, use \texttt{in} to require valid \texttt{out} as good as \texttt{ans}.
+]\label{chk}
 \entry{Troubleshoot + edge cases}

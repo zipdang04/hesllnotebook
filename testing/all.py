@@ -192,6 +192,13 @@ class ShellTest:
 
 all_source_codes = {
 	"contest": {
+		"dbg": ShellTest("contest/dbg", 120, uses=("testing/contest/dbg.cpp", "tex/contents/contest/template.hpp")),
+		"shell": ShellTest("contest/shell", 120, uses=("tex/contents/contest/command.sh", "tex/entryhash.sh")),
+		"fastio": TestCase("contest/fastio", "sample/many_aplusb", 5),
+		"fastio_stress": StressTest("contest/fastio_stress", 20),
+		"stress": ShellTest("contest/stress", 300, uses=("tex/contents/contest/stress.sh", "tex/contents/contest/gen.cpp", "tex/contents/contest/chk.cpp")),
+		"gen": ShellTest("contest/gen", 120, uses=("tex/contents/contest/gen.cpp",)),
+		"chk": ShellTest("contest/chk", 60, uses=("tex/contents/contest/chk.cpp",)),
 	},
 	"flow": {
 		"dinic": TestCase("flow/dinic", "graph/bipartitematching", 1.5),

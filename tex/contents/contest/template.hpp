@@ -1,14 +1,9 @@
 #pragma once
 
+// #pragma GCC optimize("O3,unroll-loops")
+// #pragma GCC target("avx2,popcnt,lzcnt,bmi,bmi2")
 #include <bits/stdc++.h>
 using namespace std;
-/*
-#include <ext/pb_ds/assoc_container.hpp>
-#include <ext/pb_ds/tree_policy.hpp>
-using namespace __gnu_pbds;
-typedef tree<int, null_type, less<int>, rb_tree_tag,
-	tree_order_statistics_node_update> ordered_set;
-*/
 typedef long long ll;
 typedef long double ld;
 typedef pair<int, int> pii;
@@ -20,9 +15,9 @@ template<class T> using PQMax = priority_queue<T>;
 template<class T> using PQMin =
 	priority_queue<T, vector<T>, greater<T>>;
 template<class T1, class T2>
-void maximize(T1 &a, T2 b){ if(b > a) a = b; }
+bool maximize(T1 &a, T2 b){ return b > a ? (a = b, 1) : 0; }
 template<class T1, class T2>
-void minimize(T1 &a, T2 b){ if(b < a) a = b; }
+bool minimize(T1 &a, T2 b){ return b < a ? (a = b, 1) : 0; }
 
 #define FOR(i, a, b) for(auto i = (a); i <= (b); i++)
 #define REV(i, b, a) for(auto i = (b); i >= (a); i--)
@@ -39,21 +34,21 @@ void minimize(T1 &a, T2 b){ if(b < a) a = b; }
 #ifdef LOCAL
 template<class T, class =
 	enable_if_t<!is_convertible_v<T, string>>,
-	class = decltype(begin(declval<T&>()))>
-ostream& operator<<(ostream& o, const T& v);
+	class = decltype(begin(declval<T &>()))>
+ostream &operator<<(ostream &o, const T &v);
 template<class A, class B>
-ostream& operator<<(ostream& o, const pair<A, B>& p){
+ostream &operator<<(ostream &o, const pair<A, B> &p){
 	return o << '(' << p.fi << ", " << p.se << ')';
 }
 template<class T, class, class>
-ostream& operator<<(ostream& o, const T& v){
+ostream &operator<<(ostream &o, const T &v){
 	o << '{'; string s;
-	for(auto&& x: v) o << s << x, s = ", ";
+	for(auto &&x: v) o << s << x, s = ", ";
 	return o << '}';
 }
 #define dbg(...) cerr << "[" #__VA_ARGS__ "]:", \
-	[](const auto&... x){ \
-		((cerr << ' ' << x), ...); cerr << endl; \
+	[](const auto &...dbgArg){ \
+		((cerr << ' ' << dbgArg), ...); cerr << '\n'; \
 	}(__VA_ARGS__)
 #else
 #define dbg(...)
@@ -67,8 +62,6 @@ typedef vector<ll> vll;
 
 const ll oo = 1e18;
 
-/*
- * int main() {
- * 	ios_base::sync_with_stdio(0); cin.tie(nullptr);
- * }
- */
+// int main(){
+// 	ios_base::sync_with_stdio(0); cin.tie(nullptr);
+// }
