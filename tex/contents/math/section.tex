@@ -78,7 +78,15 @@ For a system over \texttt{double} (probabilities, expected values), copy \texttt
 \entry{FWHT}
 \entry{FPS: inv, log, exp, div}
 \entry{Berlekamp--Massey + Bostan--Mori}
-\entry{Lagrange interpolation}
+\cpp[4]{Lagrange interpolation}{lagrange.hpp}[
+	\fld{Use} \texttt{vector<MintN> c = interpolate(x, y);}
+	\fld{Result} the coefficients of the unique $f$ with $f(x_i) = y_i$; a repeated $x_i$ gives a wrong $f$ silently.
+	\fld{interpolateAt} returns $f(t)$ for any \texttt{ll} $t$ from $1 \le n \le \texttt{MOD}$ values $y_i = f(i)$, without the coefficients.
+	A sum $\sum_{i=1}^{t} i^k$ is a polynomial of degree $k + 1$ in $t$: give $k + 2$ values.
+]\label{lagrange}
+\topic{Formula}
+Evaluate the interpolating polynomial by hand, or check a coefficient, with
+\[ f(t) = \sum_i y_i \prod_{j \ne i} \frac{t - x_j}{x_i - x_j}. \]
 
 \subsection{Numerical}
 \cpp[4]{Simpson integration}{simpson.hpp}[
