@@ -4,7 +4,13 @@
 \setcurrentdir{ds}
 
 \subsection{Segment trees}
-\entry{Lazy segment tree}
+\cpp[4]{Lazy segment tree}{lazyseg.hpp}[
+	\fld{Use} \texttt{vector<LazySeg::Node> a(n + 1); a[i] = \{x, 1\}; LazySeg seg(a);}
+	\fld{Result} \texttt{seg.get(l, r).sum} returns $a_l + \dots + a_r$; \texttt{seg.update(l, r, \{b, c\})} sets $a_i \gets b a_i + c$ on $[l, r]$, modulo 998244353 (\texttt{MintN}, \S\ref{modint}).
+	\fld{Needs} \texttt{combine} and \texttt{apply} have identities \texttt{Node()} and \texttt{Tag()}.
+	\fld{apply} composes \texttt{t} after \texttt{id}'s tag. For ``set'', reserve an unused \texttt{Tag} value and return at once on it.
+	\fld{combine} \texttt{combine(x, y)} has \texttt{x} left of \texttt{y}; it need not commute.
+]\label{lazyseg}
 \cpp[3]{Persistent segment tree}{ps_seg.hpp}
 \cpp[4]{Li Chao tree}{lichao.hpp}[
 	\fld{Use} \texttt{LiChao lc(pts); lc.addLine(a, b); ll y = lc.get(x);}

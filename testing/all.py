@@ -235,6 +235,9 @@ all_source_codes = {
 	},
 	"ds": {
 		"hash": TestCase("ds/hash", "data_structure/associative_array", 5),
+		"lazyseg": TestCase("ds/lazyseg", "data_structure/range_affine_range_sum", 5),
+		"lazyseg_stress": StressTest("ds/lazyseg_stress", 10),
+		"lazyseg_order": ShellTest("ds/lazyseg_order", uses=("tex/contents/ds/lazyseg.hpp",)),
 		"ps_seg": TestCase("ds/ps_seg", "data_structure/rectangle_sum", 5),
 		"lichao_line": TestCase("ds/lichao_line", "data_structure/line_add_get_min", 2),
 		"lichao_seg": TestCase("ds/lichao_seg", "data_structure/segment_add_get_min", 2),
