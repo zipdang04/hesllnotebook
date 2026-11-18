@@ -46,8 +46,8 @@ To compare two substrings with 0-based starts $i$, $j$:
 \cpp[4]{Aho--Corasick}{ahocorasick.hpp}[
 	\fld{Use} \texttt{Aho a; for(auto \&p: ps) e.push\_back(a.add(p)); a.build();}
 	\fld{Result} \texttt{t[u].nxt[c]} is the goto table; \texttt{t[u].cnt} counts pattern suffixes of $u$.
-	At scan node $u$, increment \texttt{hit[u]}.
-	In reverse \texttt{order}, add \texttt{hit[u]} to \texttt{hit[t[u].link]}; pattern $i$ occurs \texttt{hit[e[i]]} times.
+	Scan: \texttt{hit[u]++} at each node $u$.
+	In reverse BFS \texttt{order}, add \texttt{hit[u]} to \texttt{hit[t[u].link]}; pattern $i$ occurs \texttt{hit[e[i]]} times.
 	\fld{Needs} Non-empty patterns over \texttt{FIRST}..\texttt{FIRST + K - 1}; all \texttt{add} calls before \texttt{build}.
 	\fld{countMatch} Counts all pattern occurrences in \texttt{s}.
 ]\label{ahocorasick}
@@ -57,11 +57,11 @@ To compare two substrings with 0-based starts $i$, $j$:
 	The number of distinct non-empty substrings is
 	\[ \textstyle\sum_{v \ge 1} \bigl(\texttt{len}(v) - \texttt{len}(\texttt{link}(v))\bigr). \]
 	Occurrences of node $v$: start with 1 where \texttt{len == pos + 1} (not a clone), then add each node to its link in decreasing \texttt{len}.
-	\fld{Needs} letters \texttt{FIRST}..\texttt{FIRST + K - 1}; memory $2n(K + 3)$ ints.
+	\fld{Needs} letters \texttt{FIRST}..\texttt{FIRST + K - 1}; peak memory $< 6n(K + 3)$ ints.
 ]\label{suffixautomaton}
 \cpp[4]{Lyndon factorisation (Duval)}{lyndon.hpp}[
 	\fld{Use} \texttt{vector<int> st = duval(s);}
-	\fld{Result} factor $k$ is $s$ from \texttt{st[k]} to \texttt{st[k + 1] - 1}; the last one ends at $n - 1$.
+	\fld{Result} factor $k$ is $s$ from \texttt{st[k]} to \texttt{st[k + 1] - 1}; the last one ends at $n - 1$. Letters compare as \texttt{unsigned char}.
 ]\label{lyndon}
 \cpp[4]{Eertree}{eertree.hpp}[
 	\fld{Use} \texttt{Eertree et; for(char c: s) v = et.add(c);}
@@ -69,6 +69,6 @@ To compare two substrings with 0-based starts $i$, $j$:
 	\texttt{t[v].dep} counts $v$'s non-empty palindromic suffixes, ending here for the result.
 	\texttt{t.size() - 2} distinct non-empty palindromes exist.
 	For occurrences, add \texttt{cnt} to its link's \texttt{cnt} for $v = \texttt{t.size() - 1},\ldots,2$.
-	\fld{Needs} letters \texttt{FIRST}..\texttt{FIRST + K - 1}; memory $(n + 2)(K + 4)$ ints.
-	\fld{getLink} returns $v$'s longest suffix-palindrome $u$ with $s_{i-\texttt{t[u].len}-1} = s_i$.
+	\fld{Needs} letters \texttt{FIRST}..\texttt{FIRST + K - 1}; memory $< 3(n + 2)(K + 4)$ ints.
+	\fld{getLink} for a palindromic suffix $v$ of $s_0..s_{i-1}$ returns its longest suffix-palindrome $u$ with $s_{i-\texttt{t[u].len}-1} = s_i$.
 ]\label{eertree}

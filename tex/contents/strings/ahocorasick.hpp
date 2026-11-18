@@ -10,8 +10,9 @@ struct Aho{
 	// ---- end of EDIT ----
 	struct Node{ int nxt[K] = {}, link = 0; ll cnt = 0; };
 	vector<Node> t;
-	vector<int> order;
+	vector<int> order; // BFS order, filled by build()
 	Aho(): t(1){}
+	// p's end node; cnt++ there
 	int add(const string &p){
 		int u = 0;
 		for(char ch: p){
@@ -23,11 +24,12 @@ struct Aho{
 		t[u].cnt++;
 		return u;
 	}
+	// links, goto table, cnt += cnt[link]
 	void build(){
 		order = {0};
 		for(int i = 0; i < sz(order); i++){
 			int u = order[i];
-			for(int c = 0; c < K; c++){
+			FOR(c, 0, K - 1){
 				int v = t[u].nxt[c];
 				int w = u ? t[t[u].link].nxt[c] : 0;
 				if(!v){
@@ -38,13 +40,11 @@ struct Aho{
 			}
 		}
 	}
+	// Total occurrences of all patterns.
 	// Length L ending at 0-based j starts at j - L + 1.
 	ll countMatch(const string &s){
 		ll r = 0; int u = 0;
-		for(char ch: s){
-			u = t[u].nxt[ch - FIRST];
-			r += t[u].cnt;
-		}
+		for(char c: s) r += t[u = t[u].nxt[c - FIRST]].cnt;
 		return r;
 	}
 };

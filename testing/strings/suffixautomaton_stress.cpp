@@ -6,6 +6,7 @@ void check(const string &s){
 	SAM sam;
 	for(char c: s) sam.add(c);
 	int m = sz(sam.t);
+	assert(sam.t.capacity() < 2 * sam.t.size());
 	if(n >= 1) assert(m <= 2 * n);
 	if(n >= 2) assert(m <= 2 * n - 1);
 	vector<int> order(m), cnt(m);

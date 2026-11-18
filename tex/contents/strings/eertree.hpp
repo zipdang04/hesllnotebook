@@ -2,7 +2,7 @@
 #include "../contest/template.hpp"
 
 // Online Eertree (palindromic tree), K letters from FIRST.
-// Nodes 0, 1: length -1, empty; O(n) amortised, n + 2 max.
+// Nodes 0, 1: len -1, 0; O(n) amortised, <= n + 2 nodes.
 struct Eertree{
 	// ---- EDIT: alphabet ----
 	static const int K = 26;

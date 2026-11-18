@@ -33,6 +33,7 @@ void check(const string &s){
 		assert(v < sz(word) && word[v] == w);
 		assert(sz(et.t) == sz(word));
 		assert(sz(et.t) <= i + 3);
+		assert(et.t.capacity() < 2 * et.t.size());
 		assert(sz(et.t) - 2 == (int)occurrences.size());
 		FOR(u, 0, sz(word) - 1){
 			int len = u == 0 ? -1 : sz(word[u]);

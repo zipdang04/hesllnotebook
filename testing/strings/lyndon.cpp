@@ -7,6 +7,8 @@ int main(){
 	assert((duval("aaa") == vector<int>{0, 1, 2}));
 	assert((duval("abab") == vector<int>{0, 2}));
 	assert((duval("ba") == vector<int>{0, 1}));
+	assert((duval("a\xff") == vector<int>{0}));
+	assert((duval("\xff" "a") == vector<int>{0, 1}));
 	string s;
 	cin >> s;
 	for(int i: duval(s)) cout << i << ' ';
