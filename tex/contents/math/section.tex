@@ -92,15 +92,6 @@ For a system over \texttt{double} (probabilities, expected values), copy \texttt
 	\fld{Needs} $1 \le n \le 2^{22}$; $a_0 \ne 0$ for \texttt{fpsInv}, $a_0 = 1$ for \texttt{fpsLog}, $a_0 = 0$ for \texttt{fpsExp}. Uses NTT (\S\ref{ntt}).
 	\fld{polyDiv} \texttt{q = polyDiv(a, b)} has $|a| - |b| + 1$ terms, none if $|a| < |b|$; the last term of $b$ is nonzero. The remainder is the first $|b| - 1$ terms of $a - bq$.
 ]\label{fps}
-\cpp[4]{Lagrange interpolation}{lagrange.hpp}[
-	\fld{Use} \texttt{vector<MintN> c = interpolate(x, y);}
-	\fld{Result} the coefficients of the unique $f$ with $f(x_i) = y_i$; a repeated $x_i$ gives a wrong $f$ silently.
-	\fld{interpolateAt} returns $f(t)$ for any \texttt{ll} $t$ from $1 \le n \le \texttt{MOD}$ values $y_i = f(i)$, without the coefficients.
-	A sum $\sum_{i=1}^{t} i^k$ is a polynomial of degree $k + 1$ in $t$: give $k + 2$ values.
-]\label{lagrange}
-\topic{Formula}
-Evaluate the interpolating polynomial by hand, or check a coefficient, with
-\[ f(t) = \sum_i y_i \prod_{j \ne i} \frac{t - x_j}{x_i - x_j}. \]
 \cpp[4]{Berlekamp--Massey + Bostan--Mori}{linearrec.hpp}[
 	\fld{Use} \texttt{vector<MintN> c = berlekampMassey(s); MintN x = kthTerm(s, c, k);}
 	\fld{Result} \texttt{c} is the shortest recurrence of \texttt{s}, of order $d = |c|$, and \texttt{x} is $s_k$:
@@ -108,11 +99,21 @@ Evaluate the interpolating polynomial by hand, or check a coefficient, with
 	\fld{Needs} for a sequence of order $d$, at least $2d$ terms find it; \texttt{kthTerm} needs $|s| \ge d$ and $0 \le k \le 10^{18}$. Uses NTT (\S\ref{ntt}).
 	\fld{kthTerm} \texttt{kthTerm(\{0, 1\}, \{1, 1\}, k)} is the $k$-th Fibonacci number. For another prime, retype \texttt{MintN}; then \texttt{kthTerm} needs $d \le 31$.
 ]\label{linearrec}
+\cpp[4]{Lagrange interpolation}{lagrange.hpp}[
+	\fld{Use} \texttt{vector<MintN> c = interpolate(x, y);}
+	\fld{Result} the coefficients of the unique $f$ with $f(x_i) = y_i$.
+	\fld{Needs} distinct $x_i$ (a repeat gives a wrong $f$ silently); $1 \le n \le \texttt{MOD}$ for \texttt{interpolateAt}.
+	\fld{interpolateAt} returns $f(t)$ for any \texttt{ll} $t$ from the values $y_i = f(i)$, without the coefficients.
+	\fld{Sums} a sum $\sum_{i=1}^{t} i^k$ is a polynomial of degree $k + 1$ in $t$: give $k + 2$ values.
+]\label{lagrange}
+\topic{Formula}
+Evaluate the interpolating polynomial by hand, or check a coefficient, with
+\[ f(t) = \sum_i y_i \prod_{j \ne i} \frac{t - x_j}{x_i - x_j}. \]
 
 \subsection{Numerical}
 \cpp[4]{Simpson integration}{simpson.hpp}[
 	\fld{Use} \texttt{double s = simpson(a, b, [\&](double x)\{ return f(x); \});}
 	\fld{Result} $\int_a^b f(x)\,dx$ within about \texttt{eps} for a smooth $f$; $a > b$ gives the negative.
-	\fld{Needs} split $\lbrack a, b \rbrack$ at kinks and jumps of $f$; nest calls for a double integral.
-	\texttt{eps} is absolute: scale it up when the integral exceeds about $10^7$.
+	\fld{Needs} split $\lbrack a, b \rbrack$ at kinks, jumps and peaks much narrower than $(b - a) / 4$; nest calls for a double integral.
+	\fld{eps} absolute: scale it up when $\max |f| \cdot (b - a)$ exceeds about $10^7$.
 ]\label{simpson}

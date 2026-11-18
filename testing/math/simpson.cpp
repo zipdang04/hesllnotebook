@@ -34,5 +34,11 @@ int main(){
 	assert(abs(simpson(0, 1e6, [](double x){
 		return x * 1e-6;
 	}) - 5e5) < 1e-6);
+	int calls = 0;
+	assert(abs(simpson(0, PI, [&](double x){
+		calls++;
+		return sin(x);
+	}, 1e-3) - 2) < 1e-3);
+	assert(calls < 100);
 	return 0;
 }

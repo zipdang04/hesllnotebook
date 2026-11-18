@@ -16,7 +16,7 @@ int main(){
 		vector<int> ks(5);
 		for(int &k: ks) k = rng() % 1000001;
 		int limit = max(3 * d + 49,
-			*max_element(ks.begin(), ks.end()));
+			*max_element(all(ks)));
 		FOR(i, d, limit){
 			MintN x = 0;
 			FOR(j, 0, d - 1) x += c[j] * s[i-1-j];

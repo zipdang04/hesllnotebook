@@ -19,6 +19,14 @@ int main(){
 	FOR(i, 0, 6) small[i] = Mint<7>(i).pow(6) + 1;
 	assert(interpolateAt(small, 10)
 		== Mint<7>(10).pow(6) + 1);
+	vector<Mint<7>> nodes(7);
+	FOR(i, 0, 6) nodes[i] = i;
+	vector<Mint<7>> coef = interpolate(nodes, small);
+	FOR(i, 0, 6){
+		Mint<7> v = 0;
+		REV(k, 6, 0) v = v * nodes[i] + coef[k];
+		assert(v == small[i]);
+	}
 	vector<MintN> x{1, 2, 4}, squares{1, 4, 16};
 	vector<MintN> expected{0, 0, 1};
 	assert(interpolate(x, squares) == expected);

@@ -4,7 +4,7 @@
 
 MintN eval(const vector<MintN> &c, MintN x){
 	MintN res = 0;
-	for(int i = sz(c) - 1; i >= 0; i--)
+	REV(i, sz(c) - 1, 0)
 		res = res * x + c[i];
 	return res;
 }
@@ -28,7 +28,7 @@ int main(){
 		vector<MintN> x, y(n), nodes(n);
 		while(sz(x) < n){
 			MintN v = rng() % (it % 2 ? 998244353 : 40);
-			if(find(x.begin(), x.end(), v) == x.end())
+			if(find(all(x), v) == x.end())
 				x.push_back(v);
 		}
 		FOR(i, 0, n - 1){
