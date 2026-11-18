@@ -81,4 +81,9 @@ For a system over \texttt{double} (probabilities, expected values), copy \texttt
 \entry{Lagrange interpolation}
 
 \subsection{Numerical}
-\entry{Simpson integration}
+\cpp[4]{Simpson integration}{simpson.hpp}[
+	\fld{Use} \texttt{double s = simpson(a, b, [\&](double x)\{ return f(x); \});}
+	\fld{Result} $\int_a^b f(x)\,dx$ within about \texttt{eps} for a smooth $f$; $a > b$ gives the negative.
+	\fld{Needs} split $\lbrack a, b \rbrack$ at kinks and jumps of $f$; nest calls for a double integral.
+	\texttt{eps} is absolute: scale it up when the integral exceeds about $10^7$.
+]\label{simpson}
