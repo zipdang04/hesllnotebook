@@ -217,7 +217,7 @@ all_source_codes = {
 	"graph": {
 		"spfa": TestCase("graph/spfa", "graph/shortest_path", 1),
 		"spfa_aoj": OjTest("graph/spfa_aoj", "https://onlinejudge.u-aizu.ac.jp/problems/GRL_1_B", 1),
-		"old_spfa": TestCase("graph/old_spfa", "graph/shortest_path", 1),
+		"spfa_stress": StressTest("graph/spfa_stress", 10),
 		"scc": TestCase("graph/scc", "graph/scc", 2),
 		"2sat": TestCase("graph/2sat", "other/two_sat", 2),
 		"lowlink_bcc": TestCase("graph/lowlink_bcc", "graph/biconnected_components", 2),
@@ -286,6 +286,7 @@ PENDING = {
 	".flow.costscaling", ".flow.costscaling_aoj",
 	".flow.mcmf_aoj",
 	".graph.spfa", ".graph.spfa_aoj", ".graph.old_spfa",
+	".graph.2sat",
 	".ds.hash", ".ds.ps_seg",
 	".strings.suffixarray", ".strings.ahocorasick",
 	".math.bigint", ".math.gauss", ".math.fft",

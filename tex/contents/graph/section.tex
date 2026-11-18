@@ -30,9 +30,28 @@
 
 \subsection{Paths \& spanning trees}
 \cpp[4]{SPFA}{spfa.hpp}[
-	Path: walk \texttt{par} back from $t$ (edge ids, so keep each edge's tail). Other \texttt{adj}: filter edges (\texttt{if (w <= lim)}), change weights (min mean cycle: $w - \lambda$), implicit graphs (grids).\\
-	Print the negative cycle: \texttt{par} here need not contain it yet, so use Bellman--Ford ($n$ passes over all edges, also keeping \texttt{par}); take any $x$ relaxed in pass $n$, set $x \gets$ tail of \texttt{par[$x$]} $n$ times (now $x$ is on the cycle), then walk on until $x$ repeats.
-]
+	\fld{Use} \texttt{vector<vector<pair<int, ll>>> g(n + 1); SPFA sp(g, s);}
+	\fld{Result} \texttt{dist[v]} is \texttt{oo} if unreachable, \texttt{-oo} if a walk $s \leadsto v$ crosses a negative cycle. \texttt{par[v]} precedes $v$ (0 at $s$), valid for $|\texttt{dist[v]}| < \texttt{oo}$.
+	\fld{Needs} $n \cdot \max |w| < 10^{18}$. Shuffle each \texttt{g[u]} once against anti-SPFA tests.
+	\fld{negCycle} flags a negative cycle reachable from $s$. To detect one anywhere, use \texttt{g(n + 2)}; start at $n + 1$ with 0-edges to all vertices.
+]\label{spfa}
+\topic{Print a negative cycle}
+Use it when the cycle itself is wanted: \texttt{par} from SPFA need not contain it yet.
+\begin{facts}
+	\item Run Bellman--Ford: $n$ passes over all edges, keeping \texttt{par}.
+	\item Take any vertex $x$ relaxed in pass $n$.
+	\item Set $x \gets \texttt{par[}x\texttt{]}$ $n$ times; now $x$ lies on a negative cycle.
+	\item Walk \texttt{par} from $x$ until $x$ repeats; reverse the list for the edge direction.
+\end{facts}
+\topic{Min mean cycle}
+Use it to minimise the average weight $\bar w(C)$ of a cycle $C$. Fix an integer scale $K$ (e.g.\ $K = n$) and an integer $\lambda$:
+\[ \bar w(C) < \tfrac{\lambda}{K} \iff \textstyle\sum_{e \in C} (K w_e - \lambda) < 0 \]
+\begin{facts}
+	\item Give every edge the weight $K w_e - \lambda$ and look for a negative cycle anywhere (the \texttt{negCycle} line above).
+	\item Binary search the largest $\lambda$ in $[-KW, KW]$ with no negative cycle, where $W = \max |w_e|$; the minimum mean lies in $[\lambda / K, (\lambda + 1) / K)$.
+	\item Overflow: needs $n (K W + |\lambda|) < 10^{18}$.
+	\item The exact rational value: Karp's algorithm, $O(VE)$ (not printed).
+\end{facts}
 \entry{Directed MST}
 \entry{Manhattan MST}
 \entry{Matrix-tree theorem}
