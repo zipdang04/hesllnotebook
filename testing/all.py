@@ -262,9 +262,9 @@ all_source_codes = {
 	},
 	"math": {
 		"modint": TestCase("math/modint", "linear_algebra/inverse_matrix", 3),
-		"bigint": TestCase(
-			"math/bigint", "big_integer/multiplication_of_big_integers", 2
-		),
+		"bigint": TestCase("math/bigint", "big_integer/multiplication_of_big_integers", 5),
+		"bigint_add": TestCase("math/bigint_add", "big_integer/addition_of_big_integers", 5),
+		"bigint_stress": StressTest("math/bigint_stress", 10),
 		"millerrabin": TestCase("math/millerrabin", "number_theory/primality_test", 3),
 		"pollardrho": TestCase("math/pollardrho", "number_theory/factorize", 2),
 		"sieve": StressTest("math/sieve", 10),
@@ -308,7 +308,7 @@ all_source_codes = {
 PENDING = {
 	".ds.hash", ".ds.ps_seg",
 	".strings.suffixarray", ".strings.ahocorasick",
-	".math.bigint",
+	".math.fft",
 }
 
 # ---------- all.py --changed BASE [section [test]]: only the tests the diff BASE...HEAD can affect ----------

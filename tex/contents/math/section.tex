@@ -10,7 +10,12 @@
 	\fld{Needs} a prime \texttt{MOD}; divisors and arguments of \texttt{inv} are nonzero; \texttt{pow(n)} takes $n \ge 0$.
 	\fld{MintN} is \texttt{Mint<998244353>}, the type NTT, FPS and the linear recurrence use. Other moduli can be used next to it.
 ]\label{modint}
-\cpp{Bigint}{bigint.hpp}
+\cpp[4]{Bigint}{bigint.hpp}[
+	\fld{Use} \texttt{Bigint a("123"), b = -5; a = a * b + a / b; cout << a << (a < b);}
+	\fld{Result} \texttt{a.neg} is the sign and \texttt{a.d} holds base-$10^9$ limbs, lowest first; zero has no limbs.
+	\fld{Needs} a product below $8 \cdot 10^6$ digits; $b \ne 0$ for \texttt{/} and \texttt{\%}. Uses NTT (\S\ref{ntt}) on \texttt{MintN}; other \texttt{Mint<p>} can coexist.
+	\fld{divMod} \texttt{a.divMod(b)} is $\{q, r\}$ with $a = qb + r$ and $|r| < |b|$; $q$ is truncated and $r$ has the sign of $a$, as in C++.
+]\label{bigint}
 \cpp[4]{Sieve (factorable)}{sieve.hpp}[
 	\fld{Use} \texttt{Sieve sv(n);} then \texttt{sv.primes}, \texttt{sv.minDiv[x]}, \texttt{sv.factorize(x)}.
 	\fld{Result} \texttt{factorize(x)} lists the prime factors of $x$ with multiplicity; $x = 1$ gives none.

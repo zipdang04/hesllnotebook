@@ -1,145 +1,178 @@
-#include "../contest/template.hpp"
+#pragma once
 #include "ntt.hpp"
 
-// potential MLE in reserve() && resize()
-class bigint {
-using vc = vector<char>;
-private:
+// Signed big integer. + - compare O(n); * O(n log n) by NTT
+// on decimal digits (schoolbook when one side has <= 32
+// limbs); / % schoolbook O(nm).
+struct Bigint{
+	static const int BASE = 1000000000;
+	static constexpr int P10[9] = {1, 10, 100, 1000, 10000,
+		100000, 1000000, 10000000, 100000000};
 	bool neg = false;
-	vc ds;
-	inline bigint&flipNega(){neg=!neg;return *this;}
-	inline void reformat() {
-		while ((int)ds.size() > 1 && *(ds.rbegin()) == 0) ds.pop_back();
-		if (ds.size() == 1 && ds[0] == 0) neg = false; }
-	inline bigint& _pD(const bigint&num, int p10=0) {
-		resize(max(size(), num.size() + p10)); bool nho = 0;
-		EFOR(int, i, p10, num.size() + p10) {
-			ds[i] += nho + num.ds[i-p10];
-			nho = ds[i] > 9; ds[i] -= 10 * nho; }
-		EFOR(int, i, num.size() + p10, size()) {
-			ds[i]+=nho; nho=ds[i]>9; ds[i]-=10*nho;
-			if (nho == 0) break; }
-		if (nho) push_back(nho); return *this; }
-	inline bool ltAbs(const bigint&oth,bool xV,bool eqV)const{
-		if (size()!=oth.size())return size()<oth.size();
-		REV(int, i, size()-1, 0) if (ds[i] != oth.ds[i])
-			return (ds[i] < oth.ds[i]) xor xV;
-		return eqV; }
-	inline bigint& _mD(const bigint &num) {
-		bool flip = ltAbs(num, false, false);
-		const vc *big = &(flip ? num.ds : ds),
-				 *small = &(flip ? ds : num.ds);
-		resize(big->size());
-
-		bool nho = 0;
-		EFOR(int, i, 0, small->size()) {
-			ds[i] = (*big)[i] - (nho + (*small)[i]);
-			nho = ds[i] < 0; ds[i] += 10 * nho; }
-		EFOR(int, i, small->size(), size()) {
-			ds[i] = (*big)[i] - nho; nho = ds[i] < 0;
-			ds[i] += 10 * nho; if (nho == 0) break; }
-		if (nho or flip) flipNega();
-		if (nho) push_back(nho); else reformat();
-		return *this; }
-
-public:
-	inline static string _I;
-	/* constructors */
-	bigint() { ds = {0}; }
-	bigint(ll num) {
-		if(num == 0){ds={0};return;} ds.reserve(18);
-		while (num) ds.push_back(num%10), num/=10; }
-	bigint(string s) {
-		ds.reserve(s.size());
-		REV(int, j, (int)s.size()-1, 0)
-			if (s[j] != '-') ds.push_back(s[j] - '0');
-			else neg = true;
-		reformat(); }
-	bigint(vc &ds, bool neg):ds(ds),neg(neg){reformat();}
-	bigint(vc &&ds, bool neg):ds(ds),neg(neg){reformat();}
-	/* access data */
-	inline bool isN() const { return neg; }
-	inline char&operator[](int idx) { return ds[idx]; }
-	/* copy vector api */
-	inline int size() const { return ds.size(); }
-	inline bool empty() const { return ds.empty(); }
-	inline void pop_back(){ ds.pop_back(); }
-	inline void reserve(int sz) { ds.reserve(sz); }
-	inline void resize(int sz) { ds.resize(sz); }
-	inline void push_back(char c){ ds.push_back(c); }
-	/* comparator */
-	inline bool operator == (const bigint& oth) const {
-		if(isN()!=oth.isN()||size()!=(int)oth.size())return 0;
-		REV(int,i,size()-1,0)if(ds[i]!=oth.ds[i])return false;
-		return true; }
-	inline bool operator < (const bigint& oth) const
-		{ return(isN()!=oth.isN())?isN():ltAbs(oth,isN(),0); }
-	inline bool operator <= (const bigint& oth) const
-		{ return(isN()!=oth.isN())?isN():ltAbs(oth,isN(),1); }
-	inline bool operator != (const bigint &num) const
-		{ return not operator==(num); }
-	inline bool operator >= (const bigint &num) const
-		{ return not operator<(num); }
-	inline bool operator > (const bigint &num) const
-		{ return not operator<=(num); }
-	// fix rlvalue error/improve performance by:
-	// inline bool operator ...  (bigint &&num) const
-	// 	{ return operator ... (num); }
-
-	/* operator + - * / */
-	inline bigint operator - () const
-		{ return bigint(*this).flipNega(); }
-	inline bigint& operator += (const bigint& num)
-		{return (num.isN()==isN())?_pD(num):_mD(num);}
-	inline bigint& operator -= (const bigint& num)
-		{return (num.isN() == isN())?_mD(num):_pD(num);}
-	inline bigint operator + (const bigint& num)
-		{ bigint res(*this); res += num; return res; }
-	inline bigint operator - (const bigint& num)
-		{ bigint res(*this); res -= num; return res; }
-	inline bigint operator * (const bigint &num) const {
-		if (*this==0||num==0||empty()||num.empty())return 0;
-		if (size() == 1 or num.size() == 1) {
-			const vector<char> &D =(size()==1)?num.ds:ds;
-			char mul = (size() == 1) ? ds[0] : num.ds[0];
-			bigint ans; ans.resize(D.size()); char nho = 0;
-			EFOR(int, i, 0, D.size()) {
-				ans[i] = D[i] * mul + nho; nho = ans[i] / 10;
-				ans[i] -= 10 * nho;
-			}
-			if (nho) ans.push_back(nho);
-			if (isN() xor num.isN()) ans.flipNega();
-			return ans;
-		}
-		/* FFT */
-		FFT::buildRoot();
-		vector<int> a(ds.begin(), ds.end());
-		vector<int> b(num.ds.begin(), num.ds.end());
-		vector<modint> newAns = FFT::multiply(a, b);
-		bigint ans; ans.resize(newAns.size());
-		int nho = 0;
-		EFOR(int, i, 0, ans.size()){
-			int tmp = newAns[i].v + nho;
-			nho = tmp / 10;
-			ans[i] = tmp - nho * 10;
-		}
-		while (nho>0) {ans.push_back(nho%10); nho/=10;}
-		/* Karatsuba */
-		// int mxSz = max(size(), num.size()), B = mxSz / 2;
-		// bigint a0(vector<char>(ds.begin(), ds.begin() + min(B, size())), false),
-		// a1(vector<char>(ds.begin()+min(B, size()), ds.end() ), false),
-		// b0(vector<char>(num.ds.begin(), num.ds.begin()+min(B, num.size())), false),
-		// b1(vector<char>(num.ds.begin()+min(B, num.size()), num.ds.end() ), false);
-		//ans=a0*b0;bigint z2=a1*b1,z1=(a0+a1)*(b0+b1)-(z2+ans);
-		// ans._pD(z2, B*2)._pD(z1, B);
-		if (isN() xor num.isN()) ans.flipNega();
-		ans.reformat(); return ans;
+	vector<int> d;
+	Bigint(ll x = 0): neg(x < 0){
+		for(; x; x /= BASE)
+			d.push_back(abs((int)(x % BASE)));
 	}
-	friend istream& operator>>(istream&inp, bigint&num)
-		{inp>>bigint::_I;num=bigint(bigint::_I);return inp;}
-	friend ostream&operator<<(ostream&out,const bigint&num){
-		if (num.isN()) out << '-';
-		REV(int,i,(int)num.size()-1,0)out<<char(num.ds[i]+'0');
-		return out;
+	Bigint(const string &s): neg(s[0] == '-'){
+		for(int i = sz(s); i > neg; i -= 9){
+			int j = max((int)neg, i - 9);
+			d.push_back(stoi(s.substr(j, i - j)));
+		}
+		trim();
+	}
+	string str() const{
+		if(d.empty())
+			return "0";
+		string s = (neg ? "-" : "") + to_string(d.back());
+		REV(i, sz(d) - 2, 0){
+			string t = to_string(d[i]);
+			s += string(9 - sz(t), '0') + t;
+		}
+		return s;
+	}
+	void trim(){
+		while(!d.empty() && !d.back())
+			d.pop_back();
+		if(d.empty())
+			neg = false;
+	}
+	int cmpAbs(const Bigint &b) const{
+		if(sz(d) != sz(b.d))
+			return sz(d) < sz(b.d) ? -1 : 1;
+		REV(i, sz(d) - 1, 0) if(d[i] != b.d[i])
+			return d[i] < b.d[i] ? -1 : 1;
+		return 0;
+	}
+	int cmp(const Bigint &b) const{
+		if(neg != b.neg)
+			return neg ? -1 : 1;
+		return neg ? -cmpAbs(b) : cmpAbs(b);
+	}
+	void addAbs(const Bigint &b){
+		int carry = 0; d.resize(max(sz(d), sz(b.d)) + 1);
+		FOR(i, 0, sz(d) - 1){
+			d[i] += carry + (i < sz(b.d) ? b.d[i] : 0);
+			carry = d[i] >= BASE;
+			d[i] -= carry * BASE;
+		}
+		trim();
+	}
+	void subAbs(const Bigint &b){
+		int borrow = 0;
+		FOR(i, 0, sz(d) - 1){
+			d[i] -= borrow + (i < sz(b.d) ? b.d[i] : 0);
+			borrow = d[i] < 0;
+			d[i] += borrow * BASE;
+		}
+		trim();
+	}
+	Bigint operator-() const{
+		Bigint a = *this; a.neg = !neg && !d.empty();
+		return a;
+	}
+	Bigint &operator+=(const Bigint &b){
+		if(neg == b.neg)
+			addAbs(b);
+		else if(cmpAbs(b) >= 0)
+			subAbs(b);
+		else{
+			Bigint a = b;
+			a.subAbs(*this); *this = a;
+		}
+		return *this;
+	}
+	Bigint &operator-=(const Bigint &b){ return *this += -b; }
+	Bigint operator*(const Bigint &b) const{
+		int n = sz(d), m = sz(b.d);
+		if(!n || !m)
+			return 0;
+		Bigint a;
+		const int NAIVE = 32;
+		if(min(n, m) <= NAIVE){
+			vector<ll> c(n + m);
+			FOR(i, 0, n - 1){
+				ll carry = 0;
+				FOR(j, 0, m - 1){
+					carry += c[i+j] + (ll)d[i] * b.d[j];
+					c[i+j] = carry % BASE, carry /= BASE;
+				}
+				c[i+m] += carry;
+			}
+			a.d.assign(all(c));
+		}else{
+			vector<MintN> x(9 * n), y(9 * m);
+			FOR(i, 0, sz(x) - 1)
+				x[i] = d[i/9] / P10[i%9] % 10;
+			FOR(i, 0, sz(y) - 1)
+				y[i] = b.d[i/9] / P10[i%9] % 10;
+			vector<MintN> z = convNtt(x, y);
+			ll carry = 0; a.d.resize(n + m);
+			FOR(i, 0, 9 * (n + m) - 1){
+				if(i < sz(z))
+					carry += z[i].v;
+				a.d[i/9] += carry % 10 * P10[i%9];
+				carry /= 10;
+			}
+		}
+		a.neg = neg != b.neg; a.trim();
+		return a;
+	}
+	pair<Bigint, Bigint> divMod(const Bigint &b) const{
+		int m = sz(b.d), norm = BASE / (b.d.back() + 1);
+		Bigint x = *this * norm, y = b * norm, q, r;
+		x.neg = y.neg = false;
+		q.d.resize(sz(x.d));
+		REV(i, sz(x.d) - 1, 0){
+			r.d.insert(r.d.begin(), x.d[i]); r.trim();
+			ll hi = sz(r.d) > m ? r.d[m] : 0;
+			ll lo = sz(r.d) >= m ? r.d[m-1] : 0;
+			ll e = (hi * BASE + lo) / y.d.back();
+			minimize(e, BASE - 1);
+			r -= y * e;
+			while(r.neg)
+				r += y, e--;
+			q.d[i] = e;
+		}
+		q.neg = neg != b.neg; q.trim();
+		return {q, *this - q * b};
+	}
+	friend Bigint operator+(Bigint a, const Bigint &b){
+		return a += b;
+	}
+	friend Bigint operator-(Bigint a, const Bigint &b){
+		return a -= b;
+	}
+	friend Bigint operator/(const Bigint &a, const Bigint &b){
+		return a.divMod(b).fi;
+	}
+	friend Bigint operator%(const Bigint &a, const Bigint &b){
+		return a.divMod(b).se;
+	}
+	friend bool operator<(const Bigint &a, const Bigint &b){
+		return a.cmp(b) < 0;
+	}
+	friend bool operator>(const Bigint &a, const Bigint &b){
+		return a.cmp(b) > 0;
+	}
+	friend bool operator<=(const Bigint &a, const Bigint &b){
+		return a.cmp(b) <= 0;
+	}
+	friend bool operator>=(const Bigint &a, const Bigint &b){
+		return a.cmp(b) >= 0;
+	}
+	friend bool operator==(const Bigint &a, const Bigint &b){
+		return a.cmp(b) == 0;
+	}
+	friend bool operator!=(const Bigint &a, const Bigint &b){
+		return a.cmp(b) != 0;
+	}
+	friend istream &operator>>(istream &in, Bigint &a){
+		string s; in >> s;
+		a = Bigint(s);
+		return in;
+	}
+	friend ostream &operator<<(ostream &out, const Bigint &a){
+		return out << a.str();
 	}
 };
