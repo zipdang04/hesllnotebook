@@ -22,7 +22,11 @@
 	A BCC's vertices are the endpoints of its edges; 2-edge-connected components are a flood fill that never crosses a bridge.
 	\fld{Needs} distinct ids in $0..m$. Multi-edges are never bridges; a self-loop gets \texttt{bcc} $= 0$.
 ]\label{lowlink}
-\entry{Euler path / circuit}
+\cpp[4]{Euler path / circuit}{euler.hpp}[
+	\fld{Use} \texttt{auto w = eulerWalk(g, m, s);} with \texttt{g[u]} holding \texttt{\{v, id\}}.
+	\fld{Result} \texttt{w[i].fi} is the $i$-th vertex and \texttt{w[i].se} the edge into it (\texttt{-1} for $i = 0$). Empty if no walk from $s$ uses all $m$ edges.
+	\fld{Needs} distinct ids in $0..m$. Start $s$: undirected, an odd-degree vertex; directed, one with out $-$ in $= 1$; else any vertex with an edge.
+]\label{euler}
 
 \subsection{Paths \& spanning trees}
 \cpp[4]{SPFA}{spfa.hpp}[

@@ -223,6 +223,9 @@ all_source_codes = {
 		"lowlink_bcc": TestCase("graph/lowlink_bcc", "graph/biconnected_components", 2),
 		"lowlink_2ecc": TestCase("graph/lowlink_2ecc", "graph/two_edge_connected_components", 2),
 		"lowlink_stress": StressTest("graph/lowlink_stress", 10),
+		"euler_directed": TestCase("graph/euler_directed", "graph/eulerian_trail_directed", 2),
+		"euler_undirected": TestCase("graph/euler_undirected", "graph/eulerian_trail_undirected", 2),
+		"euler_stress": StressTest("graph/euler_stress", 10),
 	},
 	"ds": {
 		"hash": TestCase("ds/hash", "data_structure/associative_array", 5),
