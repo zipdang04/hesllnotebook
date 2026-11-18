@@ -254,6 +254,8 @@ all_source_codes = {
 		"suffixarray_lcp": TestCase("strings/suffixarray_lcp", "string/number_of_substrings", 2),
 		"suffixarray_lcs": TestCase("strings/suffixarray_lcs", "string/longest_common_substring", 2),
 		"suffixarray_stress": StressTest("strings/suffixarray_stress", 10),
+		"eertree": TestCase("strings/eertree", "string/eertree", 3),
+		"eertree_stress": StressTest("strings/eertree_stress", 10),
 		"ahocorasick": OjTest("strings/ahocorasick", "https://yukicoder.me/problems/no/430", 2),
 		"lyndon": TestCase("strings/lyndon", "string/lyndon_factorization", 2),
 		"ahocorasick_stress": StressTest("strings/ahocorasick_stress", 10),

@@ -59,8 +59,16 @@ To compare two substrings with 0-based starts $i$, $j$:
 	Occurrences of node $v$: start with 1 where \texttt{len == pos + 1} (not a clone), then add each node to its link in decreasing \texttt{len}.
 	\fld{Needs} letters \texttt{FIRST}..\texttt{FIRST + K - 1}; memory $2n(K + 3)$ ints.
 ]\label{suffixautomaton}
-\entry{Eertree}\label{eertree}
 \cpp[4]{Lyndon factorisation (Duval)}{lyndon.hpp}[
 	\fld{Use} \texttt{vector<int> st = duval(s);}
 	\fld{Result} factor $k$ is $s$ from \texttt{st[k]} to \texttt{st[k + 1] - 1}; the last one ends at $n - 1$.
 ]\label{lyndon}
+\cpp[4]{Eertree}{eertree.hpp}[
+	\fld{Use} \texttt{Eertree et; for(char c: s) v = et.add(c);}
+	\fld{Result} \texttt{add} returns the longest palindromic suffix node so far.
+	\texttt{t[v].dep} counts $v$'s non-empty palindromic suffixes, ending here for the result.
+	\texttt{t.size() - 2} distinct non-empty palindromes exist.
+	For occurrences, add \texttt{cnt} to its link's \texttt{cnt} for $v = \texttt{t.size() - 1},\ldots,2$.
+	\fld{Needs} letters \texttt{FIRST}..\texttt{FIRST + K - 1}; memory $(n + 2)(K + 4)$ ints.
+	\fld{getLink} returns $v$'s longest suffix-palindrome $u$ with $s_{i-\texttt{t[u].len}-1} = s_i$.
+]\label{eertree}
