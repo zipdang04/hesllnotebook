@@ -34,7 +34,12 @@
 	\fld{Needs} $1 \le n < 2^{62}$. Uses \texttt{isPrime} (\S\ref{millerrabin}).
 	\fld{findDivisor} a divisor $d$ of a composite $n$, $1 < d < n$, not always prime. It never returns on a prime $n$.
 ]\label{pollardrho}
-\entry{Discrete log / discrete sqrt}
+\cpp[4]{Discrete log, discrete sqrt}{dlog.hpp}[
+	\fld{Use} \texttt{ll k = discreteLog(a, b, m);}
+	\fld{Result} the smallest $k \ge 0$ with $a^k \equiv b \pmod m$, or $-1$; $a$ and $m$ need not be coprime.
+	\fld{Needs} Miller--Rabin (\S\ref{millerrabin}) for \texttt{mulMod} and \texttt{powMod}.
+	\fld{discreteSqrt} $x$ with $x^2 \equiv a \pmod p$ for a prime $p$, or $-1$; the other root is $p - x$.
+]\label{dlog}
 \entry{Floor sum}
 
 \subsection{Linear algebra}
