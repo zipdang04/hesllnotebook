@@ -52,7 +52,11 @@ Use it to minimise the average weight $\bar w(C)$ of a cycle $C$. Fix an integer
 	\item Overflow: needs $n (K W + |\lambda|) < 10^{18}$.
 	\item The exact rational value: Karp's algorithm, $O(VE)$ (not printed).
 \end{facts}
-\entry{Directed MST}
+\cpp[4]{Directed MST}{dmst.hpp}[
+	\fld{Use} \texttt{vector<vector<pair<int, ll>>> g(n + 1); DirectedMST dm(g, r);}
+	\fld{Result} \texttt{dm.cost}, the least total weight of edges that reach every vertex from $r$; \texttt{dm.par[v]} is the tail of $v$'s edge, \texttt{par[r]} $= 0$.
+	\fld{Needs} \texttt{cost == oo} means some vertex is unreachable. Uses Rollback DSU (\S\ref{rollbackdsu}).
+]\label{dmst}
 \entry{Manhattan MST}
 \entry{Matrix-tree theorem}
 
