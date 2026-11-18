@@ -251,6 +251,9 @@ all_source_codes = {
 		"strhash": TestCase("strings/strhash", "string/enumerate_palindromes", 2),
 		"strhash_stress": StressTest("strings/strhash_stress", 10),
 		"suffixarray": TestCase("strings/suffixarray", "string/suffixarray", 5),
+		"suffixarray_lcp": TestCase("strings/suffixarray_lcp", "string/number_of_substrings", 2),
+		"suffixarray_lcs": TestCase("strings/suffixarray_lcs", "string/longest_common_substring", 2),
+		"suffixarray_stress": StressTest("strings/suffixarray_stress", 10),
 		"ahocorasick": OjTest("strings/ahocorasick", "https://yukicoder.me/problems/no/430", 2),
 		"lyndon": TestCase("strings/lyndon", "string/lyndon_factorization", 2),
 	},
@@ -312,7 +315,7 @@ all_source_codes = {
 # Remove a name when its rewrite is merged.
 PENDING = {
 	".ds.ps_seg",
-	".strings.suffixarray", ".strings.ahocorasick",
+	".strings.ahocorasick",
 }
 
 # ---------- all.py --changed BASE [section [test]]: only the tests the diff BASE...HEAD can affect ----------

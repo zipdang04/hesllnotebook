@@ -35,7 +35,14 @@ To compare two substrings with 0-based starts $i$, $j$:
 	\item $d$ is a period of $s_l \dots s_r$ when \texttt{get(l, r - d) == get(l + d, r)}.
 \end{facts}
 }
-\entry{Suffix array + LCP}
+\cpp[4]{Suffix array + LCP}{suffixarray.hpp}[
+	\fld{Use} \texttt{SuffixArray sa(s);} for rotations; \texttt{SuffixArray sa(s + '\$');} for suffixes.
+	\fld{Result} \texttt{sa.sa[i]} is rotation rank $i$'s start; \texttt{sa.rnk} is its inverse.
+	\texttt{sa.lcp[i]} is ranks $i-1$, $i$'s common prefix length ($\le n$); \texttt{lcp[0]} is 0.
+	Ties use increasing starts; \texttt{sa[0]} is the first minimum rotation.
+	\fld{Needs} For suffixes, final \texttt{'\$'} is unique and smallest; \texttt{sa[0]} is $n$, and ranks $1..n$ are the suffixes of $s$.
+	For the longest common substring of $s$ and $t$, use \texttt{s + '\#' + t + '\$'} with final \texttt{'\$'}.
+]\label{suffixarray}
 \cpp[4]{Aho--Corasick}{ahocorasick.hpp}[
 	Per-pattern counts: \texttt{hit[u]++} at each step of the scan, then for $u$ in reverse \texttt{order}: \texttt{hit[link[u]] += hit[u]}; pattern $i$ occurs \texttt{hit[end$_i$]} times.\\
 	Online inserts: $\log$ groups of sizes $2^k$; insert = merge the smaller groups and rebuild; a query sums over all groups.

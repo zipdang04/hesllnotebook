@@ -1,61 +1,53 @@
+#pragma once
 #include "../contest/template.hpp"
 
-namespace Suffix {
-typedef pair<int, int> pii;
-typedef pair<pii, int> ppiii;
-
-string s;
-int len;
-int sa[MAX], rk[MAX];
-int lcp[MAX];
-
-void build(){
-	{
-		pii v[len];
-		FOR(int, i, 0, len - 1) v[i] = {s[i], i};
-		sort(v, v + len);
-		FOR(int, i, 0, len - 1) sa[i] = v[i].second;
-		rk[sa[0]] = 0;
-		FOR(int, i, 1, len - 1)
-			rk[sa[i]] = rk[sa[i - 1]] + (v[i].first != v[i - 1].first);
-	}
-	int k = 0;
-	while ((1 << k) < len){
-		vector<ppiii> radix[len];
-		FOR(int, i, 0, len - 1){
-			int pos = sa[i];
-			int prev = (pos + len - (1 << k)) % len;
-			int rPrev = rk[prev], rPos = rk[pos];
-			radix[rPrev].push_back({{rPrev, rPos}, prev});
-		}
-		ppiii v[len]; int cnt = 0;
-		FOR(int, i, 0, len - 1){
-			for (ppiii curr: radix[i]){
-				v[cnt++] = curr;
+// Suffix array of the ROTATIONS of s + LCP, O(n log n),
+// all arrays 0-based. Suffixes: SuffixArray(s + '$').
+// LCP of ranks a < b = min lcp[a+1..b].
+struct SuffixArray{
+	vector<int> sa, rnk, lcp;
+	SuffixArray(const string &s){
+		int n = sz(s), classes = 256;
+		sa = rnk = lcp = vector<int>(n);
+		vector<int> x(n), y(n), cnt(max(n, 256));
+		FOR(i, 0, n-1){ x[i] = (unsigned char)s[i]; y[i] = i; }
+		// y holds starts ordered by their second half.
+		for(int k = 0; k < n; k = max(1, 2 * k)){
+			if(k)
+				FOR(i, 0, n - 1)
+					y[i] = sa[i] - k + (sa[i] < k ? n : 0);
+			fill(cnt.begin(), cnt.begin() + classes, 0);
+			FOR(i, 0, n - 1)
+				cnt[x[y[i]]]++;
+			FOR(i, 1, classes - 1)
+				cnt[i] += cnt[i-1];
+			REV(i, n - 1, 0)
+				sa[--cnt[x[y[i]]]] = y[i];
+			swap(x, y); classes = 1; x[sa[0]] = 0;
+			FOR(i, 1, n - 1){
+				int a = sa[i-1], b = sa[i];
+				classes += y[a] != y[b]
+					|| y[a+k < n ? a+k : a+k-n]
+					!= y[b+k < n ? b+k : b+k-n];
+				x[b] = classes - 1;
 			}
+			if(classes == n)
+				break;
 		}
-		FOR(int, i, 0, len - 1) sa[i] = v[i].second;
-		rk[sa[0]] = 0;
-		FOR(int, i, 1, len - 1)
-			rk[sa[i]] = rk[sa[i - 1]] + (v[i].first != v[i - 1].first);
-		k++;
-	}
-}
-
-void buildLCP(){
-	int preCal = 0;
-	FOR(int, i, 0, len - 2){
-		int posInSA = rk[i];
-		int curr = i, prev = sa[posInSA - 1];
-		int ans = preCal;
-		FOR(int, j, preCal, len - 1){
-			char cPrev = s[(prev + j) % len], cPos = s[(curr + j) % len];
-			if (cPrev != cPos) break;
-			ans++;
+		// equal rotations in increasing start
+		fill(all(cnt), 0);
+		FOR(i, 0, n - 1)
+			cnt[x[i]]++;
+		FOR(i, 1, classes - 1)
+			cnt[i] += cnt[i-1];
+		REV(i, n-1, 0){ rnk[i] = --cnt[x[i]]; sa[rnk[i]] = i; }
+		string t = s + s;
+		for(int i = 0, k = 0; i < n; i++){
+			if(!rnk[i]){ k = 0; continue; }
+			int j = sa[rnk[i]-1];
+			while(k < n && t[i+k] == t[j+k])
+				k++;
+			lcp[rnk[i]] = k; k -= k > 0;
 		}
-		lcp[posInSA] = ans;
-		preCal = max(ans - 1, 0);
 	}
-}
-
-}
+};
