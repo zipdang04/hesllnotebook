@@ -20,7 +20,13 @@
 ]\label{lichao}
 
 \subsection{Balanced trees}
-\entry{Implicit treap}
+\cpp[4]{Implicit treap}{treap.hpp}[
+	\fld{Use} \texttt{Treap tr; tr.insert(1, x);} appends $x$.
+	\fld{Result} \texttt{get(l, r).sum} sums $[l, r]$ mod 998244353 (\texttt{MintN}, \S\ref{modint}). \texttt{reverse(l, r)} reverses it; \texttt{update(l, r, \{b, c\})} sets $a_i \gets b a_i + c$.
+	\fld{Needs} Lazy segment tree EDIT rules (\S\ref{lazyseg}); \texttt{pull} sets \texttt{size}. For non-commutative sums, swap a reversed sum at each \texttt{swap(l, r)}.
+	\fld{insert} \texttt{insert(pos, x)} inserts $x$ at $1 \le \texttt{pos} \le \texttt{size} + 1$; \texttt{erase(pos)} removes it.
+	\fld{split} \texttt{split(u, k)} cuts root \texttt{u} after $k$; \texttt{merge(a, b)} joins roots.
+]\label{treap}
 \entry{Link-cut tree}
 
 \subsection{Other}

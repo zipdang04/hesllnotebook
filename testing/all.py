@@ -241,6 +241,8 @@ all_source_codes = {
 		"ps_seg": TestCase("ds/ps_seg", "data_structure/rectangle_sum", 5),
 		"lichao_line": TestCase("ds/lichao_line", "data_structure/line_add_get_min", 2),
 		"lichao_seg": TestCase("ds/lichao_seg", "data_structure/segment_add_get_min", 2),
+		"treap": TestCase("ds/treap", "data_structure/dynamic_sequence_range_affine_range_sum", 5),
+		"treap_stress": StressTest("ds/treap_stress", 10),
 		"rollbackdsu": TestCase("ds/rollbackdsu", "data_structure/persistent_unionfind", 2),
 	},
 	"strings": {
