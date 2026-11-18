@@ -3,6 +3,7 @@
 
 // Power series over MintN, x^i at index i. inv, log, exp
 // and polyDiv in O(n log n), by Newton doubling on NTT.
+// polyDiv needs the last term of b nonzero.
 vector<MintN> fpsInv(const vector<MintN> &a, int n){
 	vector<MintN> g{a[0].inv()};
 	for(int m = 1; m < n; m *= 2){

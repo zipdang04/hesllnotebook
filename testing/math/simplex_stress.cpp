@@ -2,9 +2,9 @@
 #include <cassert>
 
 ll det(const vector<vector<ll>> &a){
-	int n = (int)a.size();
+	int n = sz(a);
 	vector<int> p(n);
-	iota(p.begin(), p.end(), 0);
+	iota(all(p), 0);
 	ll res = 0;
 	do{
 		ll term = 1;
@@ -14,20 +14,20 @@ ll det(const vector<vector<ll>> &a){
 			FOR(j, 0, i - 1) if(p[j] > p[i]) inv++;
 		}
 		res += inv % 2 ? -term : term;
-	}while(next_permutation(p.begin(), p.end()));
+	}while(next_permutation(all(p)));
 	return res;
 }
 
 pair<bool, double> brute(vector<vector<ll>> a,
 		vector<ll> b, const vector<ll> &c){
-	int n = (int)c.size();
+	int n = sz(c);
 	FOR(j, 0, n - 1){
 		vector<ll> row(n);
 		row[j] = -1;
 		a.push_back(row);
 		b.push_back(0);
 	}
-	int m = (int)b.size();
+	int m = sz(b);
 	bool found = false;
 	ll best = 0, bestDen = 1;
 	FOR(mask, 0, (1 << m) - 1){
@@ -94,10 +94,10 @@ int main(){
 		if(!cap && !found) continue;
 		if(cap) bounded++;
 		else unbounded++;
-		vector<vector<double>> A(a.size(), vector<double>(n));
-		vector<double> B(b.begin(), b.end());
-		vector<double> C(c.begin(), c.end());
-		FOR(i, 0, (int)a.size() - 1)
+		vector<vector<double>> A(sz(a), vector<double>(n));
+		vector<double> B(all(b));
+		vector<double> C(all(c));
+		FOR(i, 0, sz(a) - 1)
 			FOR(j, 0, n - 1) A[i][j] = a[i][j];
 		Simplex lp(A, B, C);
 		if(!found){
@@ -106,19 +106,18 @@ int main(){
 		}
 		assert(lp.val != -oo);
 		if(cap) assert(abs(lp.val - best) <= 1e-6);
-		if(lp.val == oo) continue;
-		assert((int)lp.x.size() == n);
+		assert(sz(lp.x) == n);
 		double val = 0;
 		FOR(j, 0, n - 1){
 			assert(lp.x[j] >= -1e-6);
 			val += c[j] * lp.x[j];
 		}
-		FOR(i, 0, (int)a.size() - 1){
+		FOR(i, 0, sz(a) - 1){
 			double sum = 0;
 			FOR(j, 0, n - 1) sum += a[i][j] * lp.x[j];
 			assert(sum <= b[i] + 1e-6);
 		}
-		assert(abs(val - lp.val) <= 1e-6);
+		if(lp.val != oo) assert(abs(val - lp.val) <= 1e-6);
 	}
 	return 0;
 }

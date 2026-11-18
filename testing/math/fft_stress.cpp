@@ -28,7 +28,7 @@ ll eval(const vector<ll> &a, ll r, ll mod){
 
 bool identity(const vector<ll> &a, const vector<ll> &b,
 		const vector<ll> &c, ll mod){
-	if(c.size() != a.size() + b.size() - 1) return false;
+	if(sz(c) != sz(a) + sz(b) - 1) return false;
 	for(ll x: c) if(x < 0 || x >= mod) return false;
 	FOR(t, 0, 2){
 		ll r = rnd(mod);
@@ -56,7 +56,7 @@ int main(){
 		FOR(i, 0, n - 1) FOR(j, 0, m - 1)
 			want[i + j] += (ll)a[i] * (ll)b[j];
 		auto got = conv(a, b);
-		if(got.size() != want.size()){
+		if(sz(got) != sz(want)){
 			cerr << "conv size " << t << '\n';
 			return 1;
 		}
@@ -72,7 +72,7 @@ int main(){
 			FOR(i, 0, n - 1) FOR(j, 0, m - 1)
 				sum[i + j] += (__int128)x[i] * y[j];
 			auto c = convMod(x, y, mod);
-			if(c.size() != sum.size()){
+			if(sz(c) != sz(sum)){
 				cerr << "mod size " << t << " " << mod << '\n';
 				return 1;
 			}
@@ -113,7 +113,7 @@ int main(){
 		for(double &v: y) v = 19800 + rnd(201);
 		if(t) y = x;
 		auto c = conv(x, y);
-		vector<ll> u(x.begin(), x.end()), v(y.begin(), y.end());
+		vector<ll> u(all(x)), v(all(y));
 		vector<ll> w;
 		for(double z: c) w.push_back(llround(z) % 1000000007);
 		if(!identity(u, v, w, 1000000007)){

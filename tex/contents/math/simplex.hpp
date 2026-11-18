@@ -1,9 +1,9 @@
 #pragma once
 #include "../contest/template.hpp"
 
-// Simplex: max c.x subject to Ax <= b, x >= 0. A is m x n,
-// all 0-based. val = -oo: no solution, oo: unbounded.
-// O(mn) per pivot, exponential in the worst case.
+// Simplex: max c.x, Ax <= b, x >= 0; A is m x n, 0-based.
+// val = -oo: no solution, oo: unbounded. Compare doubles
+// with a tolerance. O(mn) per pivot, exponential at worst.
 struct Simplex{
 	// ---- EDIT: tolerance ----
 	static constexpr double EPS = 1e-8;
@@ -69,15 +69,15 @@ struct Simplex{
 		while(true){
 			int s = -1;
 			FOR(j, 0, n) if(N[j] != -phase && (bland
-				? D[row][j] < -EPS && (s == -1 || N[j] < N[s])
-				: ltj(D[row], j, s)))
+					? D[row][j] < -EPS && (s == -1 || N[j] < N[s])
+					: ltj(D[row], j, s)))
 				s = j;
 			if(s == -1 || D[row][s] >= -EPS) return true;
 			int r = -1;
 			FOR(i, 0, m - 1){
 				if(D[i][s] <= EPS) continue;
 				if(r == -1 || pair(D[i][n+1] / D[i][s], B[i])
-					< pair(D[r][n+1] / D[r][s], B[r]))
+						< pair(D[r][n+1] / D[r][s], B[r]))
 					r = i;
 			}
 			if(r == -1) return false;

@@ -66,7 +66,7 @@ For a system over \texttt{double} (probabilities, expected values), copy \texttt
 	\fld{Use} \texttt{Simplex lp(A, b, c);} then test \texttt{lp.val} against \texttt{-oo} and \texttt{oo}.
 	\fld{Result} \texttt{lp.x} reaches \texttt{lp.val}. It is empty for \texttt{-oo} and some feasible point for \texttt{oo}.
 	\fld{Needs} negate $c$ for a minimum, negate a row for $\ge$, and give two rows for $=$.
-	It runs fastest when $b \ge 0$, so that $x = 0$ is feasible. Results are doubles: compare them with a tolerance.
+	It runs fastest when $b \ge 0$, so that $x = 0$ is feasible.
 ]\label{simplex}
 
 \subsection{Polynomials \& transforms}
@@ -89,8 +89,8 @@ For a system over \texttt{double} (probabilities, expected values), copy \texttt
 \cpp[4]{FPS: inv, log, exp, div}{fps.hpp}[
 	\fld{Use} \texttt{vector<MintN> g = fpsInv(a, n);}
 	\fld{Result} the first $n$ terms of $1/a$, $\log a$ or $\exp a$; \texttt{a} may be shorter or longer than $n$.
-	\fld{Needs} $1 \le n \le 2^{22}$; $a_0 \ne 0$ for \texttt{fpsInv}, $a_0 = 1$ for \texttt{fpsLog}, $a_0 = 0$ for \texttt{fpsExp}. Uses NTT (\S\ref{ntt}).
-	\fld{polyDiv} \texttt{q = polyDiv(a, b)} has $|a| - |b| + 1$ terms, none if $|a| < |b|$; the last term of $b$ is nonzero. The remainder is the first $|b| - 1$ terms of $a - bq$.
+	\fld{Needs} $1 \le n \le 2^{22}$ and $|a| - |b| < 2^{22}$; $a_0 \ne 0$ for \texttt{fpsInv}, $a_0 = 1$ for \texttt{fpsLog}, $a_0 = 0$ for \texttt{fpsExp}. Uses NTT (\S\ref{ntt}).
+	\fld{polyDiv} \texttt{q = polyDiv(a, b)} has $|a| - |b| + 1$ terms, none if $|a| < |b|$. The remainder is the first $|b| - 1$ terms of $a - bq$.
 ]\label{fps}
 \cpp[4]{Berlekamp--Massey + Bostan--Mori}{linearrec.hpp}[
 	\fld{Use} \texttt{vector<MintN> c = berlekampMassey(s); MintN x = kthTerm(s, c, k);}
