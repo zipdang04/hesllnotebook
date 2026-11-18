@@ -22,5 +22,9 @@
 \entry{Gomory--Hu tree}
 
 \subsection{Matching}
-\entry{Hungarian}
+\cpp[4]{Hungarian}{hungarian.hpp}[
+	\fld{Use} \texttt{vector<vector<ll>> a(n + 1, vector<ll>(m + 1)); auto [cost, match] = hungarian(a);}
+	\fld{Result} the minimum of $\sum_i a[i][\texttt{match[i]}]$ over injective \texttt{match}; row $i$ takes column \texttt{match[i]}.
+	\fld{Needs} $n \le m$, every row of size $m + 1$ as in \texttt{Use}. Maximum weight: negate \texttt{a}. A forbidden pair: cost $10^{12}$, then check the result.
+]\label{hungarian}
 \entry{General matching (blossom)}
