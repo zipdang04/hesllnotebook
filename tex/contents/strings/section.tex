@@ -51,7 +51,14 @@ To compare two substrings with 0-based starts $i$, $j$:
 	\fld{Needs} Non-empty patterns over \texttt{FIRST}..\texttt{FIRST + K - 1}; all \texttt{add} calls before \texttt{build}.
 	\fld{countMatch} Counts all pattern occurrences in \texttt{s}.
 ]\label{ahocorasick}
-\entry{Suffix automaton}
+\cpp[4]{Suffix automaton}{suffixautomaton.hpp}[
+	\fld{Use} \texttt{SAM sam; for(char c: s) sam.add(c);}
+	\fld{Result} node $v$ holds the substrings of lengths \texttt{t[t[v].link].len + 1} to \texttt{t[v].len}, and they share their end positions.
+	The number of distinct non-empty substrings is
+	\[ \textstyle\sum_{v \ge 1} \bigl(\texttt{len}(v) - \texttt{len}(\texttt{link}(v))\bigr). \]
+	Occurrences of node $v$: start with 1 where \texttt{len == pos + 1} (not a clone), then add each node to its link in decreasing \texttt{len}.
+	\fld{Needs} letters \texttt{FIRST}..\texttt{FIRST + K - 1}; memory $2n(K + 3)$ ints.
+]\label{suffixautomaton}
 \entry{Eertree}\label{eertree}
 \cpp[4]{Lyndon factorisation (Duval)}{lyndon.hpp}[
 	\fld{Use} \texttt{vector<int> st = duval(s);}

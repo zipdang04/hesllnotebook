@@ -257,6 +257,9 @@ all_source_codes = {
 		"ahocorasick": OjTest("strings/ahocorasick", "https://yukicoder.me/problems/no/430", 2),
 		"lyndon": TestCase("strings/lyndon", "string/lyndon_factorization", 2),
 		"ahocorasick_stress": StressTest("strings/ahocorasick_stress", 10),
+		"suffixautomaton": TestCase("strings/suffixautomaton", "string/number_of_substrings", 2),
+		"suffixautomaton_lcs": TestCase("strings/suffixautomaton_lcs", "string/longest_common_substring", 2),
+		"suffixautomaton_stress": StressTest("strings/suffixautomaton_stress", 10),
 	},
 	"geometry": {
 		"angless": TestCase("geometry/angless", "geo/sort_points_by_argument", 2),
