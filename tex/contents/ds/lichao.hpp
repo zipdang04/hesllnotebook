@@ -52,7 +52,7 @@ struct LiChao{
 		int p = lower_bound(b0, e0, x) - b0;
 		ll res = oo;
 		while(true){
-			res = min(res, tree[id].eval(x));
+			minimize(res, tree[id].eval(x));
 			if(lo == hi) return res;
 			int mid = (lo + hi) / 2;
 			if(p <= mid) id = 2 * id, hi = mid;

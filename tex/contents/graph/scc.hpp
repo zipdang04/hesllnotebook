@@ -16,7 +16,7 @@ struct SCC{
 		stk.push_back(u);
 		for(int v: g[u]) if(!comp[v]){
 			if(!num[v]) dfs(v, g);
-			low[u] = min(low[u], low[v]);
+			minimize(low[u], low[v]);
 		}
 		if(low[u] == num[u]){
 			cnt++;

@@ -18,9 +18,8 @@ struct MCMF{
 			FOR(u, 0, sz(adj) - 1)
 				for(int id: adj[u]){
 					auto &e = edges[id];
-					if(!e.cap || pot[e.to] <= pot[u] + e.cost)
-						continue;
-					pot[e.to] = pot[u] + e.cost; changed = true;
+					if(e.cap && minimize(pot[e.to], pot[u] + e.cost))
+						changed = true;
 				}
 			if(!changed)
 				break;
@@ -39,10 +38,10 @@ struct MCMF{
 				if(!e.cap)
 					continue;
 				ll val = d + e.cost + pot[u] - pot[e.to];
-				if(val >= dist[e.to])
-					continue;
-				dist[e.to] = val; par[e.to] = id;
-				pq.push({val, e.to});
+				if(minimize(dist[e.to], val)){
+					par[e.to] = id;
+					pq.push({val, e.to});
+				}
 			}
 		}
 		return dist[t] != LLONG_MAX;
@@ -65,7 +64,7 @@ struct MCMF{
 				pot[v] += dist[v];
 			ll push = limit - flow;
 			for(int v = t; v != s; v = edges[par[v] ^ 1].to)
-				push = min(push, edges[par[v]].cap);
+				minimize(push, edges[par[v]].cap);
 			for(int v = t; v != s; v = edges[par[v] ^ 1].to){
 				edges[par[v]].cap -= push;
 				edges[par[v] ^ 1].cap += push;

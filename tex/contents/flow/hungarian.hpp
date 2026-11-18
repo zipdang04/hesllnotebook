@@ -24,7 +24,7 @@ pair<ll, vector<int>> hungarian(
 			if(!r) break;
 			FOR(j, 1, m){
 				nd = a[r][j] - a[r][c] + dist[c];
-				if(dist[j] > nd) dist[j] = nd, prev[j] = r;
+				if(minimize(dist[j], nd)) prev[j] = r;
 			}
 		}
 		cost += dist[c];

@@ -21,12 +21,12 @@ struct LowLink{
 		for(auto [v, id]: g[u]){
 			if(id == pe) continue;
 			if(num[v]){
-				low[u] = min(low[u], num[v]);
+				minimize(low[u], num[v]);
 				if(num[v] < num[u]) stk.push_back(id);
 				continue;
 			}
 			stk.push_back(id); dfs(v, id, g); ch++;
-			low[u] = min(low[u], low[v]);
+			minimize(low[u], low[v]);
 			if(low[v] > num[u]) isBridge[id] = true;
 			if(low[v] < num[u]) continue;
 			if(pe >= 0 || ch > 1) isCut[u] = true;

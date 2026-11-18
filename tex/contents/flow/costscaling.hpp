@@ -29,7 +29,7 @@ struct MinCostCirc{
 		ll eps = 0;
 		FOR(u, 0, n - 1) for(int id: adj[u])
 			if(edges[id].cap > 0)
-				eps = max(eps, -reducedCost(u, id));
+				maximize(eps, -reducedCost(u, id));
 		if(eps <= 1) return false;
 		eps = max(1LL, eps >> 3);
 		vector<ll> excess(n); vector<int> ptr(n); queue<int> q;
@@ -54,7 +54,7 @@ struct MinCostCirc{
 				// Below every candidate; subtraction stays in ll.
 				ptr[u] = 0, pot[u] = LLONG_MIN / 4;
 				for(int id: adj[u]) if(edges[id].cap > 0)
-					pot[u] = max(pot[u],
+					maximize(pot[u],
 						pot[edges[id].to] - edges[id].cost - eps);
 			}
 		}
