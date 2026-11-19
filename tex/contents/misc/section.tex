@@ -15,4 +15,37 @@
 	\fld{Needs} $t_0$ near a typical worsening $\Delta$, $t_1$ near the smallest one that matters. A worsening is accepted with probability $e^{-\Delta / T}$.
 ]\label{anneal}
 
-\entry{DP optimisation: D\&C, Knuth, Aliens}
+\cpp[4]{DP optimisation: D\&C, Knuth, Aliens}{dpopt.hpp}[
+	\fld{Use} \texttt{ll v = dncDP(n, k, C);}
+	\fld{Result} the least sum of $C$ over cuts of $a_1..a_n$ into $k$ blocks.
+	\fld{Needs} $1 \le k \le n$; $C$ has the quadrangle inequality (next topics).
+	\fld{knuth} \texttt{knuth(n, C)} is the least total cost of merging $a_1..a_n$ into one, where each merge into $a_l..a_r$ costs $C(l, r)$.
+	\fld{aliens} \texttt{aliens(k, solve)} is $f(k)$ for a convex $f$ with integer values; \texttt{solve($\lambda$)} returns $\min_c (f(c) + \lambda c)$ and the smallest such $c$.
+]\label{dpopt}
+{\small\tightdisplay
+\topic{Conditions}
+Check them on $C$ before using D\&C or Knuth.
+\begin{facts}
+	\item Quadrangle inequality (QI): for all $a \le b \le c \le d$,
+	\[ C(a, c) + C(b, d) \le C(a, d) + C(b, c). \]
+	\item Monotone on inclusion: for all $a \le b \le c \le d$,
+	\[ C(b, c) \le C(a, d). \]
+	\item QI holds for the block sum $s_r - s_{l-1}$, for its square when every $a_i \ge 0$, and for a sum of QI costs.
+\end{facts}
+\topic{Divide and conquer}
+Use \texttt{dncDP} for a layered DP whose best cut $p$ does not move left as $i$ grows; QI gives that.
+\[ f_j(i) = \min_{j-1 \le p < i} f_{j-1}(p) + C(p+1, i), \quad f_0(0) = 0. \]
+\topic{Knuth}
+Use \texttt{knuth} for interval merging when $C$ has QI and is monotone on inclusion.
+\[ d(l, r) = C(l, r) + \min_{l \le m < r} d(l, m) + d(m+1, r), \quad d(l, l) = 0. \]
+Then the best $m$ obeys
+\[ opt(l, r-1) \le opt(l, r) \le opt(l+1, r). \]
+\topic{Aliens}
+Use \texttt{aliens} when the answer for exactly $k$ parts, $f(k)$, is convex in $k$.
+\begin{facts}
+	\item In \texttt{solve($\lambda$)} add $\lambda$ to the cost of every part and drop the limit on the count. Solve that with D\&C, a convex hull trick or Li Chao (\S\ref{lichao}).
+	\item Compare \texttt{\{value, count\}} as a pair, so that a tie keeps the fewest parts.
+	\item Integer costs make the slopes integers, so an integer $\lambda$ is enough.
+	\item For a maximum, negate the costs and the answer.
+\end{facts}
+}

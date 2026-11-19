@@ -352,6 +352,8 @@ all_source_codes = {
 		"ternary": StressTest("misc/ternary", 2),
 		"ternary_stress": StressTest("misc/ternary_stress", 10),
 		"anneal": StressTest("misc/anneal", 5),
+		"dpopt_obst": OjTest("misc/dpopt_obst", "https://onlinejudge.u-aizu.ac.jp/problems/ALDS1_10_D", 1, error=1e-4),
+		"dpopt_stress": StressTest("misc/dpopt_stress", 10),
 	},
 }
 
