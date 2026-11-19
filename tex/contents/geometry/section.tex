@@ -10,7 +10,29 @@
 	\fld{sgn} \texttt{sgn(double)} takes $|v| \le 10^{-9}$ as zero, which suits coordinates up to $10^3$; edit \texttt{EPS} there.
 	\fld{segInter} is true also when the segments only touch. For the point, convert with \texttt{PD(..)} and read \texttt{lineInter(..).se} when \texttt{.fi} is 1.
 ]\label{point}
-\entry{Polygon}
+\cpp[4]{Polygon}{polygon.hpp}[
+	\fld{Use} \texttt{ll a2 = polygonArea2(v); inPolygon(v, PL\{x, y\});}
+	\fld{Result} the area is $|\texttt{a2}| / 2$; \texttt{a2} $> 0$ when \texttt{v} is counter-clockwise.
+	\fld{Needs} a simple polygon. With \texttt{PL} and coordinates up to $C$: $2nC^2 < 9 \cdot 10^{18}$.
+	\fld{inPolygon} With \texttt{strict = false} a point on the border is inside.
+	\fld{polygonCut} takes \texttt{PD} points; a vertex on the line may appear twice in the result.
+]\label{polygon}
+{\small\tightdisplay
+\topic{Pick's theorem}
+To count the lattice points inside a polygon whose vertices are lattice points:
+\[ A = I + \frac{B}{2} - 1, \]
+\[ B = \sum_{\text{edges}} \gcd(|\Delta x|, |\Delta y|). \]
+$A$ is the area and $I$ the number of lattice points strictly inside. $B$ is the number on the border.
+Example: the triangle $(0, 0), (4, 0), (0, 4)$ has $A = 8$, $B = 12$, $I = 3$.
+\topic{Triangle from its sides}
+To work with side lengths $a, b, c$ instead of coordinates, let $p = (a + b + c) / 2$:
+\[ A = \sqrt{p(p - a)(p - b)(p - c)}, \]
+\[ R = \frac{abc}{4A}, \]
+\[ r = \frac{A}{p}, \]
+\[ m_a = \tfrac{1}{2} \sqrt{2b^2 + 2c^2 - a^2}, \]
+\[ l_a = \sqrt{bc \left(1 - \left(\frac{a}{b + c}\right)^2\right)}. \]
+$A$ is the area. $R$ and $r$ are the radii of the circumscribed and the inscribed circle. $m_a$ and $l_a$ are the median and the angle bisector to side $a$.
+}
 \entry{Convex hull}
 \entry{Circles}
 \entry{Half-plane intersection}

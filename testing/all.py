@@ -289,6 +289,10 @@ all_source_codes = {
 		"cgl2d": OjTest("geometry/cgl2d", "https://onlinejudge.u-aizu.ac.jp/problems/CGL_2_D", 1, error=1e-8),
 		"point_stress": StressTest("geometry/point_stress", 10),
 		"point_ld": ShellTest("geometry/point_ld", 60, uses=("tex/contents/geometry/point.hpp", "testing/geometry/point_stress.cpp", "tex/contents/contest/template.hpp")),
+		"cgl3a": OjTest("geometry/cgl3a", "https://onlinejudge.u-aizu.ac.jp/problems/CGL_3_A", 1),
+		"cgl3c": OjTest("geometry/cgl3c", "https://onlinejudge.u-aizu.ac.jp/problems/CGL_3_C", 1),
+		"cgl4c": OjTest("geometry/cgl4c", "https://onlinejudge.u-aizu.ac.jp/problems/CGL_4_C", 1, error=1e-6),
+		"polygon_stress": StressTest("geometry/polygon_stress", 10),
 	},
 	"math": {
 		"modint": TestCase("math/modint", "linear_algebra/inverse_matrix", 3),
