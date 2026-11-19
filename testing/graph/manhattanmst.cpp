@@ -21,6 +21,8 @@ ll total(const vector<array<ll, 3>> &e){
 int main(){
 	assert(manhattanMST(vector<pll>(1)).empty());
 	assert(manhattanMST(vector<pll>(2)).empty());
+	vector<pll> r(2); r[0] = {LLONG_MIN, LLONG_MIN};
+	assert(manhattanMST(r).empty());
 	vector<pll> q(4, {2, 2});
 	q[0] = {-5, 7};
 	auto z = manhattanMST(q);

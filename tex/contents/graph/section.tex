@@ -19,7 +19,7 @@
 \cpp[4]{Lowlink: bridges, articulation points, BCC}{lowlink.hpp}[
 	\fld{Use} \texttt{g[u].push\_back(\{v, id\}); g[v].push\_back(\{u, id\}); LowLink low(g, m);}
 	\fld{Result} \texttt{isBridge[id]}; \texttt{isCut[u]}; \texttt{bcc[id]} $\in 1..\texttt{bccCnt}$ is the biconnected component of edge $id$.
-	A BCC's vertices are the endpoints of its edges; 2-edge-connected components are a flood fill that never crosses a bridge.
+	\fld{BCC} vertices are edge endpoints; a vertex with no non-loop edge is a singleton. 2-edge-connected components: flood fill avoiding bridges.
 	\fld{Needs} distinct ids in $0..m$. Multi-edges are never bridges; a self-loop gets \texttt{bcc} $= 0$.
 ]\label{lowlink}
 \cpp[4]{Euler path / circuit}{euler.hpp}[
@@ -61,7 +61,7 @@ Use it to minimise the average weight $\bar w(C)$ of a cycle $C$, when the graph
 \cpp[4]{Manhattan MST}{manhattanmst.hpp}[
 	\fld{Use} \texttt{vector<pll> p(n + 1); auto e = manhattanMST(p);}
 	\fld{Result} $n - 1$ edges \texttt{\{w, u, v\}} of a minimum spanning tree in increasing $w$, where $w = |x_u - x_v| + |y_u - y_v|$.
-	\fld{Needs} $|x|, |y| \le 10^{17}$. Chebyshev distance: rotate to $(x + y, x - y)$ first, then halve each $w$.
+	\fld{Needs} $|x|, |y| \le 10^{17}$. Chebyshev distance: rotate to $(x + y, x - y)$ first (then $|x| + |y| \le 10^{17}$ is needed), then halve each $w$.
 ]\label{manhattanmst}
 \entry{Matrix-tree theorem}\label{matrixtree}
 {\small\tightdisplay
@@ -101,7 +101,7 @@ Example: triangle with weights 1, 2, 3: the trees give $1 \cdot 2 + 1 \cdot 3 + 
 \cpp[4]{HLD}{hld.hpp}[
 	\fld{Use} \texttt{HLD hld(g); for(auto [l, r]: hld.path(u, v)) s += seg.get(l, r).sum;}
 	\fld{Result} \texttt{par}, \texttt{depth}, \texttt{head}, \texttt{sub} (subtree size); \texttt{par[root]} $= 0$.
-	\fld{Needs} \texttt{g} is an undirected tree, each edge in both lists; \texttt{u}, \texttt{v} in \texttt{root}'s component. Fill \texttt{seg} from \texttt{a[hld.pos[u]] = \{value, 1\}} (\S\ref{lazyseg}).
+	\fld{Needs} \texttt{g} is an undirected forest, each edge in both lists; \texttt{u}, \texttt{v} in \texttt{root}'s tree. Fill \texttt{seg} from \texttt{a[hld.pos[u]] = \{value, 1\}} (\S\ref{lazyseg}).
 	\fld{lca} \texttt{lca(u, v)} is the lowest common ancestor.
 	\fld{path} covers $u \leadsto v$ by closed \texttt{pos} ranges, unordered: operations must commute. \texttt{edge = true} stores $(\texttt{par[v]}, v)$ at $v$, omitting the LCA.
 ]\label{hld}
@@ -124,6 +124,6 @@ Example: triangle with weights 1, 2, 3: the trees give $1 \cdot 2 + 1 \cdot 3 + 
 ]\label{maxclique}
 \cpp[4]{Dominator tree}{dominator.hpp}[
 	\fld{Use} \texttt{vector<vector<int>> g(n + 1); Dominator dt(g, root);}
-	\fld{Result} \texttt{idom[v]} is the strict dominator of $v$ nearest to $v$, where $x$ dominates $v$ if every path from \texttt{root} to $v$ visits $x$.
+	\fld{Result} \texttt{idom[v]} is the strict dominator of $v$ nearest to $v$, where $x$ dominates $v$ if every path from \texttt{root} to $v$ visits $x$. \texttt{idom[root]} $=$ \texttt{root}; \texttt{idom[v]} $= 0$ if $v$ is unreachable.
 	\fld{Needs} nothing: self-loops and multi-edges are fine.
 ]\label{dominator}

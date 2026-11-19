@@ -2,8 +2,8 @@
 #include "hld.hpp"
 
 // Virtual tree of vs plus pairwise LCAs, vertices 1..n,
-// O(k log n) for k = |vs|. The edge p -> v stands for
-// depth[v] - depth[p] tree edges.
+// O(k log k + k log n) for k = |vs|. The edge p -> v
+// stands for depth[v] - depth[p] tree edges.
 vector<pair<int, int>> virtualTree(HLD &hld,
 		vector<int> vs){
 	auto cmp = [&](int a, int b){

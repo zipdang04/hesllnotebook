@@ -21,9 +21,9 @@ vector<array<ll, 3>> manhattanMST(vector<pair<ll, ll>> p){
 			}
 			sweep[-p[i].se] = i;
 		}
-		for(auto &q: p)
-			if(k & 1) q.fi = -q.fi;
-			else swap(q.fi, q.se);
+		FOR(i, 1, n)
+			if(k & 1) p[i].fi = -p[i].fi;
+			else swap(p[i].fi, p[i].se);
 	}
 	sort(all(cand));
 	vector<int> dsu(n + 1); iota(all(dsu), 0);
