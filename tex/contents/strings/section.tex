@@ -46,7 +46,7 @@ To compare two substrings with 0-based starts $i$, $j$:
 	\texttt{sa.lcp[i]} is ranks $i-1$, $i$'s common prefix length ($\le n$); \texttt{lcp[0]} is 0.
 	Ties use increasing starts; \texttt{sa[0]} is the first minimum rotation.
 	\fld{Needs} For suffixes, final \texttt{'\$'} is unique and smallest; \texttt{sa[0]} is $n$, and ranks $1..n$ are the suffixes of $s$.
-	For the longest common substring of $s$ and $t$, use \texttt{s + '\$' + t + '\#'}: two distinct delimiters in neither string, the final \texttt{'\#'} (35) smaller than \texttt{'\$'} (36) and than every data character.
+	LCS of $s, t$: \texttt{s + '\$' + t + '\#'}, both absent from $s, t$ and \texttt{'\#'} $<$ \texttt{'\$'} $<$ data.
 ]\label{suffixarray}
 \cpp[4]{Aho--Corasick}{ahocorasick.hpp}[
 	\fld{Use} \texttt{Aho a; for(auto \&p: ps) e.push\_back(a.add(p)); a.build();}
