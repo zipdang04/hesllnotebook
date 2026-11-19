@@ -45,10 +45,8 @@ int main(){
 			}
 			bool diagonal = draw(0, 2) == 0;
 			int sign = draw(0, 1) ? 1 : -1;
-			// tenths are not exact in binary; not on diagonals:
-			// two coincident opposite ones break the zero-area
-			// rule (open finding, fix1.md)
-			int k = !diagonal && draw(0, 1) ? 10 : 1;
+			// tenths are not exact in binary
+			int k = draw(0, 1) ? 10 : 1;
 			auto coord = [&](){
 				return (double)draw(-r * k, r * k) / k;
 			};

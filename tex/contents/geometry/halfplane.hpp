@@ -27,7 +27,8 @@ vector<PD> halfPlaneInter(vector<pair<PD, PD>> hs){
 		return sgn(u.pq.unit().cross(r - u.p)) < 0;
 	};
 	auto inter = [](H u, H v){
-		return lineInter(u.p, u.p + u.pq, v.p, v.p + v.pq).se;
+		return u.p + u.pq * ((v.p - u.p).cross(v.pq)
+			/ u.pq.cross(v.pq));
 	};
 	FOR(i, 0, n - 1){
 		while(q < h && out(b[i], inter(c[h], c[h-1]))) h--;

@@ -65,6 +65,6 @@ $A$ is the area. $R$ and $r$ are the radii of the circumscribed and the inscribe
 \cpp[4]{3D hull}{hull3d.hpp}[
 	\fld{Use} \texttt{vector<Point3<ll> > p; auto f = hull3d(p); ll v6 = hullVolume6(p, f);}
 	\fld{Result} the triangles cover the surface once. A flat facet may come out as several triangles, with vertices inside it or on its edges.
-	\fld{Needs} $|x|, |y|, |z| \le 5 \cdot 10^5$ with \texttt{ll}, and $n \le 3000$ ($n^2$ integers of memory). With \texttt{double}, nearly coplanar points are not reliable.
+	\fld{Needs} $|x|, |y|, |z| \le 5 \cdot 10^5$ with \texttt{ll}, and $n \le 3000$ ($n^2$ integers of memory). With \texttt{double}, coplanar points fail above about $10^2$: scale decimal input to \texttt{ll}.
 	\fld{hullVolume6} needs the faces \texttt{f} of \texttt{hull3d(p)}. With \texttt{ll} it is exact and at most $6 \cdot 10^{18}$.
 ]\label{hull3d}

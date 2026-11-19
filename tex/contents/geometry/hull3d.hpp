@@ -3,7 +3,7 @@
 
 // 3D hull, O(n^2) time and n^2 ints. Faces = triples of
 // 0-based indices into p, counter-clockwise from outside.
-// Coplanar points are fine; exact with Point3<ll>.
+// Coplanar points are fine with Point3<ll> (exact).
 template<class T>
 struct Point3{
 	typedef Point3 P;
@@ -50,13 +50,13 @@ vector<array<int, 3>> hull3d(const vector<Point3<T>> &p){
 	}
 	vector<vector<int>> flag(n, vector<int>(n));
 	vector<array<int, 3>> f{
-		{o[0], o[1], o[2]}, {o[2], o[1], o[0]}}, nf(2);
+		{o[0], o[1], o[2]}, {o[2], o[1], o[0]}}, nf;
 	FOR(k, 3, n - 1){
 		int i = o[k];
 		nf.clear();
 		for(auto [a, b, c]: f){
-			int d = sgn((p[b] - p[a]).cross(p[c] - p[a])
-				.dot(p[i] - p[a]));
+			auto nr = (p[b] - p[a]).cross(p[c] - p[a]);
+			int d = sgn(nr.dot(p[i] - p[a]));
 			if(d <= 0) nf.push_back({a, b, c});
 			flag[a][b] = flag[b][c] = flag[c][a] = d;
 		}

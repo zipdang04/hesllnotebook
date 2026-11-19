@@ -94,5 +94,12 @@ int main(){
 	f = hull3d(p);
 	assert(hullVolume6(p, f) == 6000000000000000000LL);
 	assert(hullVolume6(p, {}) == 0);
+	// decimals x10: 3 collinear, 2 coplanar groups
+	p = {{7067, 2933, 2503}, {7067, 5433, 3},
+		{-433, 5433, 7503}, {4567, 7933, 3},
+		{7067, 433, 5003}, {2067, 7933, 3}};
+	f = hull3d(p);
+	assert(sz(f) == 8);
+	assert(hullVolume6(p, f) == 140625000000LL);
 	return 0;
 }
