@@ -52,6 +52,7 @@ int orient(Point<T> a, Point<T> b, Point<T> c){
 // p on segment ab, end points included.
 template<class T>
 bool onSegment(Point<T> a, Point<T> b, Point<T> p){
+	if(a == b) return sgn((p - a).dist()) == 0;
 	return sgn(p.cross(a, b)) == 0
 		&& sgn((a - p).dot(b - p)) <= 0;
 }
@@ -64,6 +65,8 @@ template<class T> bool segInter(Point<T> a,
 	return onSegment(c, d, a) || onSegment(c, d, b)
 		|| onSegment(a, b, c) || onSegment(a, b, d);
 }
+// PL inputs: w = (b - a).cross(d - c), q = c.cross(d, a),
+// both ll; point = PD(a) + PD(b - a) * (q / (double)w).
 // Lines ab, cd: {1, point}, {0, _} parallel, {-1, _} same.
 pair<int, PD> lineInter(PD a, PD b, PD c, PD d){
 	double w = (b - a).cross(d - c);

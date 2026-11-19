@@ -138,6 +138,9 @@ void checkGeometry(PL c1, ll r1, PL c2, ll r2,
 	assert(abs((o - x).dist() - radius) <= tol);
 }
 int main(){
+	double r1 = 999.99, r2 = r1 - 1e-8;
+	auto ci = circleInter({0, 0}, r1, {2e-8, 0}, r2);
+	assert(sz(ci) && abs(ci[0].x - 499.9953966451) < 1e-6);
 	mt19937 rng(540054);
 	stressMec(rng);
 	FOR(rep, 0, 19999){

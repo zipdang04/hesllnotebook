@@ -54,6 +54,10 @@ void selfCheck(){
 	assert(!inHull(h, PL{C - 1, C}));
 	assert(inHull(h, PL{0, 0}));
 	assert(!inHull(h, PL{C, C + 1}, false));
+	double e = 1.0 / 4294967296;  // 2^-32
+	auto hd2 = hullDiameter(vector<PD>{{0, 5 * e}, {1, 3 * e},
+		{7, 3 * e}, {8, 5 * e}});
+	assert(abs((hd2.fi - hd2.se).dist2() - 64) < 1e-6);
 	auto far = hullDiameter(h);
 	assert((far.fi - far.se).dist2() == 8 * C * C);
 }

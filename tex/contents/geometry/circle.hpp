@@ -24,7 +24,7 @@ vector<PD> circleInter(PD c1, double r1, PD c2, double r2){
 	int out = sgn(d - r1 - r2), in = sgn(abs(r1 - r2) - d);
 	if(sgn(d) == 0 || out > 0 || in > 0)
 		return {};
-	double p = (d2 + r1 * r1 - r2 * r2) / (d2 * 2);
+	double p = (d2 + (r1 - r2) * (r1 + r2)) / (d2 * 2);
 	double h2 = r1 * r1 - p * p * d2;
 	PD mid = c1 + vec * p;
 	if(out == 0 || in == 0)

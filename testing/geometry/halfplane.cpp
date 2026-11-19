@@ -72,5 +72,9 @@ int main(){
 		{{-14.5, -14.5}, {16.1, 16.1}},
 		{{9.2, 9.2}, {8.9, 8.9}}});
 	assert(abs(area2(p)) < 1e-6 * B);
+	double h = 1e-5;  // short directions: unit square
+	p = halfPlaneInter({{{0, 0}, {h, 0}}, {{1, 0}, {1, h}},
+		{{1, 1}, {1 - h, 1}}, {{0, 1}, {0, 1 - h}}});
+	assert(sz(p) == 4 && close(area2(p), 2));
 	return 0;
 }

@@ -1,6 +1,7 @@
 \setcounter{section}{4}
 \section{Geometry}
 \twolevels
+Entries 5.2--5.8 use Point (\S\ref{point}).
 \setcurrentdir{geometry}
 
 \cpp[4]{Point / line primitives}{point.hpp}[
@@ -8,7 +9,7 @@
 	\fld{Result} \texttt{a.cross(b, c)} is $(b - a) \times (c - a)$; \texttt{orient} is its sign.
 	\fld{Needs} On a precision WA, as a last resort, replace \texttt{double} by \texttt{long double} in all copied geometry code, the \texttt{PD} typedef included.
 	\fld{sgn} \texttt{sgn(double)} takes $|v| \le 10^{-9}$ as zero, which suits coordinates up to $10^3$; edit \texttt{EPS} there.
-	\fld{segInter} is true also when the segments only touch. For the point, convert with \texttt{PD(..)} and read \texttt{lineInter(..).se} when \texttt{.fi} is 1.
+	\fld{segInter} is true also when the segments touch. \texttt{PD} point: \texttt{lineInter(..).se} if \texttt{.fi} is 1; \texttt{PL}: see the comment above \texttt{lineInter}.
 ]\label{point}
 \cpp[4]{Polygon}{polygon.hpp}[
 	\fld{Use} \texttt{ll a2 = polygonArea2(v); inPolygon(v, PL\{x, y\});}
@@ -43,7 +44,7 @@ $A$ is the area. $R$ and $r$ are the radii of the circumscribed and the inscribe
 \cpp[4]{Circles}{circle.hpp}[
 	\fld{Use} \texttt{auto v = circleInter(c1, r1, c2, r2); auto [o, r] = enclosingCircle(pts);}
 	\fld{Needs} $a \ne b$ for \texttt{circleLine}, at least one point for \texttt{enclosingCircle}.
-	\fld{circleTangents} The sizes for $r_2$ and for $-r_2$ add up to the number of common tangents (0 for equal circles).
+	\fld{circleTangents} The sizes for $r_2$ and for $-r_2$ add up to the common tangents (0 for equal circles) if $r_1, r_2 > 0$; for $r_i = 0$ one call gives all.
 	\fld{circumcenter} The radius is \texttt{(o - a).dist()}.
 	\fld{enclosingCircle} accepts repeated and collinear points; its relative tolerance is \texttt{EPS} there.
 ]\label{circle}

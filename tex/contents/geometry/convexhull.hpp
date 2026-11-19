@@ -34,7 +34,7 @@ template<class T> pair<Point<T>, Point<T>>
 			maximize(res, make_pair((h[i] - h[j]).dist2(),
 				make_pair(h[i], h[j])));
 			Point<T> e = h[(j + 1) % n] - h[j];
-			if(sgn(e.cross(h[i+1] - h[i])) >= 0)
+			if(e.cross(h[i+1] - h[i]) >= 0)
 				break;
 		}
 	return res.se;

@@ -14,7 +14,7 @@ vector<PD> halfPlaneInter(vector<pair<PD, PD>> hs){
 	FOR(i, 0, 3) hs.push_back({bx[i], bx[(i+1)%4]});
 	vector<H> b;
 	for(auto [s, e]: hs){
-		PD pq = e - s;
+		PD pq = (e - s).unit();
 		// atan2 puts y = -0.0 at -pi, away from y = 0 at pi
 		if(pq.y == 0) pq.y = 0;
 		b.push_back({s, pq, atan2(pq.y, pq.x)});
@@ -22,9 +22,9 @@ vector<PD> halfPlaneInter(vector<pair<PD, PD>> hs){
 	sort(all(b), [](H u, H v){ return u.ang < v.ang; });
 	int n = sz(b), q = 1, h = 0;
 	vector<H> c(n + 10);
-	// unit(): a distance, so EPS does not scale with BOX
+	// pq is a unit vector: EPS is a distance, not scaled
 	auto out = [](H u, PD r){
-		return sgn(u.pq.unit().cross(r - u.p)) < 0;
+		return sgn(u.pq.cross(r - u.p)) < 0;
 	};
 	auto inter = [](H u, H v){
 		return u.p + u.pq * ((v.p - u.p).cross(v.pq)

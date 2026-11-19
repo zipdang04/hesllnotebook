@@ -99,6 +99,9 @@ void checkSmall(const vector<PL> &v, ll c, int sign){
 	assert(abs(polygonArea2(d) - area) < 1e-9);
 }
 int main(){
+	vector<PD> sq = {{0, 0}, {1, 0}, {1, 1}, {0, 1}, {0, 0}};
+	assert(inPolygon(sq, PD{1e-5, 1e-5}));
+	assert(!inPolygon(sq, PD{0.5, 1e-12}));
 	assert(polygonArea2(vector<PL>{}) == 0);
 	assert(polygonArea2(vector<PL>{{1, 2}}) == 0);
 	assert(polygonArea2(vector<PL>{{1, 2}, {3, 4}}) == 0);
