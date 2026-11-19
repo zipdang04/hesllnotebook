@@ -302,6 +302,9 @@ all_source_codes = {
 		"cgl7f": OjTest("geometry/cgl7f", "https://onlinejudge.u-aizu.ac.jp/problems/CGL_7_F", 1, error=1e-6),
 		"cgl7g": OjTest("geometry/cgl7g", "https://onlinejudge.u-aizu.ac.jp/problems/CGL_7_G", 1, error=1e-6),
 		"circle_stress": StressTest("geometry/circle_stress", 10),
+		"closestpair": TestCase("geometry/closestpair", "geo/closest_pair", 5),
+		"kdtree": StressTest("geometry/kdtree", 5),
+		"kdtree_stress": StressTest("geometry/kdtree_stress", 10),
 	},
 	"math": {
 		"modint": TestCase("math/modint", "linear_algebra/inverse_matrix", 3),

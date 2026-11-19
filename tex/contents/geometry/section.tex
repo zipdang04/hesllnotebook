@@ -48,5 +48,14 @@ $A$ is the area. $R$ and $r$ are the radii of the circumscribed and the inscribe
 	\fld{enclosingCircle} accepts repeated and collinear points; its relative tolerance is \texttt{EPS} there.
 ]\label{circle}
 \entry{Half-plane intersection}
-\entry{Closest pair / kd-tree}
+\cpp[4]{Closest pair}{closestpair.hpp}[
+	\fld{Use} \texttt{auto [a, b] = closestPair(pts); double d = (a - b).dist();}
+	\fld{Result} two points of the input at the smallest distance. They are equal when a point occurs twice.
+	\fld{Needs} at least 2 points, $|x|, |y| \le 10^9$.
+]\label{closestpair}
+\cpp[4]{kd-tree}{kdtree.hpp}[
+	\fld{Use} \texttt{KdTree kd(pts); auto [d2, q] = kd.nearest(p);}
+	\fld{Result} \texttt{q} is a point of \texttt{pts} nearest to \texttt{p} and \texttt{d2} is the squared distance. It is \texttt{p} itself when \texttt{p} is in the set.
+	\fld{Needs} at least 1 point, $|x|, |y| \le 10^9$ for the points and the queries.
+]\label{kdtree}
 \entry{3D}
