@@ -11,7 +11,11 @@
 \subsection{Codes}
 \entry{Linear codes: Reed--Solomon, GF(2), stuck bits}
 \entry{Bit-level codes: self-delimiting, VT, pairs, checksum}
-\entry{Hamming SECDED}
+\cpp[4]{Hamming SECDED}{hamming.hpp}[
+	\fld{Use} \texttt{auto w = hammingEncode(x); ll y = hammingDecode(w);}
+	\fld{Result} \texttt{y == x} after at most one flipped bit of \texttt{w}, and $-1$ after exactly two (single-error correction, double-error detection).
+	\fld{Needs} $0 \le x < 2^{57}$. Three or more flips can give a wrong \texttt{y} silently.
+]\label{hamming}
 
 \subsection{Encoding}
 \entry{Rank / unrank}

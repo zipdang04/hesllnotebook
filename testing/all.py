@@ -341,6 +341,8 @@ all_source_codes = {
 		"linearrec_stress": StressTest("math/linearrec_stress", 10),
 	},
 	"interactive": {
+		"hamming": StressTest("interactive/hamming", 2),
+		"hamming_stress": StressTest("interactive/hamming_stress", 10),
 	},
 	"misc": {
 	},
