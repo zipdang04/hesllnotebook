@@ -57,7 +57,7 @@ NOTEBOOK (25 pp)  —  section → entry, or section → group → entry where a
 │   │   ├── 1.1.1 Dinic with scaling + min cut             CODE       ~45
 │   │   │   (reverse BFS from t, multi-push DFS)
 │   │   │   bipartite matching O(E√V); König: min VC from the cut
-│   │   ├── 1.1.2 MCMF (SSP + SPFA)                        CODE       ~45  uses: SPFA (§2.2.1)
+│   │   ├── 1.1.2 MCMF (SSP, Bellman-Ford + Dijkstra)     CODE       ~45
 │   │   ├── 1.1.3 Min-cost circulation, cost scaling       CODE       ~73  uses: Dinic
 │   │   │   (bounds, any costs; O(V²E log VC), beats anti-SSP)
 │   │   ├── 1.1.4 Flow models: lower bounds / circulation  TEXT       ~12  uses: Dinic, MCMF   [4/7]

@@ -14,20 +14,20 @@
 \cpp[4]{MCMF}{mcmf.hpp}[
 	\fld{Use} \texttt{MCMF mf(n + 1); mf.addEdge(u, v, cap, cost); auto [f, c] = mf.maxFlow(s, t);}
 	\fld{Result} returns cheapest \texttt{\{flow, cost\}} for $\min(\texttt{limit}, \text{max flow})$ units. Exact flow needs \texttt{f == limit}.
-	\fld{Needs} allows negative costs, no negative cycle at $\texttt{cap} > 0$. $\sum |\texttt{cost}| \le 10^{18}$ over all edges, and total cost $< 9 \cdot 10^{18}$.
+	\fld{Needs} allows negative costs, no negative cycle at $\texttt{cap} > 0$. $\sum |\texttt{cost}| \le 10^{18}$ over all edges, and $|\text{total cost}| < 9 \cdot 10^{18}$.
 	\fld{flowOf} flow on the edge whose id \texttt{addEdge} returned.
 	\fld{Models} \S\ref{flowmodels}.
 ]\label{mcmf}
 \cpp[4]{Min-cost circulation (cost scaling)}{costscaling.hpp}[
 	\fld{Use} \texttt{MinCostCirc mc(n + 1); int id = mc.addEdge(u, v, lo, hi, c); bool ok = mc.solve();}
 	\fld{Result} \texttt{ok} is false if infeasible. \texttt{mc.total} (\texttt{\_\_int128}) is the min cost.
-	\fld{Needs} $\texttt{lo} \le \texttt{hi}$, any signs, one \texttt{solve} per object. $N$ the constructor size: $4N(N + 1) \max |c|$, $\sum |\texttt{lo}|$, $\sum (\texttt{hi} - \texttt{lo})$ each $< 9 \cdot 10^{18}$.
+	\fld{Needs} $\texttt{lo} \le \texttt{hi}$, any signs, one \texttt{solve} per object. $N$ the constructor size: $4N(N + 1) \max |c|$, $\sum |\texttt{lo}|$, $\sum (\texttt{hi} - \texttt{lo})$ each $< 9 \cdot 10^{18}$. Uses Dinic (\S\ref{dinic}).
 	\fld{flowOf} \texttt{mc.flowOf(id)} is the flow on the edge. \texttt{mc.pot} are optimal duals: $c + \texttt{pot[u]} - \texttt{pot[v]} \ge 0$ on every arc with room.
 	\fld{Models} \S\ref{flowmodels}
 ]\label{costscaling}
 \entry{Flow models}\label{flowmodels}
 {\small\tightdisplay
-The graph has vertices $1..n$. Extra vertices are $S = n + 1$ and $T = n + 2$, so build \texttt{Dinic d(n + 3)}. Capacity $\infty$ is \texttt{oo}.
+The graph has vertices $1..n$. Extra vertices are $S = n + 1$ and $T = n + 2$, so build \texttt{Dinic d(n + 3)}. Capacity $\infty$ is any value above the total of the finite capacities (and of $\sum_{d_v > 0} d_v$), within Dinic's limit. \texttt{oo} works if that total is below $10^{18}$.
 \topic{Lower bounds: feasible circulation}
 Use it when every edge needs $l \le f \le r$ and there is no source or sink.
 \begin{facts}
@@ -58,7 +58,7 @@ Use it with MCMF (\S\ref{mcmf}) when negative-cost edges may form a cycle, which
 	\item Add $v \to u$ with capacity $r$ and cost $-c$, to undo units.
 	\item Record the saturation: $d_v \mathrel{+}= r$ and $d_u \mathrel{-}= r$.
 	\item Add the $S$ and $T$ edges as in the first topic, with cost 0.
-	\item Run \texttt{mf.maxFlow(S, T)}. The min cost is
+	\item Let $D = \sum_{d_v > 0} d_v$ and run \texttt{mf.maxFlow(S, T, D)}. Check that the flow returned is $D$. The min cost is
 	\[ \textstyle\sum_{c < 0} c \cdot r \; + \; \text{the MCMF cost}. \]
 	\item Cost scaling (\S\ref{costscaling}) takes negative cycles and lower bounds directly.
 \end{facts}
