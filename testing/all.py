@@ -232,6 +232,8 @@ all_source_codes = {
 		"hld_lca": TestCase("graph/hld_lca", "tree/lca", 2),
 		"hld_subtree": TestCase("graph/hld_subtree", "tree/vertex_add_subtree_sum", 3),
 		"hld_stress": StressTest("graph/hld_stress", 10),
+		"virtualtree": OjTest("graph/virtualtree", "https://yukicoder.me/problems/no/901", 2),
+		"virtualtree_stress": StressTest("graph/virtualtree_stress", 10),
 	},
 	"ds": {
 		"pbds": TestCase("ds/pbds", "data_structure/ordered_set", 5),

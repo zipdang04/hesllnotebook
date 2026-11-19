@@ -69,7 +69,11 @@ Use it to minimise the average weight $\bar w(C)$ of a cycle $C$. Fix an integer
 	\fld{path} covers $u \leadsto v$ by closed \texttt{pos} ranges, unordered: operations must commute. \texttt{edge = true} stores $(\texttt{par[v]}, v)$ at $v$, omitting the LCA.
 ]\label{hld}
 \entry{Centroid decomposition}
-\entry{Virtual tree}
+\cpp[4]{Virtual tree}{virtualtree.hpp}[
+	\fld{Use} \texttt{HLD hld(g); auto t = virtualTree(hld, vs);}
+	\fld{Result} \texttt{t} holds pairs \texttt{\{v, p\}} in preorder over \texttt{vs} and their lowest common ancestors; $p$ is $v$'s parent, 0 for the first.
+	\fld{Needs} \texttt{hld} is built on the same tree (\S\ref{hld}); \texttt{vs} may repeat vertices or be empty.
+]\label{virtualtree}
 
 \subsection{Hard}
 \entry{Dominator tree}
