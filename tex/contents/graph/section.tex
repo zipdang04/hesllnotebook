@@ -80,9 +80,13 @@ Use it to minimise the average weight $\bar w(C)$ of a cycle $C$. Fix an integer
 ]\label{virtualtree}
 
 \subsection{Hard}
-\entry{Dominator tree}
 \cpp[4]{Max clique}{maxclique.hpp}[
 	\fld{Use} \texttt{vector<vector<int>> g(n + 1); MaxClique mc(g);}
 	\fld{Result} \texttt{mc.clique} holds one maximum clique, unsorted. On the complement graph it is a maximum independent set.
 	\fld{Needs} each edge in both lists. Self-loops are ignored.
 ]\label{maxclique}
+\cpp[4]{Dominator tree}{dominator.hpp}[
+	\fld{Use} \texttt{vector<vector<int>> g(n + 1); Dominator dt(g, root);}
+	\fld{Result} \texttt{idom[v]} is the strict dominator of $v$ nearest to $v$, where $x$ dominates $v$ if every path from \texttt{root} to $v$ visits $x$.
+	\fld{Needs} nothing: self-loops and multi-edges are fine.
+]\label{dominator}

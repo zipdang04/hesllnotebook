@@ -237,6 +237,8 @@ all_source_codes = {
 		"virtualtree_stress": StressTest("graph/virtualtree_stress", 10),
 		"maxclique": TestCase("graph/maxclique", "graph/maximum_independent_set", 2),
 		"maxclique_stress": StressTest("graph/maxclique_stress", 10),
+		"dominator": TestCase("graph/dominator", "graph/dominatortree", 2),
+		"dominator_stress": StressTest("graph/dominator_stress", 10),
 	},
 	"ds": {
 		"pbds": TestCase("ds/pbds", "data_structure/ordered_set", 5),
