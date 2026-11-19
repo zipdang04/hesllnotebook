@@ -62,7 +62,39 @@ Use it to minimise the average weight $\bar w(C)$ of a cycle $C$. Fix an integer
 	\fld{Result} $n - 1$ edges \texttt{\{w, u, v\}} of a minimum spanning tree in increasing $w$, where $w = |x_u - x_v| + |y_u - y_v|$.
 	\fld{Needs} $|x|, |y| \le 10^{17}$. Chebyshev distance: rotate to $(x + y, x - y)$ first, then halve each $w$.
 ]\label{manhattanmst}
-\entry{Matrix-tree theorem}
+\entry{Matrix-tree theorem}\label{matrixtree}
+{\small\tightdisplay
+\topic{Undirected}
+Use it to count the spanning trees of a multigraph on vertices $1..n$.
+\[ L = D - A, \qquad t(G) = \det L_{\hat r \hat r} \]
+$D$ is the diagonal of degrees. $A[u][v]$ is the number of edges between $u$ and $v$.
+$L_{\hat r \hat r}$ is $L$ without row $r$ and column $r$, for any $r$. Self-loops are ignored.
+\par Example: $K_n$ has $n^{n-2}$ spanning trees, so $K_4$ has 16.
+\topic{Computing the determinant}
+Use Gauss--Jordan (\S\ref{gauss}) to get the count modulo a prime.
+\begin{facts}
+	\item Let \texttt{a} be \texttt{vector<vector<Mint<MOD>{}>{}>} of size $(n - 1) \times (n - 1)$.
+	\item Fill it with $L$, skipping row $r$ and column $r$. It is 0-based.
+	\item The count is \texttt{gauss(a, n - 1).se}, in $O(n^3)$. For $n = 1$ it gives 1.
+	\item The exact count can be huge (up to $n^{n-2}$ for simple graphs): only its value modulo the prime is safe.
+\end{facts}
+\topic{Directed, rooted at $r$}
+Use it to count the spanning arborescences rooted at $r$.
+\begin{facts}
+	\item Edges pointing away from $r$ (every $v \ne r$ has one edge in):
+	\[ L = D_{in} - A. \]
+	\item Edges pointing toward $r$ (every $v \ne r$ has one edge out):
+	\[ L = D_{out} - A. \]
+	\item $A[u][v]$ is the number of edges $u \to v$. Drop row $r$ and column $r$ as above.
+\end{facts}
+Example: root 1, edges $1 \to 2$, $1 \to 3$, $2 \to 3$ (away from 1): vertex 3 takes its edge from 1 or from 2, so there are 2 arborescences.
+\topic{Weighted}
+Use it to sum, over all trees, the product of the edge weights.
+\begin{facts}
+	\item Add the weight instead of 1 to $A$ and $D$, then take the same determinant.
+\end{facts}
+Example: triangle with weights 1, 2, 3: the trees give $1 \cdot 2 + 1 \cdot 3 + 2 \cdot 3 = 11$.
+}
 
 \subsection{Trees}
 \cpp[4]{HLD}{hld.hpp}[
