@@ -241,6 +241,8 @@ all_source_codes = {
 		"maxclique_stress": StressTest("graph/maxclique_stress", 10),
 		"dominator": TestCase("graph/dominator", "graph/dominatortree", 2),
 		"dominator_stress": StressTest("graph/dominator_stress", 10),
+		"centroid": TestCase("graph/centroid", "tree/frequency_table_of_tree_distance", 5),
+		"centroid_stress": StressTest("graph/centroid_stress", 10),
 	},
 	"ds": {
 		"pbds": TestCase("ds/pbds", "data_structure/ordered_set", 5),

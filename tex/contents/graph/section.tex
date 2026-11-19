@@ -72,12 +72,16 @@ Use it to minimise the average weight $\bar w(C)$ of a cycle $C$. Fix an integer
 	\fld{lca} \texttt{lca(u, v)} is the lowest common ancestor.
 	\fld{path} covers $u \leadsto v$ by closed \texttt{pos} ranges, unordered: operations must commute. \texttt{edge = true} stores $(\texttt{par[v]}, v)$ at $v$, omitting the LCA.
 ]\label{hld}
-\entry{Centroid decomposition}
 \cpp[4]{Virtual tree}{virtualtree.hpp}[
 	\fld{Use} \texttt{HLD hld(g); auto t = virtualTree(hld, vs);}
 	\fld{Result} \texttt{t} holds pairs \texttt{\{v, p\}} in preorder over \texttt{vs} and their lowest common ancestors; $p$ is $v$'s parent, 0 for the first.
 	\fld{Needs} \texttt{hld} is built on the same tree (\S\ref{hld}); \texttt{vs} may repeat vertices or be empty.
 ]\label{virtualtree}
+\cpp[4]{Centroid decomposition}{centroid.hpp}[
+	\fld{Use} \texttt{Centroid cd(g);} then, for each $c$, a DFS from $c$ that enters only $v$ with \texttt{cd.level[v] > cd.level[c]}.
+	\fld{Result} that DFS visits the component of $c$. A vertex lies in $\le \log_2 n + 1$ components, so linear work in each totals $O(n \log n)$.
+	\fld{Needs} a forest, each edge in both lists.
+]\label{centroid}
 
 \subsection{Hard}
 \cpp[4]{Max clique}{maxclique.hpp}[
