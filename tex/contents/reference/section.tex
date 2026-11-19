@@ -6,6 +6,206 @@
 \entry{Counting}
 \entry{Number theory}\label{mathnt}
 \entry{Sums \& generating functions}
-\entry{Games}
-\entry{Probability \& identities}
-\entry{Techniques prompt list}
+\entry{Games}\label{mathgames}
+{\small\tightdisplay
+\topic{Sprague--Grundy}
+Use it when the game is impartial, the player who cannot move loses, and a position is a sum of independent games.
+\[ g(x) = \operatorname{mex} \{\, g(y) : x \to y \,\} \]
+$\operatorname{mex}$ is the smallest integer $\ge 0$ not in the set, so a position without moves has $g = 0$.
+\[ g(x_1 + \dots + x_k) = g(x_1) \oplus \dots \oplus g(x_k) \]
+The player to move wins iff $g \ne 0$, and a winning move goes to a position with $g = 0$.
+A move that splits one game into several (a row into two rows) gives the xor of their values.
+\topic{Known games}
+Use this table when the game is a known one. $a_1, \dots, a_n$ are the pile sizes.
+\par\smallskip
+\begin{tabular}{@{}p{1.6cm} p{3.1cm} p{3.7cm}@{}}
+\toprule
+Game & Move & The player to move loses iff \\
+\midrule
+Nim & take any number from one pile & $a_1 \oplus \dots \oplus a_n = 0$ \\
+Misère Nim & as Nim, the last mover loses & all piles have at most 1 and the number of piles with 1 is odd, or some pile has $\ge 2$ and the xor is 0 \\
+Staircase Nim & move any number of coins from step $i$ to step $i - 1$; step 0 is out of play & the xor over odd steps is 0 \\
+Moore's $\text{Nim}_k$ & take from 1 to $k$ piles at once & in every bit position, the number of $a_i$ with that bit set is divisible by $k + 1$ \\
+\bottomrule
+\end{tabular}
+\par\smallskip
+Two more results, a subtraction game and Kayles. Taking 1 to $k$ from one pile gives
+\[ g(n) = n \bmod (k + 1). \]
+Kayles (knock down 1 or 2 adjacent pins of a row) has period 12 from $n = 71$ on.
+\topic{Winning move in Nim}
+Use it when the program must play. Let $X = a_1 \oplus \dots \oplus a_n \ne 0$.
+\begin{facts}
+	\item Take the highest set bit of $X$ and a pile $a_i$ that has this bit; one exists.
+	\item Reduce that pile to $a_i \oplus X$, which is smaller than $a_i$.
+\end{facts}
+Example: piles $3, 4, 5$ have $X = 2$; reduce 3 to 1.
+\topic{Finding a pattern}
+Use it when no known game fits.
+\begin{facts}
+	\item Write the brute force: $g$ by memoised mex over all moves.
+	\item Print $g(n)$ for $n \le 500$ and look for a period after some start.
+	\item Check the period far past its start: Kayles is irregular up to $n = 70$.
+	\item For two numbers per state, print the grid of losing positions ($g = 0$) only.
+\end{facts}
+Example: taking 1, 3 or 4 gives $g = 0, 1, 0, 1, 2, 3, 2$, repeated with period 7.
+}
+\entry{Probability \& identities}\label{mathprob}
+{\small\tightdisplay
+\topic{Linearity of expectation}
+Use it for the expected size of a count: write the count as a sum of indicators.
+\[ E[X] = \sum_i P(A_i) \quad \text{for } X = \sum_i [A_i] \]
+It holds even when the events $A_i$ depend on each other.
+Example: a random permutation has $E = n \cdot \frac{1}{n} = 1$ fixed point.
+\topic{Tail sum}
+Use it when $P(X \ge k)$ is easier than $P(X = k)$, for $X$ with values $0, 1, 2, \dots$
+\[ E[X] = \sum_{k \ge 1} P(X \ge k) \]
+Example: for the larger of two dice, $P(X \ge k) = 1 - (\frac{k-1}{6})^2$, so
+\[ E = \sum_{k=1}^{6} \Bigl(1 - \bigl(\tfrac{k-1}{6}\bigr)^2\Bigr) = \frac{161}{36}. \]
+\topic{Variance}
+Use it for the spread of a sum.
+\[ \operatorname{Var} X = E[X^2] - E[X]^2 \]
+For independent $X$ and $Y$:
+\[ E[XY] = E[X]\,E[Y], \]
+\[ \operatorname{Var}(X + Y) = \operatorname{Var} X + \operatorname{Var} Y. \]
+\topic{Waiting times}
+Use it when a trial is repeated until something happens. One trial with success probability $p$ takes on average
+\[ E = \frac{1}{p} \]
+trials. Collecting all $n$ coupons, each draw uniform, takes
+\[ E = n H_n = n \left(1 + \frac{1}{2} + \dots + \frac{1}{n}\right) \approx n (\ln n + 0.5772). \]
+\topic{Expected values as a linear system}
+Use it when the states have cycles, so no DP order exists.
+\[ E_s = c_s + \sum_t p_{st} E_t, \qquad E_s = 0 \text{ at the goal} \]
+$c_s$ is the cost of one step from $s$ and $p_{st}$ the probability of going from $s$ to $t$.\par
+Solve it with Gauss over \texttt{double} (\S\ref{gauss}, ``Real numbers''). Without cycles, a DP in topological order is enough.\par
+Example: rolls of a die until a 6 give
+\[ E = 1 + \tfrac{5}{6} E, \]
+so $E = 6$.
+\topic{Distributions}\nopagebreak
+Use this table for a mean or a variance.
+\par\nopagebreak\smallskip
+\begin{tabular}{@{}p{2.6cm} p{3.0cm} l l@{}}
+\toprule
+Name & $P(X = k)$ or density & Mean & Variance \\
+\midrule
+Binomial $(n, p)$ & $\binom{n}{k} p^k (1 - p)^{n - k}$ & $np$ & $np(1 - p)$ \\
+Geometric $p$ & $(1 - p)^{k - 1} p$ & $\frac{1}{p}$ & $\frac{1 - p}{p^2}$ \\
+Poisson $\lambda$ & $e^{-\lambda} \lambda^k / k!$ & $\lambda$ & $\lambda$ \\
+Uniform $a..b$ & $\frac{1}{b - a + 1}$ & $\frac{a + b}{2}$ & $\frac{(b - a + 1)^2 - 1}{12}$ \\
+Uniform $[a, b]$ & $\frac{1}{b - a}$ & $\frac{a + b}{2}$ & $\frac{(b - a)^2}{12}$ \\
+Exponential $\lambda$ & $\lambda e^{-\lambda x}$, $x \ge 0$ & $\frac{1}{\lambda}$ & $\frac{1}{\lambda^2}$ \\
+Normal $(\mu, \sigma^2)$ & $\frac{1}{\sigma \sqrt{2\pi}} e^{-(x - \mu)^2 / (2\sigma^2)}$ & $\mu$ & $\sigma^2$ \\
+\bottomrule
+\end{tabular}
+\par\smallskip
+Binomial counts the successes in $n$ trials. Geometric counts the trials up to and including the first success, so $k \ge 1$.
+\topic{Trigonometry}
+Use it to simplify sums of angles.
+\[ \sin(v \pm w) = \sin v \cos w \pm \cos v \sin w \]
+\[ \cos(v \pm w) = \cos v \cos w \mp \sin v \sin w \]
+\[ \tan(v + w) = \frac{\tan v + \tan w}{1 - \tan v \tan w} \]
+\[ \sin 2v = 2 \sin v \cos v \]
+\[ \cos 2v = \cos^2 v - \sin^2 v = 1 - 2 \sin^2 v \]
+\[ \sin v + \sin w = 2 \sin \tfrac{v + w}{2} \cos \tfrac{v - w}{2} \]
+\[ \cos v + \cos w = 2 \cos \tfrac{v + w}{2} \cos \tfrac{v - w}{2} \]
+\[ a \cos x + b \sin x = r \cos(x - \varphi) \]
+In the last line $r = \sqrt{a^2 + b^2}$ and $\varphi = \operatorname{atan2}(b, a)$.
+\topic{Laws of sines and cosines}
+Use them when a triangle is given by sides and angles, not by points. Angle $\alpha$ is opposite side $a$, and so on.
+\[ \frac{a}{\sin \alpha} = \frac{b}{\sin \beta} = \frac{c}{\sin \gamma} = 2R \]
+\[ a^2 = b^2 + c^2 - 2bc \cos \alpha \]
+\[ \frac{a + b}{a - b} = \frac{\tan \frac{\alpha + \beta}{2}}{\tan \frac{\alpha - \beta}{2}} \]
+\[ A = \tfrac{1}{2} bc \sin \alpha \]
+$R$ is the circumradius and $A$ the area. Formulas from the sides alone are in \S\ref{polygon}.\par
+Clamp the argument of \texttt{acos} to $[-1, 1]$ before the call.\par
+Example: sides $a = 3$, $b = 4$, $c = 5$ give
+\[ \cos \alpha = \frac{16 + 25 - 9}{40} = \frac{4}{5}, \]
+so $\alpha \approx 36.87^\circ$.
+}
+\entry{Techniques prompt list}\label{techniques}
+{\small\tightdisplay
+When stuck, read down the lists and ask of each item: does this fit?
+\topic{First tries}
+Use these when you have no idea yet.
+\begin{checks}
+	\item Solve small cases by brute force and look for a pattern.
+	\item Look for an invariant or a quantity that only grows.
+	\item Try a greedy, then attack it with the brute force (\S\ref{stress}).
+	\item Fix one thing (a pair, the maximum, the first move) and count the rest.
+	\item Reverse the process: deletions become insertions.
+	\item Count the complement.
+	\item If the answer is small, iterate over the answer.
+\end{checks}
+\topic{Search and order}
+Use these when the input or the answer has an order to exploit.
+\begin{checks}
+	\item Binary search the answer; for many queries, binary search them all in parallel.
+	\item Ternary search a unimodal function (\S\ref{ternary}).
+	\item Move two pointers over a monotone window.
+	\item Sweep: turn the input into sorted events.
+	\item Answer queries offline, sorted by one coordinate.
+	\item Meet in the middle: split $2^n$ into two halves of $2^{n/2}$.
+	\item Order range queries with Mo's algorithm (\S\ref{mo}).
+\end{checks}
+\topic{Divide and conquer}
+Use these when the problem splits into parts that combine simply.
+\begin{checks}
+	\item Split at the middle and count the pairs that cross it.
+	\item Divide and conquer on time (CDQ) to turn updates and queries into a static problem.
+	\item Merge the smaller set into the larger one: $O(n \log n)$ moves in all.
+	\item Count paths in a tree with centroid decomposition (\S\ref{centroid}).
+	\item Use sqrt decomposition: rebuild every $\sqrt{q}$ updates, or split items into heavy and light.
+\end{checks}
+\topic{Dynamic programming}
+Use these when the choices form states with a small description.
+\begin{checks}
+	\item Try DP over subsets, digits, intervals, trees, or a broken profile.
+	\item Speed up the transition with D\&C, Knuth or Aliens (\S\ref{dpopt}).
+	\item Speed up a transition of linear functions with Li Chao (\S\ref{lichao}).
+	\item For a linear recurrence, take a matrix power or $k$-th term (\S\ref{linearrec}).
+\end{checks}
+\topic{Graphs}
+Use these when the input is, or hides, a graph.
+\begin{checks}
+	\item Model it as a flow, a cut or a matching (\S\ref{flowmodels}).
+	\item Model boolean choices with pairwise rules as 2-SAT (\S\ref{2sat}).
+	\item Add state to the vertices before a shortest path: $(v, \text{used}, \dots)$.
+	\item Contract SCCs to a DAG (\S\ref{scc}); find bridges and cut vertices (\S\ref{lowlink}).
+	\item Answer path queries with HLD (\S\ref{hld}); for small vertex sets, build a virtual tree (\S\ref{virtualtree}).
+	\item Handle edge deletions offline: a segment tree on time with a rollback DSU (\S\ref{rollbackdsu}).
+\end{checks}
+\topic{Strings}
+Use these when the input has strings, patterns or substrings.
+\begin{checks}
+	\item Compare substrings by hash, with a binary search for the LCP (\S\ref{strhash}).
+	\item Use the suffix array and LCP for distinct or repeated substrings (\S\ref{suffixarray}).
+	\item Count occurrences with the suffix automaton (\S\ref{suffixautomaton}).
+	\item Match many patterns with Aho--Corasick (\S\ref{ahocorasick}).
+	\item Insert patterns online by keeping groups of $2^k$ patterns: merge two equal groups and rebuild.
+\end{checks}
+\topic{Math}
+Use these when the answer is a count, a sum or an expected value.
+\begin{checks}
+	\item Turn a condition on $\gcd$ into a divisor sum with Möbius (\S\ref{mathnt}).
+	\item Write an expected value as a sum of indicators (\S\ref{mathprob}).
+	\item Write a sum of products $a_i b_{k-i}$ as a convolution (\S\ref{ntt}).
+	\item If the answer is a polynomial in $n$, interpolate it (\S\ref{lagrange}).
+	\item Write the counting as a generating function (\S\ref{fps}).
+	\item Write it as a linear program (\S\ref{simplex}).
+\end{checks}
+\topic{Data structures}
+Use these when queries and updates are mixed.
+\begin{checks}
+	\item Keep old versions with a persistent tree (\S\ref{perseg}).
+	\item Cut, join and reverse a sequence with an implicit treap (\S\ref{treap}).
+	\item Link and cut a forest with a link-cut tree (\S\ref{linkcut}).
+	\item Find the $k$-th element or a rank with pb\_ds (\S\ref{pbds}).
+\end{checks}
+\topic{Randomisation}
+Use these when a fixed choice has a bad input.
+\begin{checks}
+	\item Shuffle the input against a bad order.
+	\item Pick a random pivot or sample; repeat to lower the error.
+	\item Compare sets by a sum or xor of random weights per element.
+	\item Search an approximate optimum with simulated annealing (\S\ref{anneal}).
+\end{checks}
+}
