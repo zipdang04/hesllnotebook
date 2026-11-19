@@ -40,7 +40,13 @@ $A$ is the area. $R$ and $r$ are the radii of the circumscribed and the inscribe
 	\fld{hullDiameter} returns points, not indices; map them back for indices.
 	\fld{inHull} With \texttt{strict = false} the border is inside; a hull of 1 or 2 points is then a point or a segment.
 ]\label{convexhull}
-\entry{Circles}
+\cpp[4]{Circles}{circle.hpp}[
+	\fld{Use} \texttt{auto v = circleInter(c1, r1, c2, r2); auto [o, r] = enclosingCircle(pts);}
+	\fld{Needs} $a \ne b$ for \texttt{circleLine}, at least one point for \texttt{enclosingCircle}.
+	\fld{circleTangents} The sizes for $r_2$ and for $-r_2$ add up to the number of common tangents (0 for equal circles).
+	\fld{circumcenter} The radius is \texttt{(o - a).dist()}.
+	\fld{enclosingCircle} accepts repeated and collinear points; its relative tolerance is \texttt{EPS} there.
+]\label{circle}
 \entry{Half-plane intersection}
 \entry{Closest pair / kd-tree}
 \entry{3D}

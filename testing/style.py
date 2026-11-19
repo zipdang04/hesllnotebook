@@ -67,7 +67,7 @@ def compile_check(path):
 	cxx = os.environ.get("CXX") or next((c for c in ["g++-16", "g++-15", "g++-14", "g++"] if subprocess.run(["which", c], capture_output=True).returncode == 0), "g++")
 	for std in ["c++17", "gnu++20"]:
 		src = f'#include "{os.path.abspath(path)}"\nint main(){{}}\n'
-		r = subprocess.run([cxx, f"-std={std}", "-Wall", "-Wextra", "-Wshadow", "-fsyntax-only", "-x", "c++", "-"], input=src, capture_output=True, text=True)
+		r = subprocess.run([cxx, f"-std={std}", "-Wall", "-Wextra", "-Wshadow", "-Wno-psabi", "-fsyntax-only", "-x", "c++", "-"], input=src, capture_output=True, text=True)
 		if r.returncode or r.stderr.strip():
 			first = (r.stderr.strip().splitlines() or ["error"])[0]
 			problems.append((0, f"-std={std}: {first}"))
