@@ -2,8 +2,8 @@
 #include "../math/bigint.hpp"
 
 // Rank 0 first; labels 1..n, vectors 0-based. Subsets and
-// multisets: colex, rank O(k^2), unrank O(n + k) Bigint
-// ops. Permutations: lex, O(n log n) + O(n) Bigint ops.
+// multisets: colex, O(n + k) Bigint ops. Permutations:
+// lex, O(n log n) + O(n) Bigint ops.
 Bigint rankBinom(int n, int k){
 	if(k < 0 || k > n)
 		return 0;
@@ -14,9 +14,18 @@ Bigint rankBinom(int n, int k){
 	return c;
 }
 Bigint rankSubset(const vector<int> &a){
-	Bigint r = 0;
-	FOR(i, 0, sz(a) - 1)
-		r += rankBinom(a[i] - 1, i + 1);
+	if(a.empty()) return 0;
+	int k = sz(a), x = a.back() - 1;
+	Bigint r = 0, c = rankBinom(x, k);
+	REV(j, k, 1){
+		// c = C(x, j); x only decreases over the whole call
+		while(x >= a[j-1])
+			c = c * (x - j) / x, x--;
+		r += c;
+		if(j > 1)
+			c = c * j / x;
+		x--;
+	}
 	return r;
 }
 vector<int> unrankSubset(int n, int k, Bigint rank){

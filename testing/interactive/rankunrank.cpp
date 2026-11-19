@@ -100,6 +100,17 @@ int main(){
 	assert(unrankSubset(100, 50, count - 1) == last);
 	assert(rankSubset(first) == Bigint(0));
 	assert(rankSubset(last) == count - 1);
+	count = rankBinom(3000, 1500);
+	first.resize(1500); last.resize(1500);
+	iota(all(first), 1); iota(all(last), 1501);
+	assert(rankSubset(first) == Bigint(0));
+	assert(rankSubset(last) == count - 1);
+	vector<int> mid = unrankSubset(3000, 1500, count / 2);
+	assert(rankSubset(mid) == count / 2);
+	assert(rankMultiset(vector<int>(1500, 1)) == Bigint(0));
+	assert(rankMultiset(vector<int>(1500, 1501))
+		== count - 1);
+	assert(rankSubset({INT_MAX}) == Bigint(INT_MAX) - 1);
 	assert(unrankMultiset(INT_MAX, 1, Bigint(INT_MAX) - 1)
 		== vector<int>{INT_MAX});
 }
