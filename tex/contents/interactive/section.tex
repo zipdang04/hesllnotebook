@@ -26,7 +26,7 @@ Example: $N = 10^6$ with yes/no queries needs $q \ge 20$.
 \topic{One lie}
 Use this when the judge may give one wrong yes/no response; $n$ candidates and $q$ adaptive queries.
 \[ n(q + 1) \le 2^q \]
-This is needed for any queries. It is enough for even $n$ when a query may ask about any subset; with comparison queries only the bound holds. For odd $n$ and subset queries the exact condition is
+This is needed for any queries. It is enough for even $n$ when a query may ask about any subset; with comparison queries it is necessary but may not be enough. For odd $n$ and subset queries the exact condition is
 \[ n(q + 1) + q - 1 \le 2^q. \]
 Example: $n = 10^6$ needs 25 queries instead of 20; $n = 3$ needs 5.
 \topic{Local run}
@@ -83,7 +83,7 @@ A few candidate originals & compare a hash (\S\ref{bitcodes}); it only verifies 
 \topic{Reed--Solomon: erased symbols}
 Use it when symbols may be lost but the positions of the survivors are known.
 \begin{facts}
-	\item Pick a prime $p \ge n$ and $n$ distinct nodes $\alpha_i$, e.g. $\alpha_i = i$. The message is $k$ symbols $m_0..m_{k-1}$ in $\mathbb{F}_p$.
+	\item Pick a prime $n \le p < 2^{30}$ (the \texttt{Mint} limit) and $n$ distinct nodes $\alpha_i$, e.g. $\alpha_i = i$. The message is $k$ symbols $m_0..m_{k-1}$ in $\mathbb{F}_p$.
 	\item Send the values of the message polynomial at all nodes:
 	\[ c_i = \sum_{j=0}^{k-1} m_j \alpha_i^j. \]
 	\item Decode from any $k$ survivors with \texttt{interpolate(x, y)} (\S\ref{lagrange}): \texttt{x} holds their nodes, \texttt{y} their values, and the result is $m$.
@@ -112,7 +112,7 @@ Use it when the writer knows which cells are stuck and at which value, and the r
 \begin{facts}
 	\item Both sides build the same random $k \times n$ bit matrix $H$ from a fixed seed. The reader decodes the $k$-bit message as
 	\[ m = H x \pmod 2. \]
-	\item The writer splits the cells into the stuck set $S$, with values $b$, and the free set $F$. It solves, with \texttt{solveXor} (\S\ref{gauss}; needs $|F| \le 4096$, the \texttt{BitRow} limit),
+	\item The writer splits the cells into the stuck set $S$, with values $b$, and the free set $F$; $F$ must be fixed independently of $H$. It solves, with \texttt{solveXor} (\S\ref{gauss}; needs $|F| \le 4096$, the \texttt{BitRow} limit),
 	\[ H_F\, x_F = m + H_S\, b \pmod 2. \]
 	\item Any solution works, so a kernel is no problem. No solution means the message cannot be written.
 	\item If $|F| = k + t$, every message can be written except with probability below $2^{-t}$. So about $n - |S|$ bits fit.
@@ -196,7 +196,7 @@ Use it when you can list a few possible originals and a trusted digest of the tr
 \cpp[4]{Rank / unrank}{rankunrank.hpp}[
 	\fld{Use} \texttt{Bigint r = rankSubset(a); a = unrankSubset(n, k, r);}
 	\fld{Result} \texttt{a} is a sorted $k$-subset of $1..n$ and $0 \le r < \binom{n}{k}$, which is \texttt{rankBinom(n, k)}.
-	\fld{Needs} valid vectors and ranks. Uses Bigint (\S\ref{bigint}).
+	\fld{Needs} valid vectors and ranks. Uses Bigint (\S\ref{bigint}). Multisets: $\max a_i + k - 1 \le 2^{31}-1$.
 	\fld{rankMultiset} \texttt{unrankMultiset(n, k, r)} inverts it on nondecreasing $k$-tuples of $1..n$; there are $\binom{n+k-1}{k}$.
 	\fld{rankPerm} \texttt{unrankPerm(n, r)} inverts it on the $n!$ permutations.
 ]\label{rankunrank}

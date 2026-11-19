@@ -86,6 +86,12 @@ int main(){
 			checkKnuth(n, mergeCost);
 		}
 	}
+	// A cost near oo must not lose to an unreachable state.
+	const ll z = 600000000000000000LL;
+	assert(dncDP(2, 1, [&](int l, int r){ return z; }) == z);
+	auto two = [&](int l, int r){ return l == r ? z : 0; };
+	assert(dncDP(2, 2, two) == 2 * z);
+	assert(knuth(4, [&](int l, int r){ return z; }) == 3 * z);
 	// Convex tables reach both ends of the lambda range.
 	const ll L = 1000000000000LL;
 	vector<ll> slopes = {-L, -L + 1, -1, 0, 1, L - 1, L};

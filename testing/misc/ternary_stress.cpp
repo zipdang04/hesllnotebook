@@ -44,4 +44,7 @@ int main(){
 			bound += 2;
 		assert(calls <= bound);
 	}
+	// hi - lo overflows
+	auto id = [](double x){ return x; };
+	assert(goldenSearch(-1e308, 1e308, id) < -9.9e307);
 }

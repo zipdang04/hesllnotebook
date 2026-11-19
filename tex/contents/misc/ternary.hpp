@@ -19,17 +19,18 @@ template<class Func> ll ternSearch(ll lo, ll hi, Func f){
 // Call: goldenSearch(lo, hi, f);
 template<class Func>
 double goldenSearch(double lo, double hi, Func f){
-	double r = (sqrt(5) - 1) / 2;
-	double x1 = hi - r * (hi - lo), x2 = lo + r * (hi - lo);
+	// weighted sums of the ends: hi - lo may overflow
+	double r = (sqrt(5) - 1) / 2, q = 1 - r;
+	double x1 = q * hi + r * lo, x2 = q * lo + r * hi;
 	double f1 = f(x1), f2 = f(x2);
 	// 100 steps shrink [lo, hi] by 0.618^100 < 1e-20
 	FOR(it, 1, 100){
 		if(f1 < f2){
 			hi = x2; x2 = x1; f2 = f1;
-			x1 = hi - r * (hi - lo); f1 = f(x1);
+			x1 = q * hi + r * lo; f1 = f(x1);
 		}else{
 			lo = x1; x1 = x2; f1 = f2;
-			x2 = lo + r * (hi - lo); f2 = f(x2);
+			x2 = q * lo + r * hi; f2 = f(x2);
 		}
 	}
 	return lo;
