@@ -33,6 +33,10 @@ int main(){
 		tie(cost, match) = hungarian(a);
 		assert(cost == forbidden);
 		assert(a[1][match[1]] == forbidden);
+		a = {{0, 0, 0}, {0, forbidden, forbidden}, {0, -1, 0}};
+		tie(cost, match) = hungarian(a);
+		assert(cost == forbidden - 1);
+		assert(a[1][match[1]] == forbidden);
 	}
 	{
 		vector<vector<ll>> a = {

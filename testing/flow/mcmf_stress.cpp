@@ -44,6 +44,19 @@ pll brute(int n, int s, int t, const vector<Arc> &in,
 }
 
 int main(){
+	{
+		// Sum |cost| <= 1e18; a partial cost sum leaves ll.
+		MCMF a(2), b(4);
+		a.addEdge(0, 1, 20000000000LL, -500000000);
+		a.addEdge(0, 1, 20000000000LL, 500000000);
+		assert(a.maxFlow(0, 1) == pll(40000000000LL, 0));
+		b.addEdge(0, 1, 1, 1);
+		ll h = 490000000000000000LL;
+		b.addEdge(2, 3, 1, -h);
+		b.addEdge(3, 1, 1, -h);
+		b.addEdge(0, 2, 1, 0);
+		assert(b.maxFlow(0, 1) == pll(2, 1 - 2 * h));
+	}
 	mt19937 rng(712367);
 	auto draw = [&](int l, int r){
 		return uniform_int_distribution<int>(l, r)(rng);

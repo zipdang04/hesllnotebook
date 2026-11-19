@@ -14,14 +14,14 @@
 \cpp[4]{MCMF}{mcmf.hpp}[
 	\fld{Use} \texttt{MCMF mf(n + 1); mf.addEdge(u, v, cap, cost); auto [f, c] = mf.maxFlow(s, t);}
 	\fld{Result} returns cheapest \texttt{\{flow, cost\}} for $\min(\texttt{limit}, \text{max flow})$ units. Exact flow needs \texttt{f == limit}.
-	\fld{Needs} allows negative costs, no negative cycle at $\texttt{cap} > 0$. Total cost $< 9 \cdot 10^{18}$; else use \texttt{\_\_int128 cost} in \texttt{maxFlow}.
+	\fld{Needs} allows negative costs, no negative cycle at $\texttt{cap} > 0$. $\sum |\texttt{cost}| \le 10^{18}$ over all edges, and total cost $< 9 \cdot 10^{18}$.
 	\fld{flowOf} flow on the edge whose id \texttt{addEdge} returned.
 	\fld{Models} \S\ref{flowmodels}.
 ]\label{mcmf}
 \cpp[4]{Min-cost circulation (cost scaling)}{costscaling.hpp}[
 	\fld{Use} \texttt{MinCostCirc mc(n + 1); int id = mc.addEdge(u, v, lo, hi, c); bool ok = mc.solve();}
 	\fld{Result} \texttt{ok} is false if infeasible. \texttt{mc.total} (\texttt{\_\_int128}) is the min cost.
-	\fld{Needs} $\texttt{lo} \le \texttt{hi}$, any signs, and one \texttt{solve} per object. With $N$ the constructor size, $4N(N + 1) \max |c| < 9 \cdot 10^{18}$. Uses Dinic (\S\ref{dinic}).
+	\fld{Needs} $\texttt{lo} \le \texttt{hi}$, any signs, one \texttt{solve} per object. $N$ the constructor size: $4N(N + 1) \max |c|$, $\sum |\texttt{lo}|$, $\sum (\texttt{hi} - \texttt{lo})$ each $< 9 \cdot 10^{18}$.
 	\fld{flowOf} \texttt{mc.flowOf(id)} is the flow on the edge. \texttt{mc.pot} are optimal duals: $c + \texttt{pot[u]} - \texttt{pot[v]} \ge 0$ on every arc with room.
 	\fld{Models} \S\ref{flowmodels}
 ]\label{costscaling}
@@ -119,19 +119,19 @@ Example: two left vertices whose only neighbour is the same right vertex: $X$ is
 \cpp[4]{Global min cut (Stoer--Wagner)}{stoerwagner.hpp}[
 	\fld{Use} \texttt{auto [cut, side] = globalMinCut(g);} with \texttt{g[u]} $= \{v, w\}$, each edge in both lists.
 	\fld{Result} the minimum total weight of edges between \texttt{side} and the rest; \texttt{side} lists the vertices of one part.
-	\fld{Needs} $w \ge 0$ and $n \ge 2$ ($n = 1$ gives \texttt{\{oo, \{\}\}}). Multi-edges add up; self-loops are ignored.
+	\fld{Needs} $w \ge 0$ and $n \ge 2$ ($n = 1$ gives \texttt{\{oo, \{\}\}}). The cut must be $\le$ \texttt{LLONG\_MAX}. Multi-edges add up; self-loops are ignored.
 ]\label{stoerwagner}
 \cpp[4]{Gomory--Hu tree}{gomoryhu.hpp}[
 	\fld{Use} \texttt{vector<array<ll, 3>> t = gomoryHu(g);} with \texttt{g[u]} $= \{v, w\}$, each edge in both lists.
-	\fld{Result} $n - 1$ edges \texttt{\{u, v, c\}}. The min cut between any $x, y$ is the smallest $c$ on the tree path from $x$ to $y$. Uses Dinic (\S\ref{dinic}).
-	\fld{Needs} $w \ge 0$.
+	\fld{Result} $n - 1$ edges \texttt{\{u, v, c\}}; the min $x$--$y$ cut is the least $c$ on the tree path. Values only: deleting an edge need not give a min cut.
+	\fld{Needs} $w \ge 0$ and total weight $< 9 \cdot 10^{18}$. Uses Dinic (\S\ref{dinic}).
 ]\label{gomoryhu}
 
 \subsection{Matching}
 \cpp[4]{Hungarian}{hungarian.hpp}[
 	\fld{Use} \texttt{vector<vector<ll>> a(n + 1, vector<ll>(m + 1)); auto [cost, match] = hungarian(a);}
 	\fld{Result} the minimum of $\sum_i a[i][\texttt{match[i]}]$ over injective \texttt{match}; row $i$ takes column \texttt{match[i]}.
-	\fld{Needs} $n \le m$, every row of size $m + 1$ as in \texttt{Use}. Maximum weight: negate \texttt{a}. A forbidden pair: cost $10^{12}$, then check the result.
+	\fld{Needs} $n \le m$, rows of size $m + 1$, $n \le 500$, $|a_{ij}| \le 10^9$. Max weight: negate \texttt{a}. Forbidden pair: cost $10^{12}$; check the chosen pairs.
 ]\label{hungarian}
 \cpp[4]{General matching (blossom)}{blossom.hpp}[
 	\fld{Use} \texttt{vector<vector<int>> g(n + 1); GeneralMatching gm(g);}

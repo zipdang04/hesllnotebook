@@ -3,7 +3,7 @@
 
 // Min-cost circulation, lo <= f <= hi, any costs: cost
 // scaling push-relabel, O(V^2 E log(VC)). mc(N): vertices
-// 0..N-1. Feasibility by Dinic: recursive, depth <= V.
+// 0..N-1. Feasibility by Dinic: recursive, depth <= V + 2.
 struct MinCostCirc{
 	struct Edge{ int to; ll cap, cost; };
 	int n;
@@ -51,8 +51,8 @@ struct MinCostCirc{
 						push(u, id, min(edges[id].cap, excess[u]));
 				}
 				if(excess[u] == 0) break;
-				// Below every candidate; subtraction stays in ll.
-				ptr[u] = 0, pot[u] = LLONG_MIN / 4;
+				// Excess: a reverse arc has room.
+				ptr[u] = 0, pot[u] = LLONG_MIN;
 				for(int id: adj[u]) if(edges[id].cap > 0)
 					maximize(pot[u],
 						pot[edges[id].to] - edges[id].cost - eps);
@@ -72,7 +72,7 @@ struct MinCostCirc{
 				f.addEdge(n, v, ex[v]), need += ex[v];
 			else if(ex[v] < 0)
 				f.addEdge(v, n + 1, -ex[v]);
-		if(f.maxFlow(n, n + 1) < need) return false;
+		if(need && f.maxFlow(n, n + 1) < need) return false;
 		FOR(id, 0, sz(edges) - 1)
 			edges[id].cap = f.edges[id].cap;
 		for(int id = 0; id < sz(edges); id += 2){

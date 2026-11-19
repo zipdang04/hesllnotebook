@@ -2,8 +2,7 @@
 #include "dinic.hpp"
 
 // Gomory-Hu tree (Gusfield): n - 1 Dinic runs, vertices
-// 1..n. Min u-v cut = least weight on the tree path u..v.
-// Recursion: Dinic's, depth <= V.
+// 1..n. Recursion: Dinic's, depth <= V.
 vector<array<ll, 3>> gomoryHu(
 		const vector<vector<pair<int, ll>>> &g){
 	int n = sz(g) - 1;

@@ -24,6 +24,14 @@ int main(){
 		auto [cut, side] = globalMinCut(h);
 		assert(cut == w && across(h, side) == w);
 	}
+	{
+		// A later phase improves a first-phase cut above oo.
+		ll B = 1000000000000000000LL;
+		vector<vector<pair<int, ll>>> t = {{}, {{2, B}, {3, B}},
+			{{1, B}, {3, 2 * B}}, {{1, B}, {2, 2 * B}}};
+		auto [c, sd] = globalMinCut(t);
+		assert(c == 2 * B && across(t, sd) == 2 * B);
+	}
 	vector<vector<pair<int, ll>>> h(8);
 	FOR(u, 1, 6)
 		FOR(v, 1, 6) if(u != v)

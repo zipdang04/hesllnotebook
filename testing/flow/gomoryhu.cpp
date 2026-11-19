@@ -29,6 +29,15 @@ int main(){
 	edge(big, 1, 2, 1LL << 40);
 	assert(gomoryHu(big)
 		== (vector<array<ll, 3>>{{2, 1, 1LL << 40}}));
+	vector<vector<pair<int, ll>>> huge(3);
+	edge(huge, 1, 2, 2000000000000000000LL);
+	assert(gomoryHu(huge) == (vector<array<ll, 3>>{
+		{2, 1, 2000000000000000000LL}}));
+	// Values only: dropping the weight-2 edge cuts 3 off (3).
+	vector<vector<pair<int, ll>>> v(4);
+	edge(v, 1, 3, 1), edge(v, 2, 3, 2);
+	assert(gomoryHu(v) == (vector<array<ll, 3>>{
+		{2, 1, 1}, {3, 2, 2}}));
 	vector<vector<pair<int, ll>>> p(4);
 	edge(p, 1, 2, 4), edge(p, 2, 3, 1);
 	assert(costs(gomoryHu(p), 3) == (vector<ll>{1, 4}));

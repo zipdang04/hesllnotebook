@@ -44,6 +44,13 @@ int main(){
 				if(mc.edges[id].cap > 0)
 					assert(mc.reducedCost(u, id) >= 0);
 		}
+		// Relabels add up along a path: pot < LLONG_MIN / 4.
+		ll c = 20454545454545454LL;
+		MinCostCirc mc(10);
+		FOR(i, 0, 8)
+			mc.addEdge(i, i + 1, 0, 10 - i, -c);
+		mc.addEdge(9, 0, 0, 1, c);
+		assert(mc.solve() && mc.total == (__int128)-8 * c);
 		__int128 x = -((__int128)1 << 126);
 		assert(str(x + x)
 			== "-170141183460469231731687303715884105728");

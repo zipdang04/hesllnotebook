@@ -3,7 +3,7 @@
 
 // Min-cost flow: successive shortest paths, Dijkstra with
 // potentials, Bellman-Ford once per run. MCMF mf(N):
-// vertices 0..N-1. O(VE + F E log V). No recursion.
+// vertices 0..N-1. O(VE + F E log E). No recursion.
 struct MCMF{
 	struct Edge{ int to; ll cap, cost; };
 	vector<Edge> edges;
@@ -26,10 +26,9 @@ struct MCMF{
 		}
 	}
 	bool dijkstra(int s, int t){
-		// Costs may exceed oo.
 		fill(all(dist), LLONG_MAX); dist[s] = 0;
 		PQMin<pll> pq; pq.push({0, s});
-		while(!pq.empty()){
+		while(!pq.empty() && pq.top().se != t){
 			auto [d, u] = pq.top(); pq.pop();
 			if(d != dist[u])
 				continue;
@@ -56,12 +55,12 @@ struct MCMF{
 	}
 	pair<ll, ll> maxFlow(int s, int t, ll limit = oo){
 		if(s == t) return {0, 0};
-		ll flow = 0, cost = 0;
+		ll flow = 0; __int128 cost = 0;
 		setPot();
 		while(flow < limit && dijkstra(s, t)){
-			// Unreached stay so; never add LLONG_MAX.
-			FOR(v, 0, sz(adj) - 1) if(dist[v] != LLONG_MAX)
-				pot[v] += dist[v];
+			// Unsettled vertices lie beyond dist[t].
+			FOR(v, 0, sz(adj) - 1)
+				pot[v] += min(dist[v], dist[t]);
 			ll push = limit - flow;
 			for(int v = t; v != s; v = edges[par[v] ^ 1].to)
 				minimize(push, edges[par[v]].cap);
@@ -69,9 +68,10 @@ struct MCMF{
 				edges[par[v]].cap -= push;
 				edges[par[v] ^ 1].cap += push;
 			}
-			flow += push; cost += push * (pot[t] - pot[s]);
+			flow += push;
+			cost += (__int128)push * (pot[t] - pot[s]);
 		}
-		return {flow, cost};
+		return {flow, (ll)cost};
 	}
 	ll flowOf(int id){ return edges[id ^ 1].cap; }
 };

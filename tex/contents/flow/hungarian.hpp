@@ -19,12 +19,12 @@ pair<ll, vector<int>> hungarian(
 				c = cols[j], nd = dist[c] - pot[c];
 				if(j == s || d > nd) d = nd, swap(cols[s], cols[j]);
 			}
-			c = cols[s++];
-			r = rev[c];
+			r = rev[c = cols[s++]];
 			if(!r) break;
-			FOR(j, 1, m){
-				nd = a[r][j] - a[r][c] + dist[c];
-				if(minimize(dist[j], nd)) prev[j] = r;
+			FOR(j, s, m){
+				int k = cols[j];
+				nd = a[r][k] - a[r][c] + dist[c];
+				if(minimize(dist[k], nd)) prev[k] = r;
 			}
 		}
 		cost += dist[c];
