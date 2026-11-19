@@ -24,4 +24,10 @@
 	\fld{Needs} a tree on $1..n$, $n \ge 1$, each edge in both lists. \texttt{t = AHU()} clears the table.
 	\fld{unrooted} \texttt{t.unrooted(g) == t.unrooted(h)} iff $g$ and $h$ are isomorphic as unrooted trees.
 ]\label{ahu}
-\entry{Rank / unrank}
+\cpp[4]{Rank / unrank}{rankunrank.hpp}[
+	\fld{Use} \texttt{Bigint r = rankSubset(a); a = unrankSubset(n, k, r);}
+	\fld{Result} \texttt{a} is a sorted $k$-subset of $1..n$ and $0 \le r < \binom{n}{k}$, which is \texttt{rankBinom(n, k)}.
+	\fld{Needs} valid vectors and ranks. Uses Bigint (\S\ref{bigint}).
+	\fld{rankMultiset} \texttt{unrankMultiset(n, k, r)} inverts it on nondecreasing $k$-tuples of $1..n$; there are $\binom{n+k-1}{k}$.
+	\fld{rankPerm} \texttt{unrankPerm(n, r)} inverts it on the $n!$ permutations.
+]\label{rankunrank}
