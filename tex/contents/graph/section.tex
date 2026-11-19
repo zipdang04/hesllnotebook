@@ -77,4 +77,8 @@ Use it to minimise the average weight $\bar w(C)$ of a cycle $C$. Fix an integer
 
 \subsection{Hard}
 \entry{Dominator tree}
-\entry{Max clique}
+\cpp[4]{Max clique}{maxclique.hpp}[
+	\fld{Use} \texttt{vector<vector<int>> g(n + 1); MaxClique mc(g);}
+	\fld{Result} \texttt{mc.clique} holds one maximum clique, unsorted. On the complement graph it is a maximum independent set.
+	\fld{Needs} each edge in both lists. Self-loops are ignored.
+]\label{maxclique}

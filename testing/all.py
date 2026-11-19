@@ -234,6 +234,8 @@ all_source_codes = {
 		"hld_stress": StressTest("graph/hld_stress", 10),
 		"virtualtree": OjTest("graph/virtualtree", "https://yukicoder.me/problems/no/901", 2),
 		"virtualtree_stress": StressTest("graph/virtualtree_stress", 10),
+		"maxclique": TestCase("graph/maxclique", "graph/maximum_independent_set", 2),
+		"maxclique_stress": StressTest("graph/maxclique_stress", 10),
 	},
 	"ds": {
 		"pbds": TestCase("ds/pbds", "data_structure/ordered_set", 5),
