@@ -11,7 +11,7 @@
 	\fld{Needs} nothing: self-loops, multi-edges and isolated vertices are fine.
 ]\label{scc}
 \cpp[4]{2-SAT}{2sat.hpp}[
-	\fld{Use} \texttt{TwoSat ts(n); ts.either(a, b); if(ts.solve()) .. ts.val[x]}
+	\fld{Use} \texttt{TwoSat ts(n); ts.either(a, b); bool ok = ts.solve();}
 	\fld{Result} \texttt{solve()} says whether all clauses hold at once; then \texttt{val[x]} is a satisfying value of $x \in 1..n$.
 	\fld{Needs} literals $\pm x$ with $1 \le x \le n$. Uses SCC (\S\ref{scc}).
 	\fld{either} \texttt{either(a, b)} adds $a \lor b$. Implication $a \Rightarrow b$ is \texttt{either(-a, b)}; forcing $x$ is \texttt{either(x, x)}.
@@ -25,14 +25,15 @@
 \cpp[4]{Euler path / circuit}{euler.hpp}[
 	\fld{Use} \texttt{auto w = eulerWalk(g, m, s);} with \texttt{g[u]} holding \texttt{\{v, id\}}.
 	\fld{Result} \texttt{w[i].fi} is the $i$-th vertex and \texttt{w[i].se} the edge into it (\texttt{-1} for $i = 0$). Empty if no walk from $s$ uses all $m$ edges.
-	\fld{Needs} distinct ids in $0..m$. Start $s$: undirected, an odd-degree vertex; directed, one with out $-$ in $= 1$; else any vertex with an edge.
+	\fld{Needs} distinct ids in $0..m$. An undirected self-loop may be listed once or twice.
+	\fld{Start} $s$ is an odd-degree vertex (undirected) or one with out $-$ in $= 1$ (directed); else any vertex with an edge, any $s$ if $m = 0$.
 ]\label{euler}
 
 \subsection{Paths \& spanning trees}
 \cpp[4]{SPFA}{spfa.hpp}[
 	\fld{Use} \texttt{vector<vector<pair<int, ll>>> g(n + 1); SPFA sp(g, s);}
 	\fld{Result} \texttt{dist[v]} is \texttt{oo} if unreachable, \texttt{-oo} if a walk $s \leadsto v$ crosses a negative cycle. \texttt{par[v]} precedes $v$ (0 at $s$), valid for $|\texttt{dist[v]}| < \texttt{oo}$.
-	\fld{Needs} $n \cdot \max |w| < 10^{18}$. Shuffle each \texttt{g[u]} once against anti-SPFA tests.
+	\fld{Needs} $n \cdot \max |w| < 10^{18}$. No $O(VE)$ bound: crafted inputs are exponential. Shuffle each \texttt{g[u]} once.
 	\fld{negCycle} flags a negative cycle reachable from $s$. To detect one anywhere, use \texttt{g(n + 2)}; start at $n + 1$ with 0-edges to all vertices.
 ]\label{spfa}
 \topic{Print a negative cycle}
@@ -44,7 +45,7 @@ Use it when the cycle itself is wanted: \texttt{par} from SPFA need not contain 
 	\item Walk \texttt{par} from $x$ until $x$ repeats; reverse the list for the edge direction.
 \end{facts}
 \topic{Min mean cycle}
-Use it to minimise the average weight $\bar w(C)$ of a cycle $C$. Fix an integer scale $K$ (e.g.\ $K = n$) and an integer $\lambda$:
+Use it to minimise the average weight $\bar w(C)$ of a cycle $C$, when the graph has a cycle. Fix an integer scale $K \ge 1$ (e.g.\ $K = n$) and an integer $\lambda$:
 \[ \bar w(C) < \tfrac{\lambda}{K} \iff \textstyle\sum_{e \in C} (K w_e - \lambda) < 0 \]
 \begin{facts}
 	\item Give every edge the weight $K w_e - \lambda$ and look for a negative cycle anywhere (the \texttt{negCycle} line above).
@@ -54,8 +55,8 @@ Use it to minimise the average weight $\bar w(C)$ of a cycle $C$. Fix an integer
 \end{facts}
 \cpp[4]{Directed MST}{dmst.hpp}[
 	\fld{Use} \texttt{vector<vector<pair<int, ll>>> g(n + 1); DirectedMST dm(g, r);}
-	\fld{Result} \texttt{dm.cost}, the least total weight of edges that reach every vertex from $r$; \texttt{dm.par[v]} is the tail of $v$'s edge, \texttt{par[r]} $= 0$.
-	\fld{Needs} \texttt{cost == oo} means some vertex is unreachable. Uses Rollback DSU (\S\ref{rollbackdsu}).
+	\fld{Result} \texttt{dm.cost}, the weight of a minimum rooted arborescence (reaches every vertex); \texttt{dm.par[v]} is the tail of $v$'s edge, \texttt{par[r]} $= 0$.
+	\fld{Needs} $n \cdot \max |w| < 9 \cdot 10^{18}$. \texttt{cost == LLONG\_MAX}: some vertex is unreachable. Self-loops are skipped. Uses Rollback DSU (\S\ref{rollbackdsu}).
 ]\label{dmst}
 \cpp[4]{Manhattan MST}{manhattanmst.hpp}[
 	\fld{Use} \texttt{vector<pll> p(n + 1); auto e = manhattanMST(p);}
@@ -100,7 +101,7 @@ Example: triangle with weights 1, 2, 3: the trees give $1 \cdot 2 + 1 \cdot 3 + 
 \cpp[4]{HLD}{hld.hpp}[
 	\fld{Use} \texttt{HLD hld(g); for(auto [l, r]: hld.path(u, v)) s += seg.get(l, r).sum;}
 	\fld{Result} \texttt{par}, \texttt{depth}, \texttt{head}, \texttt{sub} (subtree size); \texttt{par[root]} $= 0$.
-	\fld{Needs} Build \texttt{seg} from \texttt{a[hld.pos[u]] = \{value, 1\}} (\S\ref{lazyseg}).
+	\fld{Needs} \texttt{g} is an undirected tree, each edge in both lists; \texttt{u}, \texttt{v} in \texttt{root}'s component. Fill \texttt{seg} from \texttt{a[hld.pos[u]] = \{value, 1\}} (\S\ref{lazyseg}).
 	\fld{lca} \texttt{lca(u, v)} is the lowest common ancestor.
 	\fld{path} covers $u \leadsto v$ by closed \texttt{pos} ranges, unordered: operations must commute. \texttt{edge = true} stores $(\texttt{par[v]}, v)$ at $v$, omitting the LCA.
 ]\label{hld}

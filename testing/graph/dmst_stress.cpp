@@ -13,7 +13,7 @@ bool reachesRoot(const vector<int> &par, int r){
 
 struct Brute{
 	int n, root;
-	ll cost = oo;
+	ll cost = 0; bool found = false;
 	vector<int> par;
 	vector<vector<pair<int, ll>>> in;
 	Brute(const vector<vector<pair<int, ll>>> &g, int r)
@@ -25,7 +25,10 @@ struct Brute{
 	}
 	void dfs(int v, ll sum){
 		if(v > n){
-			if(reachesRoot(par, root)) cost = min(cost, sum);
+			if(reachesRoot(par, root)){
+				cost = found ? min(cost, sum) : sum;
+				found = true;
+			}
 			return;
 		}
 		if(v == root){
@@ -42,6 +45,12 @@ struct Brute{
 int main(){
 	mt19937 rng(712367);
 	DirectedMST dm(vector<vector<pair<int, ll>>>(2), 1);
+	// costs above oo are legal
+	vector<vector<pair<int, ll>>> big(4);
+	big[1].push_back({2, 600000000000000000LL});
+	big[2].push_back({3, 600000000000000000LL});
+	Brute bb(big, 1); dm = DirectedMST(big, 1);
+	assert(bb.found && bb.cost == dm.cost && dm.cost > oo);
 	FOR(trial, 1, 50000){
 		int n = 1 + (int)(rng() % 6);
 		int m = (int)(rng() % 13);
@@ -58,8 +67,9 @@ int main(){
 		g[0].push_back({1, -100});
 		Brute brute(g, r);
 		dm = DirectedMST(g, r);
+		assert((dm.cost != LLONG_MAX) == brute.found);
+		if(!brute.found) continue;
 		assert(dm.cost == brute.cost);
-		if(dm.cost == oo) continue;
 		assert(sz(dm.par) == n + 1);
 		assert(dm.par[0] == 0 && dm.par[r] == 0);
 		ll sum = 0;

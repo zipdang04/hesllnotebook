@@ -1,4 +1,5 @@
 #include "../../tex/contents/graph/hld.hpp"
+#include "../../tex/contents/ds/lazyseg.hpp"
 #include <cassert>
 
 void check(const vector<vector<int>> &g, int root,
@@ -15,6 +16,9 @@ void check(const vector<vector<int>> &g, int root,
 	assert(h.timer == n);
 	vector<int> used(n + 1), sub(n + 1);
 	vector<ll> base(n + 1);
+	vector<LazySeg::Node> init(n + 1);
+	FOR(u, 1, n) init[h.pos[u]] = {weight[u], 1};
+	LazySeg seg(init);
 	FOR(u, 1, n){
 		assert(h.par[u] == par[u]);
 		assert(h.depth[u] == depth[u]);
@@ -61,6 +65,10 @@ void check(const vector<vector<int>> &g, int root,
 					}
 				}
 				assert(got == want);
+				MintN viaSeg = 0;
+				for(auto [l, r]: ranges)
+					viaSeg += seg.get(l, r).sum;
+				assert(viaSeg.v == MintN(expected).v);
 				assert(actual == expected);
 			}
 		}

@@ -72,10 +72,11 @@ struct BruteMean{
 	}
 };
 
-void checkMean(const vector<vector<pair<int, ll>>> &g){
+void checkMean(const vector<vector<pair<int, ll>>> &g,
+		int K){
 	BruteMean best(g);
 	if(best.num == oo) return;
-	int n = sz(g) - 1, K = n;
+	int n = sz(g) - 1;
 	ll W = 0;
 	FOR(u, 1, n) for(auto [v, w]: g[u])
 		W = max(W, abs(w));
@@ -97,6 +98,12 @@ void checkMean(const vector<vector<pair<int, ll>>> &g){
 }
 
 int main(){
+	// repeated self-loops must not overflow
+	vector<vector<pair<int, ll>>> loops(2);
+	FOR(i, 1, 10)
+		loops[1].push_back({1, -999999999999999999LL});
+	SPFA sl(loops, 1);
+	assert(sl.negCycle && sl.dist[1] == -oo);
 	mt19937 rng(12345);
 	FOR(trial, 1, 20000){
 		int n = rng() % 8 + 1, m = rng() % 21;
@@ -110,7 +117,8 @@ int main(){
 		}
 		FOR(u, 1, n) shuffle(all(g[u]), rng);
 		check(g, s);
-		if(n <= 6) checkMean(g);
+		if(n <= 6)
+			checkMean(g, 1 + (int)(rng() % (2 * n)));
 	}
 	return 0;
 }

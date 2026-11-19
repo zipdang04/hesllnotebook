@@ -1,8 +1,9 @@
 #pragma once
 #include "../ds/rollbackdsu.hpp"
 
-// Min arborescence from r: skew heaps + rollback DSU.
-// 1..n, g[u]={v,w}, O(E log V). Recursive merge depth <= E.
+// Min rooted arborescence: skew heaps + rollback DSU.
+// 1..n, g[u]={v,w}, O((V + E) log E), self-loops skipped.
+// Recursive merge depth <= E. LLONG_MAX: unreachable.
 struct DirectedMST{
 	struct Edge{ int a, b; ll w; };
 	struct Node{ Edge key; int l, r; ll delta; };
@@ -16,16 +17,15 @@ struct DirectedMST{
 		vector<Edge> Q(n + 1), in(n + 1);
 		deque<tuple<int, int, vector<Edge>>> cycs;
 		FOR(u, 1, n)
-			for(auto [v, w]: g[u])
+			for(auto [v, w]: g[u]) if(v != u){
 				heap.push_back({{u, v, w}, 0, 0, 0});
-		FOR(i, 1, sz(heap) - 1){
-			int v = heap[i].key.b; head[v] = merge(head[v], i);
-		}
+				head[v] = merge(head[v], sz(heap) - 1);
+			}
 		seen[r] = r;
 		FOR(s, 1, n){
 			int u = s, qi = 0, w;
 			while(seen[u] < 0){
-				if(!head[u]){ cost = oo; return; }
+				if(!head[u]){ cost = LLONG_MAX; return; }
 				prop(head[u]); Edge e = heap[head[u]].key;
 				heap[head[u]].delta -= e.w; pop(head[u]);
 				Q[qi] = e, path[qi++] = u, seen[u] = s;

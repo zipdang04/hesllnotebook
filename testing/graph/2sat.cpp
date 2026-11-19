@@ -18,6 +18,10 @@ int main(){
 	assert(c.val[1] && c.val[2] && c.val[3]);
 	c.either(-3, -3);
 	assert(!c.solve());
+	// both implication edges of each clause, once per copy
+	TwoSat d(2); d.either(1, 1); d.either(1, -2);
+	assert(d.g[3] == vector<int>({2, 2, 5}));
+	assert(d.g[4] == vector<int>({2}));
 	TwoSat t(1);
 	assert(t.solve());
 	t.either(-1, -1);

@@ -22,32 +22,24 @@ struct HLD{
 	}
 	void dfsHld(int u, int h, const vector<vector<int>> &g){
 		head[u] = h; pos[u] = ++timer;
-		if(heavy[u])
-			dfsHld(heavy[u], h, g);
+		if(heavy[u]) dfsHld(heavy[u], h, g);
 		for(int v: g[u]) if(v != par[u] && v != heavy[u])
 			dfsHld(v, v, g);
 	}
 	int lca(int u, int v){
-		while(head[u] != head[v]){
-			if(depth[head[u]] > depth[head[v]])
-				swap(u, v);
-			v = par[head[v]];
-		}
+		for(; head[u] != head[v]; v = par[head[v]])
+			if(depth[head[u]] > depth[head[v]]) swap(u, v);
 		return depth[u] < depth[v] ? u : v;
 	}
 	vector<pair<int, int>> path(int u, int v,
 			bool edge = false){
-		vector<pii> res;
+		pii st[64]; int k = 0; // <= 2 log2 n + 2 ranges
 		while(head[u] != head[v]){
-			if(depth[head[u]] > depth[head[v]])
-				swap(u, v);
-			res.push_back({pos[head[v]], pos[v]});
-			v = par[head[v]];
+			if(depth[head[u]] > depth[head[v]]) swap(u, v);
+			st[k++] = {pos[head[v]], pos[v]}; v = par[head[v]];
 		}
-		if(depth[u] > depth[v])
-			swap(u, v);
-		if(pos[u] + edge <= pos[v])
-			res.push_back({pos[u] + edge, pos[v]});
-		return res;
+		if(depth[u] > depth[v]) swap(u, v);
+		st[k] = {pos[u] + edge, pos[v]};
+		return {st, st + k + (st[k].fi <= st[k].se)};
 	}
 };

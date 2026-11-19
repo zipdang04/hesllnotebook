@@ -5,7 +5,7 @@ int main(){
 	assert(dm.cost == 0 && dm.par == vector<int>({0, 0}));
 	vector<vector<pair<int, ll>>> g(3);
 	g[2].push_back({1, 7}); dm = DirectedMST(g, 1);
-	assert(dm.cost == oo);
+	assert(dm.cost == LLONG_MAX);
 	g.assign(4, {});
 	g[1].push_back({2, 10}); g[2].push_back({3, 1});
 	g[3].push_back({2, 1}); dm = DirectedMST(g, 1);
@@ -28,6 +28,13 @@ int main(){
 		assert(dm.cost == w);
 		assert(dm.par == vector<int>({0, 0, 1}));
 	}
+	// a legal cost equal to oo is not "unreachable"
+	g.assign(3, {}); g[1].push_back({2, oo});
+	dm = DirectedMST(g, 1);
+	assert(dm.cost == oo && dm.par[2] == 1);
+	g[1].push_back({2, 5}); g[2].push_back({2, -7});
+	dm = DirectedMST(g, 1);
+	assert(dm.cost == 5 && dm.par[2] == 1);
 	ios_base::sync_with_stdio(0); cin.tie(nullptr);
 	int n, m, s; cin >> n >> m >> s; s++;
 	g.assign(n + 1, {});
@@ -42,7 +49,7 @@ int main(){
 			it->se = min(it->se, c);
 	}
 	dm = DirectedMST(g, s);
-	assert(dm.cost != oo && sz(dm.par) == n + 1);
+	assert(dm.cost != LLONG_MAX && sz(dm.par) == n + 1);
 	assert(dm.par[s] == 0 && dm.par[0] == 0);
 	ll sum = 0;
 	FOR(v, 1, n) if(v != s){
