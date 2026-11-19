@@ -47,6 +47,11 @@ $A$ is the area. $R$ and $r$ are the radii of the circumscribed and the inscribe
 	\fld{circumcenter} The radius is \texttt{(o - a).dist()}.
 	\fld{enclosingCircle} accepts repeated and collinear points; its relative tolerance is \texttt{EPS} there.
 ]\label{circle}
+\cpp[4]{Half-plane intersection}{halfplane.hpp}[
+	\fld{Use} \texttt{vector<pair<PD, PD>> hs; hs.push\_back(\{a, b\}); auto poly = halfPlaneInter(hs);}
+	\fld{Result} an answer of zero area (a point, a segment) is not specified: it may come back as \texttt{\{\}} or as a thin polygon, so test the area.
+	\fld{Needs} $a \ne b$ in every pair, and every vertex of the answer inside $|x|, |y| \le \texttt{BOX} = 10^6$: an unbounded answer gets vertices on the box.
+]\label{halfplane}
 \cpp[4]{Closest pair}{closestpair.hpp}[
 	\fld{Use} \texttt{auto [a, b] = closestPair(pts); double d = (a - b).dist();}
 	\fld{Result} two points of the input at the smallest distance. They are equal when a point occurs twice.
@@ -63,8 +68,3 @@ $A$ is the area. $R$ and $r$ are the radii of the circumscribed and the inscribe
 	\fld{Needs} $|x|, |y|, |z| \le 5 \cdot 10^5$ with \texttt{ll}, and $n \le 3000$ ($n^2$ integers of memory). With \texttt{double}, nearly coplanar points are not reliable.
 	\fld{hullVolume6} needs the faces \texttt{f} of \texttt{hull3d(p)}. With \texttt{ll} it is exact and at most $6 \cdot 10^{18}$.
 ]\label{hull3d}
-\cpp[4]{Half-plane intersection}{halfplane.hpp}[
-	\fld{Use} \texttt{vector<pair<PD, PD>> hs; hs.push\_back(\{a, b\}); auto poly = halfPlaneInter(hs);}
-	\fld{Result} an answer of zero area (a point, a segment) is not specified: it may come back as \texttt{\{\}} or as a thin polygon, so test the area.
-	\fld{Needs} $a \ne b$ in every pair, and every vertex of the answer inside $|x|, |y| \le \texttt{BOX} = 10^6$: an unbounded answer gets vertices on the box.
-]\label{halfplane}
