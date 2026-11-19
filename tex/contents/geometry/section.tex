@@ -33,7 +33,13 @@ To work with side lengths $a, b, c$ instead of coordinates, let $p = (a + b + c)
 \[ l_a = \sqrt{bc \left(1 - \left(\frac{a}{b + c}\right)^2\right)}. \]
 $A$ is the area. $R$ and $r$ are the radii of the circumscribed and the inscribed circle. $m_a$ and $l_a$ are the median and the angle bisector to side $a$.
 }
-\entry{Convex hull}
+\cpp[4]{Convex hull}{convexhull.hpp}[
+	\fld{Use} \texttt{auto h = convexHull(pts); auto [a, b] = hullDiameter(h);}
+	\fld{Result} \texttt{h} has at most 2 points when the input points are collinear.
+	\fld{Needs} a non-empty \texttt{h} from \texttt{convexHull} for \texttt{hullDiameter} and \texttt{inHull}.
+	\fld{hullDiameter} returns points, not indices; map them back for indices.
+	\fld{inHull} With \texttt{strict = false} the border is inside; a hull of 1 or 2 points is then a point or a segment.
+]\label{convexhull}
 \entry{Circles}
 \entry{Half-plane intersection}
 \entry{Closest pair / kd-tree}

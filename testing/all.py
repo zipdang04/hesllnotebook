@@ -293,6 +293,9 @@ all_source_codes = {
 		"cgl3c": OjTest("geometry/cgl3c", "https://onlinejudge.u-aizu.ac.jp/problems/CGL_3_C", 1),
 		"cgl4c": OjTest("geometry/cgl4c", "https://onlinejudge.u-aizu.ac.jp/problems/CGL_4_C", 1, error=1e-6),
 		"polygon_stress": StressTest("geometry/polygon_stress", 10),
+		"convexhull": TestCase("geometry/convexhull", "geo/static_convex_hull", 5),
+		"convexhull_stress": StressTest("geometry/convexhull_stress", 10),
+		"furthestpair": TestCase("geometry/furthestpair", "geo/furthest_pair", 5),
 	},
 	"math": {
 		"modint": TestCase("math/modint", "linear_algebra/inverse_matrix", 3),
