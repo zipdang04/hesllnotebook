@@ -56,7 +56,7 @@ Use it to minimise the average weight $\bar w(C)$ of a cycle $C$, when the graph
 \cpp[4]{Directed MST}{dmst.hpp}[
 	\fld{Use} \texttt{vector<vector<pair<int, ll>>> g(n + 1); DirectedMST dm(g, r);}
 	\fld{Result} \texttt{dm.cost}, the weight of a minimum rooted arborescence (reaches every vertex); \texttt{dm.par[v]} is the tail of $v$'s edge, \texttt{par[r]} $= 0$.
-	\fld{Needs} $n \cdot \max |w| < 9 \cdot 10^{18}$. \texttt{cost == LLONG\_MAX}: some vertex is unreachable. Self-loops are skipped. Uses Rollback DSU (\S\ref{rollbackdsu}).
+	\fld{Needs} $2n \cdot \max |w| < 9 \cdot 10^{18}$. \texttt{cost == LLONG\_MAX}: some vertex is unreachable. Self-loops are skipped. Uses Rollback DSU (\S\ref{rollbackdsu}).
 ]\label{dmst}
 \cpp[4]{Manhattan MST}{manhattanmst.hpp}[
 	\fld{Use} \texttt{vector<pll> p(n + 1); auto e = manhattanMST(p);}
