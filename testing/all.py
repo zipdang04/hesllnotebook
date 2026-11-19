@@ -343,6 +343,8 @@ all_source_codes = {
 	"interactive": {
 		"hamming": StressTest("interactive/hamming", 2),
 		"hamming_stress": StressTest("interactive/hamming_stress", 10),
+		"ahu": TestCase("interactive/ahu", "tree/rooted_tree_isomorphism_classification", 5),
+		"ahu_stress": StressTest("interactive/ahu_stress", 10),
 	},
 	"misc": {
 	},

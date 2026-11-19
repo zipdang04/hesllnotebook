@@ -18,5 +18,10 @@
 ]\label{hamming}
 
 \subsection{Encoding}
+\cpp[4]{Tree canonical form (AHU)}{ahu.hpp}[
+	\fld{Use} \texttt{AHU t; vector<int> id = t.rooted(g, r);}
+	\fld{Result} \texttt{id[u] == id[v]} iff the subtrees of $u$ and $v$ under root $r$ are isomorphic; ids run over $1..\texttt{sz(t.ids)}$.
+	\fld{Needs} a tree on $1..n$, $n \ge 1$, each edge in both lists. \texttt{t = AHU()} clears the table.
+	\fld{unrooted} \texttt{t.unrooted(g) == t.unrooted(h)} iff $g$ and $h$ are isomorphic as unrooted trees.
+]\label{ahu}
 \entry{Rank / unrank}
-\entry{Tree canonical form (AHU)}
