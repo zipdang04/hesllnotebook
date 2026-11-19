@@ -20,6 +20,9 @@
 \RequirePackage{amssymb}
 \RequirePackage{enumitem}
 \RequirePackage{booktabs}
+% keep >> and << literal in typewriter text (vntex tt has guillemet ligatures)
+\RequirePackage[protrusion=false,expansion=false]{microtype}
+\DisableLigatures[<,>]{encoding = *, family = tt*}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 2. margins %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \paperwidth=29.7cm
