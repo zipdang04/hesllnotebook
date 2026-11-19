@@ -35,7 +35,7 @@ Distinct palindromes: eertree (\S\ref{eertree}).
 \topic{LCP, order and period of substrings}
 To compare two substrings with 0-based starts $i$, $j$:
 \begin{facts}
-	\item Binary search the largest $L \le n - \max(i, j)$ with \texttt{get(i + 1, i + L) == get(j + 1, j + L)}: the common prefix.
+	\item Binary search the largest $L \le \min(\ell_i, \ell_j)$ ($\ell_i$ the length of the substring from $i$; $n - \max(i, j)$ for suffixes) with \texttt{get(i + 1, i + L) == get(j + 1, j + L)}: the common prefix.
 	\item If a character is left in both, $s_{i+L}$ against $s_{j+L}$ (0-based) decides the order; otherwise the shorter one is smaller.
 	\item $d$ is a period of $s_l \dots s_r$ when \texttt{get(l, r - d) == get(l + d, r)}.
 \end{facts}
@@ -46,7 +46,7 @@ To compare two substrings with 0-based starts $i$, $j$:
 	\texttt{sa.lcp[i]} is ranks $i-1$, $i$'s common prefix length ($\le n$); \texttt{lcp[0]} is 0.
 	Ties use increasing starts; \texttt{sa[0]} is the first minimum rotation.
 	\fld{Needs} For suffixes, final \texttt{'\$'} is unique and smallest; \texttt{sa[0]} is $n$, and ranks $1..n$ are the suffixes of $s$.
-	For the longest common substring of $s$ and $t$, use \texttt{s + '\#' + t + '\$'} with final \texttt{'\$'}.
+	For the longest common substring of $s$ and $t$, use \texttt{s + '\$' + t + '\#'}: two distinct delimiters in neither string, the final \texttt{'\#'} (35) smaller than \texttt{'\$'} (36) and than every data character.
 ]\label{suffixarray}
 \cpp[4]{Aho--Corasick}{ahocorasick.hpp}[
 	\fld{Use} \texttt{Aho a; for(auto \&p: ps) e.push\_back(a.add(p)); a.build();}

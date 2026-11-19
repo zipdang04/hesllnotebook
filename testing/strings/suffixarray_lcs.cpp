@@ -5,7 +5,7 @@ int main(){
 	ios_base::sync_with_stdio(false); cin.tie(nullptr);
 	string s, t; cin >> s >> t;
 	int n = sz(s), m = sz(t);
-	string u = s + '#' + t + '$';
+	string u = s + '$' + t + '#';
 	SuffixArray sa(u);
 	int best = 0, a = 0, c = 0;
 	FOR(i, 1, sz(u) - 1){
