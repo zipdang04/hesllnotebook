@@ -351,6 +351,7 @@ all_source_codes = {
 	"misc": {
 		"ternary": StressTest("misc/ternary", 2),
 		"ternary_stress": StressTest("misc/ternary_stress", 10),
+		"anneal": StressTest("misc/anneal", 5),
 	},
 }
 

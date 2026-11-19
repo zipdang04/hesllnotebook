@@ -9,4 +9,10 @@
 	\fld{goldenSearch} \texttt{goldenSearch(lo, hi, f)} for a unimodal $f$. Near a smooth minimum $x$ has only about 8 correct digits.
 ]\label{ternary}
 
+\cpp[4]{Simulated annealing}{anneal.hpp}[
+	\fld{Use} \texttt{anneal(1.8, 1e3, 1e-3, propose, commit);}
+	\fld{Result} \texttt{commit()} runs once per accepted move: update the current cost and save the best state there.
+	\fld{Needs} $t_0$ near a typical worsening $\Delta$, $t_1$ near the smallest one that matters. A worsening is accepted with probability $e^{-\Delta / T}$.
+]\label{anneal}
+
 \entry{DP optimisation: D\&C, Knuth, Aliens}
