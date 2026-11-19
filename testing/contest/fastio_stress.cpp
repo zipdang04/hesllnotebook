@@ -38,6 +38,10 @@ int main(){
 	checkReads({});
 	openInput("0");
 	checkReads({0});
+	openInput("-");
+	checkReads({});
+	openInput("5 -");
+	checkReads({5});
 	openInput("-7");
 	checkReads({-7});
 	openInput(to_string(LLONG_MAX) + "\t"

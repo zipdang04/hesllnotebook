@@ -18,8 +18,8 @@
 ]\label{fastio}
 \othercodes{stress.sh}{bash}{stress.sh}[
 	\fld{Use} \texttt{./stress.sh p -n 500 -t 2}, or \texttt{-m tests}, \texttt{-m inter}, \texttt{-m multi -c chk}.
-	\fld{Result} \texttt{OK n tests}; or \texttt{FAIL seed i} + \texttt{tests/fail\_i.\{in,out,ans\}}; \texttt{-m tests} replays them, exit 1 unless all pass.
-	\fld{Needs} \texttt{timeout}, \texttt{mkfifo} (inter), \texttt{chmod +x stress.sh}. Sanitizers are slow: raise \texttt{-t} before trusting a TLE.
+	\fld{Result} \texttt{OK n tests}; or \texttt{FAIL seed i} + \texttt{tests/fail\_i.\{in,out,ans\}}; \texttt{-m tests} replays them; \texttt{inter}: \texttt{-m inter -s i -n 1}.
+	\fld{Needs} \texttt{timeout}, \texttt{mkfifo} (inter), \texttt{chmod +x stress.sh}; \texttt{-m tests} exits 1 unless all pass. Sanitizers are slow: raise \texttt{-t} before trusting a TLE.
 ]\label{stress}
 {\small\tightdisplay
 \topic{Modes}
@@ -60,7 +60,7 @@ Go through this list before every submit.
 \begin{checks}
 	\item Pass every sample with the judge build \texttt{o}, not only with \texttt{c} (\S\ref{command}).
 	\item Generate a maximum test; time it without sanitizers and look at the memory.
-	\item Keep products and sums in \texttt{ll}: \texttt{1LL * a * b}, \texttt{(a - b + MOD) \% MOD}.
+	\item Keep products and sums in \texttt{ll}: \texttt{1LL * a * b}, \texttt{(1LL * a - b + MOD) \% MOD}.
 	\item Never compute \texttt{oo * x} or a sum of many \texttt{oo}; test \texttt{d[v] < oo} before \texttt{d[v] + w}, or a later \texttt{== oo} test fails.
 	\item With many test cases, reset every global, and only up to \texttt{n}.
 	\item End lines with \texttt{'\textbackslash n'}, not \texttt{endl}.

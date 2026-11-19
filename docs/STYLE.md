@@ -896,7 +896,7 @@ Run this on every `.hpp` and every test you wrote. Each line is a yes or no.
 | `fi`, `se` | macro | `first`, `second` |
 | `FOR(i, a, b)`, `REV(i, b, a)` | macro | **changed**: `auto`, no type argument (7.1) |
 | `testBit`, `flipBit`, `cntBit`, `log2` | macro | `log2(n)` is the integer log of a positive integer |
-| `CURRENT_TIMESTAMP()`, `randomize` | macro | `randomize;` declares `mt19937_64 mt` |
+| `CURRENT_TIMESTAMP()`, `randomize` | macro | `randomize;` declares `mt19937_64 rng` |
 | `dbg(..)` | macro, only under `-DLOCAL` | **new** (ToC 0.1); never used in an entry |
 | `pii`, `pll` | typedef | **new**, next to `ll`; used with `.fi`/`.se` (section 5) |
 | `vi`, `vll`, `all(x)`, `sz(x)` | typedef, macro | **new**, under `/* in this template */` at the end; usable in bodies, public signatures still spell types out |
@@ -912,7 +912,7 @@ Changes to make in the template:
 
 Because of the macros, an entry must not:
 
-- use any name in the table as its own, nor `mt`;
+- use any name in the table as its own;
 - call `log2` on a `double`, or write `std::log2`. The macro replaces both. The first truncates
   silently, the second does not compile.
 

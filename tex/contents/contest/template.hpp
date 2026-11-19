@@ -28,7 +28,7 @@ bool minimize(T1 &a, T2 b){ return b < a ? (a = b, 1) : 0; }
 
 #define CURRENT_TIMESTAMP() \
 	chrono::steady_clock::now().time_since_epoch().count()
-#define randomize mt19937_64 mt(CURRENT_TIMESTAMP())
+#define randomize mt19937_64 rng(CURRENT_TIMESTAMP())
 
 #ifdef LOCAL
 template<class T, class =
@@ -45,13 +45,12 @@ ostream &operator<<(ostream &o, const T &v){
 	for(auto &&x: v) o << s << x, s = ", ";
 	return o << '}';
 }
+template<class T> const T &dbgv(const T &x){ return x; }
 template<size_t N> // char array: stop at NUL or N
-ostream &operator<<(ostream &o, char (&s)[N]){
-	return o.write(s, strnlen(s, N));
-}
+string dbgv(const char(&s)[N]){ return {s, strnlen(s, N)}; }
 #define dbg(...) cerr << "[" #__VA_ARGS__ "]:", \
 	[](auto &&...dbg_){ \
-		((cerr << ' ' << dbg_), ...); cerr << '\n'; \
+		((cerr << ' ' << dbgv(dbg_)), ...); cerr << '\n'; \
 	}(__VA_ARGS__)
 #else
 #define dbg(...)

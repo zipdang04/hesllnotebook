@@ -1,6 +1,6 @@
 #!/bin/bash
 # ./stress.sh p [-m stress|tests|inter|multi] [-c chk]
-#   [-n 500] [-s 1] [-t 2]   (-n, -s: decimal, < 2^63)
+#   [-n 500] [-s 1] [-t 2]   (-n, -s: decimal, s+n <= 2^63)
 set -o pipefail
 p=$1; shift; m=stress c= n=500 s=1 t=2
 while getopts m:c:n:s:t: o; do eval $o=\$OPTARG; done

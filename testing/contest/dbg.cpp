@@ -10,6 +10,7 @@ int main(){
 	map<int, vector<int>> m{{1, {2}}};
 	char ca[2] = {'A', 'B'}, cz[5] = "xy"; // ca has no NUL
 	int dbgArg = 5;
+	struct { const char a[2]; char tail[4]; } cv = {{'A', 'B'}, "XYZ"};
 #ifdef LOCAL
 	stringstream ss;
 	auto old = cerr.rdbuf(ss.rdbuf());
@@ -29,6 +30,7 @@ int main(){
 	dbg(ca); string r9 = got();
 	dbg(cz, "lit"); string r10 = got();
 	dbg(dbgArg); string r11 = got();
+	dbg(cv.a); string r12 = got();
 	dbg(vector<int>{}, string{});
 	assert(got() == "[vector<int>{}, string{}]: {} \n");
 	cerr.rdbuf(old);
@@ -43,6 +45,7 @@ int main(){
 	assert(r9 == "[ca]: AB\n");
 	assert(r10 == "[cz, \"lit\"]: xy lit\n");
 	assert(r11 == "[dbgArg]: 5\n");
+	assert(r12 == "[cv.a]: AB\n");
 #else
 	int calls = 0;
 	auto f = [&]{ return ++calls; };
@@ -51,7 +54,7 @@ int main(){
 	assert(calls == 0);
 	assert(x == 3 && s == "ab" && sz(v) == 2 && p.fi == 4);
 	assert(a[0] == 7 && sz(b) == 2 && sz(m) == 1);
-	assert(ca[1] == 'B' && cz[1] == 'y' && dbgArg == 5);
+	assert(ca[1] == 'B' && cz[1] == 'y' && dbgArg == 5 && cv.tail[0] == 'X');
 #endif
 	int c = 0;
 	FOR(i, 0, 2) c += i;

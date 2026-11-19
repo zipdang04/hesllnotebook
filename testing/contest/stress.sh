@@ -135,6 +135,8 @@ tests/3.in: RE 3
 F
 diff -u expected log || fail "tests verdicts"
 cat log
+newCase top
+checkOK -n 2 -s 9223372036854775806
 newCase inter
 cat > interactor.cpp <<'F'
 #include <cstdlib>
@@ -191,6 +193,8 @@ F
 checkFail -m inter -s 50 -n 3
 grep -qx 'FAIL seed 50' log || fail "inter seed"
 sed 's/return 0;/return 1;/' search.cpp > p.cpp
+checkFail -m inter -s 50 -n 1
+grep -qx 'FAIL seed 50' log || fail "inter replay"
 checkFail -m inter -n 1
 newCase multi
 cat > p.cpp <<'F'

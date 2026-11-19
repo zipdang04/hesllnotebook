@@ -16,6 +16,7 @@ template<class T> bool read(T &x){
 	for(; c != '-' && (c < '0' || c > '9'); c = readChar())
 		if(c < 0) return false;
 	if(c == '-') neg = 1, c = readChar();
+	if(c < '0' || c > '9') return false;
 	for(; c >= '0' && c <= '9'; c = readChar())
 		x = x * 10 - (c - '0');
 	if(!neg) x = -x;
