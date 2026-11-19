@@ -3,7 +3,8 @@
 
 // Implicit treap: a sequence, positions 1..size, [l, r]
 // closed; O(log n) expected per call. Recursive split and
-// merge, depth O(log n) expected. Other ops: edit EDIT.
+// merge, depth O(log n) expected if the input does not
+// depend on rng. Other ops: edit EDIT.
 struct Treap{
 	// ---- EDIT: node value, pending tag, two functions ----
 	// x -> b * x + c. Tag() must change nothing.
@@ -23,6 +24,7 @@ struct Treap{
 	}
 	// t[u] gets f after the tag already in u
 	void apply(int u, Tag f){
+		if(f.b == 1 && f.c == 0) return;
 		Node &x = t[u];
 		x.val = f.b * x.val + f.c;
 		x.sum = f.b * x.sum + f.c * x.size;

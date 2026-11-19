@@ -14,6 +14,7 @@ struct LazySeg{
 	}
 	// node[id] gets t after the tag already in id
 	void apply(int id, Tag t){
+		if(t.b == 1 && t.c == 0) return;
 		node[id].sum = t.b * node[id].sum + t.c * node[id].len;
 		tag[id] = {t.b * tag[id].b, t.b * tag[id].c + t.c};
 	}
@@ -22,8 +23,7 @@ struct LazySeg{
 	vector<Node> node;
 	vector<Tag> tag;
 	LazySeg(const vector<Node> &a): n(sz(a)), h(0){
-		while((1 << h) < n) h++;
-		m = 1 << h;
+		for(m = 1; m < n; m <<= 1) h++;
 		node.assign(2 * m, Node()); tag.assign(2 * m, Tag());
 		FOR(i, 0, n - 1) node[m + i] = a[i];
 		REV(id, m - 1, 1) pull(id);

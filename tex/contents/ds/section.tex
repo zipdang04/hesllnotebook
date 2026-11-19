@@ -38,8 +38,8 @@ When tags do not commute (assign, $x \to bx + c$), their order matters, so push 
 }
 \cpp[4]{Li Chao tree}{lichao.hpp}[
 	\fld{Use} \texttt{LiChao lc(pts); lc.addLine(a, b); ll y = lc.get(x);}
-	\fld{Result} \texttt{get(x)} is the minimum of $ax + b$ over the lines covering $x$, or \texttt{LiChao::oo} if none does. For the maximum, add $(-a, -b)$ and negate.
-	\fld{Needs} \texttt{pts} holds every $x$ ever asked (any order, duplicates fine, not empty); any other $x$ gives a wrong answer silently. For each line and each covered $x$ of \texttt{pts}, $ax$ and $ax + b$ fit in \texttt{ll} and $ax + b < \texttt{oo}$.
+	\fld{Result} \texttt{get(x)} is the minimum of $ax + b$ over the lines covering $x$, or \texttt{LiChao::oo} if none does. For a maximum, add $(-a, -b)$, negate.
+	\fld{Needs} \texttt{pts} holds every $x$ asked (any order, duplicates fine, not empty); any other $x$ answers wrongly. For each line (negated for a max) and covered $x$ of \texttt{pts}, $ax$ and $ax + b$ fit in \texttt{ll} and $ax + b < \texttt{oo}$.
 	\fld{addSegment} \texttt{addSegment(a, b, l, r)} adds $ax + b$ only for $l \le x \le r$; it does nothing if no point of \texttt{pts} is in $[l, r]$.
 ]\label{lichao}
 
@@ -69,7 +69,7 @@ When tags do not commute (assign, $x \to bx + c$), their order matters, so push 
 \cpp[4]{pb\_ds}{pbds.hpp}[
 	\fld{Use} \texttt{OrderedSet<int> s; gp\_hash\_table<ll, int, CustomHash> m;}
 	\fld{Result} \texttt{s.order\_of\_key(x)} counts keys $< x$: $x$'s rank, even if absent.
-	\fld{Needs} distinct keys; for a multiset use \texttt{OrderedSet<pii>} with unique \texttt{.se}. Pack pair keys of \texttt{mp} into one \texttt{ll}.
+	\fld{Needs} distinct keys; for a multiset use \texttt{OrderedSet<pii>} with unique \texttt{.se}. Pack pair keys of \texttt{m} into one \texttt{ll}.
 	\fld{find\_by\_order} \texttt{s.find\_by\_order(k)} points at rank $k$, or \texttt{end()} if $k \ge \texttt{s.size()}$; test before \texttt{*}.
 	\fld{CustomHash} also serves \texttt{unordered\_map<ll, int, CustomHash>}; its seed is random per run.
 ]\label{pbds}
