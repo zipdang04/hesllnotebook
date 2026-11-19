@@ -43,4 +43,8 @@
 	\fld{Result} the minimum of $\sum_i a[i][\texttt{match[i]}]$ over injective \texttt{match}; row $i$ takes column \texttt{match[i]}.
 	\fld{Needs} $n \le m$, every row of size $m + 1$ as in \texttt{Use}. Maximum weight: negate \texttt{a}. A forbidden pair: cost $10^{12}$, then check the result.
 ]\label{hungarian}
-\entry{General matching (blossom)}
+\cpp[4]{General matching (blossom)}{blossom.hpp}[
+	\fld{Use} \texttt{vector<vector<int>> g(n + 1); GeneralMatching gm(g);}
+	\fld{Result} \texttt{gm.pairs} edges form a maximum matching; \texttt{gm.match[u]} is the partner of $u$, 0 if $u$ is free.
+	\fld{Needs} each edge in both lists. Self-loops and multi-edges are fine.
+]\label{blossom}

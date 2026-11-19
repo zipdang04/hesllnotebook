@@ -209,6 +209,8 @@ all_source_codes = {
 		"costscaling": TestCase("flow/costscaling", "graph/min_cost_b_flow", 10),
 		"hungarian": TestCase("flow/hungarian", "graph/assignment", 2),
 		"hungarian_stress": StressTest("flow/hungarian_stress", 10),
+		"blossom": TestCase("flow/blossom", "graph/general_matching", 2),
+		"blossom_stress": StressTest("flow/blossom_stress", 10),
 		"stoerwagner": StressTest("flow/stoerwagner", 2),
 		"stoerwagner_stress": StressTest("flow/stoerwagner_stress", 10),
 		"gomoryhu": StressTest("flow/gomoryhu", 2),
