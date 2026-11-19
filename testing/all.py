@@ -220,6 +220,7 @@ all_source_codes = {
 		"spfa_stress": StressTest("graph/spfa_stress", 10),
 		"dmst": TestCase("graph/dmst", "graph/directedmst", 2),
 		"dmst_stress": StressTest("graph/dmst_stress", 10),
+		"manhattanmst": TestCase("graph/manhattanmst", "geo/manhattanmst", 3),
 		"scc": TestCase("graph/scc", "graph/scc", 2),
 		"2sat": TestCase("graph/2sat", "other/two_sat", 2),
 		"lowlink_bcc": TestCase("graph/lowlink_bcc", "graph/biconnected_components", 2),
