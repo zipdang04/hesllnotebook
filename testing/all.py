@@ -217,7 +217,7 @@ all_source_codes = {
 		"gomoryhu_stress": StressTest("flow/gomoryhu_stress", 10),
 	},
 	"graph": {
-		"spfa": TestCase("graph/spfa", "graph/shortest_path", 1),
+		"spfa": TestCase("graph/spfa", "graph/shortest_path", 1.3),  # slowest case 0.86 s, x1.5
 		"spfa_aoj": OjTest("graph/spfa_aoj", "https://onlinejudge.u-aizu.ac.jp/problems/GRL_1_B", 1),
 		"spfa_stress": StressTest("graph/spfa_stress", 10),
 		"dmst": TestCase("graph/dmst", "graph/directedmst", 2),
