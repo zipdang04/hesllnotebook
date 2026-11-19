@@ -307,6 +307,8 @@ all_source_codes = {
 		"kdtree_stress": StressTest("geometry/kdtree_stress", 10),
 		"hull3d": StressTest("geometry/hull3d", 5),
 		"hull3d_stress": StressTest("geometry/hull3d_stress", 10),
+		"halfplane": StressTest("geometry/halfplane", 5),
+		"halfplane_stress": StressTest("geometry/halfplane_stress", 10),
 	},
 	"math": {
 		"modint": TestCase("math/modint", "linear_algebra/inverse_matrix", 3),
