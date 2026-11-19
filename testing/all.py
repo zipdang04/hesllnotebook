@@ -305,6 +305,8 @@ all_source_codes = {
 		"closestpair": TestCase("geometry/closestpair", "geo/closest_pair", 5),
 		"kdtree": StressTest("geometry/kdtree", 5),
 		"kdtree_stress": StressTest("geometry/kdtree_stress", 10),
+		"hull3d": StressTest("geometry/hull3d", 5),
+		"hull3d_stress": StressTest("geometry/hull3d_stress", 10),
 	},
 	"math": {
 		"modint": TestCase("math/modint", "linear_algebra/inverse_matrix", 3),
