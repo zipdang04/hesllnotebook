@@ -29,7 +29,7 @@ vector<double> conv(const vector<double> &a,
 		const vector<double> &b){
 	if(a.empty() || b.empty()) return {};
 	vector<double> res(sz(a) + sz(b) - 1);
-	int n = 2 << log2(sz(res));
+	int n = 1; while(n < sz(res)) n *= 2;
 	vector<Cd> in(n), out(n);
 	FOR(i, 0, sz(a) - 1) in[i].real(a[i]);
 	FOR(i, 0, sz(b) - 1) in[i].imag(b[i]);
@@ -45,7 +45,7 @@ vector<ll> convMod(const vector<ll> &a,
 		const vector<ll> &b, ll mod){
 	if(a.empty() || b.empty()) return {};
 	vector<ll> res(sz(a) + sz(b) - 1);
-	int n = 2 << log2(sz(res));
+	int n = 1; while(n < sz(res)) n *= 2;
 	ll cut = sqrt(mod);
 	vector<Cd> fa(n), fb(n), outl(n), outs(n);
 	// balanced digits: x = h * cut + l, |h|, |l| <= cut / 2

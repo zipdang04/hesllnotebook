@@ -23,7 +23,7 @@
 ]\label{sieve}
 \cpp[4]{Ext-gcd, CRT}{crt.hpp}[
 	\fld{Use} \texttt{ll g = extGcd(a, b, x, y); auto [r, l] = crt(a, m, b, n);}
-	\fld{Result} \texttt{extGcd}: $ax + by = g = \gcd(a, b)$; if $g = 1$, $x \equiv a^{-1} \pmod b$, maybe negative: use $(x \bmod b + b) \bmod b$.
+	\fld{Result} \texttt{extGcd}: $ax + by = g = \gcd(a, b)$; if $g = 1$, $x \equiv a^{-1} \pmod b$, maybe negative: reduce $x \bmod b$, then add $b$ only if that is negative.
 	\fld{crt} Returns $r \equiv a \pmod m$, $r \equiv b \pmod n$, $0 \le r < l = \mathrm{lcm}(m, n)$; \texttt{\{-1, -1\}} if none.
 	\endgraf\noindent For many congruences, fold from \texttt{\{0, 1\}} and stop at $-1$.
 ]\label{crt}
@@ -54,7 +54,7 @@
 
 \subsection{Linear algebra}
 \cpp[4]{Gauss--Jordan}{gauss.hpp}[
-	\fld{Use} \texttt{auto [rank, det] = gauss(a, c);}
+	\fld{Use} \texttt{auto [rank, det] = gauss(a, c);} Uses Modint (\S\ref{modint}).
 	\fld{Result} reduces $n \times m$ \texttt{Mint<MOD>} matrix \texttt{a} on columns $0..c-1$. Set $c = m$ for rank, $c = n = m$ for determinant (0 if singular).
 	\fld{solveLinear} solves $Ax = b$, $n \ge 1$: empty if impossible, else \texttt{s[0]} solves it and \texttt{s[1..]} span the kernel ($Ax = 0$).
 	\fld{matInverse} sets \texttt{a} to $A^{-1}$; singular: false, \texttt{a} undefined.
@@ -68,8 +68,8 @@ For a system over \texttt{double} (probabilities, expected values), copy \texttt
 	\item Treat $|x| < 10^{-9}$ as zero, in the pivot search, the no-solution test and the \texttt{piv} scan of \texttt{solveLinear}.
 \end{facts}
 \cpp[4]{Simplex}{simplex.hpp}[
-	\fld{Use} \texttt{Simplex lp(A, b, c);} then test \texttt{lp.val} against \texttt{-oo} and \texttt{oo}.
-	\fld{Result} \texttt{lp.x} reaches \texttt{lp.val}. It is empty for \texttt{-oo} and some feasible point for \texttt{oo}.
+	\fld{Use} \texttt{Simplex lp(A, b, c);} then test \texttt{lp.val} against \texttt{-INFINITY} and \texttt{INFINITY}.
+	\fld{Result} \texttt{lp.x} reaches \texttt{lp.val}. It is empty for \texttt{-INFINITY} and some feasible point for \texttt{INFINITY}.
 	\fld{Needs} negate $c$ for a minimum, negate a row for $\ge$, and give two rows for $=$.
 	It runs fastest when $b \ge 0$, so that $x = 0$ is feasible.
 ]\label{simplex}
@@ -116,13 +116,13 @@ For $\min(i, j) = k$, use suffix sums $A_k = \sum_{i \ge k} a_i$ and $c_k = C_k 
 	\fld{Use} \texttt{vector<MintN> c = berlekampMassey(s); MintN x = kthTerm(s, c, k);}
 	\fld{Result} \texttt{c} is the shortest recurrence of \texttt{s}, of order $d = |c|$, and \texttt{x} is $s_k$:
 	\[ s_i = \sum_{j=0}^{d-1} c_j \, s_{i-1-j} \quad (i \ge d). \]
-	\fld{Needs} for a sequence of order $d$, at least $2d$ terms find it; \texttt{kthTerm} needs $|s| \ge d$ and $0 \le k \le 10^{18}$. Uses NTT (\S\ref{ntt}).
+	\fld{Needs} $2d$ terms find an order-$d$ recurrence; \texttt{kthTerm} needs $|s| \ge d$, $0 \le k \le 10^{18}$, $2d + 1 \le 2^{23}$. Uses NTT (\S\ref{ntt}).
 	\fld{kthTerm} \texttt{kthTerm(\{0, 1\}, \{1, 1\}, k)} is the $k$-th Fibonacci number. For another prime, retype \texttt{MintN}; then \texttt{kthTerm} needs $d \le 31$.
 ]\label{linearrec}
 \cpp[4]{Lagrange interpolation}{lagrange.hpp}[
 	\fld{Use} \texttt{vector<MintN> c = interpolate(x, y);}
 	\fld{Result} the coefficients of the unique $f$ with $f(x_i) = y_i$.
-	\fld{Needs} distinct $x_i$ (a repeat gives a wrong $f$ silently); $1 \le n \le \texttt{MOD}$ for \texttt{interpolateAt}.
+	\fld{Needs} distinct $x_i$ (a repeat gives a wrong $f$ silently); $1 \le n \le \texttt{MOD}$ for \texttt{interpolateAt}. Uses Modint (\S\ref{modint}).
 	\fld{interpolateAt} returns $f(t)$ for any \texttt{ll} $t$ from the values $y_i = f(i)$, without the coefficients.
 	\fld{Sums} a sum $\sum_{i=1}^{t} i^k$ is a polynomial of degree $k + 1$ in $t$: give $k + 2$ values.
 ]\label{lagrange}
@@ -133,7 +133,7 @@ Evaluate the interpolating polynomial by hand, or check a coefficient, with
 \subsection{Numerical}
 \cpp[4]{Simpson integration}{simpson.hpp}[
 	\fld{Use} \texttt{double s = simpson(a, b, [\&](double x)\{ return f(x); \});}
-	\fld{Result} $\int_a^b f(x)\,dx$ within about \texttt{eps} for a smooth $f$; $a > b$ gives the negative.
-	\fld{Needs} split $\lbrack a, b \rbrack$ at kinks, jumps and peaks much narrower than $(b - a) / 4$; nest calls for a double integral.
-	\fld{eps} absolute: scale it up when $\max |f| \cdot (b - a)$ exceeds about $10^7$.
+	\fld{Result} $\int_a^b f(x)\,dx$ with estimated error below \texttt{eps} for a smooth $f$; $a > b$ gives the negative.
+	\fld{Needs} split at kinks, jumps, peaks narrower than $(b - a) / 4$, cancelling terms ($16x^6 - 65x^4$ on $[0, 1]$ gives $-10.7083$, not $-75/7$).
+	\fld{eps} absolute, a threshold for the error estimate, not a bound. Scale it up when $\max |f| \cdot (b - a)$ exceeds about $10^7$.
 ]\label{simpson}

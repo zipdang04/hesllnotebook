@@ -2,8 +2,8 @@
 #include "../contest/template.hpp"
 
 // Simplex: max c.x, Ax <= b, x >= 0; A is m x n, 0-based.
-// val = -oo: no solution, oo: unbounded. Compare doubles
-// with a tolerance. O(mn) per pivot, exponential at worst.
+// val = -INFINITY: no solution, INFINITY: unbounded.
+// Compare with a tolerance. O(mn)/pivot, exponential.
 struct Simplex{
 	// ---- EDIT: tolerance ----
 	static constexpr double EPS = 1e-8;
@@ -30,7 +30,7 @@ struct Simplex{
 		if(D[r][n+1] < -EPS){
 			pivot(r, n);
 			if(!iterate(2) || D[m+1][n+1] < -EPS){
-				val = -oo; return;
+				val = -INFINITY; return;
 			}
 			FOR(i, 0, m - 1) if(B[i] == -1){
 				int s = 0;
@@ -42,7 +42,7 @@ struct Simplex{
 		bool ok = iterate(1); x.assign(n, 0);
 		FOR(i, 0, m - 1) if(B[i] < n)
 			x[B[i]] = D[i][n+1];
-		val = ok ? D[m][n+1] : oo;
+		val = ok ? D[m][n+1] : INFINITY;
 	}
 	bool ltj(const vector<double> &row, int j, int s){
 		return s == -1 || pair(row[j], N[j])

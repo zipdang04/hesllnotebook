@@ -7,6 +7,11 @@ int main(){
 	assert(zero.d.empty() && !zero.neg);
 	Bigint borrow = Bigint("-1000000000") + 1;
 	assert(borrow.str() == "-999999999" && sz(borrow.d) == 1);
+	{ // a failed extraction keeps the value
+		istringstream empty("");
+		Bigint a = 42;
+		assert(!(empty >> a) && a == 42);
+	}
 	int t; cin >> t;
 	FOR(i, 1, t){
 		Bigint a, b; cin >> a >> b;

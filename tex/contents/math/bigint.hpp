@@ -168,8 +168,8 @@ struct Bigint{
 		return a.cmp(b) != 0;
 	}
 	friend istream &operator>>(istream &in, Bigint &a){
-		string s; in >> s;
-		a = Bigint(s);
+		string s;
+		if(in >> s) a = Bigint(s);
 		return in;
 	}
 	friend ostream &operator<<(ostream &out, const Bigint &a){

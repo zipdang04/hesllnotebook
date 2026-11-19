@@ -208,7 +208,7 @@ $2^{64}$ & $2^{64} - 59$ & $2^{64} + 13$ \\
 \end{tabular}
 \topic{NTT primes}
 Use a prime $p = c \cdot 2^k + 1$ for transforms of length up to $2^k$. Here $g$ is a primitive root.
-\texttt{ntt.hpp} hard-codes root 3 (\texttt{MintN(3)} in \texttt{ntt}): for $g \ne 3$, change that 3 to $g$ as well as the modulus.
+\texttt{ntt.hpp} hard-codes root 3 (\texttt{MintN(3)} in \texttt{ntt}): for $g \ne 3$, change that 3 to $g$ as well as the modulus. \texttt{Bigint} also needs $81 \cdot \min(\text{decimal lengths}) < p$.
 
 \begin{tabular}{@{}rlr@{}}
 \toprule
@@ -228,7 +228,7 @@ $p$ & $c \cdot 2^k + 1$ & $g$ \\
 Use the closed forms for small $k$ and interpolation for any $k$.
 \begin{gather*} \sum_{i=1}^{n} i = \frac{n(n+1)}{2}, \\ \sum_{i=1}^{n} i^2 = \frac{n(n+1)(2n+1)}{6}, \\ \sum_{i=1}^{n} i^3 = \Bigl(\frac{n(n+1)}{2}\Bigr)^2. \end{gather*}
 For any $k$, the sum $\sum_{i=1}^{n} i^k$ is a polynomial in $n$ of degree $k + 1$.
-Give \texttt{interpolateAt} (\S\ref{lagrange}) its values at $n = 0..k+1$.
+Give \texttt{interpolateAt} (\S\ref{lagrange}) its values at $n = 0..k+1$; it needs $k + 2 \le p$ for the modulus $p$.
 \topic{Faulhaber with Bernoulli numbers}
 Use it when $k$ is fixed and the polynomial itself is needed.
 \[ \sum_{i=0}^{n-1} i^k = \frac{1}{k+1} \sum_{j=0}^{k} \tbinom{k+1}{j} B_j\, n^{k+1-j}. \]

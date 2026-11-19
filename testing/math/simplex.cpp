@@ -14,16 +14,19 @@ int main(){
 	assert(p.EPS == 1e-8);
 	assert(p.ltj({0, 0, 0}, 0, -1));
 	assert(p.ltj({0, 0, 0}, 0, 1) == (p.N[0] < p.N[1]));
+	Simplex big({{1}}, {1e9}, {1e9});
+	assert(big.val == 1e18 && big.val != INFINITY);
+	assert(big.val != -INFINITY && sz(big.x) == 1);
 	Simplex u({}, {}, {1});
-	assert(u.val == oo && sz(u.x) == 1);
+	assert(u.val == INFINITY && sz(u.x) == 1);
 	assert(u.x[0] >= -1e-9);
 	u = Simplex({}, {}, {-1});
 	assert(abs(u.val) < 1e-9);
 	assert(u.x == vector<double>{0});
 	u = Simplex({{1}}, {-1}, {1});
-	assert(u.val == -oo && u.x.empty());
+	assert(u.val == -INFINITY && u.x.empty());
 	u = Simplex({{1, -1}}, {1}, {1, 1});
-	assert(u.val == oo && sz(u.x) == 2);
+	assert(u.val == INFINITY && sz(u.x) == 2);
 	assert(u.x[0] - u.x[1] <= 1 + 1e-9);
 	assert(u.x[0] >= -1e-9 && u.x[1] >= -1e-9);
 	Simplex q({{1, 1}, {-1, -1}, {1, 0}},

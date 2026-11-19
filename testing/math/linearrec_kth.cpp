@@ -10,6 +10,12 @@ int main(){
 	assert(kthTerm({}, {}, 5) == 0);
 	assert(kthTerm({7}, {}, 0) == 0);
 	assert(kthTerm({4, 5, 6}, {1, 2, 3}, 2) == 6);
+	{ // a supplied initial term survives a large d
+		int d = 4194305;
+		vector<MintN> s(d, 1), c(d);
+		s[1] = 2; c[d - 1] = 1;
+		assert(kthTerm(s, c, 1) == 2);
+	}
 	vector<MintN> s(201), c(40);
 	FOR(i, 0, 39){
 		s[i] = i * i + 1;

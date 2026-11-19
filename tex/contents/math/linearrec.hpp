@@ -2,7 +2,8 @@
 #include "ntt.hpp"
 
 // berlekampMassey O(n^2); kthTerm by Bostan-Mori,
-// O(d log d log k). s, c and k are 0-based (s[0] first).
+// O(d log d log k), 2d + 1 <= 2^23. s, c and k are 0-based
+// (s[0] first).
 vector<MintN> berlekampMassey(const vector<MintN> &s){
 	int n = sz(s), L = 0, m = 0;
 	// s may be empty; C[0] and B[0] must exist.
@@ -27,6 +28,7 @@ MintN kthTerm(const vector<MintN> &s,
 		const vector<MintN> &c, ll k){
 	int d = sz(c);
 	if(d == 0) return 0;
+	if(k < d) return s[k];
 	vector<MintN> Q(d + 1);
 	Q[0] = 1;
 	FOR(i, 0, d - 1) Q[i + 1] = -c[i];

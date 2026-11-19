@@ -101,10 +101,10 @@ int main(){
 			FOR(j, 0, n - 1) A[i][j] = a[i][j];
 		Simplex lp(A, B, C);
 		if(!found){
-			assert(lp.val == -oo && lp.x.empty());
+			assert(lp.val == -INFINITY && lp.x.empty());
 			continue;
 		}
-		assert(lp.val != -oo);
+		assert(lp.val != -INFINITY);
 		if(cap) assert(abs(lp.val - best) <= 1e-6);
 		assert(sz(lp.x) == n);
 		double val = 0;
@@ -117,7 +117,7 @@ int main(){
 			FOR(j, 0, n - 1) sum += a[i][j] * lp.x[j];
 			assert(sum <= b[i] + 1e-6);
 		}
-		if(lp.val != oo) assert(abs(val - lp.val) <= 1e-6);
+		if(lp.val != INFINITY) assert(abs(val - lp.val) <= 1e-6);
 	}
 	return 0;
 }

@@ -14,6 +14,11 @@ int main(){
 		assert(2 * a == a + a && a - a == 0 && a + -a == 0);
 		assert(1 / a == a.inv());
 	}
+	{ // a failed extraction keeps the value
+		istringstream empty("");
+		MintN a = 42;
+		assert(!(empty >> a) && a == 42);
+	}
 	assert(MintN(2).pow(3) == 8 && MintN(0).pow(0) == 1);
 	assert(MintN(0).pow(1) == 0);
 	assert(MintN(-1).pow(LLONG_MAX) == MintN(-1));
