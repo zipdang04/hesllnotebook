@@ -111,6 +111,174 @@ Bracelets, up to rotation and reflection:
 \[ \frac{N(n, k)}{2} + \begin{cases} \tfrac{1}{2} k^{(n+1)/2} & n \text{ odd}, \\ \tfrac{1}{4}(k+1) k^{n/2} & n \text{ even}. \end{cases} \]
 }
 \entry{Number theory}\label{mathnt}
+{\small\tightdisplay
+\topic{Euler's $\varphi$ and Möbius $\mu$}
+Use them to count numbers coprime to $n$ and to evaluate multiplicative sums.
+For $n = \prod p_i^{e_i}$,
+\begin{gather*} \varphi(n) = n \prod_{p \mid n} \Bigl(1 - \frac{1}{p}\Bigr), \\ \mu(n) = \begin{cases} (-1)^r & \text{all } e_i = 1, \ r \text{ primes}, \\ 0 & \text{some } e_i \ge 2. \end{cases} \end{gather*}
+Divisor sums, with $[P]$ equal to 1 if $P$ holds and 0 otherwise:
+\begin{gather*} \sum_{d \mid n} \varphi(d) = n, \\ \sum_{d \mid n} \mu(d) = [n = 1], \\ \sum_{i=1}^{n} \gcd(i, n) = \sum_{d \mid n} d\, \varphi(n/d). \end{gather*}
+\topic{$\varphi$ and $\mu$ in the sieve}
+Use these edits to fill both arrays for $1..n$ in the linear sieve (\S\ref{sieve}).
+\begin{facts}
+	\item Add members \texttt{phi, mu}, sized \texttt{phi(n + 1, 1), mu(n + 1, 1)}.
+	\item For a new prime $i$: \texttt{phi[i] = i - 1; mu[i] = -1;}
+	\item After \texttt{minDiv[i * p] = p;} add the two lines below. Here \texttt{p == minDiv[i]} means $p \mid i$.
+	\item[] \texttt{phi[i * p] = phi[i] * (p == minDiv[i] ? p : p - 1);}
+	\item[] \texttt{mu[i * p] = p == minDiv[i] ? 0 : -mu[i];}
+\end{facts}
+\topic{Möbius inversion}
+Use it to turn a count with ``$\gcd = 1$'' into a sum over divisors.
+\[ g(n) = \sum_{d \mid n} f(d) \iff f(n) = \sum_{d \mid n} \mu(d)\, g(n/d). \]
+Over multiples, for $f$ that vanishes above some bound:
+\[ g(n) = \sum_{n \mid m} f(m) \iff f(n) = \sum_{n \mid m} \mu(m/n)\, g(m). \]
+Coprime pairs, from the divisor sum of $\mu$ over $d \mid \gcd(i, j)$:
+\[ \#\{1 \le i \le n,\ 1 \le j \le m : \gcd(i, j) = 1\} = \sum_{d \ge 1} \mu(d) \Bigl\lfloor \frac{n}{d} \Bigr\rfloor \Bigl\lfloor \frac{m}{d} \Bigr\rfloor. \]
+Pairs with $\gcd = g$ are the coprime pairs for the bounds $\lfloor n/g \rfloor$ and $\lfloor m/g \rfloor$.
+\topic{Floor blocks}
+Use them when a sum has a factor $\lfloor n/d \rfloor$: it takes at most $2\sqrt{n}$ values.
+\begin{facts}
+	\item The block starting at $l$ ends at
+	\[ r = \Bigl\lfloor \frac{n}{\lfloor n/l \rfloor} \Bigr\rfloor. \]
+	\item The next block starts at $l = r + 1$.
+	\item Multiply the constant $\lfloor n/l \rfloor$ by a prefix sum of the rest (e.g.\ of $\mu$) over $l..r$.
+	\item For two bounds $n, m$, end the block at the smaller of the two $r$.
+\end{facts}
+\topic{Divisor counts}
+Use the table to bound a loop over the divisors of $n$, here $d(n)$.
+The smallest $n$ with the most divisors is a product of the first primes with non-increasing exponents.
+On average:
+\[ \sum_{i \le n} d(i) \approx n \ln n + 0.15\, n. \]
+
+\begin{tabular}{@{}rrr@{}}
+\toprule
+$N$ & $\max_{n \le N} d(n)$ & smallest such $n$ \\
+\midrule
+$10^{1}$ & 4 & 6 \\
+$10^{2}$ & 12 & 60 \\
+$10^{3}$ & 32 & 840 \\
+$10^{4}$ & 64 & 7560 \\
+$10^{5}$ & 128 & 83160 \\
+$10^{6}$ & 240 & 720720 \\
+$10^{7}$ & 448 & 8648640 \\
+$10^{8}$ & 768 & 73513440 \\
+$10^{9}$ & 1344 & 735134400 \\
+$10^{10}$ & 2304 & 6983776800 \\
+$10^{11}$ & 4032 & 97772875200 \\
+$10^{12}$ & 6720 & 963761198400 \\
+$10^{13}$ & 10752 & 9316358251200 \\
+$10^{14}$ & 17280 & 97821761637600 \\
+$10^{15}$ & 26880 & 866421317361600 \\
+$10^{16}$ & 41472 & 8086598962041600 \\
+$10^{17}$ & 64512 & 74801040398884800 \\
+$10^{18}$ & 103680 & 897612484786617600 \\
+\bottomrule
+\end{tabular}
+\topic{Prime counts and gaps}
+Use them to size a sieve or a search for the next prime; $\pi(N)$ counts the primes up to $N$.
+
+\begin{tabular}{@{}lrr@{}}
+\toprule
+$N$ & $\pi(N)$ & largest gap below $N$ \\
+\midrule
+$10^3$ & 168 & 20 \\
+$10^6$ & 78498 & 114 \\
+$10^9$ & 50847534 & 282 \\
+$2^{32}$ & 203280221 & 336 \\
+$10^{12}$ & -- & 540 \\
+$10^{18}$ & -- & 1442 \\
+$2^{64}$ & -- & 1550 \\
+\bottomrule
+\end{tabular}
+\topic{Primes near round numbers}
+Use them as hash moduli or limits; the offsets are to the nearest prime on each side.
+
+\begin{tabular}{@{}lll@{}}
+\toprule
+$N$ & largest prime $< N$ & smallest prime $> N$ \\
+\midrule
+$10^9$ & $10^9 - 63$ & $10^9 + 7$, then $10^9 + 9$ \\
+$10^{18}$ & $10^{18} - 11$ & $10^{18} + 3$, then $10^{18} + 9$ \\
+$2^{31}$ & $2^{31} - 1$ & $2^{31} + 11$ \\
+$2^{32}$ & $2^{32} - 5$ & $2^{32} + 15$ \\
+$2^{61}$ & $2^{61} - 1$ & $2^{61} + 15$ \\
+$2^{63}$ & $2^{63} - 25$ & $2^{63} + 29$ \\
+$2^{64}$ & $2^{64} - 59$ & $2^{64} + 13$ \\
+\bottomrule
+\end{tabular}
+\topic{NTT primes}
+Use a prime $p = c \cdot 2^k + 1$ for transforms of length up to $2^k$. Here $g$ is a primitive root.
+\texttt{ntt.hpp} hard-codes root 3 (\texttt{MintN(3)} in \texttt{ntt}): for $g \ne 3$, change that 3 to $g$ as well as the modulus.
+
+\begin{tabular}{@{}rlr@{}}
+\toprule
+$p$ & $c \cdot 2^k + 1$ & $g$ \\
+\midrule
+998244353 & $119 \cdot 2^{23} + 1$ & 3 \\
+167772161 & $5 \cdot 2^{25} + 1$ & 3 \\
+469762049 & $7 \cdot 2^{26} + 1$ & 3 \\
+754974721 & $45 \cdot 2^{24} + 1$ & 11 \\
+1004535809 & $479 \cdot 2^{21} + 1$ & 3 \\
+\bottomrule
+\end{tabular}
+}
+\entry{Sums \& generating functions}\label{mathsums}
+{\small\tightdisplay
+\topic{Power sums}
+Use the closed forms for small $k$ and interpolation for any $k$.
+\begin{gather*} \sum_{i=1}^{n} i = \frac{n(n+1)}{2}, \\ \sum_{i=1}^{n} i^2 = \frac{n(n+1)(2n+1)}{6}, \\ \sum_{i=1}^{n} i^3 = \Bigl(\frac{n(n+1)}{2}\Bigr)^2. \end{gather*}
+For any $k$, the sum $\sum_{i=1}^{n} i^k$ is a polynomial in $n$ of degree $k + 1$.
+Give \texttt{interpolateAt} (\S\ref{lagrange}) its values at $n = 0..k+1$.
+\topic{Faulhaber with Bernoulli numbers}
+Use it when $k$ is fixed and the polynomial itself is needed.
+\[ \sum_{i=0}^{n-1} i^k = \frac{1}{k+1} \sum_{j=0}^{k} \tbinom{k+1}{j} B_j\, n^{k+1-j}. \]
+The Bernoulli numbers satisfy $B_0 = 1$ and, for $m \ge 1$,
+\[ \sum_{j=0}^{m} \tbinom{m+1}{j} B_j = 0. \]
+The first values:
+
+\begin{tabular}{@{}lrrrrrrrrr@{}}
+\toprule
+$j$ & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 \\
+\midrule
+$B_j$ & 1 & $-\frac{1}{2}$ & $\frac{1}{6}$ & 0 & $-\frac{1}{30}$ & 0 & $\frac{1}{42}$ & 0 & $-\frac{1}{30}$ \\
+\bottomrule
+\end{tabular}
+\topic{Geometric sums}
+Use them for sums with a factor $r^i$, $r \ne 1$.
+\begin{gather*} \sum_{i=0}^{n-1} r^i = \frac{r^n - 1}{r - 1}, \\ \sum_{i=0}^{n-1} i\, r^i = \frac{r - n r^n + (n-1) r^{n+1}}{(1 - r)^2}. \end{gather*}
+Modulo a prime $p$, check $r \equiv 1$ first. The sums are then
+\[ \sum_{i=0}^{n-1} 1 = n, \qquad \sum_{i=0}^{n-1} i = \frac{n(n-1)}{2}. \]
+\topic{Ordinary generating functions}
+Use $A(x) = \sum_n a_n x^n$ for unlabelled objects counted by size $n$.
+\begin{gather*} \frac{1}{1-x} = \sum_{n \ge 0} x^n, \\ \frac{1}{(1-x)^k} = \sum_{n \ge 0} \tbinom{n+k-1}{k-1} x^n. \end{gather*}
+\begin{facts}
+	\item A product $A B$ is the convolution $\sum_{k} a_k b_{n-k}$: a pair of objects.
+	\item With $a_0 = 0$, the series $1/(1 - A)$ counts sequences of objects.
+	\item Example: $A = x + x^2$ gives the Fibonacci numbers.
+	\item \texttt{fpsInv}, \texttt{fpsLog}, \texttt{fpsExp} (\S\ref{fps}) give $n$ terms in $O(n \log n)$.
+\end{facts}
+\topic{Exponential generating functions}
+Use $A(x) = \sum_n a_n x^n / n!$ for labelled objects.
+\begin{facts}
+	\item A product is the binomial convolution:
+	\[ c_n = \sum_k \tbinom{n}{k} a_k b_{n-k}. \]
+	\item With $a_0 = 0$, $\exp A$ counts sets of objects.
+	\item Example: $\exp(e^x - 1)$ gives the Bell numbers.
+	\item $\log A$ gives the connected objects from all objects, e.g.\ connected graphs from the $2^{\binom{n}{2}}$ graphs.
+	\item For \texttt{fpsExp} and \texttt{fpsLog}, pass the terms $a_n / n!$.
+	\item Multiply term $n$ of the result by $n!$.
+\end{facts}
+\topic{Linear recurrences}
+Use the rational form to move between a recurrence and its generating function.
+For $s_i = \sum_{j=0}^{d-1} c_j\, s_{i-1-j}$ when $i \ge d$, as in \S\ref{linearrec},
+\begin{gather*} \sum_{i \ge 0} s_i x^i = \frac{P(x)}{Q(x)}, \\ Q(x) = 1 - \sum_{j=0}^{d-1} c_j x^{j+1}, \end{gather*}
+where $P$ is the product of $Q$ with the first $d$ terms, cut to degree $d - 1$:
+\[ P = S \cdot Q \bmod x^d. \]
+\begin{facts}
+	\item \texttt{berlekampMassey} finds $c$ from $2d$ terms; \texttt{kthTerm} gives $s_k$ in $O(d \log d \log k)$.
+	\item Conversely, any $P/Q$ with $Q(0) = 1$ and $\deg P < \deg Q = d$ is such a recurrence.
+\end{facts}
+}
 \entry{Games}\label{mathgames}
 {\small\tightdisplay
 \topic{Sprague--Grundy}
@@ -313,172 +481,4 @@ Use these when a fixed choice has a bad input.
 	\item Compare sets by a sum or xor of random weights per element.
 	\item Search an approximate optimum with simulated annealing (\S\ref{anneal}).
 \end{checks}
-}
-{\small\tightdisplay
-\topic{Euler's $\varphi$ and Möbius $\mu$}
-Use them to count numbers coprime to $n$ and to evaluate multiplicative sums.
-For $n = \prod p_i^{e_i}$,
-\begin{gather*} \varphi(n) = n \prod_{p \mid n} \Bigl(1 - \frac{1}{p}\Bigr), \\ \mu(n) = \begin{cases} (-1)^r & \text{all } e_i = 1, \ r \text{ primes}, \\ 0 & \text{some } e_i \ge 2. \end{cases} \end{gather*}
-Divisor sums, with $[P]$ equal to 1 if $P$ holds and 0 otherwise:
-\begin{gather*} \sum_{d \mid n} \varphi(d) = n, \\ \sum_{d \mid n} \mu(d) = [n = 1], \\ \sum_{i=1}^{n} \gcd(i, n) = \sum_{d \mid n} d\, \varphi(n/d). \end{gather*}
-\topic{$\varphi$ and $\mu$ in the sieve}
-Use these edits to fill both arrays for $1..n$ in the linear sieve (\S\ref{sieve}).
-\begin{facts}
-	\item Add members \texttt{phi, mu}, sized \texttt{phi(n + 1, 1), mu(n + 1, 1)}.
-	\item For a new prime $i$: \texttt{phi[i] = i - 1; mu[i] = -1;}
-	\item After \texttt{minDiv[i * p] = p;} add the two lines below. Here \texttt{p == minDiv[i]} means $p \mid i$.
-	\item[] \texttt{phi[i * p] = phi[i] * (p == minDiv[i] ? p : p - 1);}
-	\item[] \texttt{mu[i * p] = p == minDiv[i] ? 0 : -mu[i];}
-\end{facts}
-\topic{Möbius inversion}
-Use it to turn a count with ``$\gcd = 1$'' into a sum over divisors.
-\[ g(n) = \sum_{d \mid n} f(d) \iff f(n) = \sum_{d \mid n} \mu(d)\, g(n/d). \]
-Over multiples, for $f$ that vanishes above some bound:
-\[ g(n) = \sum_{n \mid m} f(m) \iff f(n) = \sum_{n \mid m} \mu(m/n)\, g(m). \]
-Coprime pairs, from the divisor sum of $\mu$ over $d \mid \gcd(i, j)$:
-\[ \#\{1 \le i \le n,\ 1 \le j \le m : \gcd(i, j) = 1\} = \sum_{d \ge 1} \mu(d) \Bigl\lfloor \frac{n}{d} \Bigr\rfloor \Bigl\lfloor \frac{m}{d} \Bigr\rfloor. \]
-Pairs with $\gcd = g$ are the coprime pairs for the bounds $\lfloor n/g \rfloor$ and $\lfloor m/g \rfloor$.
-\topic{Floor blocks}
-Use them when a sum has a factor $\lfloor n/d \rfloor$: it takes at most $2\sqrt{n}$ values.
-\begin{facts}
-	\item The block starting at $l$ ends at
-	\[ r = \Bigl\lfloor \frac{n}{\lfloor n/l \rfloor} \Bigr\rfloor. \]
-	\item The next block starts at $l = r + 1$.
-	\item Multiply the constant $\lfloor n/l \rfloor$ by a prefix sum of the rest (e.g.\ of $\mu$) over $l..r$.
-	\item For two bounds $n, m$, end the block at the smaller of the two $r$.
-\end{facts}
-\topic{Divisor counts}
-Use the table to bound a loop over the divisors of $n$, here $d(n)$.
-The smallest $n$ with the most divisors is a product of the first primes with non-increasing exponents.
-On average:
-\[ \sum_{i \le n} d(i) \approx n \ln n + 0.15\, n. \]
-
-\begin{tabular}{@{}rrr@{}}
-\toprule
-$N$ & $\max_{n \le N} d(n)$ & smallest such $n$ \\
-\midrule
-$10^{1}$ & 4 & 6 \\
-$10^{2}$ & 12 & 60 \\
-$10^{3}$ & 32 & 840 \\
-$10^{4}$ & 64 & 7560 \\
-$10^{5}$ & 128 & 83160 \\
-$10^{6}$ & 240 & 720720 \\
-$10^{7}$ & 448 & 8648640 \\
-$10^{8}$ & 768 & 73513440 \\
-$10^{9}$ & 1344 & 735134400 \\
-$10^{10}$ & 2304 & 6983776800 \\
-$10^{11}$ & 4032 & 97772875200 \\
-$10^{12}$ & 6720 & 963761198400 \\
-$10^{13}$ & 10752 & 9316358251200 \\
-$10^{14}$ & 17280 & 97821761637600 \\
-$10^{15}$ & 26880 & 866421317361600 \\
-$10^{16}$ & 41472 & 8086598962041600 \\
-$10^{17}$ & 64512 & 74801040398884800 \\
-$10^{18}$ & 103680 & 897612484786617600 \\
-\bottomrule
-\end{tabular}
-\topic{Prime counts and gaps}
-Use them to size a sieve or a search for the next prime; $\pi(N)$ counts the primes up to $N$.
-
-\begin{tabular}{@{}lrr@{}}
-\toprule
-$N$ & $\pi(N)$ & largest gap below $N$ \\
-\midrule
-$10^3$ & 168 & 20 \\
-$10^6$ & 78498 & 114 \\
-$10^9$ & 50847534 & 282 \\
-$2^{32}$ & 203280221 & 336 \\
-$10^{12}$ & -- & 540 \\
-$10^{18}$ & -- & 1442 \\
-$2^{64}$ & -- & 1550 \\
-\bottomrule
-\end{tabular}
-\topic{Primes near round numbers}
-Use them as hash moduli or limits; the offsets are to the nearest prime on each side.
-
-\begin{tabular}{@{}lll@{}}
-\toprule
-$N$ & largest prime $< N$ & smallest prime $> N$ \\
-\midrule
-$10^9$ & $10^9 - 63$ & $10^9 + 7$, then $10^9 + 9$ \\
-$10^{18}$ & $10^{18} - 11$ & $10^{18} + 3$, then $10^{18} + 9$ \\
-$2^{31}$ & $2^{31} - 1$ & $2^{31} + 11$ \\
-$2^{32}$ & $2^{32} - 5$ & $2^{32} + 15$ \\
-$2^{61}$ & $2^{61} - 1$ & $2^{61} + 15$ \\
-$2^{63}$ & $2^{63} - 25$ & $2^{63} + 29$ \\
-$2^{64}$ & $2^{64} - 59$ & $2^{64} + 13$ \\
-\bottomrule
-\end{tabular}
-\topic{NTT primes}
-Use a prime $p = c \cdot 2^k + 1$ for transforms of length up to $2^k$. Here $g$ is a primitive root.
-\texttt{ntt.hpp} hard-codes root 3 (\texttt{MintN(3)} in \texttt{ntt}): for $g \ne 3$, change that 3 to $g$ as well as the modulus.
-
-\begin{tabular}{@{}rlr@{}}
-\toprule
-$p$ & $c \cdot 2^k + 1$ & $g$ \\
-\midrule
-998244353 & $119 \cdot 2^{23} + 1$ & 3 \\
-167772161 & $5 \cdot 2^{25} + 1$ & 3 \\
-469762049 & $7 \cdot 2^{26} + 1$ & 3 \\
-754974721 & $45 \cdot 2^{24} + 1$ & 11 \\
-1004535809 & $479 \cdot 2^{21} + 1$ & 3 \\
-\bottomrule
-\end{tabular}
-}
-\entry{Sums \& generating functions}\label{mathsums}
-{\small\tightdisplay
-\topic{Power sums}
-Use the closed forms for small $k$ and interpolation for any $k$.
-\begin{gather*} \sum_{i=1}^{n} i = \frac{n(n+1)}{2}, \\ \sum_{i=1}^{n} i^2 = \frac{n(n+1)(2n+1)}{6}, \\ \sum_{i=1}^{n} i^3 = \Bigl(\frac{n(n+1)}{2}\Bigr)^2. \end{gather*}
-For any $k$, the sum $\sum_{i=1}^{n} i^k$ is a polynomial in $n$ of degree $k + 1$.
-Give \texttt{interpolateAt} (\S\ref{lagrange}) its values at $n = 0..k+1$.
-\topic{Faulhaber with Bernoulli numbers}
-Use it when $k$ is fixed and the polynomial itself is needed.
-\[ \sum_{i=0}^{n-1} i^k = \frac{1}{k+1} \sum_{j=0}^{k} \tbinom{k+1}{j} B_j\, n^{k+1-j}. \]
-The Bernoulli numbers satisfy $B_0 = 1$ and, for $m \ge 1$,
-\[ \sum_{j=0}^{m} \tbinom{m+1}{j} B_j = 0. \]
-The first values:
-
-\begin{tabular}{@{}lrrrrrrrrr@{}}
-\toprule
-$j$ & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 \\
-\midrule
-$B_j$ & 1 & $-\frac{1}{2}$ & $\frac{1}{6}$ & 0 & $-\frac{1}{30}$ & 0 & $\frac{1}{42}$ & 0 & $-\frac{1}{30}$ \\
-\bottomrule
-\end{tabular}
-\topic{Geometric sums}
-Use them for sums with a factor $r^i$, $r \ne 1$.
-\begin{gather*} \sum_{i=0}^{n-1} r^i = \frac{r^n - 1}{r - 1}, \\ \sum_{i=0}^{n-1} i\, r^i = \frac{r - n r^n + (n-1) r^{n+1}}{(1 - r)^2}. \end{gather*}
-Modulo a prime $p$, check $r \equiv 1$ first. The sums are then
-\[ \sum_{i=0}^{n-1} 1 = n, \qquad \sum_{i=0}^{n-1} i = \frac{n(n-1)}{2}. \]
-\topic{Ordinary generating functions}
-Use $A(x) = \sum_n a_n x^n$ for unlabelled objects counted by size $n$.
-\begin{gather*} \frac{1}{1-x} = \sum_{n \ge 0} x^n, \\ \frac{1}{(1-x)^k} = \sum_{n \ge 0} \tbinom{n+k-1}{k-1} x^n. \end{gather*}
-\begin{facts}
-	\item A product $A B$ is the convolution $\sum_{k} a_k b_{n-k}$: a pair of objects.
-	\item With $a_0 = 0$, the series $1/(1 - A)$ counts sequences of objects.
-	\item Example: $A = x + x^2$ gives the Fibonacci numbers.
-	\item \texttt{fpsInv}, \texttt{fpsLog}, \texttt{fpsExp} (\S\ref{fps}) give $n$ terms in $O(n \log n)$.
-\end{facts}
-\topic{Exponential generating functions}
-Use $A(x) = \sum_n a_n x^n / n!$ for labelled objects.
-\begin{facts}
-	\item A product is the binomial convolution:
-	\[ c_n = \sum_k \tbinom{n}{k} a_k b_{n-k}. \]
-	\item With $a_0 = 0$, $\exp A$ counts sets of objects.
-	\item Example: $\exp(e^x - 1)$ gives the Bell numbers.
-	\item $\log A$ gives the connected objects from all objects, e.g.\ connected graphs from the $2^{\binom{n}{2}}$ graphs.
-	\item For \texttt{fpsExp} and \texttt{fpsLog}, pass the terms $a_n / n!$.
-	\item Multiply term $n$ of the result by $n!$.
-\end{facts}
-\topic{Linear recurrences}
-Use the rational form to move between a recurrence and its generating function.
-For $s_i = \sum_{j=0}^{d-1} c_j\, s_{i-1-j}$ when $i \ge d$, as in \S\ref{linearrec},
-\begin{gather*} \sum_{i \ge 0} s_i x^i = \frac{P(x)}{Q(x)}, \\ Q(x) = 1 - \sum_{j=0}^{d-1} c_j x^{j+1}, \end{gather*}
-where $P$ is the product of $Q$ with the first $d$ terms, cut to degree $d - 1$:
-\[ P = S \cdot Q \bmod x^d. \]
-\begin{facts}
-	\item \texttt{berlekampMassey} finds $c$ from $2d$ terms; \texttt{kthTerm} gives $s_k$ in $O(d \log d \log k)$.
-	\item Conversely, any $P/Q$ with $Q(0) = 1$ and $\deg P < \deg Q = d$ is such a recurrence.
-\end{facts}
 }

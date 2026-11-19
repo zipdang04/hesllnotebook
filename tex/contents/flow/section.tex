@@ -25,11 +25,6 @@
 	\fld{flowOf} \texttt{mc.flowOf(id)} is the flow on the edge. \texttt{mc.pot} are optimal duals: $c + \texttt{pot[u]} - \texttt{pot[v]} \ge 0$ on every arc with room.
 	\fld{Models} \S\ref{flowmodels}
 ]\label{costscaling}
-\cpp[4]{Global min cut (Stoer--Wagner)}{stoerwagner.hpp}[
-	\fld{Use} \texttt{auto [cut, side] = globalMinCut(g);} with \texttt{g[u]} $= \{v, w\}$, each edge in both lists.
-	\fld{Result} the minimum total weight of edges between \texttt{side} and the rest; \texttt{side} lists the vertices of one part.
-	\fld{Needs} $w \ge 0$ and $n \ge 2$ ($n = 1$ gives \texttt{\{oo, \{\}\}}). Multi-edges add up; self-loops are ignored.
-]\label{stoerwagner}
 \entry{Flow models}\label{flowmodels}
 {\small\tightdisplay
 The graph has vertices $1..n$. Extra vertices are $S = n + 1$ and $T = n + 2$, so build \texttt{Dinic d(n + 3)}. Capacity $\infty$ is \texttt{oo}.
@@ -121,6 +116,11 @@ Here $L$ is the left side. $N(X)$ is the set of right neighbours of $X$.
 \end{facts}
 Example: two left vertices whose only neighbour is the same right vertex: $X$ is both, $|N(X)| = 1$.
 }
+\cpp[4]{Global min cut (Stoer--Wagner)}{stoerwagner.hpp}[
+	\fld{Use} \texttt{auto [cut, side] = globalMinCut(g);} with \texttt{g[u]} $= \{v, w\}$, each edge in both lists.
+	\fld{Result} the minimum total weight of edges between \texttt{side} and the rest; \texttt{side} lists the vertices of one part.
+	\fld{Needs} $w \ge 0$ and $n \ge 2$ ($n = 1$ gives \texttt{\{oo, \{\}\}}). Multi-edges add up; self-loops are ignored.
+]\label{stoerwagner}
 \cpp[4]{Gomory--Hu tree}{gomoryhu.hpp}[
 	\fld{Use} \texttt{vector<array<ll, 3>> t = gomoryHu(g);} with \texttt{g[u]} $= \{v, w\}$, each edge in both lists.
 	\fld{Result} $n - 1$ edges \texttt{\{u, v, c\}}. The min cut between any $x, y$ is the smallest $c$ on the tree path from $x$ to $y$. Uses Dinic (\S\ref{dinic}).
