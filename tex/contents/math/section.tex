@@ -45,7 +45,12 @@
 	\fld{Needs} Miller--Rabin (\S\ref{millerrabin}) for \texttt{mulMod} and \texttt{powMod}.
 	\fld{discreteSqrt} $x$ with $x^2 \equiv a \pmod p$ for a prime $p$, or $-1$; the other root is $p - x$.
 ]\label{dlog}
-\entry{Floor sum}
+\cpp[4]{Floor sum}{floorsum.hpp}[
+	\fld{Use} \texttt{ll s = floorSum(n, m, a, b);}
+	\fld{Result} the sum of $(a i + b) \bmod m$ over the same $i$ is $\sum_i (a i + b) - m s$.
+	\fld{Needs} $n \ge 0$ and $m \ge 1$. Every intermediate fits in \texttt{ll} when
+	\[ (n + 1)\,m < 9 \cdot 10^{18}, \quad n^2 (|a| + 2m) + 2n (|b| + m) < 18 \cdot 10^{18} \cdot m. \]
+]\label{floorsum}
 
 \subsection{Linear algebra}
 \cpp[4]{Gauss--Jordan}{gauss.hpp}[
@@ -85,7 +90,22 @@ For a system over \texttt{double} (probabilities, expected values), copy \texttt
 	\fld{Needs} \texttt{MintN} modulus $c2^k+1$, primitive root 3, $|a|+|b|-1 \le 2^k$. Uses Modint (\S\ref{modint}); $k=23$ for $998244353$, $26$ for $469762049$.
 	\fld{ntt} several products of one size: pad to a power of two $n \ge |a| + |b| - 1$, transform each input once, multiply pointwise, then \texttt{ntt(c, true)}.
 ]\label{ntt}
-\entry{FWHT}
+\cpp[4]{FWHT}{fwht.hpp}[
+	\fld{Use} \texttt{vector<MintN> c = convBit(a, b, '\textasciicircum');} or \texttt{'\&'}, \texttt{'|'}.
+	\fld{Result} for the operation $\circ$ given, sizes padded to a power of two:
+	\[ c_k = \sum_{i \circ j = k} a_i b_j. \]
+	\fld{Needs} \texttt{MOD} $\ne 2$ for \texttt{'\textasciicircum'}. Uses Modint (\S\ref{modint}).
+	\fld{fwht} transforms in place, size a power of two; \texttt{fwht(a, op, true)} inverts it.
+]\label{fwht}
+{\small\tightdisplay
+\topic{Subset sums (SOS)}
+To get $\sum_{T \subseteq S} a_T$ for every mask $S$, call \texttt{fwht(a, '|')}; for supersets, \texttt{'\&'}.
+\texttt{fwht(a, '|', true)} is Möbius inversion over subsets. For \texttt{ll} values, copy the loop with \texttt{ll} in place of \texttt{Mint<MOD>}.
+\topic{Max and min convolution}
+For $c_k = \sum_{\max(i, j) = k} a_i b_j$, multiply prefix sums $A$, $B$ pointwise and take differences:
+\[ A_k = \sum_{i \le k} a_i, \qquad C_k = A_k B_k, \qquad c_k = C_k - C_{k-1}. \]
+For $\min(i, j) = k$, use suffix sums $A_k = \sum_{i \ge k} a_i$ and $c_k = C_k - C_{k+1}$.
+}
 \cpp[4]{FPS: inv, log, exp, div}{fps.hpp}[
 	\fld{Use} \texttt{vector<MintN> g = fpsInv(a, n);}
 	\fld{Result} the first $n$ terms of $1/a$, $\log a$ or $\exp a$; \texttt{a} may be shorter or longer than $n$.

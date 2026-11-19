@@ -3,7 +3,12 @@
 \twolevels
 \setcurrentdir{strings}
 
-\entry{Z-function}
+\cpp[4]{Z-function}{zfunc.hpp}[
+	\fld{Use} \texttt{vector<int> z = zFunc(s);}
+	\fld{Result} \texttt{zFunc(p + '\#' + s)[i] == m} means $p$ (length $m$) starts at \texttt{s[i - m - 1]}.
+	A $0 < d < n$ is a period of $s$ exactly when \texttt{d + z[d] == n}.
+	\fld{Needs} a separator \texttt{'\#'} that occurs in neither string.
+]\label{zfunc}
 \cpp[4]{Rolling hash}{strhash.hpp}[
 	\fld{Use} \texttt{StrHash h(s); if(h.get(l1, r1) == h.get(l2, r2))}
 	\fld{Result} \texttt{get(l, r)} hashes $s_l \dots s_r$; \texttt{get(l, l - 1)} is 0, the empty string.
