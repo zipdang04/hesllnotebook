@@ -25,12 +25,13 @@ run() {
 	i=0
 	while [ $i -lt $ticks ]
 	do
-		kill -0 $pid 2>/dev/null || { wait $pid; return 0; }
+		kill -0 $pid 2>/dev/null || { wait $pid; RC=$?; return 0; }
 		sleep 0.05
 		i=$((i + 1))
 	done
 	kill -0 $pid 2>/dev/null && return 1
 	wait $pid
+	RC=$?
 	return 0
 }
 ############################
@@ -83,6 +84,12 @@ do
 	then
 		echo "Time limit exceeded!"
 		kill $pid; FAILED=1
+		break
+	fi
+	if [ $RC -ne 0 ]
+	then
+		echo "Runtime error: exit status $RC"
+		FAILED=1
 		break
 	fi
 

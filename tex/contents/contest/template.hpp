@@ -21,7 +21,6 @@ bool minimize(T1 &a, T2 b){ return b < a ? (a = b, 1) : 0; }
 
 #define FOR(i, a, b) for(auto i = (a); i <= (b); i++)
 #define REV(i, b, a) for(auto i = (b); i >= (a); i--)
-
 #define testBit(n, bit) (((n) >> (bit)) & 1)
 #define flipBit(n, bit) ((n) ^ (1ll << (bit)))
 #define cntBit(n) __builtin_popcountll(n)
@@ -46,9 +45,13 @@ ostream &operator<<(ostream &o, const T &v){
 	for(auto &&x: v) o << s << x, s = ", ";
 	return o << '}';
 }
+template<size_t N> // char array: stop at NUL or N
+ostream &operator<<(ostream &o, char (&s)[N]){
+	return o.write(s, strnlen(s, N));
+}
 #define dbg(...) cerr << "[" #__VA_ARGS__ "]:", \
-	[](const auto &...dbgArg){ \
-		((cerr << ' ' << dbgArg), ...); cerr << '\n'; \
+	[](auto &&...dbg_){ \
+		((cerr << ' ' << dbg_), ...); cerr << '\n'; \
 	}(__VA_ARGS__)
 #else
 #define dbg(...)
@@ -59,9 +62,7 @@ typedef vector<int> vi;
 typedef vector<ll> vll;
 #define all(x) (x).begin(), (x).end()
 #define sz(x) (int)(x).size()
-
 const ll oo = 1e18;
-
 // int main(){
 // 	ios_base::sync_with_stdio(0); cin.tie(nullptr);
 // }

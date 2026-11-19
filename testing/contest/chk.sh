@@ -27,5 +27,13 @@ for std in c++17 gnu++20; do
 	check 0 '-5' 'negative'
 	printf '%s' 1000000000000000000 > "$tmp/ans"
 	check 0 '1000000000000000000' 'large integer'
-	echo "$std: 10 checker cases passed; no warnings"
+	printf '%s' 9223372036854775807 > "$tmp/ans"
+	check 0 '9223372036854775807' 'LLONG_MAX'
+	check 1 '9223372036854775808' 'out beyond 64 bits'
+	printf '%s' 9223372036854775808 > "$tmp/ans"
+	check 2 '9223372036854775807' 'ans beyond 64 bits'
+	check 2 '9223372036854775808' 'ans beyond 64 bits, copy'
+	printf '' > "$tmp/ans"
+	check 2 '1' 'empty ans'
+	echo "$std: 15 checker cases passed; no warnings"
 done

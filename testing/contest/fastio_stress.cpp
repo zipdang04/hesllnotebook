@@ -2,6 +2,7 @@
 #include <cassert>
 
 #include <climits>
+#include <unistd.h>
 
 void openInput(const string &s){
 	FILE *file = fopen("fastio_stress.tmp", "wb");
@@ -25,6 +26,12 @@ void checkReads(const vector<ll> &want){
 }
 
 int main(){
+	// POSIX read(fd, buf, n) still compiles next to ours
+	int fd[2], z = pipe(fd);
+	char posix[8];
+	size_t cnt = sizeof posix;
+	assert(z == 0 && write(fd[1], "X", 1) == 1);
+	assert(read(fd[0], posix, cnt) == 1 && posix[0] == 'X');
 	openInput("");
 	checkReads({});
 	openInput(" \t\r\n\n   \t\r\n");

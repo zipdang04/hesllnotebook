@@ -19,7 +19,7 @@ cat > a.cpp <<'F'
 #include <bits/stdc++.h>
 int main(){
 	long long x, y; std::cin >> x >> y;
-	std::cout << x + y << "\n";
+	std::cout << x + y << '\n';
 #ifdef LOCAL
 	std::cerr << "L";
 #endif
@@ -35,7 +35,7 @@ cat > b.cpp <<'F'
 #include <bits/stdc++.h>
 int main(){
 	int x = INT_MAX; volatile int y = 1;
-	std::cout << x + y << "\n";
+	std::cout << x + y << '\n';
 }
 F
 c b || fail "c b"
@@ -68,3 +68,14 @@ grep -q 'diff -b out ans' $CMD || fail "diff -b"
 n=$(grep -c -- -std=gnu++20 $CMD)
 [ $n -ge 2 ] || fail "std"
 head -1 $CMD | grep -q '^ulimit -s 1048576' || fail ulimit
+[ ! -f "round one.cpp" ] || fail "fixture clash"
+cp a.cpp "round one.cpp"
+c "round one" || fail "c with a space in the name"
+o "round one" || fail "o with a space in the name"
+F=$ROOT/tex/contents/contest/fastio.hpp
+HF=$(cd $ROOT/tex && sh entryhash.sh \
+	contents/contest/fastio.hpp 4 2> /dev/null)
+[ "$(sed -n '4,$p' $F | hh)" = "$HF" ] ||
+	fail "header hash vs title"
+[ "$(hh < $F)" != "$HF" ] ||
+	fail "hash from line 1 equals title"

@@ -1,8 +1,8 @@
 #pragma once
 #include "../contest/template.hpp"
 
-// fread reader for integers; read(a, b, ..) false at EOF.
-// About 5x faster than cin. Not for interactive problems.
+// fread reader for integers; read(a, b, ..) reads in order,
+// false at EOF or at a failure. Not for interactive.
 int readChar(){
 	static unsigned char buf[1 << 16];
 	static int len = 0, pos = 0;
@@ -13,17 +13,16 @@ int readChar(){
 template<class T> bool read(T &x){
 	int c = readChar(), neg = 0;
 	x = 0;
-	while(c != '-' && (c < '0' || c > '9')){
+	for(; c != '-' && (c < '0' || c > '9'); c = readChar())
 		if(c < 0) return false;
-		c = readChar();
-	}
 	if(c == '-') neg = 1, c = readChar();
 	for(; c >= '0' && c <= '9'; c = readChar())
 		x = x * 10 - (c - '0');
 	if(!neg) x = -x;
 	return true;
 }
-// several values, left to right; stops at the first failure
-template<class... Ts> bool read(Ts &...x){
+template<class... Ts>
+enable_if_t<(is_integral_v<Ts> && ...), bool>
+read(Ts &...x){
 	return (read(x) && ...);
 }

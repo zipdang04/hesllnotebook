@@ -248,6 +248,60 @@ checkFail -n 1 -m multi -c chk
 bash "$script" p -m tests -c chk > log 2>&1
 grep -qx 'tests/fail_1.in: FAIL' log || fail "multi replay"
 cat log
+# replay: each copy checked, a space in a path, exit status
+newCase replay
+cat > p.cpp <<'F'
+#include <cstdio>
+int main(){ int x; scanf("%d", &x); printf("%d\n", x); }
+F
+mkdir tests
+echo 1 > tests/0a.in; echo 1 > tests/0a.ans
+echo 8 > "tests/b c.in"; echo 9 > "tests/b c.ans"
+bash "$script" p -m tests > log 2>&1
+[ $? = 1 ] || fail "replay exit status after FAIL"
+grep -qx 'tests/b c.in: FAIL' log || fail "space"
+[ "$(grep -c PASS log)" = 1 ] || fail "replay false PASS"
+rm "tests/b c.in" "tests/b c.ans"
+echo 2 > tests/0a.ans
+bash "$script" p -m tests > log 2>&1
+[ $? = 1 ] || fail "single FAIL exit status"
+echo 1 > tests/0a.ans
+bash "$script" p -m tests > log 2>&1 || fail "PASS exit"
+echo 5 > tests/missing.in
+bash "$script" p -m tests > log 2>&1
+[ $? = 1 ] || fail "missing .ans exit status"
+grep -qx 'tests/missing.in: PASS' log && fail "no ans"
+# a failing seed saves only its own files
+newCase stale
+cat > gen.cpp <<'F'
+#include <cstdio>
+#include <cstdlib>
+int main(int, char **argv){
+	int s = atoi(argv[1]);
+	printf("%d %d\n", s, s);
+	return s == 2 ? 3 : 0;
+}
+F
+checkFail -n 5
+grep -qx 'FAIL seed 2' log || fail "stale seed"
+[ -f tests/fail_2.in ] || fail "stale: input"
+[ ! -e tests/fail_2.out ] && [ ! -e tests/fail_2.ans ] ||
+	fail "files of another seed saved"
+# seeds: 08 is decimal, 2^63 - 1 still runs its round
+newCase seeds
+cat > p.cpp <<'F'
+#include <cstdio>
+int main(){ puts("0"); }
+F
+cat > brute.cpp <<'F'
+#include <cstdio>
+int main(){ puts("1"); }
+F
+checkFail -s 08 -n 1
+grep -qx 'FAIL seed 8' log || fail "octal seed"
+checkFail -s 9223372036854775807 -n 1
+grep -qx 'FAIL seed 9223372036854775807' log ||
+	fail "big seed"
 gen=$ROOT/tex/contents/contest/gen.cpp
 chk=$ROOT/tex/contents/contest/chk.cpp
 if [ -f "$gen" ] && [ -f "$chk" ]; then
