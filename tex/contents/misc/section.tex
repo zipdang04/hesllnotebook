@@ -3,5 +3,10 @@
 \twolevels
 \setcurrentdir{misc}
 
+\cpp[4]{Ternary / golden-section search}{ternary.hpp}[
+	\fld{Use} \texttt{ll x = ternSearch(lo, hi, [\&](ll v)\{ return f(v); \});}
+	\fld{Needs} $f$ strictly decreasing, then non-decreasing: a flat part before the minimum breaks it. $hi - lo < 2^{63}$.
+	\fld{goldenSearch} \texttt{goldenSearch(lo, hi, f)} for a unimodal $f$. Near a smooth minimum $x$ has only about 8 correct digits.
+]\label{ternary}
+
 \entry{DP optimisation: D\&C, Knuth, Aliens}
-\entry{Ternary search + simulated annealing}

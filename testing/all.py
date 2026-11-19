@@ -349,6 +349,8 @@ all_source_codes = {
 		"rankunrank_stress": StressTest("interactive/rankunrank_stress", 10),
 	},
 	"misc": {
+		"ternary": StressTest("misc/ternary", 2),
+		"ternary_stress": StressTest("misc/ternary_stress", 10),
 	},
 }
 
