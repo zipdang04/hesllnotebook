@@ -10,7 +10,7 @@ struct Brute{
 		FOR(root, 1, (int)g.size() - 1){
 			if(root == bannedVertex || comp[root]) continue;
 			vector<int> q{root}; comp[root] = ++count;
-			FOR(i, 0, (int)q.size() - 1)
+			for(int i = 0; i < sz(q); i++)
 				for(auto [v, id]: g[q[i]]){
 					if(v == bannedVertex || id == bannedEdge
 						|| comp[v]) continue;
