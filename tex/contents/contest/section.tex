@@ -58,47 +58,41 @@ Mode & Files & One round \\
 \topic{Before a submit}
 \begin{checks}
 	\item Pass every sample with the judge build \texttt{o}, not only with \texttt{c} (\S\ref{command}).
-	\item Generate a maximum test; time it without sanitizers and look at the memory.
-	\item Keep products and sums in \texttt{ll}: \texttt{1LL * a * b}, \texttt{(1LL * a - b + MOD) \% MOD}.
-	\item Never compute \texttt{oo * x} or a sum of many \texttt{oo}; test \texttt{d[v] < oo} before \texttt{d[v] + w}, or a later \texttt{== oo} test fails.
-	\item With many test cases, reset every global, and only up to \texttt{n}.
-	\item End lines with \texttt{'\textbackslash n'}, not \texttt{endl}.
-	\item Print reals with \texttt{cout <{}< fixed <{}< setprecision(10)}.
-	\item Submit the right file under the right problem letter, with no \texttt{freopen} left.
+	% \item Generate a maximum test; time it without sanitizers and look at the memory.
+	% \item Keep products and sums in \texttt{ll}: \texttt{1LL * a * b}, \texttt{(1LL * a - b + MOD) \% MOD}.
+	% \item Never compute \texttt{oo * x} or a sum of many \texttt{oo}; test \texttt{d[v] < oo} before \texttt{d[v] + w}, or a later \texttt{== oo} test fails.
+	% \item With many test cases, reset every global, and only up to \texttt{n}.
+	% \item End lines with \texttt{'\textbackslash n'}, not \texttt{endl}.
+	% \item Print reals with \texttt{cout <{}< fixed <{}< setprecision(10)}.
 \end{checks}
 \topic{Wrong answer}
-Use this after a wrong answer, in this order.
 \begin{checks}
 	\item Print the code and the debug output; give the machine to a teammate.
-	\item Read the whole statement again: output format, YES or Yes, 0- or 1-based, the output when there is no answer.
-	\item Look for overflow, also in parameters and return types (\texttt{int f(ll x)}).
-	\item Look for uninitialised locals: globals start at zero, locals do not.
-	\item Look for state not cleared between test cases.
-	\item Look for swapped \texttt{N} and \texttt{M}, \texttt{i} and \texttt{j}.
-	\item Make every \texttt{sort} comparator return false for equal elements: \texttt{<=} can crash.
-	\item Compare reals with an epsilon.
+	\item \underline{\textbf{Read the whole statement again}}: output format, YES or Yes, 0- or 1-based, the output when there is no answer.
 	\item Run the algorithm by hand on a small case; explain it to a teammate.
-	\item Write a brute force and run \texttt{stress.sh} (\S\ref{stress}).
 	\item After two wrong answers, let a teammate read the statement alone; consider a rewrite.
+	\item Look for swapped \texttt{N} and \texttt{M}, \texttt{i} and \texttt{j}.
+	% \item Look for overflow, also in parameters and return types (\texttt{int f(ll x)}).
+	% \item Look for uninitialised locals: globals start at zero, locals do not.
+	% \item Look for state not cleared between test cases.
+	% \item Make every \texttt{sort} comparator return false for equal elements: \texttt{<=} can crash.
+	% \item Compare reals with an epsilon.
+	% \item Write a brute force and run \texttt{stress.sh} (\S\ref{stress}).
 \end{checks}
 \topic{Runtime error}
 \begin{checks}
-	\item Look for an index outside the array; a vector of size $n$ used at index $n$.
-	\item Look for division or modulo by zero.
-	\item Look for endless recursion, or recursion so deep that the stack passes the memory limit.
-	\item Look for an iterator or reference used after its container changed.
-	\item Make \texttt{main} return 0; look for a failing \texttt{assert}.
 	\item Add up the memory (see Memory limit).
-	\item If it runs fine locally, run the debug build \texttt{c} on the smallest and the largest input.
+	\item Look for an iterator or reference used after its container changed.
+	% \item Look for an index outside the array; a vector of size $n$ used at index $n$.
+	% \item Look for division or modulo by zero.
+	% \item Look for endless recursion, or recursion so deep that the stack passes the memory limit.
+	% \item If it runs fine locally, run the debug build \texttt{c} on the smallest and the largest input.
 \end{checks}
 \topic{Time limit}
 \begin{checks}
 	\item Look for an endless loop on an edge case: $n = 1$, empty input.
-	\item Count the real complexity with the real maximum values.
-	\item Remove \texttt{endl} and leftover \texttt{cerr}; never submit the debug build.
-	\item Replace a full \texttt{memset} per test case by a reset up to \texttt{n}.
-	\item Pass vectors and strings into a recursion by reference, not by value.
-	\item Use a sorted vector where \texttt{map} or \texttt{set} is not needed; distrust \texttt{unordered\_map} on adversarial input.
+	% \item Remove \texttt{endl} and leftover \texttt{cerr}; never submit the debug build.
+	\item Use a sorted vector where \texttt{map} or \texttt{set} is not needed. A plain \texttt{unordered\_map} can be forced to $O(n)$ per operation by anti-hash tests: give it \texttt{CustomHash} (\S\ref{pbds}).
 	\item Read very large input with the fast reader (\S\ref{fastio}).
 	\item Mark a small function called in the hot loop \texttt{inline}: GCC then inlines it more readily.
 \end{checks}
