@@ -68,6 +68,13 @@ For a system over \texttt{double} (probabilities, expected values), copy \texttt
 	\item Treat $|x| < 10^{-9}$ as zero, in the pivot search, the no-solution test and the \texttt{piv} scan of \texttt{solveLinear}.
 \end{facts}
 }
+\cpp[4]{XOR basis}{xorbasis.hpp}[
+	\fld{Use} \texttt{XorBasis b; bool fresh = b.insert(x);}
+	\fld{Result} \texttt{insert} returns whether $x$ enlarges the span; \texttt{maxXor()} gives its maximum and \texttt{representable(x)} tests membership.
+	\fld{Needs} values in ${[0, 2^{60})}$ and $0 \le k < 2^{\texttt{basis.size()}}$.
+	\fld{reduce} returns the minimum of $x$ XOR a subset XOR.
+	\fld{kth} returns the $k$-th distinct subset XOR (0-based). The empty subset counts, so 0 is always first, even for dependent inputs.
+]\label{xorbasis}
 \cpp[4]{Simplex}{simplex.hpp}[
 	\fld{Use} \texttt{Simplex lp(A, b, c);} then test \texttt{lp.val} against \texttt{-INFINITY} and \texttt{INFINITY}.
 	\fld{Result} \texttt{lp.x} reaches \texttt{lp.val}. It is empty for \texttt{-INFINITY} and some feasible point for \texttt{INFINITY}.

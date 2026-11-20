@@ -14,6 +14,12 @@
 \cpp[4]{Polygon}{polygon.hpp}[
 	\fld{Use} \texttt{ll a2 = polygonArea2(v); inPolygon(v, PL\{x, y\});}
 	\fld{Result} the area is $|\texttt{a2}| / 2$; \texttt{a2} $> 0$ when \texttt{v} is counter-clockwise.
+	For cyclic vertices $p_i$ and signed area $A \ne 0$, the area centroid (centre of mass of the area, not the vertices) is
+	\[
+		C = \frac{\sum_i (p_i + p_{i+1}) (p_i \times p_{i+1})}{3 \sum_i p_i \times p_{i+1}}
+		= \frac{\sum_i (p_i + p_{i+1}) (p_i \times p_{i+1})}{6A}.
+	\]
+	This holds for a simple polygon in either orientation.
 	\fld{Needs} a simple polygon. With \texttt{PL} and coordinates up to $C$: $2nC^2 < 9 \cdot 10^{18}$.
 	\fld{inPolygon} With \texttt{strict = false} a point on the border is inside.
 	\fld{polygonCut} takes \texttt{PD} points; a vertex on the line may appear twice in the result.

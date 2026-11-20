@@ -54,6 +54,11 @@ To compare two substrings with 0-based starts $i$, $j$:
 	\fld{Use} \texttt{vector<int> st = duval(s);}
 	\fld{Result} factor $k$ is $s$ from \texttt{st[k]} to \texttt{st[k + 1] - 1}; the last one ends at $n - 1$. Letters compare as \texttt{unsigned char}.
 ]\label{lyndon}
+\cpp[4]{Manacher}{manacher.hpp}[
+	\fld{Use} \texttt{vector<int> p = manacher(s);}
+	\fld{Result} \texttt{p[2*i]} gives the maximum length at \texttt{s[i]}; \texttt{p[2*i + 1]} gives it between \texttt{s[i]} and \texttt{s[i + 1]} (0 if none).
+	\fld{Needs} nothing. An empty string returns an empty vector.
+]\label{manacher}
 \cpp[4]{Eertree}{eertree.hpp}[
 	\fld{Use} \texttt{Eertree et; for(char c: s) v = et.add(c);}
 	\fld{Result} \texttt{add} returns the longest palindromic suffix node so far.

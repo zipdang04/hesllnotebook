@@ -116,14 +116,15 @@ NOTEBOOK (25 pp)  —  section → entry, or section → group → entry where a
 │   │   without sentinel: sa[0] = minimum rotation
 │   ├── 4.4 Aho–Corasick                                   CODE       ~40
 │   ├── 4.5 Suffix automaton                               CODE       ~35
-│   ├── 4.6 Eertree (palindromic tree)                     CODE       ~30
-│   └── 4.7 Lyndon factorisation (Duval)                   CODE       ~15
+│   ├── 4.6 Lyndon factorisation (Duval)                   CODE       ~15
+│   ├── 4.7 Manacher (odd/even palindrome lengths)          CODE+TEXT  ~14
+│   └── 4.8 Eertree (palindromic tree)                     CODE       ~30
 │
 ├── 5. Geometry  (2 levels; a 3D group would hold 1 entry) ........ ~394 lines · 3 pp
 │   ├── 5.1 Point/line primitives, orientation,            CODE       ~60
 │   │   segment intersect/dist
 │   ├── 5.2 Polygon: area, point-in-polygon, cut;          CODE+TEXT  ~44  uses: Point
-│   │   Pick + triangle formulas
+│   │   area centroid + Pick + triangle formulas
 │   ├── 5.3 Convex hull + hull diameter + point-in-hull    CODE       ~45  uses: Point
 │   ├── 5.4 Circles: intersections, tangents,              CODE       ~70  uses: Point [6/7]
 │   │   circumcircle; MEC
@@ -144,7 +145,8 @@ NOTEBOOK (25 pp)  —  section → entry, or section → group → entry where a
 │   ├── 6.2 Linear algebra
 │   │   ├── 6.2.1 Gauss–Jordan: solve, det, inverse,       CODE+TEXT  ~73  uses: modint
 │   │   │   rank, mod 2 (solveXor)
-│   │   └── 6.2.2 Simplex                                  CODE       ~60              [5/7]
+│   │   ├── 6.2.2 XOR basis (insert, max, membership, kth)  CODE+TEXT  ~24
+│   │   └── 6.2.3 Simplex                                  CODE       ~60              [5/7]
 │   ├── 6.3 Polynomials & transforms
 │   │   ├── 6.3.1 FFT                                      CODE       ~64
 │   │   ├── 6.3.2 NTT                                      CODE       ~47  uses: modint
@@ -204,11 +206,11 @@ pages count toward the 25.
 Estimated content: ~3,060 lines ≈ 23.5 pp at 130 lines/page. §1 is ~85 lines over its 2 pp (cost scaling).
 
 Status (synced with the PDF, 2026-11-20): the PDF is 31 pages, 6 over the budget; page trimming is pending.
-All 83 entries are written and printed, in the order above
+All 85 entries are written and printed, in the order above
 (§7.3: AHU then Rank/unrank; §8: Ternary then DP optimisation). Printed titles are shortened versions of these.
 Out of the printed book, replaced by notes on the entry that covers them: persistent lazy segtree, standalone
 SOS DP, LR flow / circulation code (flow models), min mean cycle (SPFA), LineContainer (Li Chao),
-Manacher (rolling hash), min rotation (suffix array).
+min rotation (suffix array).
 Everything in the user's plan that is not shown above is out of the printed book.
 
 ## Rules
