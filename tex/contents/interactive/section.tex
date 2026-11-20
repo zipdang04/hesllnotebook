@@ -14,169 +14,179 @@
 % 	\item Count the queries against the limit, also in the worst case.
 % \end{checks}
 \topic{Randomness}
-Seed a randomised strategy from the clock (\texttt{randomize} in the template).
-An adaptive judge can be tuned against a constant seed, because it then knows every query in advance.
+Use the template's clock-seeded \texttt{randomize}. With a fixed seed an adaptive judge can predict every query.
 \topic{Query bound}
-Use this to check whether a strategy can fit the query limit at all.
-\[ q \ge \left\lceil \log_r N \right\rceil \]
-Here $N$ is the number of possible answers and $r$ the number of possible responses to one query.
-Example: $N = 10^6$ with yes/no queries needs $q \ge 20$.
+With $N$ possible answers and $r$ replies per query, the budget $q$ must satisfy
+\[ q \ge \lceil\log_r N\rceil \qquad (N=10^6,\ r=2:\ q\ge20). \]
 \topic{One lie}
-Use this when the judge may give one wrong yes/no response; $n$ candidates and $q$ adaptive queries.
-\[ n(q + 1) \le 2^q \]
-This is needed for any queries. It is enough for even $n$ when a query may ask about any subset; with comparison queries it is necessary but may not be enough. For odd $n$ and subset queries the exact condition is
-\[ n(q + 1) + q - 1 \le 2^q. \]
-Example: $n = 10^6$ needs 25 queries instead of 20; $n = 3$ needs 5.
-\topic{Local run}
-Use a named pipe to connect the solution to your own interactor.
-\begin{facts}
-	\item By hand: \texttt{mkfifo f; (./sol < f) | (./interactor > f)}. The interactor's \texttt{cerr} shows the dialogue if it logs it.
-	\item Many seeds: \texttt{./stress.sh sol -m inter} (\S\ref{stress}).
-\end{facts}
+For $n$ candidates and $q$ adaptive yes/no queries, allow one false reply.
+\par\begin{tabular}{@{}ll@{}}
+\toprule
+Query type & Bound \\
+\midrule
+Any (including comparisons) & $n(q+1)\le2^q$ necessary \\
+Any subset, even $n$ & $n(q+1)\le2^q$ exact \\
+Any subset, odd $n$ & $n(q+1)+q-1\le2^q$ exact \\
+\bottomrule
+\end{tabular}\par
+With subset queries, $10^6$ candidates need 25 queries and 3 need 5.
+% \topic{Local run}
+% Use a named pipe to connect the solution to your own interactor.
+% \begin{facts}
+% 	\item By hand: \texttt{mkfifo f; (./sol < f) | (./interactor > f)}. The interactor's \texttt{cerr} shows the dialogue if it logs it.
+% 	\item Many seeds: \texttt{./stress.sh sol -m inter} (\S\ref{stress}).
+% \end{facts}
 }
 \entry{Multi-pass}\label{multipasscheck}
 {\footnotesize\tightdisplay
-\topic{Checklist}
-Use it when the program runs twice and pass 2 reads what pass 1 wrote.
 \begin{checks}
-	\item Use a fixed seed, \texttt{mt19937\_64 rng(12\cppsep345)}, not \texttt{randomize}: both passes must make the same choices.
-	\item Fix the hash base: in Rolling hash (\S\ref{strhash}) replace the random \texttt{B} by a constant such as \texttt{911\cppsep382\cppsep323}.
-	% \item The time limit holds for each pass separately.
-	% \item Nothing carries over between passes: no files, no memory.
-	% \item Test with \texttt{./stress.sh p -m multi -c chk} and a \texttt{noise.cpp} that plays the judge (\S\ref{stress}).
+  \item Fix the RNG seed, e.g.\ \texttt{mt19937\_64 rng(12\cppsep345)}.
+  \item Fix the rolling hash base \texttt{B}, e.g.\ \texttt{911\cppsep382\cppsep323} (\S\ref{strhash}).
 \end{checks}
 }
 \entry{Noise taxonomy}\label{noisetaxonomy}
 {\footnotesize\tightdisplay
-\topic{What the judge does, and what to use}
-Find the row that matches the statement; the right column names the remedy.
-An erasure is a symbol lost at a known place.
-
-\noindent\begin{tabular}{@{}p{3.8cm} p{5.0cm}@{}}
+An erasure is a missing symbol at a known position.
+\par\begin{tabular}{@{}p{3.35cm}p{\dimexpr\linewidth-3.35cm-2\tabcolsep\relax}@{}}
 \toprule
 Noise & Remedy \\
 \midrule
-One flip per word & Hamming (\S\ref{hamming}) corrects it \\
-Two flips per word & Hamming detects them: $-1$ \\
-Three or more flips & no decoder here \\
+1 or 2 flips per word & Hamming (\S\ref{hamming}): correct 1, flag 2 ($-1$) \\
+3 or more flips & no guaranteed decoder here \\
+One-way flips & complementary pairs (\S\ref{bitcodes}), then an erasure code \\
 Erased symbols & Reed--Solomon (\S\ref{linearcodes}) \\
 Erased bits & random GF(2) code (\S\ref{linearcodes}) \\
-Stuck cells, writer knows & store the syndrome (\S\ref{linearcodes}) \\
-Flips in one direction & \raggedright complementary pairs, then an erasure code (\S\ref{bitcodes}) \tabularnewline
-One bit added or lost & Varshamov--Tenengolts (\S\ref{bitcodes}) \\
-Unknown lengths & \raggedright unary, Elias-gamma, padding (\S\ref{bitcodes}); they do not repair a cut \tabularnewline
-One changed symbol & two checksums, sent safely (\S\ref{bitcodes}) \\
-\end{tabular}\par\nointerlineskip
-\noindent\begin{tabular}{@{}p{3.8cm} p{5.0cm}@{}}
-Items shuffled & send a set: Rank / unrank (\S\ref{rankunrank}) \\
-Tree vertices relabelled & AHU canonical form (\S\ref{ahu}) \\
-A few candidate originals & compare a hash (\S\ref{bitcodes}); it only verifies \\
+Writer knows stuck cells & store the syndrome (\S\ref{linearcodes}) \\
+One changed symbol & two protected checksums (\S\ref{bitcodes}) \\
+One bit gained or lost & Varshamov--Tenengolts (\S\ref{bitcodes}) \\
+Unknown lengths & \raggedright unary, gamma, padding (\S\ref{bitcodes}). No cut repair. \tabularnewline
 \bottomrule
-\end{tabular}
+\end{tabular}\par
+\begin{tabular}{@{}p{3.35cm}p{\dimexpr\linewidth-3.35cm-2\tabcolsep\relax}@{}}
+\toprule
+Order or identity & Remedy \\
+\midrule
+Shuffled items & send a set by rank (\S\ref{rankunrank}) \\
+Relabelled tree & AHU canonical form (\S\ref{ahu}) \\
+Few candidate originals & verify by hash (\S\ref{bitcodes}) \\
+\bottomrule
+\end{tabular}\par
 }
 
 \subsection{Codes}
 \entry{Linear codes: Reed--Solomon, GF(2), stuck bits}\label{linearcodes}
 {\footnotesize\tightdisplay
 \topic{Reed--Solomon: erased symbols}
-Use it when symbols may be lost but the positions of the survivors are known.
-\begin{facts}
-	\item Pick a prime $n \le p < 2^{30}$ (the \texttt{Mint} limit) and $n$ distinct nodes $\alpha_i$, e.g. $\alpha_i = i$. The message is $k$ symbols $m_0..m_{k-1}$ in $\mathbb{F}_p$.
-	\item Send the values of the message polynomial at all nodes:
-	\[ c_i = \sum_{j=0}^{k-1} m_j \alpha_i^j. \]
-	\item Decode from any $k$ survivors with \texttt{interpolate(x, y)} (\S\ref{lagrange}): \texttt{x} holds their nodes, \texttt{y} their values, and the result is $m$.
-	\item Passing all $s$ survivors also checks them: if 1 to $s - k$ of them are wrong, an entry of the result after index $k - 1$ is nonzero.
-	\item Never call \texttt{interpolateAt} here: it needs the nodes $0..n-1$ in order.
-\end{facts}
-The minimum distance is
-\[ d = n - k + 1, \]
-so $e$ wrong and $s$ erased symbols can be corrected when
-\[ 2e + s \le n - k. \]
-This recipe corrects only $e = 0$.
-Example over $\mathbb{F}_7$: $f(t) = 2 + 3t$ sends $2, 5, 1, 4$ at $t = 0..3$; the survivors $(1, 5), (3, 4)$ give back $2, 3$.
+\textit{Problem.} Pass 1 holds a message $m=(m_0,\ldots,m_{k-1})$ of $k$ numbers and may send up to $N$ symbols. The judge erases up to $E$ of them; each survivor keeps its index $i$. Pass 2 sees the survivors $(i,c_i)$ and outputs $m$. Send $n$ symbols $c_0,\ldots,c_{n-1}$ with $k+E\le n\le N$.
+\par\textit{Send.} Pick a prime $p$ with $p\ge n$, $p>\max m_j$ and $p<2^{30}$ (\texttt{Mint}). Work in $\mathbb F_p$ with nodes $\alpha_i=i$:
+\[ c_i=f(\alpha_i),\qquad f(t)=\sum_{j=0}^{k-1}m_j t^j. \]
+\textit{Receive.} Put the nodes of any $k$ survivors in \texttt{x} and their values in \texttt{y}; \texttt{interpolate(x, y)} (\S\ref{lagrange}) returns $m$. Not \texttt{interpolateAt}: it needs the nodes $0,\ldots,n-1$ in order.
+\flowfig{
+  \node[note,align=center] (m) at (0,0) {$2+3t$\\over $\mathbb F_7$};
+  \node[note,align=center] (c) at (1.90,0) {$t:\quad 0\quad1\quad2\quad3$\\$c:\quad 2\quad5\quad1\quad4$};
+  \node[note,align=center] (r) at (4.80,0) {keep $t=1,3$\\$m=(2,3)$};
+  \path (m) edge (c) (c) edge (r);
+}
+\textit{Errors.} If the judge may also change up to $e$ values (positions unknown) and erase up to $s$: interpolating all $u$ survivors detects 1 to $u-k$ wrong values, since a coefficient at index $k$ or higher is then nonzero. Correcting needs
+\[ 2e+s\le n-k \]
+and a decoder that is not in this notebook.
 \topic{Random GF(2) code: erased bits}
-Use it when bits may be lost, their positions are known, and a tiny failure probability is fine.
-\begin{facts}
-	\item Both sides build the same random $n \times k$ bit matrix $G$ from a fixed seed. Send the $n$ bits
-	\[ c = G m \pmod 2. \]
-	\item Decode with \texttt{solveXor(a, b, k)} (\S\ref{gauss}) on the surviving rows of $G$ and bits of $c$. Accept only \texttt{sz(s) == 1}, a unique solution; $k \le 4\dsep096$ fits \texttt{BitRow}.
-	\item Let $S$ be the set of surviving rows. When the erasures do not depend on $G$,
-	\[ \Pr[\operatorname{rank} G_S < k] \le (2^k - 1)\, 2^{-|S|} < 2^{-t} \quad \text{for } |S| = k + t. \]
-	\item No solution means a bit is wrong, not only lost: the noise is not erasures.
-\end{facts}
-Example: rows $10, 01, 11$ send the message $10$ as $101$; any two rows decode it.
+\textit{Problem.} Pass 1 holds a message $m=(m_1,\ldots,m_k)$ of $k$ bits and may send up to $N$ bits. The judge erases up to $E$ of them; each survivor keeps its index. Pass 2 outputs $m$; a failure chance below $2^{-t}$ is allowed. Send $n=N$ bits; it works when $n\ge k+E+t$.
+\par\textit{Send.} From a shared fixed seed, generate a random $n\times k$ bit matrix $G$. Send $c=Gm$ modulo 2. Example: with rows \texttt{10, 01, 11}, the message \texttt{10} is sent as \texttt{101}.
+\par\textit{Receive.} Let $S$ be the surviving positions. Solve $G_S m=c_S$ ($G_S$, $c_S$: the rows and bits at $S$) with \texttt{solveXor(a, b, k)} (\S\ref{gauss}) on the surviving rows and bits; accept only a unique solution (the result has size 1). \texttt{BitRow} needs $k\le4\dsep096$.
+\par\begin{tabular}{@{}lll@{}}
+\toprule
+Keep rows $S$ & Solve $G_S m=c_S$ & Recover $m$ \\
+\midrule
+$1,3$ (bits \texttt{1,1}) & $m_1=1$, $m_1+m_2=1$ & \texttt{10} \\
+\bottomrule
+\end{tabular}\par
+\textit{Limits.} No solution means some surviving bit is wrong. If $|S|=k+t$ and the erasures do not depend on $G$,
+\[ \Pr[\operatorname{rank}G_S<k]\le (2^k-1)2^{-|S|}<2^{-t}. \]
 \topic{Stuck bits: store the syndrome}
-Use it when the writer knows which cells are stuck and at which value, and the reader does not.
-\begin{facts}
-	\item Both sides build the same random $k \times n$ bit matrix $H$ from a fixed seed. The reader decodes the $k$-bit message as
-	\[ m = H x \pmod 2. \]
-	\item The writer splits the cells into the stuck set $S$, with values $b$, and the free set $F$; $F$ must be fixed independently of $H$. It solves, with \texttt{solveXor} (\S\ref{gauss}; needs $|F| \le 4\dsep096$, the \texttt{BitRow} limit),
-	\[ H_F\, x_F = m + H_S\, b \pmod 2. \]
-	\item Any solution works, so a kernel is no problem. No solution means the message cannot be written.
-	\item If $|F| = k + t$, every message can be written except with probability below $2^{-t}$. So about $n - |S|$ bits fit.
-\end{facts}
-Example: $H = (1, 1, 1)$, first cell stuck at 1, message 0: write $110$.
+\textit{Problem.} Pass 1 holds a message $m=(m_1,\ldots,m_k)$ of $k$ bits and writes it into $n$ cells $x=(x_1,\ldots,x_n)$. Some cells, the set $S$, are stuck at values $b$; only pass 1 knows $S$ and $b$. Pass 2 reads all $n$ cells and outputs $m$.
+\par\textit{Send.} Both passes generate the same random $k\times n$ bit matrix $H$ from a fixed seed; all arithmetic is modulo 2. Set $x_S=b$ and solve, over the other cells $F$,
+\[ H_F x_F=m+H_S b \]
+with \texttt{solveXor} (\S\ref{gauss}); any solution works. An empty result means this message cannot be written. \texttt{BitRow} needs $|F|\le4\dsep096$.
+\par\textit{Receive.} Output $m=Hx$.
+\par\textit{Example.} $H=(1,1,1)$, cell 1 stuck at 1, $m=0$: write \texttt{110}; pass 2 gets $1+1+0=0$.
+\par\textit{Limits.} If $F$ does not depend on $H$ and $|F|=k+t$, some message cannot be written with probability below $2^{-t}$. About $n-|S|$ message bits fit.
 }
 \entry{Bit-level codes: self-delimiting, VT, pairs, checksum}\label{bitcodes}
 {\footnotesize\tightdisplay
 \topic{Unary}
-Use it for small nonnegative integers, such as run lengths.
-\begin{facts}
-	\item Write $v$ ones, then a zero: $v + 1$ bits. Example: 0 is \texttt{0}, 3 is \texttt{1110}.
-	\item Decode by counting ones up to the first zero. A missing zero means the input was cut.
-\end{facts}
+\textit{Problem.} Pass 1 writes several numbers into one bit string; pass 2 must split them apart. For small $v\ge0$, e.g.\ run lengths.
+\par\textit{Send.} $v$ ones, then a zero: $v+1$ bits.
+\[ 0\mapsto\texttt{0}\qquad 3\mapsto\texttt{1110} \]
+\textit{Receive.} Count the ones up to the first zero. A missing zero signals a cut.
 \topic{Elias-gamma}
-Use it for positive integers of very different sizes.
-\begin{facts}
-	\item For $v \ge 1$, write $\lfloor \log_2 v \rfloor$ zeros, then $v$ in binary. Example: 5 is \texttt{00101}. The length is
-	\[ 2 \lfloor \log_2 v \rfloor + 1. \]
-	\item Decode: count $z$ zeros, then read $z + 1$ bits. For $v \ge 0$ encode $v + 1$.
-\end{facts}
+\textit{Problem.} The same, for integers $v\ge1$ of widely varying size.
+\par\textit{Send.} With $z=\lfloor\log_2 v\rfloor$: $z$ zeros, then $v$ in binary ($z+1$ bits), $2z+1$ bits in all. For $v\ge0$, encode $v+1$.
+\par\begin{tabular}{@{}lll@{}}
+$z$ zeros & binary $v$ ($z+1$ bits) & length $2z+1$ \\
+\texttt{00} & \texttt{101} ($v=5$) & 5 bits \\
+\end{tabular}\par
+\textit{Receive.} Count the leading zeros $z$, then read $z+1$ bits from the first one.
 \topic{Padding to a fixed block}
-Use it when the channel stores blocks of a fixed size.
-\begin{facts}
-	\item Write gamma of $\mathit{len} + 1$, then the payload, then zeros up to the block size. Check that it fits.
-	\item Never trim trailing zeros to find the payload: it may end in zeros.
-\end{facts}
-Example: payload \texttt{00} has length 2, so it is sent as \texttt{011 00} and then the padding.
+\textit{Problem.} The channel stores blocks of a fixed size and the payload is shorter; pass 2 must find where the payload ends, even when it ends in zeros.
+\par\textit{Send.} The length as Elias-gamma $\gamma(\mathit{len}+1)$, the payload, then zeros. Check that header and payload fit.
+\flowfig{
+  \node[note,draw,minimum width=2.45cm] (a) at (0,0) {\strut $\gamma(\mathit{len}+1)$};
+  \node[note,draw,minimum width=1.4cm,anchor=west] (b) at (a.east) {\strut payload};
+  \node[note,draw,minimum width=1.6cm,anchor=west] (c) at (b.east) {\strut zero padding};
+  \node[note,below] at (a.south) {\texttt{011} ($\mathit{len}=2$)};
+  \node[note,below] at (b.south) {\texttt{00}};
+  \node[note,below] at (c.south) {\texttt{0}\,$\cdots$};
+}
+\textit{Receive.} Decode $\mathit{len}$, then read exactly $\mathit{len}$ bits, including any trailing zeros.
 \topic{Varshamov--Tenengolts: one insertion or deletion}
-Use it when a block of known length $n$ may lose or gain one bit, and no bit flips.
-The code words $x_1..x_n$, stored as the bit string \texttt{s} (bit \texttt{s[i]} has weight $i + 1$), satisfy
-\[ \sum_{i=1}^{n} i\, x_i \equiv a \pmod{n + 1}. \]
-Fix $a = 0$: that class is the largest, at least $2^n / (n + 1)$ words.
-\begin{facts}
-	\item Encode: positions $1, 2, 4, .. \le n$ are reserved, data fills the others, $n - \lfloor \log_2 n \rfloor - 1$ bits. Let $d \in 0..n$ be the residue still missing after the data; position $2^j$ holds bit $j$ of $d$.
-	\item Length $n - 1$ (a deletion): let $w$ be the number of ones of the received $y$, and
-	\[ \Delta = \Big(a - \sum_i i\, y_i\Big) \bmod (n + 1). \]
-	\item If $\Delta \le w$, a 0 was lost: insert 0 with exactly $\Delta$ ones to its right. Else a 1 was lost: insert 1 with exactly $\Delta - w - 1$ zeros to its left.
-	\item Length $n + 1$ (an insertion): delete each bit in turn and keep the result with residue $a$; all such results are equal. Length $n$: nothing happened.
-\end{facts}
-Example: \texttt{101} has residue 0 modulo 4. Deleting the middle bit gives \texttt{11}: $\Delta = 1 \le w = 2$, so insert 0 with one 1 to its right.
+\textit{Problem.} Pass 1 sends a word $x$ of known length $n$. The judge deletes or inserts one bit, and flips none. Pass 2 receives $y$ and outputs $x$.
+\par\textit{Send.} Position $i$ (from 1) has weight $i$. Send only words with $R(x)=a$; $a=0$ gives the most words, at least $2^n/(n+1)$, where
+\[ R(x)=\Big(\sum_i i x_i\Big)\bmod(n+1) \qquad (i\text{ starts at }1). \]
+Reserve positions $1,2,4,\ldots\le n$ for checks. Set them to zero and fill the other $n-\lfloor\log_2 n\rfloor-1$ slots with data. Let $d=(a-R(x))\bmod(n+1)$ in $0,\ldots,n$. Put bit $j$ of $d$ at position $2^j$.
+\par\begin{tabular}{@{}l*{8}{c}@{}}
+Position & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 \\
+Bit & $d_0$ & $d_1$ & data & $d_2$ & data & data & data & $d_3$ \\
+\end{tabular}\par
+\textit{Receive.} At length $n$, keep $y$. At length $n+1$, try deleting each bit and keep any result with residue $a$ (all give the same word).
+\par At length $n-1$, count the $w$ ones in $y$. Take $\Delta=(a-R(y))\bmod(n+1)$ in $0,\ldots,n$.
+\par\begin{tabular}{@{}ll@{}}
+$\Delta\le w$ & Insert 0 with $\Delta$ ones to its right. \\
+$\Delta>w$ & Insert 1 with $\Delta-w-1$ zeros to its left. \\
+\end{tabular}\par
+Example: $n=3$, $a=0$, received \texttt{11}: $w=2$, $\Delta=1\le w$, so insert a 0 with one 1 to its right: \texttt{1\underline{0}1}.
 \topic{Complementary pairs}
-Use them when block alignment survives and flips must become known erasures.
-\begin{facts}
-	\item Send 0 as \texttt{01} and 1 as \texttt{10}. \texttt{00} and \texttt{11} are invalid: an erasure for an outer code (\S\ref{linearcodes}).
-	\item One flip in a pair is always detected. Two flips in one pair give the other valid pair, undetected.
-	\item If all flips go one way ($0 \to 1$ only, or $1 \to 0$ only), every changed pair is detected.
-\end{facts}
+\textit{Problem.} The judge flips bits in one direction only ($0\to1$, or $1\to0$). Pass 2 must know which bits were hit, so that each hit becomes an erasure.
+\par\textit{Send.} $0$ as \texttt{01} and $1$ as \texttt{10}; keep pair boundaries aligned.
+\par\textit{Receive.} Read each pair:
+\par\begin{tabular}{@{}lll@{}}
+\toprule
+Flips in a pair & Receive & Action \\
+\midrule
+1 & \texttt{00} or \texttt{11} & Mark erased (\S\ref{linearcodes}). \\
+2 & other valid pair & Error goes undetected. \\
+\bottomrule
+\end{tabular}\par
+\textit{Limits.} The second row needs flips in both directions; with one-way flips every hit is seen.
 \topic{Two checksums}
-Use them to find and repair one changed symbol, when the sums themselves arrive safely.
-For symbols in $\mathbb{F}_p$ at positions $1..n$, $p$ a prime above $n$, send
-\[ S_0 = \sum_{i=1}^{n} x_i, \qquad S_1 = \sum_{i=1}^{n} i\, x_i. \]
-\begin{facts}
-	\item Let $\Delta_0, \Delta_1$ be the received sums minus the sent ones. With one changed symbol, it sits at
-	\[ j = \Delta_1 / \Delta_0, \]
-	and its value went up by $\Delta_0$.
-	\item With more changes, $j$ can be a wrong position. If $\Delta_0 = 0 \ne \Delta_1$, treat it as detected but unlocatable; do not compute $\Delta_1 / \Delta_0$. From three changes on, both $\Delta$ can be 0.
-\end{facts}
-Example over $\mathbb{F}_{11}$: position 3 changes from 2 to 5, so $\Delta_0 = 3$, $\Delta_1 = 9$ and $j = 3$.
+\textit{Problem.} Pass 1 sends $n$ numbers $x_i$ and two sums that arrive intact. The judge changes one symbol, position unknown. Pass 2 finds and repairs it.
+\par\textit{Send.} Choose a prime $p>n$, $p>\max x_i$, and index from 1:
+\[ S_0=\sum_{i=1}^{n}x_i,\qquad S_1=\sum_{i=1}^{n}i x_i. \]
+\textit{Receive.} Recompute both sums from the received symbols; $\Delta_0,\Delta_1$ are recomputed minus sent, modulo $p$.
+\par\begin{tabular}{@{}lll@{}}
+\toprule
+Change & Locate & Repair \\
+\midrule
+One symbol & $j=\Delta_1/\Delta_0$ & $x_j\gets x_j-\Delta_0$ \\
+$2\to5$ in $\mathbb F_{11}$ & $j=9/3=3$ & $5-3=2$ \\
+\bottomrule
+\end{tabular}\par
+\textit{Limits.} Multiple changes can give a false position. If $\Delta_0=0\ne\Delta_1$, report an unlocatable error. Three or more changes can leave both sums unchanged.
 \topic{Hash a candidate}
-Use it when you can list a few possible originals and a trusted digest of the true one is known.
-\begin{facts}
-	\item Compare the length and \texttt{StrHash(s).get(1, sz(s))} (\S\ref{strhash}); characters must be 1 to 127.
-	\item Across passes, replace the random base by a constant (\S\ref{multipasscheck}).
-	\item A match is probable, not certain: a hash verifies, it never locates an error.
-\end{facts}
+\textit{Problem.} Pass 2 can rebuild a few candidate originals. Pass 1 sends a short trusted digest so that pass 2 can pick the true one.
+\par\textit{Send.} The length and \texttt{StrHash(s).get(1, sz(s))} (\S\ref{strhash}); characters must have codes 1 to 127. Use the same base in both passes (\S\ref{multipasscheck}).
+\par\textit{Receive.} Keep the candidate whose length and digest match.
+\par\textit{Limits.} A match is probabilistic and cannot locate an error.
 }
 \cpp[4]{Hamming SECDED}{hamming.hpp}[
 	\fld{Use} \texttt{auto w = hammingEncode(x); ll y = hammingDecode(w);}

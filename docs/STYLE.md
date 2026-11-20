@@ -157,7 +157,7 @@ When the two conflict, the form a contestant recognises wins over the shorter on
 | Do not | Do |
 |---|---|
 | a recursive call inside an argument: `minimize(low[u], num[v] ? num[v] : dfs(g, v));` | `if(!num[v]) dfs(v, g);` then `low[u] = min(low[u], low[v]);` |
-| an assignment inside a condition: `if((q = mulMod(prd, d, n))) prd = q;` | `ll q = mulMod(prd, d, n);` then `if(q) prd = q;` |
+| an assignment inside a condition: `if((q = mulMod(prd, d, n))) prd = q;` | `ll q = mulMod(prd, d, n); if(q) prd = q;` (one row by R2: a value and its check) |
 | a flag tested at the loop head: `if(ok) break;` | `continue` / `break` / `return` at the point where the fact is known |
 | deep nesting | an early `continue` or `return`; aim for at most 3 levels inside a function |
 
