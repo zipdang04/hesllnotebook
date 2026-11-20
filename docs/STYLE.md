@@ -105,9 +105,9 @@ Why: "fine in short arguments" was read broadly in the trial (`(lo + hi)/2`, `4*
 |---|---|---|
 | One idea per line. Two or three short statements may share a line when they are one step. | A line number names one thing, and a debug print fits between two lines. | `stk.push_back(u); onStk[u] = 1;` |
 | Statements joined by a comma are fine for one step. | Same. | `x = f(x), y = f(f(y));` |
-| A short body may stay on the line of its `if`, `for` or `while`. | Less to type. | `if(lo == hi) return res;` |
+| A body of one statement joins the line of its `if`, `for`, `while`, `FOR`, `REV` or `else` when the joined line fits in 60 columns and holds only one of those words. | Less to type, one row fewer. | `if(lo == hi) return res;` |
 | One `for` or `while` may be followed by one `if` on the same line. | Common "for each, if" shape. | `for(int v: g[u]) if(!comp[v]){` |
-| A body of one statement goes on the next line, one tab deeper, without braces. A body of two or more statements is braced. | One statement needs no `}` to type back; a braced body gets a guide (1.5). | `for(auto &e: g[u]) if(e.rem > 0)` then `eps = max(eps, -rc(e, u));` |
+| Otherwise a body of one statement goes on the next line, one tab deeper, without braces. A body of two or more statements is braced. | One statement needs no `}` to type back; a braced body gets a guide (1.5). | `for(auto &e: g[u]) if(e.rem > 0)` then `eps = max(eps, -rc(e, u));` |
 | Prefer an early `return`, `continue` or a loop condition to an `if` around the rest of a block. | One guide fewer, shorter lines. | `if(low[u] < num[u]) return;` |
 | Past 4 guide levels inside a function, look for a natural helper (one step of the algorithm). If there is none, keep the nesting. Advice, not checked. | Several ticks on one line are hard to count back. | cost scaling: `while(refine());` |
 | No comment after an opening `{`: put it on its own line above. | A `{` followed by a comment keeps its braces and gets no guide. | |
