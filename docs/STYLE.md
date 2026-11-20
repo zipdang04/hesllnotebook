@@ -232,7 +232,7 @@ the entry:
 1. what it computes;
 2. the index base (`vertices 1..n`, `ranges 1-based inclusive`);
 3. the complexity;
-4. **the recursion depth**, if the code recurses.
+4. **the recursion depth**, only when it can reach V or E (a path-shaped input).
 
 ```cpp
 // SCC by Tarjan, O(V + E), vertices 1..n. Edge u->v gives
@@ -240,10 +240,9 @@ the entry:
 // Recursive, depth <= V.
 ```
 
-Recursion is allowed. There is no iterative Tarjan. But the depth line is not optional: the
-stack counts toward the memory limit, and a depth of 10^6 costs roughly 100 MB. A spec repeats
-"recursive, depth <= .." in its "the top comment must say" list, because the line was dropped
-once in the trial.
+Recursion is allowed. There is no iterative Tarjan. When the depth can reach V or E the line is
+not optional: the stack counts toward the memory limit, and a depth of 10^6 costs roughly 100 MB.
+Do not write "No recursion" or a small depth (log n, 62, 92): it costs a row and warns of nothing.
 
 Anything longer (why it works, modelling tricks, formulas) goes in the note. See section 8.
 
