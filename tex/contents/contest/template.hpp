@@ -4,10 +4,16 @@
 // #pragma GCC target("avx2,popcnt,lzcnt,bmi,bmi2")
 #include <bits/stdc++.h>
 using namespace std;
+
 typedef long long ll;
 typedef long double ld;
 typedef pair<int, int> pii;
 typedef pair<ll, ll> pll;
+typedef vector<int> vi;
+typedef vector<ll> vll;
+
+#define all(x) (x).begin(), (x).end()
+#define sz(x) (int)(x).size()
 #define fi first
 #define se second
 
@@ -56,12 +62,4 @@ string dbgv(const char(&s)[N]){ return {s, strnlen(s, N)}; }
 #define dbg(...)
 #endif
 
-/* in this template */
-typedef vector<int> vi;
-typedef vector<ll> vll;
-#define all(x) (x).begin(), (x).end()
-#define sz(x) (int)(x).size()
 const ll oo = 1e18;
-// int main(){
-// 	ios_base::sync_with_stdio(0); cin.tie(nullptr);
-// }
