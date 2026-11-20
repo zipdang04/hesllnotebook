@@ -97,7 +97,7 @@
 \renewcommand{\tableofcontents}{{\setlength{\parskip}{0pt}\hesll@tableofcontents}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 5. codes %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\setminted{xleftmargin=9pt, resetmargins, numbersep=2.5pt, breaklines, breakbefore=. , stripnl, linenos, tabsize=2, fontsize=\footnotesize, firstnumber=1}
+\setminted{xleftmargin=9pt, resetmargins, numbersep=2.5pt, breaklines, breakbefore=. , stripnl, linenos, tabsize=2, fontsize=\fontsize{8}{9}\selectfont, firstnumber=1}
 % Short line numbers: units digit only; every 10th line shows its full number, smaller and nudged right.
 \newcommand{\hesll@lineno}[1]{%
   \ifnum\numexpr#1-((#1-5)/10)*10\relax=0
