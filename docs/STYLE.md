@@ -631,7 +631,7 @@ The note is the fifth argument of `\cpp`, typeset under the title with real form
 
 | Rule | Value |
 |---|---|
-| Labels, in this order | `Use`, `Result`, `Needs`, then one line per other public function, labelled with its name. Each one only when it has content. |
+| Labels, in this order | `Use`, `Result`, `Needs`, then one line per other public function, macro, parameter or public type, labelled with its name (`maximize`, `FOR`, `Start`, `eps`, `MintN`, `bcc`). Each one only when it has content. |
 | Other labels | None, except `Time` when the top comment has no room, and `Models` for the cross-reference of 8.2. |
 | `Use` | **One line of code** in `\texttt`: the shortest full call, with the sizing (`g(n + 1)`, `Dinic d(n + 1)`). |
 | Each line | One fact; at most **2 printed rows**. |
@@ -650,7 +650,7 @@ Text sections (contest checklists, formula sheets, flow models) follow these rul
 
 | Rule | Value |
 |---|---|
-| Structure | `\topic{Heading}` per topic. Under it: **one plain sentence** that says when to use it. Then the steps or the formula. |
+| Structure | `\topic{Heading}` per topic. Under it: **one plain sentence** that says when to use it, unless the heading already says it (a checklist titled "Runtime error" needs no "Use this after a runtime error"). Then the steps or the formula. |
 | Steps of a construction | A `facts` list, one step per item, in the order you would type them. |
 | Formulas | Displayed, one per line. Inline math only for single symbols and short terms; at most **2 inline formulas per sentence**. |
 | After a formula | One line that names the symbols, if any is new. |
