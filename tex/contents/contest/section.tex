@@ -1,4 +1,3 @@
-\setcounter{section}{-1}
 \section{Contest}
 \twolevels
 \setcurrentdir{contest}
@@ -16,6 +15,7 @@
 	\fld{Needs} integers $> -2^{63}$ must fit their type. No \texttt{cin}/\texttt{scanf}. Use for $\gtrsim 10^7$ numbers; else \texttt{cin}+\texttt{sync\_with\_stdio(0)} suffices.
 	\fld{readChar} returns the next byte of the input, $-1$ at the end.
 ]\label{fastio}
+
 \othercodes{stress.sh}{bash}{stress.sh}[
 	\fld{Use} \texttt{./stress.sh p -n 500 -t 2}, or \texttt{-m tests}, \texttt{-m inter}, \texttt{-m multi -c chk}.
 	\fld{Result} \texttt{OK n tests}; or \texttt{FAIL seed i} + \texttt{tests/fail\_i.\{in,out,ans\}}; \texttt{-m tests} replays them; \texttt{inter}: \texttt{-m inter -s i -n 1}.
@@ -43,16 +43,18 @@ Mode & Files & One round \\
 	\item Name samples \texttt{tests/0a.in}, \texttt{tests/0b.in}: they run first.
 \end{facts}
 }
-\cpp{Gen helper}{gen.cpp}[
-	\fld{Use} \texttt{./gen 7 > in}; edit \texttt{main}, keep \texttt{rnd(l, r)} (inclusive, $r - l < 2^{63} - 1$) and the seed line.
-	\fld{Result} a random tree: \texttt{n}, then $n - 1$ edges \texttt{u v} on $1..n$, labels and edge directions shuffled.
-	\fld{Needs} \texttt{n} in $1..8$ first: a small failing test can be traced by hand.
-]\label{gen}
-\cpp{Checker skeleton}{chk.cpp}[
-	\fld{Use} \texttt{./stress.sh p -c chk}, or by hand \texttt{./chk in out ans; echo \$?}.
-	\fld{Result} exit 0 if \texttt{out} is one integer equal to \texttt{ans} (signed 64-bit); missing or extra output: 1; unreadable \texttt{ans}: 2.
-	\fld{Needs} reals use $|x - y| \le 10^{-6} \max(1, |y|)$; for multiple valid answers, use \texttt{in} to require valid \texttt{out} as good as \texttt{ans}.
-]\label{chk}
+
+% \cpp{Gen helper}{gen.cpp}[
+% 	\fld{Use} \texttt{./gen 7 > in}; edit \texttt{main}, keep \texttt{rnd(l, r)} (inclusive, $r - l < 2^{63} - 1$) and the seed line.
+% 	\fld{Result} a random tree: \texttt{n}, then $n - 1$ edges \texttt{u v} on $1..n$, labels and edge directions shuffled.
+% 	\fld{Needs} \texttt{n} in $1..8$ first: a small failing test can be traced by hand.
+% ]\label{gen}
+% \cpp{Checker skeleton}{chk.cpp}[
+% 	\fld{Use} \texttt{./stress.sh p -c chk}, or by hand \texttt{./chk in out ans; echo \$?}.
+% 	\fld{Result} exit 0 if \texttt{out} is one integer equal to \texttt{ans} (signed 64-bit); missing or extra output: 1; unreadable \texttt{ans}: 2.
+% 	\fld{Needs} reals use $|x - y| \le 10^{-6} \max(1, |y|)$; for multiple valid answers, use \texttt{in} to require valid \texttt{out} as good as \texttt{ans}.
+% ]\label{chk}
+
 \entry{Troubleshoot + edge cases}\label{troubleshoot}
 {\footnotesize\tightdisplay
 \topic{Before a submit}

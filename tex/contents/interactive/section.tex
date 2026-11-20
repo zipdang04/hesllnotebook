@@ -1,4 +1,3 @@
-\setcounter{section}{6}
 \section{Interactive \& Multi-pass}
 \threelevels
 \setcurrentdir{interactive}
@@ -6,14 +5,14 @@
 \subsection{Checklists}
 \entry{Interactive}\label{interactivecheck}
 {\footnotesize\tightdisplay
-\topic{Protocol}
-\begin{checks}
-	\item Flush after every line, with \texttt{endl} or \texttt{cout.flush()}.
-	\item After \texttt{cin.tie(nullptr)}, reading no longer flushes \texttt{cout}.
-	\item Exit at once after the final answer, and when the judge answers $-1$.
-	\item Read with \texttt{cin}, never with Fast IO (\S\ref{fastio}): it waits for a full buffer.
-	\item Count the queries against the limit, also in the worst case.
-\end{checks}
+% \topic{Protocol}
+% \begin{checks}
+% 	\item Flush after every line, with \texttt{endl} or \texttt{cout.flush()}.
+% 	\item After \texttt{cin.tie(nullptr)}, reading no longer flushes \texttt{cout}.
+% 	\item Exit at once after the final answer, and when the judge answers $-1$.
+% 	\item Read with \texttt{cin}, never with Fast IO (\S\ref{fastio}): it waits for a full buffer.
+% 	\item Count the queries against the limit, also in the worst case.
+% \end{checks}
 \topic{Randomness}
 Seed a randomised strategy from the clock (\texttt{randomize} in the template).
 An adaptive judge can be tuned against a constant seed, because it then knows every query in advance.
@@ -40,13 +39,11 @@ Use a named pipe to connect the solution to your own interactor.
 \topic{Checklist}
 Use it when the program runs twice and pass 2 reads what pass 1 wrote.
 \begin{checks}
-	\item Tell the passes apart by the first input token.
 	\item Use a fixed seed, \texttt{mt19937\_64 rng(12\cppsep345)}, not \texttt{randomize}: both passes must make the same choices.
-	\item Iterate in a canonical order. Never iterate an \texttt{unordered\_map} or \texttt{unordered\_set}, never sort by pointer.
 	\item Fix the hash base: in Rolling hash (\S\ref{strhash}) replace the random \texttt{B} by a constant such as \texttt{911\cppsep382\cppsep323}.
-	\item The time limit holds for each pass separately.
-	\item Nothing carries over between passes: no files, no memory.
-	\item Test with \texttt{./stress.sh p -m multi -c chk} and a \texttt{noise.cpp} that plays the judge (\S\ref{stress}).
+	% \item The time limit holds for each pass separately.
+	% \item Nothing carries over between passes: no files, no memory.
+	% \item Test with \texttt{./stress.sh p -m multi -c chk} and a \texttt{noise.cpp} that plays the judge (\S\ref{stress}).
 \end{checks}
 }
 \entry{Noise taxonomy}\label{noisetaxonomy}

@@ -1,4 +1,3 @@
-\setcounter{section}{7}
 \section{Misc}
 \twolevels
 \setcurrentdir{misc}
@@ -48,4 +47,59 @@ Use \texttt{aliens} when the answer for exactly $k$ parts, $f(k)$, is convex in 
 	\item Integer costs make the slopes integers, so an integer $\lambda$ is enough.
 	\item For a maximum, negate the costs and the answer.
 \end{facts}
+}
+\entry{Techniques prompt list}\label{techniques}
+{\footnotesize\tightdisplay
+When stuck, read down the lists and ask of each item: does this fit?
+% \topic{First tries}
+% Use these when you have no idea yet.
+% \begin{checks}
+	% \item Solve small cases by brute force and look for a pattern.
+	% \item Look for an invariant or a quantity that only grows.
+	% \item Try a greedy, then attack it with the brute force (\S\ref{stress}).
+	% \item Fix one thing (a pair, the maximum, the first move) and count the rest.
+	% \item Reverse the process: deletions become insertions.
+	% \item Count the complement.
+% \end{checks}
+% \topic{Search and order}
+% \begin{checks}
+% 	\item Binary search the answer; for many queries, binary search them all in parallel.
+% 	\item Ternary search a unimodal function (\S\ref{ternary}).
+% 	\item Answer queries offline, sorted by one coordinate.
+% \end{checks}
+\topic{Divide and conquer}
+Use these when the problem splits into parts that combine simply.
+\begin{checks}
+	\item Split at the middle and count the pairs that cross it.
+	\item Divide and conquer on time (CDQ) to turn updates and queries into a static problem.
+\end{checks}
+\topic{Dynamic programming}
+Use these when the choices form states with a small description.
+\begin{checks}
+	\item Speed up a transition of linear functions with Li Chao (\S\ref{lichao}).
+	\item For a linear recurrence, take a matrix power or $k$-th term (\S\ref{linearrec}).
+	\item Over bitmasks: sum, max or top two over all submasks by SOS (\S\ref{sos}); pairs with $i \mathbin{|} j = k$ or $i \mathbin{\&} j = k$ by \texttt{convBit}.
+\end{checks}
+% \topic{Graphs}
+% \begin{checks}
+% 	\item Handle edge deletions offline: a segment tree on time with a rollback DSU (\S\ref{rollbackdsu}).
+% \end{checks}
+\topic{Strings}
+Use these when the input has strings, patterns or substrings.
+\begin{checks}
+	% \item Compare substrings by hash, with a binary search for the LCP (\S\ref{strhash}).
+	\item Use the suffix array and LCP for distinct or repeated substrings (\S\ref{suffixarray}).
+	\item Count occurrences with the suffix automaton (\S\ref{suffixautomaton}).
+	% \item Match many patterns with Aho--Corasick (\S\ref{ahocorasick}).
+	\item Insert patterns online by keeping groups of $2^k$ patterns: merge two equal groups and rebuild.
+\end{checks}
+\topic{Math}
+Use these when the answer is a count, a sum or an expected value.
+\begin{checks}
+	\item Turn a condition on $\gcd$ into a divisor sum with Möbius (\S\ref{mathnt}).
+	\item Write an expected value as a sum of indicators (\S\ref{mathprob}).
+	\item Write a sum of products $a_i b_{k-i}$ as a convolution (\S\ref{ntt}).
+	\item If the answer is a polynomial in $n$, interpolate it (\S\ref{lagrange}).
+	\item Write it as a linear program (\S\ref{simplex}).
+\end{checks}
 }

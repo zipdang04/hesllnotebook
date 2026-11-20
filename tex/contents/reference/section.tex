@@ -1,4 +1,3 @@
-\setcounter{section}{8}
 \section{Math Reference}
 \twolevels
 \setcurrentdir{reference}
@@ -12,11 +11,6 @@ Use them to collapse a sum of binomial coefficients.
 	\item Vandermonde: $\sum\limits_{k} \tbinom{m}{k} \tbinom{n}{r-k} = \tbinom{m+n}{r}$, and $\sum\limits_{k} \tbinom{n}{k}^2 = \tbinom{2n}{n}$.
 	\item Hockey stick: $\sum\limits_{i=r}^{n} \tbinom{i}{r} = \tbinom{n+1}{r+1}$.
 \end{facts}
-\topic{Stars and bars}
-Use it to count ways to split $n$ equal balls into $k$ boxes.
-\begin{gather*} \#\{\text{boxes may be empty}\} = \tbinom{n+k-1}{k-1}, \\ \#\{\text{no box empty}\} = \tbinom{n-1}{k-1}. \end{gather*}
-A lower bound $x_i \ge l_i$ becomes $x_i' = x_i - l_i \ge 0$. Then $n$ shrinks:
-\[ n' = n - \sum_i l_i. \]
 \topic{Lucas and Kummer}
 Use Lucas for $\binom{n}{k} \bmod p$ when $n \ge p$ and the prime $p$ is small.
 Write $n$ and $k$ in base $p$ with digits $n_i$ and $k_i$; then
@@ -24,10 +18,6 @@ Write $n$ and $k$ in base $p$ with digits $n_i$ and $k_i$; then
 with $\binom{n_i}{k_i} = 0$ when $k_i > n_i$.
 Kummer: the exponent of $p$ in $\binom{n}{k}$ is the number of carries
 when adding $k$ and $n - k$ in base $p$.
-\topic{Inclusion--exclusion}
-Use it to count the elements that avoid every bad event $A_1, \dots, A_m$.
-\[ \Bigl| \overline{A_1} \cap \dots \cap \overline{A_m} \Bigr| = \sum_{S \subseteq \{1..m\}} (-1)^{|S|} \, \Bigl| \bigcap_{i \in S} A_i \Bigr|, \]
-where the empty $S$ gives the whole set.
 \topic{Stirling numbers of the first kind}
 Use $c(n, k)$ to count permutations of $n$ elements with exactly $k$ cycles.
 \[ c(n, k) = c(n-1, k-1) + (n-1)\, c(n-1, k), \qquad c(0, 0) = 1. \]
@@ -70,14 +60,14 @@ Use $B_n$ to count all partitions of an $n$-set.
 \toprule
 $n$ & $C_n$ & $B_n$ & $n$ & $C_n$ & $B_n$ \\
 \midrule
-0 & 1 & 1 & 8 & 1430 & 4140 \\
-1 & 1 & 1 & 9 & 4862 & 21147 \\
-2 & 2 & 2 & 10 & 16796 & 115975 \\
-3 & 5 & 5 & 11 & 58786 & 678570 \\
-4 & 14 & 15 & 12 & 208012 & 4213597 \\
-5 & 42 & 52 & 13 & 742900 & 27644437 \\
-6 & 132 & 203 & 14 & 2674440 & 190899322 \\
-7 & 429 & 877 & 15 & 9694845 & 1382958545 \\
+0 & 1 & 1 & 8 & 1\dsep430 & 4\dsep140 \\
+1 & 1 & 1 & 9 & 4\dsep862 & 21\dsep147 \\
+2 & 2 & 2 & 10 & 16\dsep796 & 115\dsep975 \\
+3 & 5 & 5 & 11 & 58\dsep786 & 678\dsep570 \\
+4 & 14 & 15 & 12 & 208\dsep012 & 4\dsep213\dsep597 \\
+5 & 42 & 52 & 13 & 742\dsep900 & 27\dsep644\dsep437 \\
+6 & 132 & 203 & 14 & 2\dsep674\dsep440 & 190\dsep899\dsep322 \\
+7 & 429 & 877 & 15 & 9\dsep694\dsep845 & 1\dsep382\dsep958\dsep545 \\
 \bottomrule
 \end{tabular}
 \topic{Burnside}
@@ -136,11 +126,11 @@ On average:
 $N$ & $\max_{n \le N} d(n)$ & smallest such $n$ \\
 \midrule
 $10^{3}$ & 32 & 840 \\
-$10^{6}$ & 240 & 720720 \\
-$10^{9}$ & 1344 & 735134400 \\
-$10^{12}$ & 6720 & 963761198400 \\
-$10^{15}$ & 26880 & 866421317361600 \\
-$10^{18}$ & 103680 & 897612484786617600 \\
+$10^{6}$ & 240 & 720\dsep720 \\
+$10^{9}$ & 1\dsep344 & 735\dsep134\dsep400 \\
+$10^{12}$ & 6\dsep720 & 963\dsep761\dsep198\dsep400 \\
+$10^{15}$ & 26\dsep880 & 866\dsep421\dsep317\dsep361\dsep600 \\
+$10^{18}$ & 103\dsep680 & 897\dsep612\dsep484\dsep786\dsep617\dsep600 \\
 \bottomrule
 \end{tabular}
 \topic{Prime counts and gaps}
@@ -151,12 +141,12 @@ Use them to size a sieve or a search for the next prime; $\pi(N)$ counts the pri
 $N$ & $\pi(N)$ & largest gap below $N$ \\
 \midrule
 $10^3$ & 168 & 20 \\
-$10^6$ & 78498 & 114 \\
-$10^9$ & 50847534 & 282 \\
-$2^{32}$ & 203280221 & 336 \\
-$10^{12}$ & 37607912018 & 540 \\
-$10^{18}$ & 24739954287740860 & 1442 \\
-$2^{64}$ & 425656284035217743 & 1550 \\
+$10^6$ & 78\dsep498 & 114 \\
+$10^9$ & 50\dsep847\dsep534 & 282 \\
+$2^{32}$ & 203\dsep280\dsep221 & 336 \\
+$10^{12}$ & 37\dsep607\dsep912\dsep018 & 540 \\
+$10^{18}$ & 24\dsep739\dsep954\dsep287\dsep740\dsep860 & 1\dsep442 \\
+$2^{64}$ & 425\dsep656\dsep284\dsep035\dsep217\dsep743 & 1\dsep550 \\
 \bottomrule
 \end{tabular}
 \topic{Primes near round numbers}
@@ -183,11 +173,11 @@ Use a prime $p = c \cdot 2^k + 1$ for transforms of length up to $2^k$. Here $g$
 \toprule
 $p$ & $c \cdot 2^k + 1$ & $g$ \\
 \midrule
-998244353 & $119 \cdot 2^{23} + 1$ & 3 \\
-167772161 & $5 \cdot 2^{25} + 1$ & 3 \\
-469762049 & $7 \cdot 2^{26} + 1$ & 3 \\
-754974721 & $45 \cdot 2^{24} + 1$ & 11 \\
-1004535809 & $479 \cdot 2^{21} + 1$ & 3 \\
+998\dsep244\dsep353 & $119 \cdot 2^{23} + 1$ & 3 \\
+167\dsep772\dsep161 & $5 \cdot 2^{25} + 1$ & 3 \\
+469\dsep762\dsep049 & $7 \cdot 2^{26} + 1$ & 3 \\
+754\dsep974\dsep721 & $45 \cdot 2^{24} + 1$ & 11 \\
+1\dsep004\dsep535\dsep809 & $479 \cdot 2^{21} + 1$ & 3 \\
 \bottomrule
 \end{tabular}
 }
@@ -364,76 +354,4 @@ Clamp the argument of \texttt{acos} to $[-1, 1]$ before the call.\par
 Example: sides $a = 3$, $b = 4$, $c = 5$ give
 \[ \cos \alpha = \frac{16 + 25 - 9}{40} = \frac{4}{5}, \]
 so $\alpha \approx 36.87^\circ$.
-}
-\entry{Techniques prompt list}\label{techniques}
-{\footnotesize\tightdisplay
-When stuck, read down the lists and ask of each item: does this fit?
-\topic{First tries}
-Use these when you have no idea yet.
-\begin{checks}
-	\item Solve small cases by brute force and look for a pattern.
-	\item Look for an invariant or a quantity that only grows.
-	\item Try a greedy, then attack it with the brute force (\S\ref{stress}).
-	\item Fix one thing (a pair, the maximum, the first move) and count the rest.
-	\item Reverse the process: deletions become insertions.
-	\item Count the complement.
-	\item If the answer is small, iterate over the answer.
-\end{checks}
-\topic{Search and order}
-Use these when the input or the answer has an order to exploit.
-\begin{checks}
-	\item Binary search the answer; for many queries, binary search them all in parallel.
-	\item Ternary search a unimodal function (\S\ref{ternary}).
-	\item Move two pointers over a monotone window.
-	\item Sweep: turn the input into sorted events.
-	\item Answer queries offline, sorted by one coordinate.
-	\item Meet in the middle: split $2^n$ into two halves of $2^{n/2}$.
-	\item Order range queries with Mo's algorithm (\S\ref{mo}).
-\end{checks}
-\topic{Divide and conquer}
-Use these when the problem splits into parts that combine simply.
-\begin{checks}
-	\item Split at the middle and count the pairs that cross it.
-	\item Divide and conquer on time (CDQ) to turn updates and queries into a static problem.
-	\item Merge the smaller set into the larger one: $O(n \log n)$ moves in all.
-	\item Count paths in a tree with centroid decomposition (\S\ref{centroid}).
-	\item Use sqrt decomposition: rebuild every $\sqrt{q}$ updates, or split items into heavy and light.
-\end{checks}
-\topic{Dynamic programming}
-Use these when the choices form states with a small description.
-\begin{checks}
-	\item Try DP over subsets, digits, intervals, trees, or a broken profile.
-	\item Speed up the transition with D\&C, Knuth or Aliens (\S\ref{dpopt}).
-	\item Speed up a transition of linear functions with Li Chao (\S\ref{lichao}).
-	\item For a linear recurrence, take a matrix power or $k$-th term (\S\ref{linearrec}).
-\end{checks}
-\topic{Graphs}
-Use these when the input is, or hides, a graph.
-\begin{checks}
-	\item Model it as a flow, a cut or a matching (\S\ref{flowmodels}).
-	\item Model boolean choices with pairwise rules as 2-SAT (\S\ref{2sat}).
-	\item Add state to the vertices before a shortest path: $(v, \text{used}, \dots)$.
-	\item Contract SCCs to a DAG (\S\ref{scc}); find bridges and cut vertices (\S\ref{lowlink}).
-	\item Answer path queries with HLD (\S\ref{hld}); for small vertex sets, build a virtual tree (\S\ref{virtualtree}).
-	\item Handle edge deletions offline: a segment tree on time with a rollback DSU (\S\ref{rollbackdsu}).
-\end{checks}
-\topic{Strings}
-Use these when the input has strings, patterns or substrings.
-\begin{checks}
-	\item Compare substrings by hash, with a binary search for the LCP (\S\ref{strhash}).
-	\item Use the suffix array and LCP for distinct or repeated substrings (\S\ref{suffixarray}).
-	\item Count occurrences with the suffix automaton (\S\ref{suffixautomaton}).
-	\item Match many patterns with Aho--Corasick (\S\ref{ahocorasick}).
-	\item Insert patterns online by keeping groups of $2^k$ patterns: merge two equal groups and rebuild.
-\end{checks}
-\topic{Math}
-Use these when the answer is a count, a sum or an expected value.
-\begin{checks}
-	\item Turn a condition on $\gcd$ into a divisor sum with Möbius (\S\ref{mathnt}).
-	\item Write an expected value as a sum of indicators (\S\ref{mathprob}).
-	\item Write a sum of products $a_i b_{k-i}$ as a convolution (\S\ref{ntt}).
-	\item If the answer is a polynomial in $n$, interpolate it (\S\ref{lagrange}).
-	\item Write the counting as a generating function (\S\ref{fps}).
-	\item Write it as a linear program (\S\ref{simplex}).
-\end{checks}
 }
