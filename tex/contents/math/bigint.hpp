@@ -101,7 +101,7 @@ struct Bigint{
 		a.neg = neg != b.neg; a.trim();
 		return a;
 	}
-	pair<Bigint, Bigint> divMod(const Bigint &b) const{
+	pair<Bigint, Bigint> div(const Bigint &b) const{
 		int m = sz(b.d), norm = BASE / (b.d.back() + 1);
 		if(m == 1){
 			Bigint q = *this; ll r = 0, c = b.d[0]; // O(n)
@@ -132,10 +132,10 @@ struct Bigint{
 		return a -= b;
 	}
 	friend Bigint operator/(const Bigint &a, const Bigint &b){
-		return a.divMod(b).fi;
+		return a.div(b).fi;
 	}
 	friend Bigint operator%(const Bigint &a, const Bigint &b){
-		return a.divMod(b).se;
+		return a.div(b).se;
 	}
 	friend bool operator<(const Bigint &a, const Bigint &b){
 		return a.cmp(b) < 0;

@@ -13,7 +13,7 @@
 	\fld{Use} \texttt{Bigint a("123"), b = -5; a = a * b + a / b; cout << a << (a < b);}
 	\fld{Result} \texttt{a.neg} is the sign and \texttt{a.d} holds base-$10^9$ limbs, lowest first; zero has no limbs.
 	\fld{Needs} a product below $8 \cdot 10^6$ digits; $b \ne 0$ for \texttt{/} and \texttt{\%}. Uses NTT (\S\ref{ntt}) on \texttt{MintN}.
-	\fld{divMod} \texttt{a.divMod(b)} is $\{q, r\}$ with $a = qb + r$ and $|r| < |b|$; $q$ is truncated and $r$ has the sign of $a$, as in C++.
+	\fld{div} \texttt{a.div(b)} is $\{q, r\}$ with $a = qb + r$ and $|r| < |b|$; $q$ is truncated and $r$ has the sign of $a$, as in C++.
 ]\label{bigint}
 \cpp[4]{Sieve (factorable)}{sieve.hpp}[
 	\fld{Use} \texttt{Sieve sv(n);} then \texttt{sv.primes}, \texttt{sv.minDiv[x]}, \texttt{sv.factorize(x)}.

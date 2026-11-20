@@ -60,7 +60,7 @@ Bigint rankPerm(const vector<int> &a){
 vector<int> unrankPerm(int n, Bigint rank){
 	vector<int> d(n), bit(n + 1), a(n);
 	FOR(j, 1, n){
-		auto [q, rem] = rank.divMod(j);
+		auto [q, rem] = rank.div(j);
 		d[n-j] = stoi(rem.str()); rank = q;
 	}
 	// Fenwick tree of unused labels: all unused at first

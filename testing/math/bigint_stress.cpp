@@ -66,7 +66,7 @@ Bigint product(Bigint a, Bigint b){
 }
 
 void division(const Bigint &a, const Bigint &b){
-	auto qr = a.divMod(b);
+	auto qr = a.div(b);
 	valid(qr.fi);
 	valid(qr.se);
 	Bigint p = qr.fi * b;
@@ -103,7 +103,7 @@ int main(){
 		if(v){
 			check(a / b, u / v);
 			check(a % b, u % v);
-			auto qr = a.divMod(b);
+			auto qr = a.div(b);
 			check(qr.fi, u / v);
 			check(qr.se, u % v);
 		}

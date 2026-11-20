@@ -42,7 +42,7 @@ int main(){
 	a -= a; assert(a == 0 && !a.neg);
 	a = Bigint("1000000000000000000000000000");
 	Bigint b("1000000000000000001");
-	auto [q, r] = a.divMod(b);
+	auto [q, r] = a.div(b);
 	assert(q == 999999999 && r == 999999999000000001LL);
 	assert(q * b + r == a && r.cmpAbs(b) < 0);
 	assert(5 < a && a > 5 && 0 == Bigint(0));
