@@ -9,8 +9,7 @@ pair<PL, PL> closestPair(vector<PL> pts){
 	int j = 0;
 	for(PL p: pts){
 		PL d{1 + (ll)sqrt(ret.fi), 0};
-		while(pts[j].y <= p.y - d.x)
-			s.erase(pts[j++]);
+		while(pts[j].y <= p.y - d.x) s.erase(pts[j++]);
 		auto lo = s.lower_bound(p - d);
 		auto hi = s.upper_bound(p + d);
 		for(; lo != hi; ++lo)

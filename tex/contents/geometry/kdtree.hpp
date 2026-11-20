@@ -22,8 +22,7 @@ struct KdTree{
 			minimize(nd.y0, pts[i].y); maximize(nd.y1, pts[i].y);
 		}
 		int id = sz(t); t.push_back(nd);
-		if(lo == hi)
-			return id;
+		if(lo == hi) return id;
 		bool byX = nd.x1 - nd.x0 >= nd.y1 - nd.y0;
 		int m = lo + (hi - lo + 1) / 2;
 		nth_element(pts.begin() + lo, pts.begin() + m,
@@ -50,12 +49,9 @@ struct KdTree{
 		}
 		int f = nd.l, s = nd.r;
 		ll bf = boxDist(f, p), bs = boxDist(s, p);
-		if(bf > bs)
-			swap(bf, bs), swap(f, s);
-		if(bf < best.fi)
-			search(f, p, best);
-		if(bs < best.fi)
-			search(s, p, best);
+		if(bf > bs) swap(bf, bs), swap(f, s);
+		if(bf < best.fi) search(f, p, best);
+		if(bs < best.fi) search(s, p, best);
 	}
 	pair<ll, PL> nearest(PL p){
 		pair<ll, PL> best{LLONG_MAX, {}};

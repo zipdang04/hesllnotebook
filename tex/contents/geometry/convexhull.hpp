@@ -7,8 +7,7 @@
 // Hull with h[0] = smallest (x, y). O(n log n).
 template<class T>
 vector<Point<T>> convexHull(vector<Point<T>> pts){
-	if(sz(pts) <= 1)
-		return pts;
+	if(sz(pts) <= 1) return pts;
 	sort(all(pts));
 	vector<Point<T>> h(sz(pts) + 1);
 	int s = 0, t = 0;
@@ -34,8 +33,7 @@ template<class T> pair<Point<T>, Point<T>>
 			maximize(res, make_pair((h[i] - h[j]).dist2(),
 				make_pair(h[i], h[j])));
 			Point<T> e = h[(j + 1) % n] - h[j];
-			if(e.cross(h[i+1] - h[i]) >= 0)
-				break;
+			if(e.cross(h[i+1] - h[i]) >= 0) break;
 		}
 	return res.se;
 }
@@ -43,10 +41,8 @@ template<class T> pair<Point<T>, Point<T>>
 template<class T> bool inHull(const vector<Point<T>> &h,
 		Point<T> p, bool strict = true){
 	int a = 1, b = sz(h) - 1, r = !strict;
-	if(sz(h) < 3)
-		return r && onSegment(h[0], h.back(), p);
-	if(orient(h[0], h[a], h[b]) > 0)
-		swap(a, b);
+	if(sz(h) < 3) return r && onSegment(h[0], h.back(), p);
+	if(orient(h[0], h[a], h[b]) > 0) swap(a, b);
 	if(orient(h[0], h[a], p) >= r
 		|| orient(h[0], h[b], p) <= -r)
 		return false;

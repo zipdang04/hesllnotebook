@@ -8,10 +8,8 @@
 template<class Func> ll ternSearch(ll lo, ll hi, Func f){
 	while(lo < hi){
 		ll mid = lo + (hi - lo) / 2;
-		if(f(mid) <= f(mid + 1))
-			hi = mid;
-		else
-			lo = mid + 1;
+		if(f(mid) <= f(mid + 1)) hi = mid;
+		else lo = mid + 1;
 	}
 	return lo;
 }

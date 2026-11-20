@@ -18,12 +18,10 @@ void anneal(double sec, double t0, double t1,
 		if(it % 256 == 0){
 			chrono::duration<double> el =
 				chrono::steady_clock::now() - start;
-			if(el.count() >= sec)
-				return;
+			if(el.count() >= sec) return;
 			t = t0 * pow(t1 / t0, el.count() / sec);
 		}
 		double delta = propose();
-		if(delta <= 0 || unif(rng) < exp(-delta / t))
-			commit();
+		if(delta <= 0 || unif(rng) < exp(-delta / t)) commit();
 	}
 }

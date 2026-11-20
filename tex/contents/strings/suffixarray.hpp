@@ -17,12 +17,9 @@ struct SuffixArray{
 				FOR(i, 0, n - 1)
 					y[i] = sa[i] - k + (sa[i] < k ? n : 0);
 			fill(cnt.begin(), cnt.begin() + classes, 0);
-			FOR(i, 0, n - 1)
-				cnt[x[y[i]]]++;
-			FOR(i, 1, classes - 1)
-				cnt[i] += cnt[i-1];
-			REV(i, n - 1, 0)
-				sa[--cnt[x[y[i]]]] = y[i];
+			FOR(i, 0, n - 1) cnt[x[y[i]]]++;
+			FOR(i, 1, classes - 1) cnt[i] += cnt[i-1];
+			REV(i, n - 1, 0) sa[--cnt[x[y[i]]]] = y[i];
 			swap(x, y); classes = 1; x[sa[0]] = 0;
 			FOR(i, 1, n - 1){
 				int a = sa[i-1], b = sa[i];
@@ -31,22 +28,18 @@ struct SuffixArray{
 					!= y[b+k < n ? b+k : b+k-n];
 				x[b] = classes - 1;
 			}
-			if(classes == n)
-				break;
+			if(classes == n) break;
 		}
 		// equal rotations in increasing start
 		fill(all(cnt), 0);
-		FOR(i, 0, n - 1)
-			cnt[x[i]]++;
-		FOR(i, 1, classes - 1)
-			cnt[i] += cnt[i-1];
+		FOR(i, 0, n - 1) cnt[x[i]]++;
+		FOR(i, 1, classes - 1) cnt[i] += cnt[i-1];
 		REV(i, n-1, 0){ rnk[i] = --cnt[x[i]]; sa[rnk[i]] = i; }
 		string t = s + s;
 		for(int i = 0, k = 0; i < n; i++){
 			if(!rnk[i]){ k = 0; continue; }
 			int j = sa[rnk[i]-1];
-			while(k < n && t[i+k] == t[j+k])
-				k++;
+			while(k < n && t[i+k] == t[j+k]) k++;
 			lcp[rnk[i]] = k; k -= k > 0;
 		}
 	}

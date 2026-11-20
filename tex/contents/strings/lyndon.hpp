@@ -11,8 +11,7 @@ vector<int> duval(const string &s){
 		int j = i + 1, k = i;
 		for(; j < n && u[k] <= u[j]; j++)
 			k = u[k] < u[j] ? i : k + 1;
-		for(; i <= k; i += j - k)
-			st.push_back(i);
+		for(; i <= k; i += j - k) st.push_back(i);
 	}
 	return st;
 }

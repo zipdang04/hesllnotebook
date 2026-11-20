@@ -8,16 +8,14 @@
 template<class Cost> void dncRec(int l, int r, int optl,
 		int optr, const vector<ll> &prv, vector<ll> &cur,
 		Cost &C){
-	if(l > r)
-		return;
+	if(l > r) return;
 	int mid = (l + r) / 2, opt = optl;
 	// optl <= l - 1 and prv[optl..] are legal: seed from optl
 	cur[mid] = prv[optl] + C(optl + 1, mid);
 	FOR(p, optl + 1, min(mid - 1, optr)){
 		ll v = prv[p] + C(p + 1, mid);
 		// < keeps the smallest opt on ties
-		if(v < cur[mid])
-			cur[mid] = v, opt = p;
+		if(v < cur[mid]) cur[mid] = v, opt = p;
 	}
 	dncRec(l, mid - 1, optl, opt, prv, cur, C);
 	dncRec(mid + 1, r, opt, optr, prv, cur, C);
@@ -26,8 +24,7 @@ template<class Cost> void dncRec(int l, int r, int optl,
 // Call: dncDP(n, k, [&](int l, int r){ return w(l, r); });
 template<class Cost> ll dncDP(int n, int k, Cost C){
 	vector<ll> prv(n + 1, oo), cur(n + 1, oo);
-	FOR(i, 1, n)
-		prv[i] = C(1, i);
+	FOR(i, 1, n) prv[i] = C(1, i);
 	// layer j: cur[i], i >= j; its last block is a[p+1..i]
 	FOR(j, 2, k){
 		dncRec(j, n, j - 1, n - 1, prv, cur, C);
@@ -46,8 +43,7 @@ template<class Cost> ll knuth(int n, Cost C){
 			d[l][r] = d[l][m0] + d[m0+1][r], opt[l][r] = m0;
 			FOR(m, m0 + 1, hi){
 				ll v = d[l][m] + d[m+1][r];
-				if(v < d[l][r])
-					d[l][r] = v, opt[l][r] = m;
+				if(v < d[l][r]) d[l][r] = v, opt[l][r] = m;
 			}
 			d[l][r] += C(l, r);
 		}
@@ -62,10 +58,8 @@ template<class Solve> ll aliens(int k, Solve solve){
 	ll lo = -L, hi = L;
 	while(lo < hi){
 		ll mid = lo + (hi - lo) / 2;
-		if(solve(mid).se <= k)
-			hi = mid;
-		else
-			lo = mid + 1;
+		if(solve(mid).se <= k) hi = mid;
+		else lo = mid + 1;
 	}
 	return solve(lo).fi - lo * k;
 }

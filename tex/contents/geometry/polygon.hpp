@@ -7,8 +7,7 @@
 template<class T>
 T polygonArea2(const vector<Point<T>> &v){
 	T a = 0; int n = sz(v);
-	FOR(i, 0, n - 1)
-		a += v[i].cross(v[(i + 1) % n]);
+	FOR(i, 0, n - 1) a += v[i].cross(v[(i + 1) % n]);
 	return a;
 }
 // p inside polygon v. strict: the border is outside.
@@ -31,8 +30,7 @@ vector<PD> polygonCut(const vector<PD> &v, PD a, PD b){
 		double ca = a.cross(b, cur), cb = a.cross(b, prev);
 		if((ca > 0) != (cb > 0))
 			res.push_back(cur + (prev - cur) * (ca / (ca - cb)));
-		if(ca > 0)
-			res.push_back(cur);
+		if(ca > 0) res.push_back(cur);
 	}
 	return res;
 }

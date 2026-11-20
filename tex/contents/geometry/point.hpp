@@ -4,7 +4,6 @@
 // 2D points. PL = exact, |x|, |y| <= 1e9; PD = double.
 // Orientation tests use sgn: exact for ll, EPS for
 // double. "Left of a->b" is the positive side everywhere.
-// Sign of v; the double version takes |v| <= EPS as 0.
 int sgn(ll v){ return (v > 0) - (v < 0); }
 int sgn(double v){
 	const double EPS = 1e-9; return (v > EPS) - (v < -EPS);
@@ -18,9 +17,7 @@ struct Point{
 	bool operator<(P p) const{
 		return tie(x, y) < tie(p.x, p.y);
 	}
-	bool operator==(P p) const{
-		return tie(x, y) == tie(p.x, p.y);
-	}
+	bool operator==(P p) const{ return x == p.x && y == p.y; }
 	P operator+(P p) const{ return {x + p.x, y + p.y}; }
 	P operator-(P p) const{ return {x - p.x, y - p.y}; }
 	P operator*(T d) const{ return {x * d, y * d}; }
@@ -33,8 +30,7 @@ struct Point{
 	}
 	T dist2() const{ return x * x + y * y; }
 	double dist() const{ return sqrt((double)dist2()); }
-	// perp: rotated +90 degrees
-	P perp() const{ return {-y, x}; }
+	P perp() const{ return {-y, x}; } // rotated +90 degrees
 	P unit() const{ return *this / dist(); }
 	// PD only; rotate: t radians counter-clockwise
 	P rotate(double t) const{
