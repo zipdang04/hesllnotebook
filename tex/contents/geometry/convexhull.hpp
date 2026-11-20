@@ -9,8 +9,7 @@ template<class T>
 vector<Point<T>> convexHull(vector<Point<T>> pts){
 	if(sz(pts) <= 1) return pts;
 	sort(all(pts));
-	vector<Point<T>> h(sz(pts) + 1);
-	int s = 0, t = 0;
+	vector<Point<T>> h(sz(pts) + 1); int s = 0, t = 0;
 	// lower hull, then upper hull
 	FOR(it, 1, 2){
 		for(Point<T> p: pts){

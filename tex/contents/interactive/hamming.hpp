@@ -5,8 +5,7 @@
 // overall parity; bits 1, 2, 4, .., 32: check bits; payload
 // bits fill 3, 5, 6, 7, 9, .. lowest first. O(64).
 unsigned long long hammingEncode(ll data){
-	unsigned long long w = 0;
-	int s = 0;
+	unsigned long long w = 0; int s = 0;
 	FOR(i, 1, 63) if(i & (i - 1)){
 		if(data & 1) w |= 1ULL << i, s ^= i;
 		data >>= 1;

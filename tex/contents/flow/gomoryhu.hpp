@@ -5,8 +5,7 @@
 // 1..n. Recursion: Dinic's, depth <= V.
 vector<array<ll, 3>> gomoryHu(
 		const vector<vector<pair<int, ll>>> &g){
-	int n = sz(g) - 1;
-	Dinic base(n + 1);
+	int n = sz(g) - 1; Dinic base(n + 1);
 	FOR(u, 1, n) for(auto [v, w]: g[u]) base.addEdge(u, v, w);
 	vector<int> par(n + 1, 1);
 	vector<array<ll, 3>> tree;

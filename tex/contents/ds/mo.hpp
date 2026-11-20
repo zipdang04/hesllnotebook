@@ -14,8 +14,7 @@ vector<ll> moQueries(const vector<pair<int, int>> &q,
 	if(!nq) return ans;
 	for(auto &x: q) maximize(n, x.se);
 	int blk = max(1, (int)(n / sqrt(nq)));
-	vector<int> ord(nq);
-	iota(all(ord), 0);
+	vector<int> ord(nq); iota(all(ord), 0);
 	sort(all(ord), [&](int i, int j){
 		int bi = q[i].fi / blk, bj = q[j].fi / blk;
 		if(bi != bj) return bi < bj;

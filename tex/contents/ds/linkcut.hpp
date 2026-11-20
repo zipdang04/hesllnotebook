@@ -46,8 +46,7 @@ struct LinkCut{
 		int p = t[x].par, g = t[p].par, d = t[p].ch[1] == x;
 		if(!isRoot(p)) t[g].ch[t[g].ch[1] == p] = x;
 		t[x].par = g;
-		int c = t[x].ch[!d]; t[p].ch[d] = c;
-		if(c) t[c].par = p;
+		int c = t[x].ch[!d]; t[p].ch[d] = c; if(c) t[c].par = p;
 		t[x].ch[!d] = p; t[p].par = x; pull(p);
 	}
 	void splay(int x){

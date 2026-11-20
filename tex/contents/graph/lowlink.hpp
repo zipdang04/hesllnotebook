@@ -31,9 +31,8 @@ struct LowLink{
 			if(low[v] < num[u]) continue;
 			if(pe >= 0 || ch > 1) isCut[u] = true;
 			bccCnt++;
-			while(stk.back() != id){
-				bcc[stk.back()] = bccCnt; stk.pop_back();
-			}
+			while(stk.back() != id)
+				bcc[stk.back()] = bccCnt, stk.pop_back();
 			bcc[id] = bccCnt; stk.pop_back();
 		}
 	}

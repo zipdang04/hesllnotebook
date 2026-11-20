@@ -12,8 +12,7 @@ vector<pair<int, int>> virtualTree(HLD &hld,
 	sort(all(vs), cmp);
 	int m = sz(vs) - 1;
 	FOR(i, 0, m - 1) vs.push_back(hld.lca(vs[i], vs[i+1]));
-	sort(all(vs), cmp);
-	vs.erase(unique(all(vs)), vs.end());
+	sort(all(vs), cmp); vs.erase(unique(all(vs)), vs.end());
 	vector<pii> res;
 	FOR(i, 0, sz(vs) - 1)
 		res.push_back({vs[i], i ? hld.lca(vs[i-1], vs[i]) : 0});

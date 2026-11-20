@@ -63,9 +63,8 @@ struct MaxClique{
 					col[k].push_back(v.i);
 				}
 				if(j > 0) T[j-1].d = 0;
-				FOR(k, mnk, mxk) for(int i: col[k]){
-					T[j].i = i; T[j++].d = k;
-				}
+				FOR(k, mnk, mxk) for(int i: col[k])
+					T[j].i = i, T[j++].d = k;
 				expand(T, lev+1);
 			}else if(sz(cur) > sz(clique)) clique = cur;
 			cur.pop_back(); R.pop_back();

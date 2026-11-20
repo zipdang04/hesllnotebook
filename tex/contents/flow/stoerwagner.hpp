@@ -12,8 +12,7 @@ pair<ll, vector<int>> globalMinCut(
 	FOR(u, 1, n) for(auto [v, w]: g[u]) if(u != v)
 		mat[u][v] += w;
 	pair<i128, vector<int>> best = {(i128(1) << 64) + oo, {}};
-	vector<vector<int>> co(n + 1);
-	FOR(i, 1, n) co[i] = {i};
+	vector<vector<int>> co(n + 1); FOR(i, 1, n) co[i] = {i};
 	vector<char> merged(n + 1);
 	for(int ph = 1; ph < n && best.fi; ph++){
 		vector<i128> w = mat[1]; int s = 1, t = 1;

@@ -17,8 +17,7 @@ vector<PD> circleLine(PD c, double r, PD a, PD b){
 // Two circles: 0, 1 or 2 points, first the one left of
 // c1->c2. Same centre: none.
 vector<PD> circleInter(PD c1, double r1, PD c2, double r2){
-	PD vec = c2 - c1;
-	double d2 = vec.dist2(), d = sqrt(d2);
+	PD vec = c2 - c1; double d2 = vec.dist2(), d = sqrt(d2);
 	int out = sgn(d - r1 - r2), in = sgn(abs(r1 - r2) - d);
 	if(sgn(d) == 0 || out > 0 || in > 0) return {};
 	double p = (d2 + (r1 - r2) * (r1 + r2)) / (d2 * 2);
@@ -32,8 +31,7 @@ vector<PD> circleInter(PD c1, double r1, PD c2, double r2){
 // Inner tangents: pass -r2. Point c2: pass r2 = 0.
 vector<pair<PD, PD>> circleTangents(
 		PD c1, double r1, PD c2, double r2){
-	PD d = c2 - c1;
-	double dr = r1 - r2, d2 = d.dist2();
+	PD d = c2 - c1; double dr = r1 - r2, d2 = d.dist2();
 	int s = sgn(d.dist() - abs(dr));
 	if(sgn(d.dist()) == 0 || s < 0) return {};
 	double h = sqrt(max((double)0, d2 - dr * dr));
@@ -55,16 +53,14 @@ PD circumcenter(PD a, PD b, PD c){
 pair<PD, double> enclosingCircle(vector<PD> pts){
 	static mt19937 rng(CURRENT_TIMESTAMP());
 	shuffle(all(pts), rng);
-	PD o = pts[0];
-	double r = 0, EPS = 1 + 1e-8;
+	PD o = pts[0]; double r = 0, EPS = 1 + 1e-8;
 	FOR(i, 0, sz(pts) - 1) if((o - pts[i]).dist() > r * EPS){
 		o = pts[i], r = 0;
 		FOR(j, 0, i - 1) if((o - pts[j]).dist() > r * EPS){
 			o = (pts[i] + pts[j]) / 2; r = (o - pts[i]).dist();
-			FOR(k, 0, j - 1) if((o - pts[k]).dist() > r * EPS){
-				o = circumcenter(pts[i], pts[j], pts[k]);
+			FOR(k, 0, j - 1) if((o - pts[k]).dist() > r * EPS)
+				o = circumcenter(pts[i], pts[j], pts[k]),
 				r = (o - pts[i]).dist();
-			}
 		}
 	}
 	return {o, r};

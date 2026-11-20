@@ -32,8 +32,7 @@ vector<array<int, 3>> hull3d(const vector<Point3> &p){
 		return u.cross(p[o[2]] - p[o[0]]).dot(v) != 0;
 	};
 	FOR(s, 1, 3){
-		int k = s;
-		while(k < n && !ok(s, o[k])) k++;
+		int k = s; while(k < n && !ok(s, o[k])) k++;
 		if(k >= n) return {};
 		swap(o[s], o[k]);
 	}

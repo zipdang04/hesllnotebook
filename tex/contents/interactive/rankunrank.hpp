@@ -7,8 +7,7 @@
 Bigint rankBinom(int n, int k){
 	if(k < 0 || k > n) return 0;
 	minimize(k, n - k);
-	Bigint c = 1;
-	FOR(i, 1, k) c = c * (n - k + i) / i;
+	Bigint c = 1; FOR(i, 1, k) c = c * (n - k + i) / i;
 	return c;
 }
 Bigint rankSubset(const vector<int> &a){
@@ -26,8 +25,7 @@ Bigint rankSubset(const vector<int> &a){
 }
 vector<int> unrankSubset(int n, int k, Bigint rank){
 	vector<int> a(k);
-	Bigint c = rankBinom(n, k);
-	int x = n;
+	Bigint c = rankBinom(n, k); int x = n;
 	REV(j, k, 1){
 		// c = C(x, j): lower x until C(x, j) <= rank
 		while(c > rank) c = c * (x - j) / x, x--;
@@ -39,8 +37,7 @@ vector<int> unrankSubset(int n, int k, Bigint rank){
 	return a;
 }
 Bigint rankMultiset(const vector<int> &a){
-	vector<int> b = a;
-	FOR(i, 0, sz(b) - 1) b[i] += i;
+	vector<int> b = a; FOR(i, 0, sz(b) - 1) b[i] += i;
 	return rankSubset(b);
 }
 vector<int> unrankMultiset(int n, int k, Bigint rank){
@@ -50,8 +47,7 @@ vector<int> unrankMultiset(int n, int k, Bigint rank){
 }
 Bigint rankPerm(const vector<int> &a){
 	int n = sz(a);
-	vector<int> bit(n + 1);
-	FOR(i, 1, n) bit[i] = i & -i;
+	vector<int> bit(n + 1); FOR(i, 1, n) bit[i] = i & -i;
 	Bigint r = 0;
 	FOR(i, 0, n - 1){
 		int d = 0;

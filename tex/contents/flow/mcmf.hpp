@@ -61,10 +61,9 @@ struct MCMF{
 			ll push = limit - flow;
 			for(int v = t; v != s; v = edges[par[v] ^ 1].to)
 				minimize(push, edges[par[v]].cap);
-			for(int v = t; v != s; v = edges[par[v] ^ 1].to){
-				edges[par[v]].cap -= push;
+			for(int v = t; v != s; v = edges[par[v] ^ 1].to)
+				edges[par[v]].cap -= push,
 				edges[par[v] ^ 1].cap += push;
-			}
 			flow += push;
 			cost += (__int128)push * (pot[t] - pot[s]);
 		}

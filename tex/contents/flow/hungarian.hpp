@@ -22,8 +22,7 @@ pair<ll, vector<int>> hungarian(
 			r = rev[c = cols[s++]];
 			if(!r) break;
 			FOR(j, s, m){
-				int k = cols[j];
-				nd = a[r][k] - a[r][c] + dist[c];
+				int k = cols[j]; nd = a[r][k] - a[r][c] + dist[c];
 				if(minimize(dist[k], nd)) prev[k] = r;
 			}
 		}

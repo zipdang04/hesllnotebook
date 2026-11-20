@@ -31,8 +31,7 @@ struct GeneralMatching{
 	}
 	bool augment(int u, const vector<vector<int>> &g){
 		iota(all(par), 0); fill(all(chk), 0);
-		queue<int> q;
-		q.push(u); chk[u] = 2;
+		queue<int> q; q.push(u); chk[u] = 2;
 		while(!q.empty()){
 			u = q.front(); q.pop();
 			for(int v: g[u]){

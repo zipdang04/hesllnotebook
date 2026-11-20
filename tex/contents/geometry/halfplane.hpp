@@ -20,8 +20,7 @@ vector<PD> halfPlaneInter(vector<pair<PD, PD>> hs){
 		b.push_back({s, pq, atan2(pq.y, pq.x)});
 	}
 	sort(all(b), [](H u, H v){ return u.ang < v.ang; });
-	int n = sz(b), q = 1, h = 0;
-	vector<H> c(n + 10);
+	int n = sz(b), q = 1, h = 0; vector<H> c(n + 10);
 	// pq is a unit vector: EPS is a distance, not scaled
 	auto out = [](H u, PD r){
 		return sgn(u.pq.cross(r - u.p)) < 0;
