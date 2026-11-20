@@ -2,8 +2,7 @@
 #include "../contest/template.hpp"
 
 // Max flow: Dinic + capacity scaling, O(VE log U); unit
-// bipartite graph O(E sqrt V). Dinic d(N): vertices
-// 0..N-1, all usable. Recursive, depth <= V.
+// bipartite graph O(E sqrt V).
 struct Dinic{
 	struct Edge{ int to; ll cap; };
 	vector<Edge> edges; // edges[id ^ 1] = reverse of id

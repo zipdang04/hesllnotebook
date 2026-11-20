@@ -7,8 +7,8 @@
 	\fld{Use} \texttt{dbg(a, v, p);} under \texttt{-DLOCAL} prints \texttt{[a, v, p]: 3 \{1, 2\} (4, x)} to \texttt{cerr}.
 	\fld{Result} prints containers, pairs, C arrays, strings, \texttt{vector<bool>}.
 	\fld{Needs} no call the program needs inside \texttt{dbg} (not evaluated without \texttt{-DLOCAL}). The judge does not define \texttt{ONLINE\_JUDGE}.
-	\fld{Limit} \texttt{maximize}, \texttt{minimize}: \texttt{b} must have the type of \texttt{a}. \texttt{FOR}, \texttt{REV}: the end must not be the largest (smallest) value of its type.
-	\fld{pragma} both lines stay comments until \texttt{avx2} is tested on the judge.
+	\fld{maximize} \texttt{b} has the type of \texttt{a}; also \texttt{minimize}.
+	\fld{FOR} the end must not be the largest value of its type; \texttt{REV}: the smallest.
 ]\label{template}
 \othercodes{Shell: compile/run + hash}{bash}{command.sh}\label{command}
 \cpp[4]{Fast IO}{fastio.hpp}[
@@ -23,12 +23,12 @@
 ]\label{stress}
 {\footnotesize\tightdisplay
 \topic{Modes}
-\begin{tabular}{@{}l p{2.5cm} p{4.9cm}@{}}
+\begin{tabular}{@{}l l p{4.9cm}@{}}
 \toprule
 Mode & Files & One round \\
 \midrule
 \texttt{stress} & \texttt{p gen brute} & \texttt{gen seed}, \texttt{brute}, \texttt{p}, compare \\
-\texttt{tests} & \texttt{p}, \texttt{tests/*.in, .ans} & \texttt{p} on every file: PASS, FAIL, TLE or RE \\
+\texttt{tests} & \texttt{p tests/*.\{in,ans\}} & \texttt{p} on every file: PASS, FAIL, TLE or RE \\
 \texttt{inter} & \texttt{p interactor} & \texttt{p} and \texttt{interactor seed} talk through a fifo \\
 \texttt{multi} & \texttt{p gen noise}, \texttt{-c chk} & \texttt{p}, \texttt{noise seed}, \texttt{p}, checker \\
 \bottomrule
@@ -56,7 +56,6 @@ Mode & Files & One round \\
 \entry{Troubleshoot + edge cases}\label{troubleshoot}
 {\footnotesize\tightdisplay
 \topic{Before a submit}
-Go through this list before every submit.
 \begin{checks}
 	\item Pass every sample with the judge build \texttt{o}, not only with \texttt{c} (\S\ref{command}).
 	\item Generate a maximum test; time it without sanitizers and look at the memory.
@@ -83,7 +82,6 @@ Use this after a wrong answer, in this order.
 	\item After two wrong answers, let a teammate read the statement alone; consider a rewrite.
 \end{checks}
 \topic{Runtime error}
-Use this after a runtime error.
 \begin{checks}
 	\item Look for an index outside the array; a vector of size $n$ used at index $n$.
 	\item Look for division or modulo by zero.
@@ -94,7 +92,6 @@ Use this after a runtime error.
 	\item If it runs fine locally, run the debug build \texttt{c} on the smallest and the largest input.
 \end{checks}
 \topic{Time limit}
-Use this after a time limit.
 \begin{checks}
 	\item Look for an endless loop on an edge case: $n = 1$, empty input.
 	\item Count the real complexity with the real maximum values.
@@ -121,7 +118,6 @@ Use this before writing a generator and a brute force.
 	\item Under \texttt{-DSTRESS}, shrink block sizes and thresholds to 1--3 so that rare branches run; use \texttt{const int}, not \texttt{\#define}.
 \end{checks}
 \topic{Edge cases}
-Use this table when writing tests by hand.\par\nopagebreak
 \noindent\begin{tabular}{@{}l p{6.6cm}@{}}
 \toprule
 Kind & Cases \\

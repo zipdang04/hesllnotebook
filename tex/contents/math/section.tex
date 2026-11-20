@@ -13,7 +13,7 @@
 \cpp[4]{Bigint}{bigint.hpp}[
 	\fld{Use} \texttt{Bigint a("123"), b = -5; a = a * b + a / b; cout << a << (a < b);}
 	\fld{Result} \texttt{a.neg} is the sign and \texttt{a.d} holds base-$10^9$ limbs, lowest first; zero has no limbs.
-	\fld{Needs} a product below $8 \cdot 10^6$ digits; $b \ne 0$ for \texttt{/} and \texttt{\%}. Uses NTT (\S\ref{ntt}) on \texttt{MintN}; other \texttt{Mint<p>} can coexist.
+	\fld{Needs} a product below $8 \cdot 10^6$ digits; $b \ne 0$ for \texttt{/} and \texttt{\%}. Uses NTT (\S\ref{ntt}) on \texttt{MintN}.
 	\fld{divMod} \texttt{a.divMod(b)} is $\{q, r\}$ with $a = qb + r$ and $|r| < |b|$; $q$ is truncated and $r$ has the sign of $a$, as in C++.
 ]\label{bigint}
 \cpp[4]{Sieve (factorable)}{sieve.hpp}[
@@ -82,14 +82,14 @@ For a system over \texttt{double} (probabilities, expected values), copy \texttt
 	\fld{Result} $|a| + |b| - 1$ terms in ${[0, \texttt{mod})}$, empty when an input is empty:
 	\[ c_k = \sum_i a_i b_{k-i} \bmod \texttt{mod} \]
 	\fld{Needs} $0 \le a_i, b_i < \texttt{mod} \le 2^{30}$ and $|a| + |b| - 1 \le 2^{20}$.
-	\fld{conv} the same product in \texttt{double}, exact after \texttt{llround} while $(\sum a_i^2 + \sum b_i^2) \log_2(|a| + |b|) < 9 \cdot 10^{14}$.
-	\fld{fft} forward only; the inverse is \texttt{fft(a)}, \texttt{reverse(a.begin() + 1, a.end())}, then divide by $n$.
+	\fld{conv} in \texttt{double}; exact after \texttt{llround} while $(\sum a_i^2 + \sum b_i^2) \log_2(|a| + |b|) < 9 \cdot 10^{14}$.
+	\fld{fft} forward only. Inverse: \texttt{fft(a); reverse(a.begin() + 1, a.end());} divide by $n$.
 ]\label{fft}
 \cpp[4]{NTT}{ntt.hpp}[
 	\fld{Use} \texttt{vector<MintN> c = convNtt(a, b);}
 	\fld{Result} $|a| + |b| - 1$ terms, empty when an input is empty:
 	\[ c_k = \sum_i a_i b_{k-i} \]
-	\fld{Needs} \texttt{MintN} modulus $c2^k+1$, primitive root 3, $|a|+|b|-1 \le 2^k$. Uses Modint (\S\ref{modint}); $k=23$ for $998244353$, $26$ for $469762049$.
+	\fld{Needs} \texttt{MintN} modulus $c2^k+1$, primitive root 3, $|a|+|b|-1 \le 2^k$. Uses Modint (\S\ref{modint}); $k=23$ for $998244353$.
 	\fld{ntt} several products of one size: pad to a power of two $n \ge |a| + |b| - 1$, transform each input once, multiply pointwise, then \texttt{ntt(c, true)}.
 ]\label{ntt}
 \cpp[4]{FWHT}{fwht.hpp}[
@@ -115,18 +115,17 @@ For $\min(i, j) = k$, use suffix sums $A_k = \sum_{i \ge k} a_i$ and $c_k = C_k 
 	\fld{polyDiv} \texttt{q = polyDiv(a, b)} has $|a| - |b| + 1$ terms, none if $|a| < |b|$. The remainder is the first $|b| - 1$ terms of $a - bq$.
 ]\label{fps}
 \cpp[4]{Berlekamp--Massey + Bostan--Mori}{linearrec.hpp}[
-	\fld{Use} \texttt{vector<MintN> c = berlekampMassey(s); MintN x = kthTerm(s, c, k);}
+	\fld{Use} \texttt{auto c = berlekampMassey(s); MintN x = kthTerm(s, c, k);}
 	\fld{Result} \texttt{c} is the shortest recurrence of \texttt{s}, of order $d = |c|$, and \texttt{x} is $s_k$:
 	\[ s_i = \sum_{j=0}^{d-1} c_j \, s_{i-1-j} \quad (i \ge d). \]
 	\fld{Needs} $2d$ terms find an order-$d$ recurrence; \texttt{kthTerm} needs $|s| \ge d$, $0 \le k \le 10^{18}$, $2d + 1 \le 2^{23}$. Uses NTT (\S\ref{ntt}).
-	\fld{kthTerm} \texttt{kthTerm(\{0, 1\}, \{1, 1\}, k)} is the $k$-th Fibonacci number. For another prime, retype \texttt{MintN}; then \texttt{kthTerm} needs $d \le 31$.
+	\fld{kthTerm} For another prime, retype \texttt{MintN}; then \texttt{kthTerm} needs $d \le 31$.
 ]\label{linearrec}
 \cpp[4]{Lagrange interpolation}{lagrange.hpp}[
 	\fld{Use} \texttt{vector<MintN> c = interpolate(x, y);}
 	\fld{Result} the coefficients of the unique $f$ with $f(x_i) = y_i$.
 	\fld{Needs} distinct $x_i$ (a repeat gives a wrong $f$ silently); $1 \le n \le \texttt{MOD}$ for \texttt{interpolateAt}. Uses Modint (\S\ref{modint}).
 	\fld{interpolateAt} returns $f(t)$ for any \texttt{ll} $t$ from the values $y_i = f(i)$, without the coefficients.
-	\fld{Sums} a sum $\sum_{i=1}^{t} i^k$ is a polynomial of degree $k + 1$ in $t$: give $k + 2$ values.
 ]\label{lagrange}
 {\footnotesize\tightdisplay
 \topic{Formula}
@@ -139,5 +138,5 @@ Evaluate the interpolating polynomial by hand, or check a coefficient, with
 	\fld{Use} \texttt{double s = simpson(a, b, [\&](double x)\{ return f(x); \});}
 	\fld{Result} $\int_a^b f(x)\,dx$ with estimated error below \texttt{eps} for a smooth $f$; $a > b$ gives the negative.
 	\fld{Needs} split at kinks, jumps, peaks narrower than $(b - a) / 4$, cancelling terms ($16x^6 - 65x^4$ on $[0, 1]$ gives $-10.7083$, not $-75/7$).
-	\fld{eps} absolute, a threshold for the error estimate, not a bound. Scale it up when $\max |f| \cdot (b - a)$ exceeds about $10^7$.
+	\fld{eps} absolute threshold on the error estimate, not a bound; scale it up when $\max |f|\,(b - a) > 10^7$.
 ]\label{simpson}

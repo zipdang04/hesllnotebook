@@ -48,30 +48,16 @@ Onto maps from an $n$-set to a $k$-set number $k!\, S(n, k)$. With the falling f
 we get
 \[ x^n = \sum_k S(n, k)\, x^{\underline{k}}. \]
 
-\begin{tabular}{@{}r|rrrrrr@{}}
+\begin{tabular}{@{}r|rrrrrr|rrrrrr@{}}
 \toprule
-$c(n, k)$ & $k = 1$ & 2 & 3 & 4 & 5 & 6 \\
+$n$ & \multicolumn{6}{c|}{$c(n, k)$, $k = 1..6$} & \multicolumn{6}{c}{$S(n, k)$, $k = 1..6$} \\
 \midrule
-1 & 1 &  &  &  &  &  \\
-2 & 1 & 1 &  &  &  &  \\
-3 & 2 & 3 & 1 &  &  &  \\
-4 & 6 & 11 & 6 & 1 &  &  \\
-5 & 24 & 50 & 35 & 10 & 1 &  \\
-6 & 120 & 274 & 225 & 85 & 15 & 1 \\
-\bottomrule
-\end{tabular}
-
-\smallskip
-\begin{tabular}{@{}r|rrrrrr@{}}
-\toprule
-$S(n, k)$ & $k = 1$ & 2 & 3 & 4 & 5 & 6 \\
-\midrule
-1 & 1 &  &  &  &  &  \\
-2 & 1 & 1 &  &  &  &  \\
-3 & 1 & 3 & 1 &  &  &  \\
-4 & 1 & 7 & 6 & 1 &  &  \\
-5 & 1 & 15 & 25 & 10 & 1 &  \\
-6 & 1 & 31 & 90 & 65 & 15 & 1 \\
+1 & 1 &  &  &  &  &  & 1 &  &  &  &  &  \\
+2 & 1 & 1 &  &  &  &  & 1 & 1 &  &  &  &  \\
+3 & 2 & 3 & 1 &  &  &  & 1 & 3 & 1 &  &  &  \\
+4 & 6 & 11 & 6 & 1 &  &  & 1 & 7 & 6 & 1 &  &  \\
+5 & 24 & 50 & 35 & 10 & 1 &  & 1 & 15 & 25 & 10 & 1 &  \\
+6 & 120 & 274 & 225 & 85 & 15 & 1 & 1 & 31 & 90 & 65 & 15 & 1 \\
 \bottomrule
 \end{tabular}
 \topic{Catalan numbers}

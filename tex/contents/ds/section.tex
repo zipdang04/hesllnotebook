@@ -14,8 +14,8 @@
 \cpp[4]{Persistent segment tree}{perseg.hpp}[
 	\fld{Use} \texttt{vector<PerSeg::Node> a(n + 1); PerSeg s(a); int v = s.update(0, p, \{x\});}
 	\fld{Result} \texttt{update(v, p, x)} returns the id of a new version: version \texttt{v} with $a_p = x$. Old versions never change.
-	\fld{Needs} \texttt{a} is not empty. \texttt{Node()} is neutral for \texttt{combine(x, y)}, which has \texttt{x} left of \texttt{y} and need not commute.
-	\fld{get} \texttt{s.get(v, l, r).sum} is $a_l + \dots + a_r$ in version \texttt{v}; \texttt{get(v, l, l - 1)} is \texttt{Node()}.
+	\fld{Needs} \texttt{a} is not empty; \texttt{Node()} and \texttt{combine} as in Lazy segment tree (\S\ref{lazyseg}).
+	\fld{get} \texttt{s.get(v, l, r).sum} is $a_l + \dots + a_r$ in version \texttt{v}.
 	\fld{update} Point add is \texttt{update(v, p, \{get(v, p, p).sum + x\})}. Range add: the next topic.
 ]\label{perseg}
 {\footnotesize\tightdisplay
@@ -39,8 +39,8 @@ When tags do not commute (assign, $x \to bx + c$), their order matters, so push 
 \cpp[4]{Li Chao tree}{lichao.hpp}[
 	\fld{Use} \texttt{LiChao lc(pts); lc.addLine(a, b); ll y = lc.get(x);}
 	\fld{Result} \texttt{get(x)} is the minimum of $ax + b$ over the lines covering $x$, or \texttt{LiChao::oo} if none does. For a maximum, add $(-a, -b)$, negate.
-	\fld{Needs} \texttt{pts} holds every $x$ asked (any order, duplicates fine, not empty); any other $x$ answers wrongly. For each line (negated for a max) and covered $x$ of \texttt{pts}, $ax$ and $ax + b$ fit in \texttt{ll} and $ax + b < \texttt{oo}$.
-	\fld{addSegment} \texttt{addSegment(a, b, l, r)} adds $ax + b$ only for $l \le x \le r$; it does nothing if no point of \texttt{pts} is in $[l, r]$.
+	\fld{Needs} \texttt{pts} (not empty) holds every $x$ asked. For each line (negated for a max) and each $x$ of \texttt{pts} it covers, $ax$ and $ax + b$ fit in \texttt{ll} and $ax + b < \texttt{oo}$.
+	\fld{addSegment} \texttt{addSegment(a, b, l, r)} adds $ax + b$ only for $l \le x \le r$.
 ]\label{lichao}
 
 \subsection{Balanced trees}
