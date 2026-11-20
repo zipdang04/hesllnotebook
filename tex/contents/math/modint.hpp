@@ -5,9 +5,7 @@
 // + - * in O(1); / pow inv in O(log MOD) by Fermat.
 template<int MOD> struct Mint{
 	int v;
-	Mint(ll a = 0): v((int)(a % MOD)){
-		if(v < 0) v += MOD;
-	}
+	Mint(ll a = 0): v((int)(a % MOD)){ if(v < 0) v += MOD; }
 	Mint &operator+=(Mint b){
 		v += b.v;
 		if(v >= MOD) v -= MOD;

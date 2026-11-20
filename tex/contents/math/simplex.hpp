@@ -52,8 +52,7 @@ struct Simplex{
 		double *a = D[r].data(), inv = 1 / a[s];
 		FOR(i, 0, m + 1) if(i != r && abs(D[i][s]) > EPS){
 			double *b = D[i].data(), inv2 = b[s] * inv;
-			FOR(j, 0, n + 1)
-				b[j] -= a[j] * inv2;
+			FOR(j, 0, n + 1) b[j] -= a[j] * inv2;
 			b[s] = a[s] * inv2;
 		}
 		FOR(j, 0, n + 1) if(j != s)

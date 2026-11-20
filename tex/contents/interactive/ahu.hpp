@@ -31,8 +31,7 @@ struct AHU{
 		vector<int> deg(n + 1), layer(n + 1), q;
 		FOR(u, 1, n){
 			deg[u] = sz(g[u]);
-			if(deg[u] <= 1)
-				q.push_back(u);
+			if(deg[u] <= 1) q.push_back(u);
 		}
 		// peel leaves; the last layer holds the centres
 		for(int i = 0; i < sz(q); i++){

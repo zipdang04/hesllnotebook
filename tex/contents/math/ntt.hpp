@@ -36,8 +36,7 @@ vector<MintN> convNtt(vector<MintN> a, vector<MintN> b){
 	if(min(sz(a), sz(b)) <= NAIVE){
 		vector<MintN> c(s);
 		FOR(i, 0, sz(a) - 1)
-			FOR(j, 0, sz(b) - 1)
-				c[i + j] += a[i] * b[j];
+			FOR(j, 0, sz(b) - 1) c[i + j] += a[i] * b[j];
 		return c;
 	}
 	while(n < s) n <<= 1;

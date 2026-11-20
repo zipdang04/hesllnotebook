@@ -11,29 +11,24 @@ vector<MintN> fpsInv(const vector<MintN> &a, int n){
 		copy_n(a.begin(), min(2 * m, sz(a)), f.begin());
 		h.resize(2 * m);
 		ntt(f); ntt(h);
-		FOR(i, 0, 2 * m - 1)
-			f[i] *= h[i];
+		FOR(i, 0, 2 * m - 1) f[i] *= h[i];
 		ntt(f, true);
 		// Low half of a*g is 1, 0, ...; keep only the error.
 		fill(f.begin(), f.begin() + m, 0);
 		ntt(f);
-		FOR(i, 0, 2 * m - 1)
-			f[i] *= h[i];
+		FOR(i, 0, 2 * m - 1) f[i] *= h[i];
 		ntt(f, true);
 		g.resize(2 * m);
-		FOR(i, m, 2 * m - 1)
-			g[i] = -f[i];
+		FOR(i, m, 2 * m - 1) g[i] = -f[i];
 	}
 	g.resize(n);
 	return g;
 }
 vector<MintN> fpsLog(const vector<MintN> &a, int n){
 	vector<MintN> da(n - 1), res(n);
-	FOR(i, 0, min(n, sz(a)) - 2)
-		da[i] = a[i+1] * (i + 1);
+	FOR(i, 0, min(n, sz(a)) - 2) da[i] = a[i+1] * (i + 1);
 	vector<MintN> c = convNtt(da, fpsInv(a, n));
-	FOR(i, 1, n - 1)
-		res[i] = c[i-1] / i;
+	FOR(i, 1, n - 1) res[i] = c[i-1] / i;
 	return res;
 }
 vector<MintN> fpsExp(const vector<MintN> &a, int n){
@@ -51,8 +46,7 @@ vector<MintN> fpsExp(const vector<MintN> &a, int n){
 vector<MintN> polyDiv(const vector<MintN> &a,
 		const vector<MintN> &b){
 	int k = sz(a) - sz(b) + 1;
-	if(k <= 0)
-		return {};
+	if(k <= 0) return {};
 	vector<MintN> ra(a.rbegin(), a.rbegin() + k);
 	vector<MintN> rb(b.rbegin(), b.rend());
 	vector<MintN> q = convNtt(ra, fpsInv(rb, k));

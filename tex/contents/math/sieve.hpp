@@ -12,8 +12,7 @@ struct Sieve{
 				minDiv[i] = i; primes.push_back(i);
 			}
 			for(int p: primes){
-				if(p > minDiv[i] || (ll)i * p > n)
-					break;
+				if(p > minDiv[i] || (ll)i * p > n) break;
 				minDiv[i * p] = p;
 			}
 		}

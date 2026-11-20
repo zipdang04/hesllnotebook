@@ -8,8 +8,7 @@ unsigned long long hammingEncode(ll data){
 	unsigned long long w = 0;
 	int s = 0;
 	FOR(i, 1, 63) if(i & (i - 1)){
-		if(data & 1)
-			w |= 1ULL << i, s ^= i;
+		if(data & 1) w |= 1ULL << i, s ^= i;
 		data >>= 1;
 	}
 	// check bit 2^k makes bit k of the XOR of positions 0
@@ -22,10 +21,8 @@ ll hammingDecode(unsigned long long word){
 	FOR(i, 1, 63) if(testBit(word, i))
 		s ^= i;
 	// s != 0 with even parity: two flips
-	if(s && !__builtin_parityll(word))
-		return -1;
-	if(s)
-		word ^= 1ULL << s;
+	if(s && !__builtin_parityll(word)) return -1;
+	if(s) word ^= 1ULL << s;
 	ll data = 0;
 	REV(i, 63, 1) if(i & (i - 1))
 		data = data << 1 | testBit(word, i);

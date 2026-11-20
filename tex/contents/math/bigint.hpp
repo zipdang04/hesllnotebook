@@ -11,8 +11,7 @@ struct Bigint{
 	bool neg = false;
 	vector<int> d;
 	Bigint(ll x = 0): neg(x < 0){
-		for(; x; x /= BASE)
-			d.push_back(abs((int)(x % BASE)));
+		for(; x; x /= BASE) d.push_back(abs((int)(x % BASE)));
 	}
 	Bigint(const string &s): neg(s[0] == '-'){
 		for(int i = sz(s); i > neg; i -= 9){
@@ -22,31 +21,24 @@ struct Bigint{
 		trim();
 	}
 	string str() const{
-		if(d.empty())
-			return "0";
+		if(d.empty()) return "0";
 		string s = (neg ? "-" : "") + to_string(d.back());
-		REV(i, sz(d) - 2, 0){
-			string t = to_string(d[i]);
-			s += string(9 - sz(t), '0') + t;
-		}
+		REV(i, sz(d) - 2, 0) // keep 9 digits of BASE + d[i]
+			s += to_string(BASE + d[i]).substr(1);
 		return s;
 	}
 	void trim(){
-		while(!d.empty() && !d.back())
-			d.pop_back();
-		if(d.empty())
-			neg = false;
+		while(!d.empty() && !d.back()) d.pop_back();
+		if(d.empty()) neg = false;
 	}
 	int cmpAbs(const Bigint &b) const{
-		if(sz(d) != sz(b.d))
-			return sz(d) < sz(b.d) ? -1 : 1;
+		if(sz(d) != sz(b.d)) return sz(d) < sz(b.d) ? -1 : 1;
 		REV(i, sz(d) - 1, 0) if(d[i] != b.d[i])
 			return d[i] < b.d[i] ? -1 : 1;
 		return 0;
 	}
 	int cmp(const Bigint &b) const{
-		if(neg != b.neg)
-			return neg ? -1 : 1;
+		if(neg != b.neg) return neg ? -1 : 1;
 		return neg ? -cmpAbs(b) : cmpAbs(b);
 	}
 	void addAbs(const Bigint &b){
@@ -72,10 +64,8 @@ struct Bigint{
 		return a;
 	}
 	Bigint &operator+=(const Bigint &b){
-		if(neg == b.neg)
-			addAbs(b);
-		else if(cmpAbs(b) >= 0)
-			subAbs(b);
+		if(neg == b.neg) addAbs(b);
+		else if(cmpAbs(b) >= 0) subAbs(b);
 		else{
 			Bigint a = b;
 			a.subAbs(*this); *this = a;
@@ -85,8 +75,7 @@ struct Bigint{
 	Bigint &operator-=(const Bigint &b){ return *this += -b; }
 	Bigint operator*(const Bigint &b) const{
 		int n = sz(d), m = sz(b.d);
-		if(!n || !m)
-			return 0;
+		if(!n || !m) return 0;
 		Bigint a;
 		const int NAIVE = 32;
 		if(min(n, m) <= NAIVE){
@@ -102,15 +91,12 @@ struct Bigint{
 			a.d.assign(all(c));
 		}else{
 			vector<MintN> x(9 * n), y(9 * m);
-			FOR(i, 0, sz(x) - 1)
-				x[i] = d[i/9] / P10[i%9] % 10;
-			FOR(i, 0, sz(y) - 1)
-				y[i] = b.d[i/9] / P10[i%9] % 10;
+			FOR(i, 0, sz(x) - 1) x[i] = d[i/9] / P10[i%9] % 10;
+			FOR(i, 0, sz(y) - 1) y[i] = b.d[i/9] / P10[i%9] % 10;
 			vector<MintN> z = convNtt(x, y);
 			ll carry = 0; a.d.resize(n + m);
 			FOR(i, 0, 9 * (n + m) - 1){
-				if(i < sz(z))
-					carry += z[i].v;
+				if(i < sz(z)) carry += z[i].v;
 				a.d[i/9] += carry % 10 * P10[i%9];
 				carry /= 10;
 			}
@@ -120,10 +106,10 @@ struct Bigint{
 	}
 	pair<Bigint, Bigint> divMod(const Bigint &b) const{
 		int m = sz(b.d), norm = BASE / (b.d.back() + 1);
-		if(m == 1){ // one limb: O(n)
-			Bigint q = *this; ll r = 0;
+		if(m == 1){
+			Bigint q = *this; ll r = 0, c = b.d[0]; // O(n)
 			REV(i, sz(d) - 1, 0)
-				r = r * BASE + d[i], q.d[i] = r / b.d[0], r %= b.d[0];
+				r = r * BASE + d[i], q.d[i] = r / c, r %= c;
 			q.neg = neg != b.neg; q.trim();
 			return {q, neg ? -r : r};
 		}
@@ -137,8 +123,7 @@ struct Bigint{
 			ll e = (hi * BASE + lo) / y.d.back();
 			minimize(e, BASE - 1);
 			r -= y * e;
-			while(r.neg)
-				r += y, e--;
+			while(r.neg) r += y, e--;
 			q.d[i] = e;
 		}
 		q.neg = neg != b.neg; q.trim();

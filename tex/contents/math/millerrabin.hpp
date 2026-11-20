@@ -3,9 +3,7 @@
 
 // mulMod, powMod: a, b, n >= 0, 1 <= m < 2^63; r in 0..m-1.
 // isPrime: any ll; 7 powMods, O(log n) mulMods each.
-ll mulMod(ll a, ll b, ll m){
-	return (__int128)a * b % m;
-}
+ll mulMod(ll a, ll b, ll m){ return (__int128)a * b % m; }
 ll powMod(ll a, ll n, ll m){
 	ll r = 1 % m;
 	for(; n; n >>= 1, a = mulMod(a, a, m))
