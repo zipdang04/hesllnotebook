@@ -72,8 +72,7 @@ struct Bigint{
 	}
 	Bigint &operator-=(const Bigint &b){ return *this += -b; }
 	Bigint operator*(const Bigint &b) const{
-		int n = sz(d), m = sz(b.d);
-		if(!n || !m) return 0;
+		int n = sz(d), m = sz(b.d); if(!n || !m) return 0;
 		Bigint a;
 		const int NAIVE = 32;
 		if(min(n, m) <= NAIVE){
@@ -156,8 +155,7 @@ struct Bigint{
 		return a.cmp(b) != 0;
 	}
 	friend istream &operator>>(istream &in, Bigint &a){
-		string s;
-		if(in >> s) a = Bigint(s);
+		string s; if(in >> s) a = Bigint(s);
 		return in;
 	}
 	friend ostream &operator<<(ostream &out, const Bigint &a){

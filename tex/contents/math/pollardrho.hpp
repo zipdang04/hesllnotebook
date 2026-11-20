@@ -10,8 +10,7 @@ ll findDivisor(ll n){
 	auto f = [&](ll v){ return (mulMod(v, v, n) + c) % n; };
 	while(t++ % 40 || __gcd(prd, n) == 1){
 		if(x == y) x = ++c, y = f(x); // new f on restart
-		ll q = mulMod(prd, abs(x - y), n);
-		if(q) prd = q;
+		ll q = mulMod(prd, abs(x - y), n); if(q) prd = q;
 		x = f(x), y = f(f(y));
 	}
 	return __gcd(prd, n);

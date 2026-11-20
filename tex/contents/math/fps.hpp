@@ -44,8 +44,7 @@ vector<MintN> fpsExp(const vector<MintN> &a, int n){
 }
 vector<MintN> polyDiv(const vector<MintN> &a,
 		const vector<MintN> &b){
-	int k = sz(a) - sz(b) + 1;
-	if(k <= 0) return {};
+	int k = sz(a) - sz(b) + 1; if(k <= 0) return {};
 	vector<MintN> ra(a.rbegin(), a.rbegin() + k);
 	vector<MintN> rb(b.rbegin(), b.rend());
 	vector<MintN> q = convNtt(ra, fpsInv(rb, k));

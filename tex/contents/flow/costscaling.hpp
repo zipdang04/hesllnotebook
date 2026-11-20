@@ -14,8 +14,7 @@ struct MinCostCirc{
 	MinCostCirc(int n_): n(n_), adj(n_), pot(n_){}
 	// A self-loop stays out of adj. Returns the arc id.
 	int addEdge(int u, int v, ll lo, ll hi, ll cost){
-		int id = sz(edges);
-		edges.push_back({v, hi - lo, cost});
+		int id = sz(edges); edges.push_back({v, hi - lo, cost});
 		edges.push_back({u, 0, -cost}), low.push_back(lo);
 		if(u != v)
 			adj[u].push_back(id), adj[v].push_back(id + 1);

@@ -37,8 +37,7 @@ template<int MOD> struct Mint{
 		return a.v != b.v;
 	}
 	friend istream &operator>>(istream &in, Mint &a){
-		ll x;
-		if(in >> x) a = Mint(x);
+		ll x; if(in >> x) a = Mint(x);
 		return in;
 	}
 	friend ostream &operator<<(ostream &out, Mint a){

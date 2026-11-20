@@ -34,18 +34,15 @@ struct MCMF{
 				auto &e = edges[id];
 				if(!e.cap) continue;
 				ll val = d + e.cost + pot[u] - pot[e.to];
-				if(minimize(dist[e.to], val)){
-					par[e.to] = id;
-					pq.push({val, e.to});
-				}
+				if(minimize(dist[e.to], val))
+					par[e.to] = id, pq.push({val, e.to});
 			}
 		}
 		return dist[t] != LLONG_MAX;
 	}
 	// Returns the arc id (0, 2, 4, ..).
 	int addEdge(int u, int v, ll cap, ll cost){
-		int id = sz(edges);
-		edges.push_back({v, cap, cost});
+		int id = sz(edges); edges.push_back({v, cap, cost});
 		edges.push_back({u, 0, -cost});
 		adj[u].push_back(id); adj[v].push_back(id ^ 1);
 		return id;
