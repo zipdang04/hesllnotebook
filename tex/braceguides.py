@@ -20,6 +20,8 @@ def braces(lines):
             c = s[j]
             if s.startswith('//', j): break
             if s.startswith('/*', j): block, j = True, j + 2; continue
+            if c == "'" and 0 < j < len(s) - 1 and s[j-1].isalnum() and s[j+1].isalnum():
+                j += 1; continue  # digit separator: 1'000'000
             if c in '"\'':
                 j += 1
                 while j < len(s) and s[j] != c: j += 2 if s[j] == '\\' else 1
