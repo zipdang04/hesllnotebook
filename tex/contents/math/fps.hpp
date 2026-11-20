@@ -18,8 +18,7 @@ vector<MintN> fpsInv(const vector<MintN> &a, int n){
 		ntt(f);
 		FOR(i, 0, 2 * m - 1) f[i] *= h[i];
 		ntt(f, true);
-		g.resize(2 * m);
-		FOR(i, m, 2 * m - 1) g[i] = -f[i];
+		g.resize(2 * m); FOR(i, m, 2 * m - 1) g[i] = -f[i];
 	}
 	g.resize(n);
 	return g;

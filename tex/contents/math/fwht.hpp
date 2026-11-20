@@ -22,8 +22,7 @@ void fwht(vector<Mint<MOD>> &a, char op, bool inv = false){
 template<int MOD>
 vector<Mint<MOD>> convBit(vector<Mint<MOD>> a,
 		vector<Mint<MOD>> b, char op){
-	int n = 1;
-	while(n < max(sz(a), sz(b))) n *= 2;
+	int n = 1; while(n < max(sz(a), sz(b))) n *= 2;
 	a.resize(n), b.resize(n);
 	fwht(a, op), fwht(b, op);
 	FOR(i, 0, n - 1) a[i] *= b[i];

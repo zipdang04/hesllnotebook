@@ -16,8 +16,7 @@ struct SAM{
 	SAM(): t(1){}
 	void add(char ch){
 		int c = ch - FIRST, k = sz(t), p = last;
-		t.push_back({});
-		t[k].len = t[last].len + 1;
+		t.push_back({}); t[k].len = t[last].len + 1;
 		t[k].pos = t[k].len - 1; last = k;
 		for(; p != -1 && !t[p].nxt[c]; p = t[p].link)
 			t[p].nxt[c] = k;

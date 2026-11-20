@@ -8,8 +8,7 @@ template<int MOD>
 vector<Mint<MOD>> interpolate(const vector<Mint<MOD>> &x,
 		const vector<Mint<MOD>> &y){
 	int n = sz(x);
-	vector<Mint<MOD>> p(n + 1), q(n), c(n);
-	p[0] = 1;
+	vector<Mint<MOD>> p(n + 1), q(n), c(n); p[0] = 1;
 	FOR(i, 0, n - 1){
 		REV(k, i + 1, 1) p[k] = p[k-1] - x[i] * p[k];
 		p[0] = -x[i] * p[0];

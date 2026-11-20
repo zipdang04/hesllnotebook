@@ -27,8 +27,7 @@ ll discreteSqrt(ll a, ll p){
 	if(powMod(a, (p - 1) / 2, p) != 1) return -1;
 	if(p % 4 == 3) return powMod(a, (p + 1) / 4, p);
 	ll s = p - 1, n = 2;
-	int r = 0, m;
-	while(s % 2 == 0) ++r, s /= 2;
+	int r = 0, m; while(s % 2 == 0) ++r, s /= 2;
 	while(powMod(n, (p - 1) / 2, p) != p - 1) ++n;
 	ll x = powMod(a, (s + 1) / 2, p);
 	ll b = powMod(a, s, p), g = powMod(n, s, p);

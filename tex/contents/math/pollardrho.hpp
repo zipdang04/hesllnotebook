@@ -17,8 +17,7 @@ ll findDivisor(ll n){
 	return __gcd(prd, n);
 }
 vector<ll> factorize(ll n){
-	if(n == 1) return {};
-	if(isPrime(n)) return {n};
+	if(n == 1) return {}; if(isPrime(n)) return {n};
 	ll d = findDivisor(n);
 	vector<ll> l = factorize(d), r = factorize(n / d);
 	l.insert(l.end(), r.begin(), r.end());

@@ -8,8 +8,7 @@
 template<int MOD>
 pair<int, Mint<MOD>> gauss(vector<vector<Mint<MOD>>> &a,
 		int c){
-	int n = sz(a), rank = 0;
-	Mint<MOD> det = 1;
+	int n = sz(a), rank = 0; Mint<MOD> det = 1;
 	for(int col = 0; col < c && rank < n; col++){
 		int r = rank;
 		while(r < n && a[r][col] == 0) r++; if(r == n) continue;

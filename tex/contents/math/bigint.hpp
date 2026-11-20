@@ -95,8 +95,7 @@ struct Bigint{
 			ll carry = 0; a.d.resize(n + m);
 			FOR(i, 0, 9 * (n + m) - 1){
 				if(i < sz(z)) carry += z[i].v;
-				a.d[i/9] += carry % 10 * P10[i%9];
-				carry /= 10;
+				a.d[i/9] += carry % 10 * P10[i%9]; carry /= 10;
 			}
 		}
 		a.neg = neg != b.neg; a.trim();
@@ -120,8 +119,7 @@ struct Bigint{
 			ll lo = sz(r.d) >= m ? r.d[m-1] : 0;
 			ll e = (hi * BASE + lo) / y.d.back();
 			minimize(e, BASE - 1);
-			r -= y * e;
-			while(r.neg) r += y, e--;
+			r -= y * e; while(r.neg) r += y, e--;
 			q.d[i] = e;
 		}
 		q.neg = neg != b.neg; q.trim();

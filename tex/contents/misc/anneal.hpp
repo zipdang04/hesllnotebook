@@ -11,8 +11,7 @@ void anneal(double sec, double t0, double t1,
 		Propose propose, Commit commit){
 	static mt19937_64 rng(CURRENT_TIMESTAMP());
 	uniform_real_distribution<double> unif(0, 1);
-	auto start = chrono::steady_clock::now();
-	double t = t0;
+	auto start = chrono::steady_clock::now(); double t = t0;
 	for(ll it = 0;; it++){
 		// the clock is slow: read it every 256 moves
 		if(it % 256 == 0){
