@@ -19,8 +19,7 @@ struct LazySeg{
 	}
 	// ---- end of EDIT ----
 	int n, h, m; // size, height, leaves m = 2^h >= n
-	vector<Node> node;
-	vector<Tag> tag;
+	vector<Node> node; vector<Tag> tag;
 	LazySeg(const vector<Node> &a): n(sz(a)), h(0){
 		for(m = 1; m < n; m <<= 1) h++;
 		node.assign(2 * m, Node()); tag.assign(2 * m, Tag());
@@ -43,8 +42,7 @@ struct LazySeg{
 		push(l, r);
 		int a = l, b = r;
 		for(; a < b; a >>= 1, b >>= 1){
-			if(a & 1) apply(a++, t);
-			if(b & 1) apply(--b, t);
+			if(a & 1) apply(a++, t); if(b & 1) apply(--b, t);
 		}
 		FOR(i, 1, h){
 			if(((l >> i) << i) != l) pull(l >> i);

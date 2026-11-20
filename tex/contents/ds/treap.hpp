@@ -34,8 +34,7 @@ struct Treap{
 	mt19937 rng;
 	Treap(): t(1){}
 	int newNode(MintN x){
-		int u = sz(t);
-		t.push_back(Node());
+		int u = sz(t); t.push_back(Node());
 		t[u].val = x; t[u].pri = (int)(rng() >> 1);
 		pull(u);
 		return u;
@@ -76,8 +75,7 @@ struct Treap{
 	}
 	void erase(int pos){
 		auto [a, bc] = split(root, pos - 1);
-		auto [b, c] = split(bc, 1);
-		root = merge(a, c);
+		auto [b, c] = split(bc, 1); root = merge(a, c);
 	}
 	void reverse(int l, int r){
 		auto [a, bc] = split(root, l - 1);

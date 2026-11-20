@@ -12,8 +12,7 @@ vector<MintN> berlekampMassey(const vector<MintN> &s){
 	MintN b = 1;
 	FOR(i, 0, n - 1){
 		++m;
-		MintN d = s[i];
-		FOR(j, 1, L) d += C[j] * s[i - j];
+		MintN d = s[i]; FOR(j, 1, L) d += C[j] * s[i - j];
 		if(d == 0) continue;
 		T = C; MintN coef = d / b;
 		FOR(j, m, n - 1) C[j] -= coef * B[j - m];
@@ -27,8 +26,7 @@ vector<MintN> berlekampMassey(const vector<MintN> &s){
 MintN kthTerm(const vector<MintN> &s,
 		const vector<MintN> &c, ll k){
 	int d = sz(c);
-	if(d == 0) return 0;
-	if(k < d) return s[k];
+	if(d == 0) return 0; if(k < d) return s[k];
 	vector<MintN> Q(d + 1);
 	Q[0] = 1;
 	FOR(i, 0, d - 1) Q[i + 1] = -c[i];

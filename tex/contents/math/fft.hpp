@@ -21,8 +21,7 @@ void fft(vector<Cd> &a){
 		for(int i = 0; i < n; i += 2 * k)
 			FOR(j, 0, k - 1){
 				Cd z = rt[j + k] * a[i + j + k];
-				a[i + j + k] = a[i + j] - z;
-				a[i + j] += z;
+				a[i + j + k] = a[i + j] - z; a[i + j] += z;
 			}
 }
 vector<double> conv(const vector<double> &a,

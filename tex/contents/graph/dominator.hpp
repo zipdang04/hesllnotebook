@@ -46,9 +46,7 @@ struct Dominator{
 	}
 	void dfs(int v, const vector<vector<int>> &g){
 		sdom[v] = sz(ord); ord.push_back(v);
-		for(int i: g[v]) if(sdom[i] == -1){
-			par[i] = v;
-			dfs(i, g);
-		}
+		for(int i: g[v]) if(sdom[i] == -1)
+			par[i] = v, dfs(i, g);
 	}
 };

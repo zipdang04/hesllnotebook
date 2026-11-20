@@ -23,10 +23,8 @@ vector<ll> moQueries(const vector<pair<int, int>> &q,
 	});
 	for(int i: ord){
 		auto [l, r] = q[i];
-		while(R < r) add(++R, 1);
-		while(L > l) add(--L, 0);
-		while(R > r) del(R--, 1);
-		while(L < l) del(L++, 0);
+		while(R < r) add(++R, 1); while(L > l) add(--L, 0);
+		while(R > r) del(R--, 1); while(L < l) del(L++, 0);
 		ans[i] = get();
 	}
 	return ans;

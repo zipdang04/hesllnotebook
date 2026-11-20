@@ -5,8 +5,7 @@
 // Nodes 0, 1: len -1, 0; O(n) amortised, <= n + 2 nodes.
 struct Eertree{
 	// ---- EDIT: alphabet ----
-	static const int K = 26;
-	static const char FIRST = 'a';
+	static const int K = 26; static const char FIRST = 'a';
 	// ---- end of EDIT ----
 	struct Node{
 		int nxt[K] = {}, link = 0, len = 0, cnt = 0, dep = 0;

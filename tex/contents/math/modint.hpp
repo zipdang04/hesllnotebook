@@ -7,13 +7,11 @@ template<int MOD> struct Mint{
 	int v;
 	Mint(ll a = 0): v((int)(a % MOD)){ if(v < 0) v += MOD; }
 	Mint &operator+=(Mint b){
-		v += b.v;
-		if(v >= MOD) v -= MOD;
+		v += b.v; if(v >= MOD) v -= MOD;
 		return *this;
 	}
 	Mint &operator-=(Mint b){
-		v -= b.v;
-		if(v < 0) v += MOD;
+		v -= b.v; if(v < 0) v += MOD;
 		return *this;
 	}
 	Mint &operator*=(Mint b){

@@ -5,8 +5,7 @@
 // root, link -1; at most 2n nodes. O(n) amortised.
 struct SAM{
 	// ---- EDIT: alphabet ----
-	static const int K = 26;
-	static const char FIRST = 'a';
+	static const int K = 26; static const char FIRST = 'a';
 	// ---- end of EDIT ----
 	// pos = end of the first occurrence; start pos - L + 1
 	struct Node{

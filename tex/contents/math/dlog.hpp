@@ -22,8 +22,7 @@ ll discreteLog(ll a, ll b, ll m){
 	return -1;
 }
 ll discreteSqrt(ll a, ll p){
-	a %= p;
-	if(a < 0) a += p;
+	a %= p; if(a < 0) a += p;
 	if(a == 0) return 0;
 	if(powMod(a, (p - 1) / 2, p) != 1) return -1;
 	if(p % 4 == 3) return powMod(a, (p + 1) / 4, p);

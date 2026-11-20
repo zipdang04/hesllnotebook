@@ -60,8 +60,7 @@ pair<PD, double> enclosingCircle(vector<PD> pts){
 	FOR(i, 0, sz(pts) - 1) if((o - pts[i]).dist() > r * EPS){
 		o = pts[i], r = 0;
 		FOR(j, 0, i - 1) if((o - pts[j]).dist() > r * EPS){
-			o = (pts[i] + pts[j]) / 2;
-			r = (o - pts[i]).dist();
+			o = (pts[i] + pts[j]) / 2; r = (o - pts[i]).dist();
 			FOR(k, 0, j - 1) if((o - pts[k]).dist() > r * EPS){
 				o = circumcenter(pts[i], pts[j], pts[k]);
 				r = (o - pts[i]).dist();

@@ -5,8 +5,7 @@
 // O(total length * K) build, O(1) per scanned character.
 struct Aho{
 	// ---- EDIT: alphabet ----
-	static const int K = 26;
-	static const char FIRST = 'a';
+	static const int K = 26; static const char FIRST = 'a';
 	// ---- end of EDIT ----
 	struct Node{ int nxt[K] = {}, link = 0; ll cnt = 0; };
 	vector<Node> t;

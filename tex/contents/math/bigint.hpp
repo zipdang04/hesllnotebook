@@ -45,8 +45,7 @@ struct Bigint{
 		int carry = 0; d.resize(max(sz(d), sz(b.d)) + 1);
 		FOR(i, 0, sz(d) - 1){
 			d[i] += carry + (i < sz(b.d) ? b.d[i] : 0);
-			carry = d[i] >= BASE;
-			d[i] -= carry * BASE;
+			carry = d[i] >= BASE; d[i] -= carry * BASE;
 		}
 		trim();
 	}
@@ -54,8 +53,7 @@ struct Bigint{
 		int borrow = 0;
 		FOR(i, 0, sz(d) - 1){
 			d[i] -= borrow + (i < sz(b.d) ? b.d[i] : 0);
-			borrow = d[i] < 0;
-			d[i] += borrow * BASE;
+			borrow = d[i] < 0; d[i] += borrow * BASE;
 		}
 		trim();
 	}

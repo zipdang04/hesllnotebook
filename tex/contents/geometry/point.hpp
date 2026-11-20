@@ -38,8 +38,7 @@ struct Point{
 			x * sin(t) + y * cos(t)};
 	}
 };
-typedef Point<ll> PL;
-typedef Point<double> PD;
+typedef Point<ll> PL; typedef Point<double> PD;
 // +1: c is left of a->b, 0: collinear, -1: right.
 template<class T>
 int orient(Point<T> a, Point<T> b, Point<T> c){

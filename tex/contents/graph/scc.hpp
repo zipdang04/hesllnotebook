@@ -12,8 +12,7 @@ struct SCC{
 		FOR(u, 1, (int)g.size() - 1) if(!num[u]) dfs(u, g);
 	}
 	void dfs(int u, const vector<vector<int>> &g){
-		low[u] = num[u] = ++timer;
-		stk.push_back(u);
+		low[u] = num[u] = ++timer; stk.push_back(u);
 		for(int v: g[u]) if(!comp[v]){
 			if(!num[v]) dfs(v, g);
 			minimize(low[u], low[v]);
@@ -22,8 +21,7 @@ struct SCC{
 			cnt++;
 			int v;
 			do{
-				v = stk.back(); stk.pop_back();
-				comp[v] = cnt;
+				v = stk.back(); stk.pop_back(); comp[v] = cnt;
 			}while(v != u);
 		}
 	}

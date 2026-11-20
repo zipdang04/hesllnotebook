@@ -12,8 +12,7 @@ struct KdTree{
 	};
 	vector<Node> t; // t[0] = root
 	KdTree(vector<PL> pts){
-		t.reserve(2 * sz(pts));
-		build(0, sz(pts) - 1, pts);
+		t.reserve(2 * sz(pts)); build(0, sz(pts) - 1, pts);
 	}
 	int build(int lo, int hi, vector<PL> &pts){
 		PL a = pts[lo]; Node nd{a, a.x, a.x, a.y, a.y};

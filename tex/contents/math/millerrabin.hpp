@@ -11,8 +11,7 @@ ll powMod(ll a, ll n, ll m){
 	return r;
 }
 bool isPrime(ll n){
-	if(n < 2) return false;
-	if(n < 4) return true;
+	if(n < 2) return false; if(n < 4) return true;
 	if(n % 2 == 0) return false;
 	int twos = __builtin_ctzll(n - 1);
 	ll odd = (n - 1) >> twos;

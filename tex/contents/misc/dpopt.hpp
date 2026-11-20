@@ -26,10 +26,8 @@ template<class Cost> ll dncDP(int n, int k, Cost C){
 	vector<ll> prv(n + 1, oo), cur(n + 1, oo);
 	FOR(i, 1, n) prv[i] = C(1, i);
 	// layer j: cur[i], i >= j; its last block is a[p+1..i]
-	FOR(j, 2, k){
-		dncRec(j, n, j - 1, n - 1, prv, cur, C);
-		swap(prv, cur);
-	}
+	FOR(j, 2, k)
+		dncRec(j, n, j - 1, n - 1, prv, cur, C), swap(prv, cur);
 	return prv[n];
 }
 // C(l, r) = cost of merging a[l..r] into one; single = 0.
@@ -54,8 +52,7 @@ template<class Cost> ll knuth(int n, Cost C){
 // smallest cnt reaching it}. Answer for cnt = k exactly.
 template<class Solve> ll aliens(int k, Solve solve){
 	// every slope f(c + 1) - f(c) lies in [-L, L]
-	const ll L = 1e12;
-	ll lo = -L, hi = L;
+	const ll L = 1e12; ll lo = -L, hi = L;
 	while(lo < hi){
 		ll mid = lo + (hi - lo) / 2;
 		if(solve(mid).se <= k) hi = mid;

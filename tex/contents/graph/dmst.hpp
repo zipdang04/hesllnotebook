@@ -33,8 +33,7 @@ struct DirectedMST{
 				if(seen[u] == s){
 					int cyc = 0, end = qi, t = dsu.time();
 					do{
-						w = path[--qi];
-						cyc = merge(cyc, head[w]);
+						w = path[--qi]; cyc = merge(cyc, head[w]);
 					}while(dsu.unite(u, w));
 					u = dsu.find(u), head[u] = cyc, seen[u] = -1;
 					cycs.push_front({u, t,

@@ -50,10 +50,8 @@ struct Dinic{
 		if(s == t) return 0;
 		ll ans = 0;
 		for(ll lim = 1LL << 60; lim; lim >>= 1)
-			while(bfs(s, t, lim)){
-				fill(all(ptr), 0);
-				ans += dfs(s, t, LLONG_MAX, lim);
-			}
+			while(bfs(s, t, lim))
+				fill(all(ptr), 0), ans += dfs(s, t, LLONG_MAX, lim);
 		return ans;
 	}
 	ll flowOf(int id){ return edges[id ^ 1].cap; }

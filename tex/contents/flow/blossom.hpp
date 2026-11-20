@@ -18,16 +18,13 @@ struct GeneralMatching{
 		return par[x];
 	}
 	int lca(int u, int v){
-		for(stamp++; vis[u] != stamp; swap(u, v)) if(u){
-			vis[u] = stamp;
-			u = find(prv[match[u]]);
-		}
+		for(stamp++; vis[u] != stamp; swap(u, v)) if(u)
+			vis[u] = stamp, u = find(prv[match[u]]);
 		return u;
 	}
 	void blossom(int u, int v, int rt, queue<int> &q){
 		for(; find(u) != rt; u = prv[v]){
-			prv[u] = v;
-			v = match[u];
+			prv[u] = v; v = match[u];
 			par[u] = par[v] = rt;
 			if(chk[v] == 1) q.push(v), chk[v] = 2;
 		}
@@ -52,8 +49,7 @@ struct GeneralMatching{
 				if(match[v]) continue;
 				for(; u; v = u){
 					u = match[prv[v]];
-					match[v] = prv[v];
-					match[prv[v]] = v;
+					match[v] = prv[v]; match[prv[v]] = v;
 				}
 				return true;
 			}

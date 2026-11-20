@@ -21,8 +21,7 @@ void ntt(vector<MintN> &a, bool inv = false){
 		for(int i = 0; i < n; i += 2 * k)
 			FOR(j, 0, k - 1){
 				MintN z = rt[j + k] * a[i + j + k];
-				a[i + j + k] = a[i + j] - z;
-				a[i + j] += z;
+				a[i + j + k] = a[i + j] - z; a[i + j] += z;
 			}
 	if(!inv) return;
 	reverse(a.begin() + 1, a.end());
