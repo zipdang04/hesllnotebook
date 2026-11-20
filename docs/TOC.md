@@ -200,7 +200,8 @@ NOTEBOOK (25 pp)  —  section → entry, or section → group → entry where a
 Budget: the PDF is 25 pages (cover + content pages labelled 1–24); no reserve page is left.
 Estimated content: ~3,060 lines ≈ 23.5 pp at 130 lines/page. §1 is ~85 lines over its 2 pp (cost scaling).
 
-Status (synced with the PDF, 2026-10-26): all 83 entries are written and printed, in the order above
+Status (synced with the PDF, 2026-11-20): the PDF is 31 pages, 6 over the budget; page trimming is pending.
+All 83 entries are written and printed, in the order above
 (§7.3: AHU then Rank/unrank; §8: Ternary then DP optimisation). Printed titles are shortened versions of these.
 Out of the printed book, replaced by notes on the entry that covers them: persistent lazy segtree, standalone
 SOS DP, LR flow / circulation code (flow models), min mean cycle (SPFA), LineContainer (Li Chao),

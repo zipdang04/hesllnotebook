@@ -220,6 +220,7 @@ all_source_codes = {
 		"spfa": TestCase("graph/spfa", "graph/shortest_path", 1.3),  # slowest case 0.86 s, x1.5
 		"spfa_aoj": OjTest("graph/spfa_aoj", "https://onlinejudge.u-aizu.ac.jp/problems/GRL_1_B", 1),
 		"spfa_stress": StressTest("graph/spfa_stress", 10),
+		"negcycle_stress": StressTest("graph/negcycle_stress", 2),  # "Print a negative cycle" recipe
 		"dmst": TestCase("graph/dmst", "graph/directedmst", 2),
 		"dmst_stress": StressTest("graph/dmst_stress", 10),
 		"manhattanmst": TestCase("graph/manhattanmst", "geo/manhattanmst", 3),
@@ -255,6 +256,7 @@ all_source_codes = {
 		"perseg_order": ShellTest("ds/perseg_order", uses=("tex/contents/ds/perseg.hpp",)),
 		"lichao_line": TestCase("ds/lichao_line", "data_structure/line_add_get_min", 2),
 		"lichao_seg": TestCase("ds/lichao_seg", "data_structure/segment_add_get_min", 2),
+		"lichao_max_stress": StressTest("ds/lichao_max_stress", 2),  # max via (-a, -b)
 		"treap": TestCase("ds/treap", "data_structure/dynamic_sequence_range_affine_range_sum", 5),
 		"treap_stress": StressTest("ds/treap_stress", 10),
 		"linkcut": TestCase("ds/linkcut", "tree/dynamic_tree_vertex_add_path_sum", 3),
