@@ -287,7 +287,7 @@ away, or it needs globals.
 | getters | Same. | public members: `scc.comp[u]`, `ts.val[x]` |
 | `#define` in an entry | A leaked macro breaks the next entry. | a function, or a constant in the struct |
 | a file-scope `typedef` or constant | Two entries will pick the same name. | inside the struct; exception in 4.6 |
-| `inline` | It does nothing in a single file. | |
+| `inline` | Short code comes first, and in a single file it is only a speed hint. | Only Fast IO's `readChar` (16–30% faster, measured). Elsewhere the TLE checklist says to add it when needed. |
 | `std::function` for recursion | Bigger frames, slower calls. | a member function |
 | a reference member to the input | `scc = SCC(g2);` stops compiling, and a temporary argument dangles. | pass the input to the helper as a parameter |
 

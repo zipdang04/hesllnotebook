@@ -103,6 +103,7 @@ Use this after a time limit.
 	\item Pass vectors and strings into a recursion by reference, not by value.
 	\item Use a sorted vector where \texttt{map} or \texttt{set} is not needed; distrust \texttt{unordered\_map} on adversarial input.
 	\item Read very large input with the fast reader (\S\ref{fastio}).
+	\item Mark a small function called in the hot loop \texttt{inline}: GCC then inlines it more readily.
 \end{checks}
 \topic{Memory limit}
 Use this after a memory limit, or before a submit with big arrays.

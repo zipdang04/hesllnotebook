@@ -1,6 +1,6 @@
 #include "../../tex/contents/geometry/hull3d.hpp"
 
-using P3 = Point3<ll>;
+using P3 = Point3;
 void fail(const vector<P3> &p, const char *why){
 	cerr << why << '\n' << sz(p) << '\n';
 	for(auto q: p)
@@ -8,15 +8,15 @@ void fail(const vector<P3> &p, const char *why){
 	exit(1);
 }
 // Independent determinant, without Point3 arithmetic.
-ll det(P3 a, P3 b, P3 c, P3 o){
+__int128 det(P3 a, P3 b, P3 c, P3 o){
 	ll ax = a.x - o.x, ay = a.y - o.y, az = a.z - o.z;
 	ll bx = b.x - o.x, by = b.y - o.y, bz = b.z - o.z;
 	ll cx = c.x - o.x, cy = c.y - o.y, cz = c.z - o.z;
-	return ax * (by * cz - bz * cy)
-		+ ay * (bz * cx - bx * cz)
-		+ az * (bx * cy - by * cx);
+	return (__int128)ax * (by * cz - bz * cy)
+		+ (__int128)ay * (bz * cx - bx * cz)
+		+ (__int128)az * (bx * cy - by * cx);
 }
-ll check(const vector<P3> &p){
+__int128 check(const vector<P3> &p){
 	int n = sz(p);
 	bool flat = true, general = true;
 	FOR(a, 0, n - 1)
@@ -49,11 +49,11 @@ ll check(const vector<P3> &p){
 		if(cnt != 1 || it == edges.end() || it->se != 1)
 			fail(p, "edge multiplicity");
 	}
-	ll got = hullVolume6(p, f);
+	__int128 got = hullVolume6(p, f);
 	if(flat ? got != 0 : got <= 0) fail(p, "volume sign");
 	if(flat || !general) return got;
 	vector<array<int, 3>> brute;
-	ll want = 0;
+	__int128 want = 0;
 	FOR(a, 0, n - 1)
 		FOR(b, a + 1, n - 1)
 			FOR(c, a + 1, n - 1){
@@ -84,14 +84,18 @@ int main(){
 		vector<P3> p;
 		FOR(i, 1, n){
 			if(it % 5 == 0)
-				p.push_back({(ll)(rng() % 1000001) - 500000,
-					(ll)(rng() % 1000001) - 500000,
-					(ll)(rng() % 1000001) - 500000});
+				p.push_back({(ll)(rng() % 2000000001) - 1000000000,
+					(ll)(rng() % 2000000001) - 1000000000,
+					(ll)(rng() % 2000000001) - 1000000000});
+			else if(it % 5 == 1) // small grid scaled to 1e9: coplanar at the limit
+				p.push_back({(ll)(rng() % side) * 333333333,
+					(ll)(rng() % side) * 333333333,
+					(ll)(rng() % side) * 333333333});
 			else
 				p.push_back({(ll)(rng() % side),
 					(ll)(rng() % side), (ll)(rng() % side)});
 		}
-		ll v = check(p);
+		__int128 v = check(p);
 		shuffle(all(p), rng);
 		if(check(p) != v) fail(p, "shuffle volume");
 	}

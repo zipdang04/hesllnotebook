@@ -1,46 +1,35 @@
 #pragma once
-#include "point.hpp"
+#include "../contest/template.hpp"
 
-// 3D hull, O(n^2) time and n^2 ints. Faces = triples of
-// 0-based indices into p, counter-clockwise from outside.
-// Coplanar points are fine with Point3<ll> (exact).
-template<class T>
+// 3D hull, O(n^2) time and n^2 ints. Exact for |x|, |y|,
+// |z| <= 1e9: cross fits ll, dot is __int128.
 struct Point3{
-	typedef Point3 P;
-	T x = 0, y = 0, z = 0;
-	bool operator==(P p) const{
-		return tie(x, y, z) == tie(p.x, p.y, p.z);
+	ll x = 0, y = 0, z = 0;
+	bool operator==(Point3 p) const{
+		return x == p.x && y == p.y && z == p.z;
 	}
-	P operator+(P p) const{
-		return {x + p.x, y + p.y, z + p.z};
-	}
-	P operator-(P p) const{
+	Point3 operator-(Point3 p) const{
 		return {x - p.x, y - p.y, z - p.z};
 	}
-	P operator*(T d) const{ return {x * d, y * d, z * d}; }
-	P operator/(T d) const{ return {x / d, y / d, z / d}; }
-	T dot(P p) const{ return x * p.x + y * p.y + z * p.z; }
-	P cross(P p) const{
+	Point3 cross(Point3 p) const{
 		return {y * p.z - z * p.y, z * p.x - x * p.z,
 			x * p.y - y * p.x};
 	}
-	T dist2() const{ return x * x + y * y + z * z; }
-	double dist() const{ return sqrt((double)dist2()); }
+	__int128 dot(Point3 p) const{
+		return (__int128)x * p.x + (__int128)y * p.y
+			+ (__int128)z * p.z;
+	}
 };
 // Faces of the hull of p as index triples, seen
 // counter-clockwise from outside. {} if all coplanar.
-template<class T>
-vector<array<int, 3>> hull3d(const vector<Point3<T>> &p){
+vector<array<int, 3>> hull3d(const vector<Point3> &p){
 	int n = sz(p); vector<int> o(n); iota(all(o), 0);
 	auto ok = [&](int s, int i){
 		auto v = p[i] - p[o[0]];
-		if(s == 1) return !(v == Point3<T>{});
+		if(s == 1) return !(v == Point3{});
 		auto u = p[o[1]] - p[o[0]];
-		if(s == 2){
-			auto c = u.cross(v);
-			return sgn(c.x) || sgn(c.y) || sgn(c.z);
-		}
-		return sgn(u.cross(p[o[2]] - p[o[0]]).dot(v)) != 0;
+		if(s == 2) return !(u.cross(v) == Point3{});
+		return u.cross(p[o[2]] - p[o[0]]).dot(v) != 0;
 	};
 	FOR(s, 1, 3){
 		int k = s;
@@ -55,8 +44,9 @@ vector<array<int, 3>> hull3d(const vector<Point3<T>> &p){
 		int i = o[k];
 		nf.clear();
 		for(auto [a, b, c]: f){
-			auto nr = (p[b] - p[a]).cross(p[c] - p[a]);
-			int d = sgn(nr.dot(p[i] - p[a]));
+			auto t = (p[b] - p[a]).cross(p[c] - p[a])
+				.dot(p[i] - p[a]);
+			int d = (t > 0) - (t < 0);
 			if(d <= 0) nf.push_back({a, b, c});
 			flag[a][b] = flag[b][c] = flag[c][a] = d;
 		}
@@ -71,9 +61,9 @@ vector<array<int, 3>> hull3d(const vector<Point3<T>> &p){
 	return f;
 }
 // 6 * volume of the hull with faces f.
-template<class T> T hullVolume6(const vector<Point3<T>> &p,
+__int128 hullVolume6(const vector<Point3> &p,
 		const vector<array<int, 3>> &f){
-	T v = 0;
+	__int128 v = 0;
 	if(f.empty()) return v;
 	auto o = p[f[0][0]];
 	for(auto [a, b, c]: f)

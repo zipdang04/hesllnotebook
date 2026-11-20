@@ -3,7 +3,7 @@
 
 // fread reader for integers; read(a, b, ..) reads in order,
 // false at EOF or at a failure. Not for interactive.
-int readChar(){
+inline int readChar(){
 	static unsigned char buf[1 << 16];
 	static int len = 0, pos = 0;
 	if(pos == len)
