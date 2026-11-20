@@ -120,6 +120,13 @@ struct Bigint{
 	}
 	pair<Bigint, Bigint> divMod(const Bigint &b) const{
 		int m = sz(b.d), norm = BASE / (b.d.back() + 1);
+		if(m == 1){ // one limb: O(n)
+			Bigint q = *this; ll r = 0;
+			REV(i, sz(d) - 1, 0)
+				r = r * BASE + d[i], q.d[i] = r / b.d[0], r %= b.d[0];
+			q.neg = neg != b.neg; q.trim();
+			return {q, neg ? -r : r};
+		}
 		Bigint x = *this * norm, y = b * norm, q, r;
 		x.neg = y.neg = false;
 		q.d.resize(sz(x.d));
