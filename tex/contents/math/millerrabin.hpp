@@ -22,8 +22,7 @@ bool isPrime(ll n){
 		ll x = powMod(a, odd, n);
 		if(x == 1 || x == n - 1) continue;
 		FOR(i, 1, twos - 1){
-			x = mulMod(x, x, n);
-			if(x == n - 1) break;
+			x = mulMod(x, x, n); if(x == n - 1) break;
 		}
 		if(x != n - 1) return false;
 	}

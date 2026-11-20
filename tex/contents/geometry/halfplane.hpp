@@ -35,8 +35,7 @@ vector<PD> halfPlaneInter(vector<pair<PD, PD>> hs){
 		c[++h] = b[i];
 		if(q < h && sgn(c[h].pq.cross(c[h-1].pq)) == 0){
 			if(sgn(c[h].pq.dot(c[h-1].pq)) <= 0) return {};
-			h--;
-			if(out(b[i], c[h].p)) c[h] = b[i];
+			h--; if(out(b[i], c[h].p)) c[h] = b[i];
 		}
 	}
 	while(q < h - 1 && out(c[q], inter(c[h], c[h-1]))) h--;

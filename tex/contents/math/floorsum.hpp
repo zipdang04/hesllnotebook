@@ -11,9 +11,7 @@ ll floorSum(ll n, ll m, ll a, ll b){
 	while(true){
 		if(a >= m) ans += n * (n - 1) / 2 * (a / m), a %= m;
 		if(b >= m) ans += n * (b / m), b %= m;
-		ll y = a * n + b;
-		if(y < m) return ans;
-		n = y / m, b = y % m;
-		swap(m, a);
+		ll y = a * n + b; if(y < m) return ans;
+		n = y / m, b = y % m; swap(m, a);
 	}
 }

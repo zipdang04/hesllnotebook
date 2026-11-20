@@ -8,9 +8,7 @@ struct Sieve{
 	vector<int> primes, minDiv;
 	Sieve(int n): minDiv(n + 1){
 		FOR(i, 2, n){
-			if(!minDiv[i]){
-				minDiv[i] = i; primes.push_back(i);
-			}
+			if(!minDiv[i]) minDiv[i] = i, primes.push_back(i);
 			for(int p: primes){
 				if(p > minDiv[i] || (ll)i * p > n) break;
 				minDiv[i * p] = p;

@@ -31,8 +31,7 @@ struct SuffixArray{
 			if(classes == n) break;
 		}
 		// equal rotations in increasing start
-		fill(all(cnt), 0);
-		FOR(i, 0, n - 1) cnt[x[i]]++;
+		fill(all(cnt), 0); FOR(i, 0, n - 1) cnt[x[i]]++;
 		FOR(i, 1, classes - 1) cnt[i] += cnt[i-1];
 		REV(i, n-1, 0){ rnk[i] = --cnt[x[i]]; sa[rnk[i]] = i; }
 		string t = s + s;

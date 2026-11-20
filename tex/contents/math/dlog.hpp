@@ -10,14 +10,12 @@ ll discreteLog(ll a, ll b, ll m){
 	ll n = (ll)sqrt(m) + 1, e = 1, f = 1;
 	unordered_map<ll, ll> A; A.reserve(n);
 	FOR(j, 1LL, n){
-		e = f = e * a % m;
-		if(e == b) return j;
+		e = f = e * a % m; if(e == b) return j;
 		A[e * b % m] = j;
 	}
 	if(__gcd(m, e) == __gcd(m, b))
 		FOR(i, 2LL, n + 1){
-			e = e * f % m;
-			if(A.count(e)) return n * i - A[e];
+			e = e * f % m; if(A.count(e)) return n * i - A[e];
 		}
 	return -1;
 }

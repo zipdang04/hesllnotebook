@@ -16,9 +16,7 @@ struct Dinic{
 		return sz(edges) - 2;
 	}
 	bool bfs(int s, int t, ll lim){
-		fill(all(level), -1);
-		vector<int> q = {t};
-		level[t] = 0;
+		fill(all(level), -1); vector<int> q = {t}; level[t] = 0;
 		for(int i = 0; i < sz(q) && level[s] < 0; i++){
 			int v = q[i];
 			for(int id: adj[v]){

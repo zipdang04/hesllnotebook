@@ -16,8 +16,7 @@ struct LiChao{
 	LiChao(vector<ll> pts): xs(move(pts)){
 		sort(xs.begin(), xs.end());
 		xs.erase(unique(xs.begin(), xs.end()), xs.end());
-		n = xs.size();
-		tree.assign(4 * n, {0, oo});
+		n = xs.size(); tree.assign(4 * n, {0, oo});
 	}
 	void insert(int id, int lo, int hi, Line f){
 		int mid = (lo + hi) / 2;
