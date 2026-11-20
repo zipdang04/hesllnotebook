@@ -15,12 +15,10 @@ vector<pair<int, int>> eulerWalk(
 			ret.push_back(stk.back()); stk.pop_back(); continue;
 		}
 		auto [y, e] = g[x][it++];
-		if(eu[e])
-			continue;
+		if(eu[e]) continue;
 		D[x]--, D[y]++; eu[e] = 1; stk.push_back({y, e});
 	}
-	if(sz(ret) != m + 1)
-		return {};
+	if(sz(ret) != m + 1) return {};
 	for(int x: D) if(x < 0)
 		return {};
 	return {ret.rbegin(), ret.rend()};

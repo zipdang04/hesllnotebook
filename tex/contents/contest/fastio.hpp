@@ -24,6 +24,4 @@ template<class T> bool read(T &x){
 }
 template<class... Ts>
 enable_if_t<(is_integral_v<Ts> && ...), bool>
-read(Ts &...x){
-	return (read(x) && ...);
-}
+read(Ts &...x){ return (read(x) && ...); }

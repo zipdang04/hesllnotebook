@@ -68,10 +68,8 @@ struct MinCostCirc{
 			ex[v] += low[id / 2], ex[u] -= low[id / 2];
 		}
 		FOR(v, 0, n - 1)
-			if(ex[v] > 0)
-				f.addEdge(n, v, ex[v]), need += ex[v];
-			else if(ex[v] < 0)
-				f.addEdge(v, n + 1, -ex[v]);
+			if(ex[v] > 0) f.addEdge(n, v, ex[v]), need += ex[v];
+			else if(ex[v] < 0) f.addEdge(v, n + 1, -ex[v]);
 		if(need && f.maxFlow(n, n + 1) < need) return false;
 		FOR(id, 0, sz(edges) - 1)
 			edges[id].cap = f.edges[id].cap;
@@ -80,11 +78,9 @@ struct MinCostCirc{
 			if(e.to == r.to && e.cost < 0) swap(e.cap, r.cap);
 		}
 		// costs * (n + 1): eps <= 1 is then optimal
-		for(Edge &e: edges)
-			e.cost *= n + 1;
+		for(Edge &e: edges) e.cost *= n + 1;
 		while(refine());
-		for(Edge &e: edges)
-			e.cost /= n + 1;
+		for(Edge &e: edges) e.cost /= n + 1;
 		fill(all(pot), 0);
 		for(bool upd = true; upd; ){
 			upd = false;

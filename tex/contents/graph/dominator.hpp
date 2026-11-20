@@ -15,8 +15,7 @@ struct Dominator{
 		vector<int> u(n + 1);
 		iota(all(anc), 0); iota(all(val), 0);
 		FOR(i, 1, n)
-			for(int j: g[i])
-				rg[j].push_back(i);
+			for(int j: g[i]) rg[j].push_back(i);
 		dfs(root, g); reverse(all(ord));
 		for(int i: ord){
 			for(int j: rg[i]){

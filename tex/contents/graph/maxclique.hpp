@@ -25,21 +25,18 @@ struct MaxClique{
 			for(int v: g[u]) if(v != u)
 				adj[u][v] = 1;
 		}
-		if(n)
-			initDeg(vs);
+		if(n) initDeg(vs);
 		expand(vs);
 	}
 	void initDeg(vector<Vertex> &r){
-		for(auto &v: r)
-			v.d = 0;
+		for(auto &v: r) v.d = 0;
 		for(auto &v: r) for(auto j: r)
 			v.d += adj[v.i][j.i];
 		sort(all(r), [](const Vertex &a, const Vertex &b){
 			return a.d > b.d;
 		});
 		int mxD = r[0].d;
-		FOR(i, 0, sz(r) - 1)
-			r[i].d = min(i, mxD) + 1;
+		FOR(i, 0, sz(r) - 1) r[i].d = min(i, mxD) + 1;
 	}
 	void expand(vector<Vertex> &R, int lev = 1){
 		steps[lev] += steps[lev-1] - old[lev];

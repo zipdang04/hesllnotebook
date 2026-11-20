@@ -13,8 +13,7 @@ pair<ll, vector<int>> globalMinCut(
 		mat[u][v] += w;
 	pair<i128, vector<int>> best = {(i128(1) << 64) + oo, {}};
 	vector<vector<int>> co(n + 1);
-	FOR(i, 1, n)
-		co[i] = {i};
+	FOR(i, 1, n) co[i] = {i};
 	vector<char> merged(n + 1);
 	for(int ph = 1; ph < n && best.fi; ph++){
 		vector<i128> w = mat[1]; int s = 1, t = 1;
@@ -23,13 +22,11 @@ pair<ll, vector<int>> globalMinCut(
 			used[t] = 1; s = t, t = 0;
 			FOR(i, 1, n) if(!used[i] && (!t || w[i] > w[t]))
 				t = i;
-			FOR(i, 1, n)
-				w[i] += mat[t][i];
+			FOR(i, 1, n) w[i] += mat[t][i];
 		}
 		best = min(best, {w[t] - mat[t][t], co[t]});
 		co[s].insert(co[s].end(), all(co[t]));
-		FOR(i, 1, n)
-			mat[i][s] = mat[s][i] += mat[t][i];
+		FOR(i, 1, n) mat[i][s] = mat[s][i] += mat[t][i];
 		merged[t] = 1;
 	}
 	return {(ll)best.fi, best.se};

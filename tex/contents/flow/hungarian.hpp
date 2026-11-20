@@ -28,10 +28,8 @@ pair<ll, vector<int>> hungarian(
 			}
 		}
 		cost += dist[c];
-		while(--s)
-			pot[cols[s]] = dist[cols[s]] - d;
-		for(; r != i; swap(c, match[r]))
-			r = rev[c] = prev[c];
+		while(--s) pot[cols[s]] = dist[cols[s]] - d;
+		for(; r != i; swap(c, match[r])) r = rev[c] = prev[c];
 	}
 	return {cost, match};
 }

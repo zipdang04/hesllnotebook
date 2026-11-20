@@ -36,9 +36,7 @@ struct LiChao{
 		add(2 * id, lo, mid, i, j, f);
 		add(2 * id + 1, mid + 1, hi, i, j, f);
 	}
-	void addLine(ll a, ll b){
-		insert(1, 0, n - 1, {a, b});
-	}
+	void addLine(ll a, ll b){ insert(1, 0, n - 1, {a, b}); }
 	void addSegment(ll a, ll b, ll l, ll r){
 		auto b0 = xs.begin(), e0 = xs.end();
 		int i = lower_bound(b0, e0, l) - b0;

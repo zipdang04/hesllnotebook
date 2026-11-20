@@ -8,9 +8,7 @@ struct PerSeg{
 	// ---- EDIT: node value, one function ----
 	struct Node{ ll sum = 0; };
 	// Node() is neutral; x is left of y.
-	Node combine(Node x, Node y){
-		return {x.sum + y.sum};
-	}
+	Node combine(Node x, Node y){ return {x.sum + y.sum}; }
 	// ---- end of EDIT ----
 	int n;
 	vector<Node> node;

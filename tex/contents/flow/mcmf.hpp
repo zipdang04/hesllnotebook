@@ -21,8 +21,7 @@ struct MCMF{
 					if(e.cap && minimize(pot[e.to], pot[u] + e.cost))
 						changed = true;
 				}
-			if(!changed)
-				break;
+			if(!changed) break;
 		}
 	}
 	bool dijkstra(int s, int t){
@@ -30,12 +29,10 @@ struct MCMF{
 		PQMin<pll> pq; pq.push({0, s});
 		while(!pq.empty() && pq.top().se != t){
 			auto [d, u] = pq.top(); pq.pop();
-			if(d != dist[u])
-				continue;
+			if(d != dist[u]) continue;
 			for(int id: adj[u]){
 				auto &e = edges[id];
-				if(!e.cap)
-					continue;
+				if(!e.cap) continue;
 				ll val = d + e.cost + pot[u] - pot[e.to];
 				if(minimize(dist[e.to], val)){
 					par[e.to] = id;

@@ -26,8 +26,7 @@ struct LinkCut{
 	// ---- end of EDIT ----
 	vector<Node> t;
 	LinkCut(int n): t(n){
-		FOR(u, 1, n - 1)
-			t[u].size = 1;
+		FOR(u, 1, n - 1) t[u].size = 1;
 	}
 	bool isRoot(int u){
 		int p = t[u].par;
@@ -38,27 +37,23 @@ struct LinkCut{
 	}
 	void push(int u){
 		for(int c: t[u].ch) if(c){
-			if(t[u].rev)
-				flip(c);
+			if(t[u].rev) flip(c);
 			apply(c, t[u].tag);
 		}
 		t[u].rev = 0; t[u].tag = Tag();
 	}
 	void rotate(int x){
 		int p = t[x].par, g = t[p].par, d = t[p].ch[1] == x;
-		if(!isRoot(p))
-			t[g].ch[t[g].ch[1] == p] = x;
+		if(!isRoot(p)) t[g].ch[t[g].ch[1] == p] = x;
 		t[x].par = g;
 		int c = t[x].ch[!d]; t[p].ch[d] = c;
-		if(c)
-			t[c].par = p;
+		if(c) t[c].par = p;
 		t[x].ch[!d] = p; t[p].par = x; pull(p);
 	}
 	void splay(int x){
 		while(!isRoot(x)){
 			int p = t[x].par, g = t[p].par;
-			if(!isRoot(p))
-				push(g);
+			if(!isRoot(p)) push(g);
 			push(p); push(x);
 			if(!isRoot(p)){
 				bool same = (t[g].ch[0] == p) == (t[p].ch[0] == x);
