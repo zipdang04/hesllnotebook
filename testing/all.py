@@ -474,6 +474,8 @@ def select(base):
 	deps = {name: dependencies(test) for name, test in tests}
 	chosen = set()
 	for f in files.split():
+		if os.path.islink(os.path.join(ROOT, f)):
+			continue  # shared data linked into a worktree (.scrap/wt.sh), not a change
 		if f.startswith(NO_TESTS) or (f.endswith(NO_TESTS_EXT) and not f.startswith("testing/")):
 			continue
 		if f.startswith(EVERYTHING):
