@@ -3,7 +3,7 @@
 // remember to call sieve() before any factorize()
 namespace Eratos_Factorable {
 	constexpr ll MAX = 100000000;
-	constexpr ll EST = 53000000; // 1.1*MAX/ln(MAX)
+	constexpr ll EST = 6000000; // 1.1*MAX/ln(MAX)
 	int smallDiv[MAX + 1] = {};
 	int primes[EST], cntPrime = 0;
 	inline void sieve(int size = MAX) {
