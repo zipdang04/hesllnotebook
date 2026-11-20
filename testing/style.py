@@ -56,6 +56,8 @@ def check(path):
 				problems.append((i, "multi-line /* */ comment: use // (STYLE §1.4, brace guides)"))
 			if re.search(r"\{\s*//", line):
 				problems.append((i, "comment after an opening {: put it on its own line (STYLE §1.4)"))
+			if re.search(r"(?<![\w.'])\d{4,}", code):
+				problems.append((i, "digit separators: 1'000'000 (STYLE §1.2)"))
 		for pattern, rule in SPACING:
 			if pattern.search(code):
 				problems.append((i, f"spacing: {rule}"))

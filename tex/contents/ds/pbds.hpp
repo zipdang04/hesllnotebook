@@ -1,13 +1,15 @@
 #pragma once
 #include "../contest/template.hpp"
 
-// pb_ds. OrderedSet<T>: a set with ranks from 0, O(log n).
+// pb_ds. OrderedSet / OrderedMap: ranks from 0, O(log n).
 // gp_hash_table + CustomHash (splitmix64): O(1) expected.
 #include <ext/pb_ds/assoc_container.hpp>
 #include <ext/pb_ds/tree_policy.hpp>
 using namespace __gnu_pbds;
 template<class T> using OrderedSet = tree<T, null_type,
 	less<T>, rb_tree_tag, tree_order_statistics_node_update>;
+template<class K, class V> using OrderedMap = tree<K, V,
+	less<K>, rb_tree_tag, tree_order_statistics_node_update>;
 struct CustomHash{
 	size_t operator()(uint64_t x) const{
 		// random per run, so inputs cannot target it

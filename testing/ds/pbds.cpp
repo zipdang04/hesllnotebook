@@ -23,6 +23,13 @@ int main(){
 		assert(sz(ms) == 3);
 		assert(ms.order_of_key({3, INT_MAX}) == 2);
 		assert(ms.find_by_order(1)->se == 1);
+		OrderedMap<int, int> m;
+		m[30] = 3, m[10] = 1, m[20] = 2, m[10] += 5;
+		assert(sz(m) == 3 && m.order_of_key(25) == 2);
+		auto it = m.find_by_order(0);
+		assert(it->fi == 10 && it->se == 6);
+		m.erase(10);
+		assert(m.find_by_order(0)->se == 2);
 	}
 	OrderedSet<int> s;
 	int n, q;

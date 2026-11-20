@@ -5,10 +5,10 @@
 
 \subsection{Number theory}
 \cpp[4]{Modint}{modint.hpp}[
-	\fld{Use} \texttt{Mint<1000000007> a = 3; a = a * b / c; cout << a.pow(k) << a.inv();}
+	\fld{Use} \texttt{Mint<1\dsep000\dsep000\dsep007> a = 3; a = a * b / c; cout << a.pow(k) << a.inv();}
 	\fld{Result} \texttt{a.v} holds the residue, $0 \le \texttt{v} < \texttt{MOD}$. An \texttt{ll} converts to \texttt{Mint}, so \texttt{2 * a} and \texttt{a == 0} work.
 	\fld{Needs} a prime \texttt{MOD}; divisors and arguments of \texttt{inv} are nonzero; \texttt{pow(n)} takes $n \ge 0$.
-	\fld{MintN} is \texttt{Mint<998244353>}, the type NTT, FPS and the linear recurrence use. Other moduli can be used next to it.
+	\fld{MintN} is \texttt{Mint<998\dsep244\dsep353>}, the type NTT, FPS and the linear recurrence use. Other moduli can be used next to it.
 ]\label{modint}
 \cpp[4]{Bigint}{bigint.hpp}[
 	\fld{Use} \texttt{Bigint a("123"), b = -5; a = a * b + a / b; cout << a << (a < b);}
@@ -58,7 +58,7 @@
 	\fld{Result} reduces $n \times m$ \texttt{Mint<MOD>} matrix \texttt{a} on columns $0..c-1$. Set $c = m$ for rank, $c = n = m$ for determinant (0 if singular).
 	\fld{solveLinear} solves $Ax = b$, $n \ge 1$: empty if impossible, else \texttt{s[0]} solves it and \texttt{s[1..]} span the kernel ($Ax = 0$).
 	\fld{matInverse} sets \texttt{a} to $A^{-1}$; singular: false, \texttt{a} undefined.
-	\fld{solveXor} solves over $\mathrm{GF}(2)$ likewise, with \texttt{bitset} rows; use width $\max(4097, m + 1)$.
+	\fld{solveXor} solves over $\mathrm{GF}(2)$ likewise, with \texttt{bitset} rows; use width $\max(4\dsep097, m + 1)$.
 ]\label{gauss}
 {\footnotesize\tightdisplay
 \topic{Real numbers}
@@ -89,7 +89,7 @@ For a system over \texttt{double} (probabilities, expected values), copy \texttt
 	\fld{Use} \texttt{vector<MintN> c = convNtt(a, b);}
 	\fld{Result} $|a| + |b| - 1$ terms, empty when an input is empty:
 	\[ c_k = \sum_i a_i b_{k-i} \]
-	\fld{Needs} \texttt{MintN} modulus $c2^k+1$, primitive root 3, $|a|+|b|-1 \le 2^k$. Uses Modint (\S\ref{modint}); $k=23$ for $998244353$.
+	\fld{Needs} \texttt{MintN} modulus $c2^k+1$, primitive root 3, $|a|+|b|-1 \le 2^k$. Uses Modint (\S\ref{modint}); $k=23$ for $998\dsep244\dsep353$.
 	\fld{ntt} several products of one size: pad to a power of two $n \ge |a| + |b| - 1$, transform each input once, multiply pointwise, then \texttt{ntt(c, true)}.
 ]\label{ntt}
 \cpp[4]{FWHT}{fwht.hpp}[

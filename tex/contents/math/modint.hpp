@@ -47,4 +47,4 @@ template<int MOD> struct Mint{
 		return out << a.v;
 	}
 };
-typedef Mint<998244353> MintN;
+typedef Mint<998'244'353> MintN;

@@ -6,7 +6,7 @@
 \subsection{Segment trees}
 \cpp[4]{Lazy segment tree}{lazyseg.hpp}[
 	\fld{Use} \texttt{vector<LazySeg::Node> a(n + 1); a[i] = \{x, 1\}; LazySeg seg(a);}
-	\fld{Result} \texttt{seg.get(l, r).sum} returns $a_l + \dots + a_r$; \texttt{seg.update(l, r, \{b, c\})} sets $a_i \gets b a_i + c$ on $[l, r]$, modulo 998244353 (\texttt{MintN}, \S\ref{modint}).
+	\fld{Result} \texttt{seg.get(l, r).sum} returns $a_l + \dots + a_r$; \texttt{seg.update(l, r, \{b, c\})} sets $a_i \gets b a_i + c$ on $[l, r]$, modulo 998\dsep244\dsep353 (\texttt{MintN}, \S\ref{modint}).
 	\fld{Needs} \texttt{combine} and \texttt{apply} have identities \texttt{Node()} and \texttt{Tag()}.
 	\fld{apply} composes \texttt{t} after \texttt{id}'s tag. For ``set'', reserve an unused \texttt{Tag} value and return at once on it.
 	\fld{combine} \texttt{combine(x, y)} has \texttt{x} left of \texttt{y}; it need not commute.
@@ -46,7 +46,7 @@ When tags do not commute (assign, $x \to bx + c$), their order matters, so push 
 \subsection{Balanced trees}
 \cpp[4]{Implicit treap}{treap.hpp}[
 	\fld{Use} \texttt{Treap tr; tr.insert(tr.t[tr.root].size + 1, x);}
-	\fld{Result} \texttt{get(l, r).sum} sums $[l, r]$ mod 998244353 (\texttt{MintN}, \S\ref{modint}). \texttt{reverse(l, r)} reverses it; \texttt{update(l, r, \{b, c\})} sets $a_i \gets b a_i + c$.
+	\fld{Result} \texttt{get(l, r).sum} sums $[l, r]$ mod 998\dsep244\dsep353 (\texttt{MintN}, \S\ref{modint}). \texttt{reverse(l, r)} reverses it; \texttt{update(l, r, \{b, c\})} sets $a_i \gets b a_i + c$.
 	\fld{Needs} Lazy segment tree EDIT rules (\S\ref{lazyseg}); \texttt{pull} sets \texttt{size}. For non-commutative sums, swap a reversed sum at each \texttt{swap(l, r)}.
 	\fld{insert} \texttt{insert(pos, x)} makes $x$ element \texttt{pos}, $\texttt{pos} \le \texttt{size} + 1$ (the Use line appends); \texttt{erase(pos)} removes it.
 	\fld{split} \texttt{split(u, k)} cuts root \texttt{u} after $k$ elements; \texttt{merge(a, b)} joins.
@@ -67,8 +67,8 @@ When tags do not commute (assign, $x \to bx + c$), their order matters, so push 
 	\fld{rollback} \texttt{rollback(t)} undoes every join made after \texttt{t = time()}; a later \texttt{t} does nothing.
 ]\label{rollbackdsu}
 \cpp[4]{pb\_ds}{pbds.hpp}[
-	\fld{Use} \texttt{OrderedSet<int> s; gp\_hash\_table<ll, int, CustomHash> m;}
-	\fld{Result} \texttt{s.order\_of\_key(x)} counts keys $< x$: $x$'s rank, even if absent.
+	\fld{Use} \texttt{OrderedSet<int> s; OrderedMap<int, ll> om; gp\_hash\_table<ll, int, CustomHash> m;}
+	\fld{Result} \texttt{s.order\_of\_key(x)} counts keys $< x$: $x$'s rank, even if absent. \texttt{om} is a \texttt{map} with the same two calls; \texttt{find\_by\_order} gives a pair iterator.
 	\fld{Needs} distinct keys; for a multiset use \texttt{OrderedSet<pii>} with unique \texttt{.se}. Pack pair keys of \texttt{m} into one \texttt{ll}.
 	\fld{find\_by\_order} \texttt{s.find\_by\_order(k)} points at rank $k$, or \texttt{end()} if $k \ge \texttt{s.size()}$; test before \texttt{*}.
 	\fld{CustomHash} also serves \texttt{unordered\_map<ll, int, CustomHash>}; its seed is random per run.

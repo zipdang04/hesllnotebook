@@ -41,9 +41,9 @@ Use a named pipe to connect the solution to your own interactor.
 Use it when the program runs twice and pass 2 reads what pass 1 wrote.
 \begin{checks}
 	\item Tell the passes apart by the first input token.
-	\item Use a fixed seed, \texttt{mt19937\_64 rng(12345)}, not \texttt{randomize}: both passes must make the same choices.
+	\item Use a fixed seed, \texttt{mt19937\_64 rng(12\dsep345)}, not \texttt{randomize}: both passes must make the same choices.
 	\item Iterate in a canonical order. Never iterate an \texttt{unordered\_map} or \texttt{unordered\_set}, never sort by pointer.
-	\item Fix the hash base: in Rolling hash (\S\ref{strhash}) replace the random \texttt{B} by a constant such as \texttt{911382323}.
+	\item Fix the hash base: in Rolling hash (\S\ref{strhash}) replace the random \texttt{B} by a constant such as \texttt{911\dsep382\dsep323}.
 	\item The time limit holds for each pass separately.
 	\item Nothing carries over between passes: no files, no memory.
 	\item Test with \texttt{./stress.sh p -m multi -c chk} and a \texttt{noise.cpp} that plays the judge (\S\ref{stress}).
@@ -102,7 +102,7 @@ Use it when bits may be lost, their positions are known, and a tiny failure prob
 \begin{facts}
 	\item Both sides build the same random $n \times k$ bit matrix $G$ from a fixed seed. Send the $n$ bits
 	\[ c = G m \pmod 2. \]
-	\item Decode with \texttt{solveXor(a, b, k)} (\S\ref{gauss}) on the surviving rows of $G$ and bits of $c$. Accept only \texttt{sz(s) == 1}, a unique solution; $k \le 4096$ fits \texttt{BitRow}.
+	\item Decode with \texttt{solveXor(a, b, k)} (\S\ref{gauss}) on the surviving rows of $G$ and bits of $c$. Accept only \texttt{sz(s) == 1}, a unique solution; $k \le 4\dsep096$ fits \texttt{BitRow}.
 	\item Let $S$ be the set of surviving rows. When the erasures do not depend on $G$,
 	\[ \Pr[\operatorname{rank} G_S < k] \le (2^k - 1)\, 2^{-|S|} < 2^{-t} \quad \text{for } |S| = k + t. \]
 	\item No solution means a bit is wrong, not only lost: the noise is not erasures.
@@ -113,7 +113,7 @@ Use it when the writer knows which cells are stuck and at which value, and the r
 \begin{facts}
 	\item Both sides build the same random $k \times n$ bit matrix $H$ from a fixed seed. The reader decodes the $k$-bit message as
 	\[ m = H x \pmod 2. \]
-	\item The writer splits the cells into the stuck set $S$, with values $b$, and the free set $F$; $F$ must be fixed independently of $H$. It solves, with \texttt{solveXor} (\S\ref{gauss}; needs $|F| \le 4096$, the \texttt{BitRow} limit),
+	\item The writer splits the cells into the stuck set $S$, with values $b$, and the free set $F$; $F$ must be fixed independently of $H$. It solves, with \texttt{solveXor} (\S\ref{gauss}; needs $|F| \le 4\dsep096$, the \texttt{BitRow} limit),
 	\[ H_F\, x_F = m + H_S\, b \pmod 2. \]
 	\item Any solution works, so a kernel is no problem. No solution means the message cannot be written.
 	\item If $|F| = k + t$, every message can be written except with probability below $2^{-t}$. So about $n - |S|$ bits fit.

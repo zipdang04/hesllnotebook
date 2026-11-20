@@ -64,7 +64,7 @@ bool matInverse(vector<vector<Mint<MOD>>> &a){
 		a[i].erase(a[i].begin(), a[i].begin() + n);
 	return true;
 }
-using BitRow = bitset<4097>;
+using BitRow = bitset<4'097>;
 vector<BitRow> solveXor(vector<BitRow> a,
 		const vector<int> &b, int m){
 	int n = sz(a), rank = 0;

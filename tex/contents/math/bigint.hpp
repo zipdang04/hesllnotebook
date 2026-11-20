@@ -5,9 +5,9 @@
 // on decimal digits (schoolbook when one side has <= 32
 // limbs); / % schoolbook O(nm).
 struct Bigint{
-	static const int BASE = 1000000000;
-	static constexpr int P10[9] = {1, 10, 100, 1000, 10000,
-		100000, 1000000, 10000000, 100000000};
+	static const int BASE = 1'000'000'000;
+	static constexpr int P10[9] = {1, 10, 100, 1'000, 10'000,
+		100'000, 1'000'000, 10'000'000, 100'000'000};
 	bool neg = false;
 	vector<int> d;
 	Bigint(ll x = 0): neg(x < 0){

@@ -16,8 +16,8 @@ bool isPrime(ll n){
 	if(n % 2 == 0) return false;
 	int twos = __builtin_ctzll(n - 1);
 	ll odd = (n - 1) >> twos;
-	ll bases[] = {2, 325, 9375, 28178, 450775, 9780504,
-		1795265022};
+	ll bases[] = {2, 325, 9'375, 28'178, 450'775, 9'780'504,
+		1'795'265'022};
 	for(ll a: bases){
 		if(a % n == 0) continue; // says nothing
 		ll x = powMod(a, odd, n);
