@@ -659,7 +659,7 @@ Text sections (contest checklists, formula sheets, flow models) follow these rul
 | Taxonomies ("noise → remedy") | A two-column table with headings, not arrows in a list. |
 | A worked example per model | One line with numbers: "edge $u \to v$ with bounds $[2, 5]$: capacity 3, $d_v$ += 2, $d_u$ −= 2". |
 | Density | No paragraph longer than **3 printed rows**; no sentence with more than one semicolon; never two topics under one heading. |
-| Font | `\small` with `\tightdisplay`. |
+| Font | `{\footnotesize\tightdisplay ...}` (8 pt, the size of the notes); every text topic sits in such a group. |
 | Page count | Never a reason to merge paragraphs. If it is too long, ask what to cut. |
 
 ### 8.5 Cross-references
