@@ -2,9 +2,7 @@
 #include "../math/modint.hpp"
 
 // Implicit treap: a sequence, positions 1..size, [l, r]
-// closed; O(log n) expected per call. Recursive split and
-// merge, depth O(log n) expected if the input does not
-// depend on rng. Other ops: edit EDIT.
+// closed; O(log n) expected per call. Other ops: edit EDIT.
 struct Treap{
 	// ---- EDIT: node value, pending tag, two functions ----
 	// x -> b * x + c. Tag() must change nothing.

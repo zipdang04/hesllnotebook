@@ -2,7 +2,7 @@
 #include "../contest/template.hpp"
 
 // Mo's algorithm: answers closed queries [l, r] (1-based)
-// offline, O((n + q) sqrt q) add/del calls, no recursion.
+// offline, O((n + q) sqrt q) add/del calls.
 // add(i, right): a[i] joins the window at its right end if
 // right, else at its left end; del(i, right): it leaves.
 // Call: moQueries(q, add, del, [&]{ return cur; });

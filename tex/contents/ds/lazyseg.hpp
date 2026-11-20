@@ -2,7 +2,7 @@
 #include "../math/modint.hpp"
 
 // Iterative lazy segment tree (ACL), O(log n) per call.
-// No recursion; a's indices, closed [l, r]; edit EDIT.
+// a's indices, closed [l, r]; edit EDIT.
 struct LazySeg{
 	// ---- EDIT: node value, pending tag, two functions ----
 	struct Node{ MintN sum = 0; int len = 0; };

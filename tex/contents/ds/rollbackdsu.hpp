@@ -3,7 +3,7 @@
 
 // DSU with rollback. Elements 0..n-1: RollbackDsu(n + 1)
 // for 1..n. Union by size, no path compression, so find
-// is O(log n) and rollback undoes joins. No recursion.
+// is O(log n) and rollback undoes joins.
 struct RollbackDsu{
 	vector<int> par;
 	vector<pair<int, int>> stk;

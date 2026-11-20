@@ -1,8 +1,8 @@
 #pragma once
 #include "../contest/template.hpp"
 
-// Euler walk from s, directed/undirected, O(V + E), no
-// recursion. Vertices 1..n, g[u] = {v, id}, ids in 0..m;
+// Euler walk from s, directed/undirected, O(V + E).
+// Vertices 1..n, g[u] = {v, id}, ids in 0..m;
 // undirected: each edge in both lists with the same id.
 vector<pair<int, int>> eulerWalk(
 		const vector<vector<pair<int, int>>> &g, int m, int s){

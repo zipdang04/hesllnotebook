@@ -3,7 +3,7 @@
 
 // kd-tree on integer points: nearest point to p. About
 // O(log n) per query on random points, O(n) worst. Build
-// O(n log n). Recursive, depth <= log2(n) + 2.
+// O(n log n).
 struct KdTree{
 	struct Node{
 		PL pt;

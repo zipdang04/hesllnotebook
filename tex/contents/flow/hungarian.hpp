@@ -3,7 +3,7 @@
 
 // Min-cost assignment (Hungarian, shortest augmenting
 // paths): rows 1..n to distinct columns 1..m, n <= m.
-// O(n^2 m). No recursion.
+// O(n^2 m).
 pair<ll, vector<int>> hungarian(
 		const vector<vector<ll>> &a){
 	int i = sz(a), m = sz(a[0]) - 1, c = 0, s, r = 0;

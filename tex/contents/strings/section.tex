@@ -18,20 +18,6 @@
 	\fld{getRev} returns the hash of $s_r s_{r-1} \dots s_l$; $s_l \dots s_r$ is a palindrome with high probability when \texttt{getRev(l, r) == get(l, r)}.
 ]\label{strhash}
 {\footnotesize\tightdisplay
-\topic{Palindrome test}
-To ask whether $s_l \dots s_r$ is a palindrome, in $O(1)$:
-\[ \mathrm{pal}(l, r) \iff \texttt{h.get(l, r) == h.getRev(l, r)}. \]
-\topic{Longest palindrome per centre}
-For all maximal palindromes or the longest palindromic substring (Manacher's output), in $O(n \log n)$:
-\begin{facts}
-	\item A palindrome minus its two ends is a palindrome, so the radius $k$ is monotone: binary search it.
-	\item Odd centre $c \in 1..n$: the largest $k \le \min(c - 1, n - c)$ with $\mathrm{pal}(c - k, c + k)$; length $2k + 1$, 0-based start $c - k - 1$.
-	\item Even centre between $c$ and $c + 1$, $c \in 1..n-1$: the largest $k \le \min(c, n - c)$ with $\mathrm{pal}(c - k + 1, c + k)$; length $2k$, 0-based start $c - k$.
-\end{facts}
-\topic{Counting palindromic substrings}
-To count palindromes with multiplicity, sum the radii $k$ of the previous topic:
-\[ \text{total} = \sum_{\text{odd } c} (k_c + 1) + \sum_{\text{even } c} k_c. \]
-Distinct palindromes: eertree (\S\ref{eertree}).
 \topic{LCP, order and period of substrings}
 To compare two substrings with 0-based starts $i$, $j$:
 \begin{facts}

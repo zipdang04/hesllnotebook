@@ -2,7 +2,6 @@
 #include "../contest/template.hpp"
 
 // Adaptive Simpson of f: double(double), error ~eps.
-// Recursive, depth <= log2(|b - a| / 1e-10): 53 for 1e6.
 // Call: simpson(0, 1, [&](double x){ return x * x; });
 // A double integral: call simpson inside f.
 template<class Func> double simpsonRec(Func &f, double a,

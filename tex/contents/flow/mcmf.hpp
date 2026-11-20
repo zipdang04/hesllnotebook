@@ -3,7 +3,7 @@
 
 // Min-cost flow: successive shortest paths, Dijkstra with
 // potentials, Bellman-Ford once per run. MCMF mf(N):
-// vertices 0..N-1. O(VE + F E log E). No recursion.
+// vertices 0..N-1. O(VE + F E log E).
 struct MCMF{
 	struct Edge{ int to; ll cap, cost; };
 	vector<Edge> edges;

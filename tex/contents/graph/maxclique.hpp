@@ -3,7 +3,7 @@
 
 // Maximum clique, branch and bound with greedy colouring.
 // Vertices 1..n, n < 128 (edit B). Exponential: about
-// 1 s at n = 150 dense. Recursive, depth <= clique + 1.
+// 1 s at n = 150 dense.
 struct MaxClique{
 	// ---- EDIT: bitset size > n ----
 	typedef bitset<128> B;

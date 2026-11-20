@@ -1,0 +1,32 @@
+\section*{Practice day}
+\addcontentsline{toc}{section}{Practice day}
+\thispagestyle{practice}
+{\footnotesize\tightdisplay
+\topic{The judge}
+Use this on the dry-run day: submit small test programs and write each answer on this page.
+\begin{checks}
+	\item Find the system (DOMjudge, Kattis, PC\textsuperscript{2}) and the exact compile line; print \texttt{\_\_cplusplus} and \texttt{\_\_VERSION\_\_}.
+	\item Test whether \texttt{ONLINE\_JUDGE} is defined (expected: no).
+	\item Test \texttt{bits/stdc++.h}, \texttt{\_\_int128}, pb\_ds, and \texttt{LDBL\_MANT\_DIG == 64} (80-bit \texttt{long double}).
+	\item Test whether \texttt{\#pragma GCC target("avx2")} runs or dies with an illegal instruction.
+	\item Test recursion of depth $10^6$, then $10^7$, and a 100 MB local array.
+	\item Allocate just under and just over the memory limit, by heap and by recursion; note the verdict shown.
+	\item Write 10 MB to \texttt{cerr}; note any change in verdict or time.
+	\item Test the verdict of \texttt{return 1} from \texttt{main} and of a failed \texttt{assert}.
+	\item Test a trailing space and a missing final newline.
+	\item Time $10^9$ additions modulo a prime on the judge and here; note the ratio.
+	\item Note which verdicts and test numbers are shown, and whether clarifications and the scoreboard are reachable.
+\end{checks}
+\topic{The team machine}
+Use this on the same day, on the machine the team will get.
+\begin{checks}
+	\item Note the \texttt{g++} version; test that \texttt{-fsanitize=address,undefined} links and runs.
+	\item Test that ASan starts after \texttt{ulimit -s 1048576}, and after \texttt{ulimit -s unlimited}.
+	\item Check that \texttt{timeout}, \texttt{mkfifo}, \texttt{md5sum}, \texttt{/usr/bin/time -v} and \texttt{gdb} exist.
+	\item Run \texttt{stress.sh} (\S\ref{stress}) end to end in all four modes; time one round of each.
+	\item Time the typing of the template, the shell functions, \texttt{stress.sh} and gen; decide who types it.
+	\item Check the editors; the chosen one must keep tabs and auto-save.
+	\item Check that the shell is bash; put the functions of \S\ref{command} in \texttt{\textasciitilde/.bashrc}.
+	\item Print one page; note how long it takes to arrive.
+\end{checks}
+}

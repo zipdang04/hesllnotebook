@@ -2,8 +2,8 @@
 #include "../contest/template.hpp"
 
 // AHU: exact class ids of rooted subtrees, vertices 1..n,
-// undirected g. One object = one id table. O(n log n),
-// no recursion. unrooted: min over the 1 or 2 centres.
+// undirected g. One object = one id table. O(n log n).
+// Unrooted: min over the 1 or 2 centres.
 struct AHU{
 	// sorted child classes -> class id 1, 2, ..
 	map<vector<int>, int> ids;

@@ -4,7 +4,6 @@
 // findDivisor: composite n, 4 <= n < 2^62; 1 < d < n.
 //   About n^(1/4) mulMods (heuristic); deterministic.
 // factorize: 1 <= n < 2^62; prime factors, unsorted.
-//   Recursive, depth <= 62.
 ll findDivisor(ll n){
 	// prd = 2 covers n = 4; t = 30 makes the first gcd early
 	ll x = 0, y = 0, t = 30, prd = 2, c = 1;

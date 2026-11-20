@@ -1,7 +1,7 @@
 #pragma once
 #include "../contest/template.hpp"
 
-// dncDP O(k n log n), recursion depth <= log2 n + 2; knuth
+// dncDP O(k n log n); knuth
 // O(n^2) time and memory; aliens ~42 calls of solve.
 // Positions 1..n, C(l, r) on a[l..r]. All minimise.
 // Fills cur[l..r]; the opt of mid is in [optl, optr].

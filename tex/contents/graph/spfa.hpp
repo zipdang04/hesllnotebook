@@ -2,7 +2,7 @@
 #include "../contest/template.hpp"
 
 // Shortest paths from s, any weights: SPFA with SLF + LLL.
-// 1..n, g[u] = {v, w}. No recursion. No O(VE) bound.
+// 1..n, g[u] = {v, w}. No O(VE) bound.
 struct SPFA{
 	vector<ll> dist; vector<int> par; bool negCycle = false;
 	SPFA(const vector<vector<pair<int, ll>>> &g, int s):

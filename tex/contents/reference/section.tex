@@ -8,14 +8,9 @@
 \topic{Binomial identities}
 Use them to collapse a sum of binomial coefficients.
 \begin{facts}
-	\item Pascal and symmetry:
-	\begin{gather*} \tbinom{n}{k} = \tbinom{n-1}{k-1} + \tbinom{n-1}{k}, \\ \tbinom{n}{k} = \tbinom{n}{n-k}. \end{gather*}
-	\item Absorption:
-	\[ k \tbinom{n}{k} = n \tbinom{n-1}{k-1}. \]
-	\item Vandermonde:
-	\begin{gather*} \sum_{k} \tbinom{m}{k} \tbinom{n}{r-k} = \tbinom{m+n}{r}, \\ \sum_{k} \tbinom{n}{k}^2 = \tbinom{2n}{n}. \end{gather*}
-	\item Hockey stick:
-	\[ \sum_{i=r}^{n} \tbinom{i}{r} = \tbinom{n+1}{r+1}. \]
+	\item Absorption: $k \tbinom{n}{k} = n \tbinom{n-1}{k-1}$.
+	\item Vandermonde: $\sum\limits_{k} \tbinom{m}{k} \tbinom{n}{r-k} = \tbinom{m+n}{r}$, and $\sum\limits_{k} \tbinom{n}{k}^2 = \tbinom{2n}{n}$.
+	\item Hockey stick: $\sum\limits_{i=r}^{n} \tbinom{i}{r} = \tbinom{n+1}{r+1}$.
 \end{facts}
 \topic{Stars and bars}
 Use it to count ways to split $n$ equal balls into $k$ boxes.
@@ -140,25 +135,11 @@ On average:
 \toprule
 $N$ & $\max_{n \le N} d(n)$ & smallest such $n$ \\
 \midrule
-$10^{1}$ & 4 & 6 \\
-$10^{2}$ & 12 & 60 \\
 $10^{3}$ & 32 & 840 \\
-$10^{4}$ & 64 & 7560 \\
-$10^{5}$ & 128 & 83160 \\
 $10^{6}$ & 240 & 720720 \\
-$10^{7}$ & 448 & 8648640 \\
-$10^{8}$ & 768 & 73513440 \\
 $10^{9}$ & 1344 & 735134400 \\
-\end{tabular}\par\nointerlineskip
-\noindent\begin{tabular}{@{}rrr@{}}
-$10^{10}$ & 2304 & 6983776800 \\
-$10^{11}$ & 4032 & 97772875200 \\
 $10^{12}$ & 6720 & 963761198400 \\
-$10^{13}$ & 10752 & 9316358251200 \\
-$10^{14}$ & 17280 & 97821761637600 \\
 $10^{15}$ & 26880 & 866421317361600 \\
-$10^{16}$ & 41472 & 8086598962041600 \\
-$10^{17}$ & 64512 & 74801040398884800 \\
 $10^{18}$ & 103680 & 897612484786617600 \\
 \bottomrule
 \end{tabular}
@@ -454,21 +435,5 @@ Use these when the answer is a count, a sum or an expected value.
 	\item If the answer is a polynomial in $n$, interpolate it (\S\ref{lagrange}).
 	\item Write the counting as a generating function (\S\ref{fps}).
 	\item Write it as a linear program (\S\ref{simplex}).
-\end{checks}
-\topic{Data structures}
-Use these when queries and updates are mixed.
-\begin{checks}
-	\item Keep old versions with a persistent tree (\S\ref{perseg}).
-	\item Cut, join and reverse a sequence with an implicit treap (\S\ref{treap}).
-	\item Link and cut a forest with a link-cut tree (\S\ref{linkcut}).
-	\item Find the $k$-th element or a rank with pb\_ds (\S\ref{pbds}).
-\end{checks}
-\topic{Randomisation}
-Use these when a fixed choice has a bad input.
-\begin{checks}
-	\item Shuffle the input against a bad order.
-	\item Pick a random pivot or sample; repeat to lower the error.
-	\item Compare sets by a sum or xor of random weights per element.
-	\item Search an approximate optimum with simulated annealing (\S\ref{anneal}).
 \end{checks}
 }

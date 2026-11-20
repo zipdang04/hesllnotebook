@@ -2,7 +2,7 @@
 #include "../contest/template.hpp"
 
 // Link-cut forest, 1..n, node 0 = null. Amortised O(log n);
-// no recursion. connected, lca, update(u, x): no re-root.
+// connected, lca, update(u, x): no re-root.
 struct LinkCut{
 	// ---- EDIT: node value, pending tag, two functions ----
 	// x -> x + add. Tag() must change nothing.

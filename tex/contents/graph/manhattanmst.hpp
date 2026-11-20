@@ -2,7 +2,7 @@
 #include "../contest/template.hpp"
 
 // MST of points p[1..n] (p[0] unused) under |dx| + |dy|.
-// O(n log n), no recursion.
+// O(n log n).
 vector<array<ll, 3>> manhattanMST(vector<pair<ll, ll>> p){
 	int n = sz(p) - 1; vector<int> id(n); iota(all(id), 1);
 	vector<array<ll, 3>> cand, res;

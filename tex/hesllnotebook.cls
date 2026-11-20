@@ -77,6 +77,7 @@
     \rhead{page \thepage}
     \cfoot{}
 }
+\fancypagestyle{practice}{\fancyhf{}\lhead{\teamname -- \teamuni}\rhead{practice day}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 4. section %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 \titleformat{\section}{\normalfont\large\bfseries}{\thesection}{0.6em}{}

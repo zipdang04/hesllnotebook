@@ -3,7 +3,7 @@
 
 // Persistent segment tree, point set; O(log n) time and
 // nodes per call. Version 0 = a; positions = indices of a,
-// ranges [l, r] closed. Recursive, depth O(log n).
+// ranges [l, r] closed.
 struct PerSeg{
 	// ---- EDIT: node value, one function ----
 	struct Node{ ll sum = 0; };

@@ -2,7 +2,7 @@
 #include "../contest/template.hpp"
 
 // Global min cut (Stoer-Wagner), undirected, vertices 1..n.
-// O(E + V^3). No recursion.
+// O(E + V^3).
 using i128 = __int128;
 pair<ll, vector<int>> globalMinCut(
 		const vector<vector<pair<int, ll>>> &g){
