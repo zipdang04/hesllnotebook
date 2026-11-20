@@ -87,7 +87,7 @@
 \titlespacing*{\subsection}{0pt}{3pt plus 2pt}{0pt}
 \titlespacing*{\subsubsection}{0pt}{3pt plus 2pt}{0pt}
 \raggedcolumns
-\setcounter{tocdepth}{3}
+\setcounter{tocdepth}{2}
 % compact ToC: footnotesize, no paragraph skip, little space between entries.
 % Lengths in pt (em differs between the indent and the footnotesize label): each level's number
 % starts where the parent's title starts (16pt, 34pt = 16 + 18).
