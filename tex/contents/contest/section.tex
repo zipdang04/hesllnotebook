@@ -16,33 +16,33 @@
 	\fld{readChar} returns the next byte of the input, $-1$ at the end.
 ]\label{fastio}
 
-\othercodes{stress.sh}{bash}{stress.sh}[
-	\fld{Use} \texttt{./stress.sh p -n 500 -t 2}, or \texttt{-m tests}, \texttt{-m inter}, \texttt{-m multi -c chk}.
-	\fld{Result} \texttt{OK n tests}; or \texttt{FAIL seed i} + \texttt{tests/fail\_i.\{in,out,ans\}}; \texttt{-m tests} replays them; \texttt{inter}: \texttt{-m inter -s i -n 1}.
-	\fld{Needs} \texttt{timeout}, \texttt{mkfifo} (inter), \texttt{chmod +x stress.sh}; \texttt{-m tests} exits 1 unless all pass. Sanitizers are slow: raise \texttt{-t} before trusting a TLE.
-]\label{stress}
-{\footnotesize\tightdisplay
-\topic{Modes}
-\begin{tabular}{@{}l l p{4.9cm}@{}}
-\toprule
-Mode & Files & One round \\
-\midrule
-\texttt{stress} & \texttt{p gen brute} & \texttt{gen seed}, \texttt{brute}, \texttt{p}, compare \\
-\texttt{tests} & \texttt{p tests/*.\{in,ans\}} & \texttt{p} on every file: PASS, FAIL, TLE or RE \\
-\texttt{inter} & \texttt{p interactor} & \texttt{p} and \texttt{interactor seed} talk through a fifo \\
-\texttt{multi} & \texttt{p gen noise}, \texttt{-c chk} & \texttt{p}, \texttt{noise seed}, \texttt{p}, checker \\
-\bottomrule
-\end{tabular}
-\topic{Rules for the helper programs}
-\begin{facts}
-	\item Compare is \texttt{./chk in out ans} with \texttt{-c chk} (\S\ref{chk}), else \texttt{diff -b out ans}.
-	\item Everything is built with \texttt{-DSTRESS} and sanitizers, without \texttt{-DLOCAL}.
-	\item Interactor: reads the solution on stdin, answers on stdout with a flush, debug text to stderr; \texttt{return 0} for accepted, \texttt{1} otherwise, also when a read fails.
-	\item Interactive solution: flush after every line; no fast reader.
-	\item \texttt{multi}: the checker gets pass 1's output as \texttt{ans}; without \texttt{-c} the run means nothing.
-	\item Name samples \texttt{tests/0a.in}, \texttt{tests/0b.in}: they run first.
-\end{facts}
-}
+% \othercodes{stress.sh}{bash}{stress.sh}[
+% 	\fld{Use} \texttt{./stress.sh p -n 500 -t 2}, or \texttt{-m tests}, \texttt{-m inter}, \texttt{-m multi -c chk}.
+% 	\fld{Result} \texttt{OK n tests}; or \texttt{FAIL seed i} + \texttt{tests/fail\_i.\{in,out,ans\}}; \texttt{-m tests} replays them; \texttt{inter}: \texttt{-m inter -s i -n 1}.
+% 	\fld{Needs} \texttt{timeout}, \texttt{mkfifo} (inter), \texttt{chmod +x stress.sh}; \texttt{-m tests} exits 1 unless all pass. Sanitizers are slow: raise \texttt{-t} before trusting a TLE.
+% ]\label{stress}
+% {\footnotesize\tightdisplay
+% \topic{Modes}
+% \begin{tabular}{@{}l l p{4.9cm}@{}}
+% \toprule
+% Mode & Files & One round \\
+% \midrule
+% \texttt{stress} & \texttt{p gen brute} & \texttt{gen seed}, \texttt{brute}, \texttt{p}, compare \\
+% \texttt{tests} & \texttt{p tests/*.\{in,ans\}} & \texttt{p} on every file: PASS, FAIL, TLE or RE \\
+% \texttt{inter} & \texttt{p interactor} & \texttt{p} and \texttt{interactor seed} talk through a fifo \\
+% \texttt{multi} & \texttt{p gen noise}, \texttt{-c chk} & \texttt{p}, \texttt{noise seed}, \texttt{p}, checker \\
+% \bottomrule
+% \end{tabular}
+% \topic{Rules for the helper programs}
+% \begin{facts}
+% 	\item Compare is \texttt{./chk in out ans} with \texttt{-c chk} (\S\ref{chk}), else \texttt{diff -b out ans}.
+% 	\item Everything is built with \texttt{-DSTRESS} and sanitizers, without \texttt{-DLOCAL}.
+% 	\item Interactor: reads the solution on stdin, answers on stdout with a flush, debug text to stderr; \texttt{return 0} for accepted, \texttt{1} otherwise, also when a read fails.
+% 	\item Interactive solution: flush after every line; no fast reader.
+% 	\item \texttt{multi}: the checker gets pass 1's output as \texttt{ans}; without \texttt{-c} the run means nothing.
+% 	\item Name samples \texttt{tests/0a.in}, \texttt{tests/0b.in}: they run first.
+% \end{facts}
+% }
 
 % \cpp{Gen helper}{gen.cpp}[
 % 	\fld{Use} \texttt{./gen 7 > in}; edit \texttt{main}, keep \texttt{rnd(l, r)} (inclusive, $r - l < 2^{63} - 1$) and the seed line.
@@ -57,62 +57,66 @@ Mode & Files & One round \\
 
 \entry{Troubleshoot + edge cases}\label{troubleshoot}
 {\footnotesize\tightdisplay
-\topic{Before a submit}
-\begin{checks}
-	\item Pass every sample with the judge build \texttt{o}, not only with \texttt{c} (\S\ref{command}).
+% \topic{Before a submit}
+% \begin{checks}
+	% \item Pass every sample with the judge build \texttt{o}, not only with \texttt{c} (\S\ref{command}).
 	% \item Generate a maximum test; time it without sanitizers and look at the memory.
 	% \item Keep products and sums in \texttt{ll}: \texttt{1LL * a * b}, \texttt{(1LL * a - b + MOD) \% MOD}.
 	% \item Never compute \texttt{oo * x} or a sum of many \texttt{oo}; test \texttt{d[v] < oo} before \texttt{d[v] + w}, or a later \texttt{== oo} test fails.
 	% \item With many test cases, reset every global, and only up to \texttt{n}.
 	% \item End lines with \texttt{'\textbackslash n'}, not \texttt{endl}.
 	% \item Print reals with \texttt{cout <{}< fixed <{}< setprecision(10)}.
-\end{checks}
-\topic{Wrong answer}
+% \end{checks}
+\topic{When getting stucks}
 \begin{checks}
-	\item Print the code and the debug output; give the machine to a teammate.
-	\item \underline{\textbf{Read the whole statement again}}: output format, YES or Yes, 0- or 1-based, the output when there is no answer.
-	\item Run the algorithm by hand on a small case; explain it to a teammate.
-	\item After two wrong answers, let a teammate read the statement alone; consider a rewrite.
-	\item Look for swapped \texttt{N} and \texttt{M}, \texttt{i} and \texttt{j}.
+	\item \underline{\textbf{Read the whole statement again}}
+\end{checks}
+% \topic{Wrong answer}
+% \begin{checks}
+	% \item Print the code and the debug output; give the machine to a teammate.
+	% \item \underline{\textbf{Read the whole statement again}}: output format, YES or Yes, 0- or 1-based, the output when there is no answer.
+	% \item Run the algorithm by hand on a small case; explain it to a teammate.
+	% \item After two wrong answers, let a teammate read the statement alone; consider a rewrite.
+	% \item Look for swapped \texttt{N} and \texttt{M}, \texttt{i} and \texttt{j}.
 	% \item Look for overflow, also in parameters and return types (\texttt{int f(ll x)}).
 	% \item Look for uninitialised locals: globals start at zero, locals do not.
 	% \item Look for state not cleared between test cases.
 	% \item Make every \texttt{sort} comparator return false for equal elements: \texttt{<=} can crash.
 	% \item Compare reals with an epsilon.
 	% \item Write a brute force and run \texttt{stress.sh} (\S\ref{stress}).
-\end{checks}
-\topic{Runtime error}
-\begin{checks}
-	\item Add up the memory (see Memory limit).
-	\item Look for an iterator or reference used after its container changed.
+% \end{checks}
+% \topic{Runtime error}
+% \begin{checks}
+% 	\item Add up the memory (see Memory limit).
+% 	\item Look for an iterator or reference used after its container changed.
 	% \item Look for an index outside the array; a vector of size $n$ used at index $n$.
 	% \item Look for division or modulo by zero.
 	% \item Look for endless recursion, or recursion so deep that the stack passes the memory limit.
 	% \item If it runs fine locally, run the debug build \texttt{c} on the smallest and the largest input.
-\end{checks}
-\topic{Time limit}
-\begin{checks}
-	\item Look for an endless loop on an edge case: $n = 1$, empty input.
-	% \item Remove \texttt{endl} and leftover \texttt{cerr}; never submit the debug build.
-	\item Use a sorted vector where \texttt{map} or \texttt{set} is not needed. A plain \texttt{unordered\_map} can be forced to $O(n)$ per operation by anti-hash tests: give it \texttt{CustomHash} (\S\ref{pbds}).
-	\item Read very large input with the fast reader (\S\ref{fastio}).
-	\item Mark a small function called in the hot loop \texttt{inline}: GCC then inlines it more readily.
-\end{checks}
-\topic{Memory limit}
-Use this after a memory limit, or before a submit with big arrays.
-\begin{checks}
-	\item Add up the arrays: $10^6$ \texttt{ll} take 8 MB; each inner vector of a \texttt{vector<vector<int>{}>} costs 24 bytes before its elements, plus heap overhead.
-	\item Use \texttt{int} where it is enough; check that no memo table is wider than needed.
-	\item Count deep recursion: the stack is part of the memory limit.
-\end{checks}
-\topic{When to stress}
-Use this before writing a generator and a brute force.
-\begin{checks}
-	\item Write hand-made cases first: a teammate writes them on paper; keep one \texttt{tests/} folder per problem.
-	\item Stress after a wrong answer, or before a submit when all three hold: every random input is valid, the greedy or DP is unproven, you can write the brute force in 5 minutes.
-	\item Start with small $n$.
-	\item Under \texttt{-DSTRESS}, shrink block sizes and thresholds to 1--3 so that rare branches run; use \texttt{const int}, not \texttt{\#define}.
-\end{checks}
+% \end{checks}
+% \topic{Time limit}
+% \begin{checks}
+% 	\item Look for an endless loop on an edge case: $n = 1$, empty input.
+% 	% \item Remove \texttt{endl} and leftover \texttt{cerr}; never submit the debug build.
+% 	% \item Use a sorted vector where \texttt{map} or \texttt{set} is not needed. A plain \texttt{unordered\_map} can be forced to $O(n)$ per operation by anti-hash tests: give it \texttt{CustomHash} (\S\ref{pbds}).
+% 	% \item Read very large input with the fast reader (\S\ref{fastio}).
+% 	\item Mark a small function called in the hot loop \texttt{inline}: GCC then inlines it more readily.
+% \end{checks}
+% \topic{Memory limit}
+% Use this after a memory limit, or before a submit with big arrays.
+% \begin{checks}
+% 	\item Add up the arrays: $10^6$ \texttt{ll} take 8 MB; each inner vector of a \texttt{vector<vector<int>{}>} costs 24 bytes before its elements, plus heap overhead.
+% 	\item Use \texttt{int} where it is enough; check that no memo table is wider than needed.
+% 	\item Count deep recursion: the stack is part of the memory limit.
+% \end{checks}
+% \topic{When to stress}
+% Use this before writing a generator and a brute force.
+% \begin{checks}
+% 	\item Write hand-made cases first: a teammate writes them on paper; keep one \texttt{tests/} folder per problem.
+% 	\item Stress after a wrong answer, or before a submit when all three hold: every random input is valid, the greedy or DP is unproven, you can write the brute force in 5 minutes.
+% 	\item Start with small $n$.
+% 	\item Under \texttt{-DSTRESS}, shrink block sizes and thresholds to 1--3 so that rare branches run; use \texttt{const int}, not \texttt{\#define}.
+% \end{checks}
 \topic{Edge cases}
 \noindent\begin{tabular}{@{}l p{6.6cm}@{}}
 \toprule
