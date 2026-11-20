@@ -60,6 +60,7 @@
 	\fld{matInverse} sets \texttt{a} to $A^{-1}$; singular: false, \texttt{a} undefined.
 	\fld{solveXor} solves over $\mathrm{GF}(2)$ likewise, with \texttt{bitset} rows; use width $\max(4097, m + 1)$.
 ]\label{gauss}
+{\footnotesize\tightdisplay
 \topic{Real numbers}
 For a system over \texttt{double} (probabilities, expected values), copy \texttt{gauss} and make these edits.
 \begin{facts}
@@ -67,6 +68,7 @@ For a system over \texttt{double} (probabilities, expected values), copy \texttt
 	\item Pivot on the row with the largest $|a_{r,\mathrm{col}}|$, not on the first nonzero one.
 	\item Treat $|x| < 10^{-9}$ as zero, in the pivot search, the no-solution test and the \texttt{piv} scan of \texttt{solveLinear}.
 \end{facts}
+}
 \cpp[4]{Simplex}{simplex.hpp}[
 	\fld{Use} \texttt{Simplex lp(A, b, c);} then test \texttt{lp.val} against \texttt{-INFINITY} and \texttt{INFINITY}.
 	\fld{Result} \texttt{lp.x} reaches \texttt{lp.val}. It is empty for \texttt{-INFINITY} and some feasible point for \texttt{INFINITY}.
@@ -97,7 +99,7 @@ For a system over \texttt{double} (probabilities, expected values), copy \texttt
 	\fld{Needs} \texttt{MOD} $\ne 2$ for \texttt{'\textasciicircum'}. Uses Modint (\S\ref{modint}).
 	\fld{fwht} transforms in place, size a power of two; \texttt{fwht(a, op, true)} inverts it.
 ]\label{fwht}
-{\small\tightdisplay
+{\footnotesize\tightdisplay
 \topic{Subset sums (SOS)}
 To get $\sum_{T \subseteq S} a_T$ for every mask $S$, call \texttt{fwht(a, '|')}; for supersets, \texttt{'\&'}.
 \texttt{fwht(a, '|', true)} is Möbius inversion over subsets. For \texttt{ll} values, copy the loop with \texttt{ll} in place of \texttt{Mint<MOD>}.
@@ -126,9 +128,11 @@ For $\min(i, j) = k$, use suffix sums $A_k = \sum_{i \ge k} a_i$ and $c_k = C_k 
 	\fld{interpolateAt} returns $f(t)$ for any \texttt{ll} $t$ from the values $y_i = f(i)$, without the coefficients.
 	\fld{Sums} a sum $\sum_{i=1}^{t} i^k$ is a polynomial of degree $k + 1$ in $t$: give $k + 2$ values.
 ]\label{lagrange}
+{\footnotesize\tightdisplay
 \topic{Formula}
 Evaluate the interpolating polynomial by hand, or check a coefficient, with
 \[ f(t) = \sum_i y_i \prod_{j \ne i} \frac{t - x_j}{x_i - x_j}. \]
+}
 
 \subsection{Numerical}
 \cpp[4]{Simpson integration}{simpson.hpp}[

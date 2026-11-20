@@ -21,7 +21,7 @@
 	\fld{Result} \texttt{OK n tests}; or \texttt{FAIL seed i} + \texttt{tests/fail\_i.\{in,out,ans\}}; \texttt{-m tests} replays them; \texttt{inter}: \texttt{-m inter -s i -n 1}.
 	\fld{Needs} \texttt{timeout}, \texttt{mkfifo} (inter), \texttt{chmod +x stress.sh}; \texttt{-m tests} exits 1 unless all pass. Sanitizers are slow: raise \texttt{-t} before trusting a TLE.
 ]\label{stress}
-{\small\tightdisplay
+{\footnotesize\tightdisplay
 \topic{Modes}
 \begin{tabular}{@{}l p{2.5cm} p{4.9cm}@{}}
 \toprule
@@ -54,7 +54,7 @@ Mode & Files & One round \\
 	\fld{Needs} reals use $|x - y| \le 10^{-6} \max(1, |y|)$; for multiple valid answers, use \texttt{in} to require valid \texttt{out} as good as \texttt{ans}.
 ]\label{chk}
 \entry{Troubleshoot + edge cases}\label{troubleshoot}
-{\small\tightdisplay
+{\footnotesize\tightdisplay
 \topic{Before a submit}
 Go through this list before every submit.
 \begin{checks}
@@ -137,7 +137,7 @@ Geometry & parallel or coincident lines, far intersections, circles meeting at 0
 \end{tabular}
 }
 \entry{Practice session}\label{practice}
-{\small\tightdisplay
+{\footnotesize\tightdisplay
 \topic{The judge}
 Use this on the dry-run day: submit small test programs and write each answer on this page.
 \begin{checks}
@@ -167,7 +167,7 @@ Use this on the same day, on the machine the team will get.
 \end{checks}
 }
 \entry{gdb}\label{gdbcard}
-{\small\tightdisplay
+{\footnotesize\tightdisplay
 \topic{Commands}
 Use gdb for an endless loop (Ctrl-C, then \texttt{bt}) or for a crash the debug build does not explain.
 For a wrong answer use \texttt{dbg} and paper: stepping takes the machine from the team.
@@ -186,6 +186,8 @@ Command & Effect \\
 \texttt{p x}, \texttt{p v} & print a value; a container needs the libstdc++ pretty-printers, else raw fields \\
 \texttt{p a[3]@5} & print 5 elements from \texttt{a[3]} \\
 \texttt{info locals} & all local variables of the frame \\
+\end{tabular}\par\nointerlineskip
+\noindent\begin{tabular}{@{}l p{6cm}@{}}
 \texttt{b 42} & breakpoint at line 42 \\
 \texttt{b f if i==7} & breakpoint at \texttt{f}, only when \texttt{i == 7}; \texttt{i} must be in scope there (parameter or global) \\
 \texttt{c}, \texttt{n}, \texttt{s} & continue, next line, step into a call \\

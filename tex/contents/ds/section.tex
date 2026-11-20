@@ -18,7 +18,7 @@
 	\fld{get} \texttt{s.get(v, l, r).sum} is $a_l + \dots + a_r$ in version \texttt{v}; \texttt{get(v, l, l - 1)} is \texttt{Node()}.
 	\fld{update} Point add is \texttt{update(v, p, \{get(v, p, p).sum + x\})}. Range add: the next topic.
 ]\label{perseg}
-{\small\tightdisplay
+{\footnotesize\tightdisplay
 \topic{Range add with never-pushed tags}
 To add $x$ on $[l, r]$ in a new version, give every node a tag \texttt{add} that covers its whole range and is never pushed.
 \begin{facts}

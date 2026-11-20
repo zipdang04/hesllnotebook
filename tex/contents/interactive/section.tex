@@ -5,7 +5,7 @@
 
 \subsection{Checklists}
 \entry{Interactive}\label{interactivecheck}
-{\small\tightdisplay
+{\footnotesize\tightdisplay
 \topic{Protocol}
 Check these in every interactive problem.
 \begin{checks}
@@ -37,7 +37,7 @@ Use a named pipe to connect the solution to your own interactor.
 \end{facts}
 }
 \entry{Multi-pass}\label{multipasscheck}
-{\small\tightdisplay
+{\footnotesize\tightdisplay
 \topic{Checklist}
 Use it when the program runs twice and pass 2 reads what pass 1 wrote.
 \begin{checks}
@@ -51,7 +51,7 @@ Use it when the program runs twice and pass 2 reads what pass 1 wrote.
 \end{checks}
 }
 \entry{Noise taxonomy}\label{noisetaxonomy}
-{\small\tightdisplay
+{\footnotesize\tightdisplay
 \topic{What the judge does, and what to use}
 Find the row that matches the statement; the right column names the remedy.
 An erasure is a symbol lost at a known place.
@@ -70,6 +70,8 @@ Flips in one direction & \raggedright complementary pairs, then an erasure code 
 One bit added or lost & Varshamov--Tenengolts (\S\ref{bitcodes}) \\
 Unknown lengths & \raggedright unary, Elias-gamma, padding (\S\ref{bitcodes}); they do not repair a cut \tabularnewline
 One changed symbol & two checksums, sent safely (\S\ref{bitcodes}) \\
+\end{tabular}\par\nointerlineskip
+\noindent\begin{tabular}{@{}p{3.8cm} p{5.0cm}@{}}
 Items shuffled & send a set: Rank / unrank (\S\ref{rankunrank}) \\
 Tree vertices relabelled & AHU canonical form (\S\ref{ahu}) \\
 A few candidate originals & compare a hash (\S\ref{bitcodes}); it only verifies \\
@@ -79,7 +81,7 @@ A few candidate originals & compare a hash (\S\ref{bitcodes}); it only verifies 
 
 \subsection{Codes}
 \entry{Linear codes: Reed--Solomon, GF(2), stuck bits}\label{linearcodes}
-{\small\tightdisplay
+{\footnotesize\tightdisplay
 \topic{Reed--Solomon: erased symbols}
 Use it when symbols may be lost but the positions of the survivors are known.
 \begin{facts}
@@ -120,7 +122,7 @@ Use it when the writer knows which cells are stuck and at which value, and the r
 Example: $H = (1, 1, 1)$, first cell stuck at 1, message 0: write $110$.
 }
 \entry{Bit-level codes: self-delimiting, VT, pairs, checksum}\label{bitcodes}
-{\small\tightdisplay
+{\footnotesize\tightdisplay
 \topic{Unary}
 Use it for small nonnegative integers, such as run lengths.
 \begin{facts}

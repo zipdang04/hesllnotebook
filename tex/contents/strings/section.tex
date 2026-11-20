@@ -17,7 +17,7 @@
 	\fld{Needs} character codes 1 to 127; a collision has probability about $n / 2^{61}$ per comparison.
 	\fld{getRev} returns the hash of $s_r s_{r-1} \dots s_l$; $s_l \dots s_r$ is a palindrome with high probability when \texttt{getRev(l, r) == get(l, r)}.
 ]\label{strhash}
-{\small\tightdisplay
+{\footnotesize\tightdisplay
 \topic{Palindrome test}
 To ask whether $s_l \dots s_r$ is a palindrome, in $O(1)$:
 \[ \mathrm{pal}(l, r) \iff \texttt{h.get(l, r) == h.getRev(l, r)}. \]

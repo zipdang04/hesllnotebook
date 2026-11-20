@@ -4,7 +4,7 @@
 \setcurrentdir{reference}
 
 \entry{Counting}\label{mathcount}
-{\small\tightdisplay
+{\footnotesize\tightdisplay
 \topic{Binomial identities}
 Use them to collapse a sum of binomial coefficients.
 \begin{facts}
@@ -111,7 +111,7 @@ Bracelets, up to rotation and reflection:
 \[ \frac{N(n, k)}{2} + \begin{cases} \tfrac{1}{2} k^{(n+1)/2} & n \text{ odd}, \\ \tfrac{1}{4}(k+1) k^{n/2} & n \text{ even}. \end{cases} \]
 }
 \entry{Number theory}\label{mathnt}
-{\small\tightdisplay
+{\footnotesize\tightdisplay
 \topic{Euler's $\varphi$ and Möbius $\mu$}
 Use them to count numbers coprime to $n$ and to evaluate multiplicative sums.
 For $n = \prod p_i^{e_i}$,
@@ -163,6 +163,8 @@ $10^{6}$ & 240 & 720720 \\
 $10^{7}$ & 448 & 8648640 \\
 $10^{8}$ & 768 & 73513440 \\
 $10^{9}$ & 1344 & 735134400 \\
+\end{tabular}\par\nointerlineskip
+\noindent\begin{tabular}{@{}rrr@{}}
 $10^{10}$ & 2304 & 6983776800 \\
 $10^{11}$ & 4032 & 97772875200 \\
 $10^{12}$ & 6720 & 963761198400 \\
@@ -223,7 +225,7 @@ $p$ & $c \cdot 2^k + 1$ & $g$ \\
 \end{tabular}
 }
 \entry{Sums \& generating functions}\label{mathsums}
-{\small\tightdisplay
+{\footnotesize\tightdisplay
 \topic{Power sums}
 Use the closed forms for small $k$ and interpolation for any $k$.
 \begin{gather*} \sum_{i=1}^{n} i = \frac{n(n+1)}{2}, \\ \sum_{i=1}^{n} i^2 = \frac{n(n+1)(2n+1)}{6}, \\ \sum_{i=1}^{n} i^3 = \Bigl(\frac{n(n+1)}{2}\Bigr)^2. \end{gather*}
@@ -280,7 +282,7 @@ where $P$ is the product of $Q$ with the first $d$ terms, cut to degree $d - 1$:
 \end{facts}
 }
 \entry{Games}\label{mathgames}
-{\small\tightdisplay
+{\footnotesize\tightdisplay
 \topic{Sprague--Grundy}
 Use it when the game is impartial, the player who cannot move loses, and a position is a sum of independent games.
 \[ g(x) = \operatorname{mex} \{\, g(y) : x \to y \,\} \]
@@ -323,7 +325,7 @@ Use it when no known game fits.
 Example: taking 1, 3 or 4 gives $g = 0, 1, 0, 1, 2, 3, 2$, repeated with period 7.
 }
 \entry{Probability \& identities}\label{mathprob}
-{\small\tightdisplay
+{\footnotesize\tightdisplay
 \topic{Linearity of expectation}
 Use it for the expected size of a count: write the count as a sum of indicators.
 \[ E[X] = \sum_i P(A_i) \quad \text{for } X = \sum_i [A_i] \]
@@ -353,9 +355,9 @@ Solve it with Gauss over \texttt{double} (\S\ref{gauss}, ``Real numbers''). With
 Example: rolls of a die until a 6 give
 \[ E = 1 + \tfrac{5}{6} E, \]
 so $E = 6$.
-\topic{Distributions}\nopagebreak
+\topic{Distributions}
 Use this table for a mean or a variance.
-\par\nopagebreak\smallskip
+\par\smallskip
 \begin{tabular}{@{}p{2.6cm} p{3.0cm} l l@{}}
 \toprule
 Name & $P(X = k)$ or density & Mean & Variance \\
@@ -364,6 +366,8 @@ Binomial $(n, p)$ & $\binom{n}{k} p^k (1 - p)^{n - k}$ & $np$ & $np(1 - p)$ \\
 Geometric $p$ & $(1 - p)^{k - 1} p$ & $\frac{1}{p}$ & $\frac{1 - p}{p^2}$ \\
 Poisson $\lambda$ & $e^{-\lambda} \lambda^k / k!$ & $\lambda$ & $\lambda$ \\
 Uniform $a..b$ & $\frac{1}{b - a + 1}$ & $\frac{a + b}{2}$ & $\frac{(b - a + 1)^2 - 1}{12}$ \\
+\end{tabular}\par\nointerlineskip
+\noindent\begin{tabular}{@{}p{2.6cm} p{3.0cm} l l@{}}
 Uniform $[a, b]$ & $\frac{1}{b - a}$ & $\frac{a + b}{2}$ & $\frac{(b - a)^2}{12}$ \\
 Exponential $\lambda$ & $\lambda e^{-\lambda x}$, $x \ge 0$ & $\frac{1}{\lambda}$ & $\frac{1}{\lambda^2}$ \\
 Normal $(\mu, \sigma^2)$ & $\frac{1}{\sigma \sqrt{2\pi}} e^{-(x - \mu)^2 / (2\sigma^2)}$ & $\mu$ & $\sigma^2$ \\
@@ -395,7 +399,7 @@ Example: sides $a = 3$, $b = 4$, $c = 5$ give
 so $\alpha \approx 36.87^\circ$.
 }
 \entry{Techniques prompt list}\label{techniques}
-{\small\tightdisplay
+{\footnotesize\tightdisplay
 When stuck, read down the lists and ask of each item: does this fit?
 \topic{First tries}
 Use these when you have no idea yet.

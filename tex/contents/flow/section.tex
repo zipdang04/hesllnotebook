@@ -26,7 +26,7 @@
 	\fld{Models} \S\ref{flowmodels}
 ]\label{costscaling}
 \entry{Flow models}\label{flowmodels}
-{\small\tightdisplay
+{\footnotesize\tightdisplay
 The graph has vertices $1..n$. Extra vertices are $S = n + 1$ and $T = n + 2$, so build \texttt{Dinic d(n + 3)}. Capacity $\infty$ is any value above the total of the finite capacities (and of $\sum_{d_v > 0} d_v$), within Dinic's limit. \texttt{oo} works if that total is below $10^{18}$.
 \topic{Lower bounds: feasible circulation}
 Use it when every edge needs $l \le f \le r$ and there is no source or sink.

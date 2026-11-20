@@ -90,9 +90,9 @@
 % compact ToC: footnotesize, no paragraph skip, little space between entries.
 % Lengths in pt (em differs between the indent and the footnotesize label): each level's number
 % starts where the parent's title starts (16pt, 34pt = 16 + 18).
-\titlecontents{section}[16pt]{\addvspace{3pt}\footnotesize\bfseries}{\contentslabel{16pt}}{\hspace*{-16pt}}{\hfill\contentspage}
-\titlecontents{subsection}[34pt]{\footnotesize}{\contentslabel{18pt}}{\hspace*{-18pt}}{\titlerule*[0.5pc]{.}\contentspage}
-\titlecontents{subsubsection}[57pt]{\footnotesize}{\contentslabel{23pt}}{\hspace*{-23pt}}{\titlerule*[0.5pc]{.}\contentspage}
+\titlecontents{section}[16pt]{\addvspace{3pt}\scriptsize\bfseries}{\contentslabel{16pt}}{\hspace*{-16pt}}{\hfill\contentspage}
+\titlecontents{subsection}[34pt]{\scriptsize}{\contentslabel{18pt}}{\hspace*{-18pt}}{\titlerule*[0.5pc]{.}\contentspage}
+\titlecontents{subsubsection}[57pt]{\scriptsize}{\contentslabel{23pt}}{\hspace*{-23pt}}{\titlerule*[0.5pc]{.}\contentspage}
 \let\hesll@tableofcontents\tableofcontents
 \renewcommand{\tableofcontents}{{\setlength{\parskip}{0pt}\hesll@tableofcontents}}
 
@@ -136,7 +136,7 @@
     \tl_gset:Nx\entryhash{\exp_not:N\hfill{\exp_not:N\normalfont\exp_not:N\ttfamily\exp_not:N\scriptsize\l_tmpa_tl}}}
 \ExplSyntaxOff
 \NewDocumentCommand\othercodes{oommmo}{
-    \par\vskip 0pt plus 5\baselineskip\penalty-200\vskip 0pt plus -5\baselineskip % keep heading + first rows together
+    \par\if@nobreak\else\vskip 0pt plus 2\baselineskip\penalty-200\vskip 0pt plus -2\baselineskip\fi % keep heading + first rows together
     \csname\entrylevel\endcsname[#3]{#3\entryhash}\gdef\entryhash{}
     \global\let\hesll@lbl\@currentlabel % \cpp's group would reset it: a \label after \cpp names this entry
     \IfNoValueTF{#6}{} {%

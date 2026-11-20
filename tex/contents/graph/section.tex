@@ -36,6 +36,7 @@
 	\fld{Needs} $n \cdot \max |w| < 10^{18}$. No $O(VE)$ bound: crafted inputs are exponential. Shuffle each \texttt{g[u]} once.
 	\fld{negCycle} flags a negative cycle reachable from $s$. To detect one anywhere, use \texttt{g(n + 2)}; start at $n + 1$ with 0-edges to all vertices.
 ]\label{spfa}
+{\footnotesize\tightdisplay
 \topic{Print a negative cycle}
 Use it when the cycle itself is wanted: \texttt{par} from SPFA need not contain it yet.
 \begin{facts}
@@ -53,6 +54,7 @@ Use it to minimise the average weight $\bar w(C)$ of a cycle $C$, when the graph
 	\item Overflow: needs $n (K W + |\lambda|) < 10^{18}$.
 	\item The exact rational value: Karp's algorithm, $O(VE)$ (not printed).
 \end{facts}
+}
 \cpp[4]{Directed MST}{dmst.hpp}[
 	\fld{Use} \texttt{vector<vector<pair<int, ll>>> g(n + 1); DirectedMST dm(g, r);}
 	\fld{Result} \texttt{dm.cost}, the weight of a minimum rooted arborescence (reaches every vertex); \texttt{dm.par[v]} is the tail of $v$'s edge, \texttt{par[r]} $= 0$.
@@ -64,7 +66,7 @@ Use it to minimise the average weight $\bar w(C)$ of a cycle $C$, when the graph
 	\fld{Needs} $|x|, |y| \le 10^{17}$. Chebyshev distance: rotate to $(x + y, x - y)$ first (then $|x| + |y| \le 10^{17}$ is needed), then halve each $w$.
 ]\label{manhattanmst}
 \entry{Matrix-tree theorem}\label{matrixtree}
-{\small\tightdisplay
+{\footnotesize\tightdisplay
 \topic{Undirected}
 Use it to count the spanning trees of a multigraph on vertices $1..n$.
 \[ L = D - A, \qquad t(G) = \det L_{\hat r \hat r} \]
