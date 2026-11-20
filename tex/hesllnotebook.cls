@@ -20,6 +20,8 @@
 \RequirePackage{amssymb}
 \RequirePackage{enumitem}
 \RequirePackage{booktabs}
+\RequirePackage{tikz}
+\usetikzlibrary{quotes}
 % keep >> and << literal in typewriter text (vntex tt has guillemet ligatures)
 \RequirePackage[protrusion=false,expansion=false]{microtype}
 \DisableLigatures[<,>]{encoding = *, family = tt*}
@@ -117,6 +119,11 @@
   \setlength\abovedisplayshortskip{0pt}\setlength\belowdisplayshortskip{1pt}}
 % Prose: \topic{Heading} per topic, formulas displayed; checklists: \begin{checks}\item ...\end{checks}
 \newcommand{\topic}[1]{\par\smallskip\noindent\textbf{#1}\par\nopagebreak}
+% Flow gadgets: \flowfig{tikz code}, centred. \node(v) at (x,y) {$v$}; edges: (u) edge["cap"] (v), ' puts the label below
+\tikzset{flow/.style={x=1cm, y=1cm, >=stealth, font=\footnotesize, every edge/.style={draw,->},
+  every edge quotes/.style={auto, font=\scriptsize, inner sep=1pt}},
+  note/.style={font=\scriptsize, inner sep=1pt}}
+\newcommand{\flowfig}[1]{\par\smallskip{\centering\begin{tikzpicture}[flow]#1\end{tikzpicture}\par}\smallskip}
 \newlist{checks}{itemize}{1}
 \setlist[checks]{nosep,leftmargin=1.2em,label=$\square$}
 \newlist{facts}{itemize}{1}

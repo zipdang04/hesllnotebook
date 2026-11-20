@@ -30,6 +30,15 @@
 The graph has vertices $1..n$. Extra vertices are $S = n + 1$ and $T = n + 2$, so build \texttt{Dinic d(n + 3)}. Capacity $\infty$ is any value above the total of the finite capacities (and of $\sum_{d_v > 0} d_v$), within Dinic's limit. \texttt{oo} works if that total is below $10^{18}$.
 \topic{Lower bounds: feasible circulation}
 Use it when every edge needs $l \le f \le r$ and there is no source or sink.
+\flowfig{
+	\node(a) at (-2.6,0) {$u$}; \node(b) at (-1.2,0) {$v$}; \draw (a) edge["${[l, r]}$"] (b);
+	\node at (-.6,0) {$\Rightarrow$};
+	\node(s) at (0,0) {$s$}; \node(u) at (1.3,0) {$u$}; \node(v) at (3.3,0) {$v$}; \node(t) at (4.6,0) {$t$};
+	\node(T) at (1.8,-.8) {$T$}; \node(S) at (2.8,-.8) {$S$};
+	\draw[dotted, ->] (s) -- (u); \draw[dotted, ->] (v) -- (t);
+	\draw (u) edge["$r - l$"] (v) (S) edge["$l$"'] (v) (u) edge["$l$"'] (T);
+	\draw[->] (t) to[bend right=22] node[above, font=\scriptsize]{$\infty$ (\texttt{ts}), only with $s$, $t$ (next topic)} (s);
+}
 \begin{facts}
 	\item Add the edge $u \to v$ with capacity $r - l$ and keep its \texttt{id}.
 	\item Record the forced flow: $d_v \mathrel{+}= l$ and $d_u \mathrel{-}= l$.
@@ -52,6 +61,13 @@ Use it for the largest or the smallest $s$--$t$ flow when edges have lower bound
 Example: $s \to a$ with $[2, 4]$ and $a \to t$ with $[0, 3]$: max 3, min 2.
 \topic{Min-cost circulation with negative cycles}
 Use it with MCMF (\S\ref{mcmf}) when negative-cost edges may form a cycle, which MCMF cannot take.
+\flowfig{
+	\node(a) at (0,0) {$u$}; \node(b) at (1.6,0) {$v$}; \draw (a) edge["{$r,\ c < 0$}"] (b);
+	\node at (2.3,0) {$\Rightarrow$};
+	\node(u) at (3,0) {$u$}; \node(v) at (5.2,0) {$v$}; \node(S) at (4.1,.55) {$S$}; \node(T) at (4.1,-.55) {$T$};
+	\draw (v) edge["{$r,\ -c$}"'] (u) (S) edge["$r$"] (v) (u) edge["$r$"'] (T);
+	\node[note, anchor=west] at (5.6,0) {pay $c \cdot r$ now};
+}
 \begin{facts}
 	\item Add an edge with cost $c \ge 0$ as it is.
 	\item Take an edge $u \to v$ with cost $c < 0$ and capacity $r$. Saturate it and pay $c \cdot r$ now.
@@ -85,6 +101,11 @@ Use it when vertex $v$ lets at most $c_v$ units through.
 Example: path $s \to a \to t$ with $c_a = 2$ and edge capacities 5: max flow 2.
 \topic{Project selection (max-weight closure)}
 Use it to choose a set with the largest total profit, where choosing one item can force choosing another.
+\flowfig{
+	\node(S) at (0,0) {$S$}; \node(i) at (1.4,0) {$i$}; \node(j) at (3.4,0) {$j$}; \node(T) at (4.8,0) {$T$};
+	\draw (S) edge["$p_i$"] (i) (i) edge["$\infty$", "$i$ needs $j$"' note] (j) (j) edge["$-p_j$"] (T);
+	\node[note] at (1.4,-.35) {$p_i > 0$}; \node[note] at (3.4,-.35) {$p_j < 0$};
+}
 \begin{facts}
 	\item If $p_i > 0$, add $S \to i$ with capacity $p_i$.
 	\item If $p_i < 0$, add $i \to T$ with capacity $-p_i$.
@@ -96,6 +117,12 @@ Use it to choose a set with the largest total profit, where choosing one item ca
 Example: $p_1 = 5$, $p_2 = -3$, 1 needs 2: max flow 3, best profit 2, set $\{1, 2\}$.
 \topic{K\"onig and Dilworth}
 Use it for covers of a bipartite graph, or for covering a DAG or a partial order with the fewest paths.
+\flowfig{
+	\node(S) at (0,0) {$S$}; \node(u) at (1.5,.35) {$u$}; \node(w) at (1.5,-.35) {$v$};
+	\node(u2) at (3.3,.35) {$u + n$}; \node(v2) at (3.3,-.35) {$v + n$}; \node(T) at (4.8,0) {$T$};
+	\draw (S) edge["1"] (u) (S) edge["1"'] (w) (u) edge["1"' near start] (v2) (u2) edge["1"] (T) (v2) edge["1"'] (T);
+	\node[note] at (1.5,-.75) {left copies}; \node[note] at (3.3,-.75) {right copies, DAG edge $u \to v$};
+}
 \begin{facts}
 	\item Take a bipartite graph with $V$ vertices and max matching $M$.
 	\item The min vertex cover has $M$ vertices, and the max independent set has $V - M$. Build the cover as in Dinic's note (\S\ref{dinic}).
