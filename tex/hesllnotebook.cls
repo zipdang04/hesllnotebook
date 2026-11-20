@@ -115,7 +115,8 @@
 \newcommand{\entry}[1]{\csname\entrylevel\endcsname{#1}}
 \newcommand{\setcurrentdir}[1]{\def\currentdir{contents/#1}}
 % Text layout (kactl-like). Code notes: one \fld{Label} line per fact, recurrences displayed with \[ \].
-\newcommand{\dsep}{\ifmmode\mbox{\textquotesingle}\else\textquotesingle\fi} % digit separator: 1\dsep000
+\newcommand{\dsep}{\,} % digit separator in text and math: 1\dsep000
+\newcommand{\cppsep}{\textquotesingle} % in a C++ snippet: Mint<998\cppsep244\cppsep353>
 \newcommand{\fld}[1]{\par\noindent\hangindent=1em\textbf{#1:}\ }
 \newcommand{\tightdisplay}{\setlength\abovedisplayskip{2pt}\setlength\belowdisplayskip{2pt}%
   \setlength\abovedisplayshortskip{0pt}\setlength\belowdisplayshortskip{1pt}}

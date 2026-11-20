@@ -5,10 +5,10 @@
 
 \subsection{Number theory}
 \cpp[4]{Modint}{modint.hpp}[
-	\fld{Use} \texttt{Mint<1\dsep000\dsep000\dsep007> a = 3; a = a * b / c; cout << a.pow(k) << a.inv();}
+	\fld{Use} \texttt{Mint<1\cppsep000\cppsep000\cppsep007> a = 3; a = a * b / c; cout << a.pow(k) << a.inv();}
 	\fld{Result} \texttt{a.v} holds the residue, $0 \le \texttt{v} < \texttt{MOD}$. An \texttt{ll} converts to \texttt{Mint}, so \texttt{2 * a} and \texttt{a == 0} work.
 	\fld{Needs} a prime \texttt{MOD}; divisors and arguments of \texttt{inv} are nonzero; \texttt{pow(n)} takes $n \ge 0$.
-	\fld{MintN} is \texttt{Mint<998\dsep244\dsep353>}, the type NTT, FPS and the linear recurrence use. Other moduli can be used next to it.
+	\fld{MintN} is \texttt{Mint<998\cppsep244\cppsep353>}, the type NTT, FPS and the linear recurrence use. Other moduli can be used next to it.
 ]\label{modint}
 \cpp[4]{Bigint}{bigint.hpp}[
 	\fld{Use} \texttt{Bigint a("123"), b = -5; a = a * b + a / b; cout << a << (a < b);}

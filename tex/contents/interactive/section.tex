@@ -41,9 +41,9 @@ Use a named pipe to connect the solution to your own interactor.
 Use it when the program runs twice and pass 2 reads what pass 1 wrote.
 \begin{checks}
 	\item Tell the passes apart by the first input token.
-	\item Use a fixed seed, \texttt{mt19937\_64 rng(12\dsep345)}, not \texttt{randomize}: both passes must make the same choices.
+	\item Use a fixed seed, \texttt{mt19937\_64 rng(12\cppsep345)}, not \texttt{randomize}: both passes must make the same choices.
 	\item Iterate in a canonical order. Never iterate an \texttt{unordered\_map} or \texttt{unordered\_set}, never sort by pointer.
-	\item Fix the hash base: in Rolling hash (\S\ref{strhash}) replace the random \texttt{B} by a constant such as \texttt{911\dsep382\dsep323}.
+	\item Fix the hash base: in Rolling hash (\S\ref{strhash}) replace the random \texttt{B} by a constant such as \texttt{911\cppsep382\cppsep323}.
 	\item The time limit holds for each pass separately.
 	\item Nothing carries over between passes: no files, no memory.
 	\item Test with \texttt{./stress.sh p -m multi -c chk} and a \texttt{noise.cpp} that plays the judge (\S\ref{stress}).

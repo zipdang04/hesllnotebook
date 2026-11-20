@@ -79,7 +79,7 @@ comment of 23 characters is reported as 35.
 | Templates | `template<class T>`, `vector<vector<int>>` | `template <class T>` |
 | Initialiser list | `Dsu(int n): par(n + 1){}` | `Dsu(int n) : par(n + 1) {}` |
 | Line break in output | `'\n'` | `"\n"`, `endl` |
-| A decimal number of 4 or more digits | C++: `1'000'000'007`, `314'159`, `bitset<4'097>`. `.tex` text and math: `998\dsep244\dsep353`, which prints a straight `'` (a bare `'` in math prints a prime). | `1000000007` |
+| A decimal number of 4 or more digits | C++: `1'000'000'007`, `314'159`, `bitset<4'097>`; a C++ snippet in `.tex`: `\texttt{Mint<998\cppsep244\cppsep353>}`. Text, math and tables: a thin space, `998\dsep244\dsep353`. | `1000000007` |
 
 Why so exact: in the trial, `if (` and `if(`, `}else{` and `} else {`, `v: g` and `v : g`,
 `'\n'` and `"\n"` all varied between two entries by the same implementer.
