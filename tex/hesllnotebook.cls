@@ -29,14 +29,14 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 2. margins %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \paperwidth=29.7cm
 \paperheight=21cm
-\textwidth=28.3cm
-\textheight=19.3cm
+\textwidth=28.7cm
+\textheight=19.6cm
 
-\hoffset=-3.95cm % one inch + \hoffset
-\voffset=-2.04cm % one inch + \voffset
+\hoffset=-4.15cm % one inch + \hoffset
+\voffset=-2.216cm % one inch + \voffset
 \topmargin=0cm
 \headheight=0.5cm
-\headsep=0.2cm
+\headsep=5pt
 % \footskip=0pt
 
 \parindent=0mm
@@ -73,11 +73,11 @@
     \setcounter{page}{0}
     \clearpage
     \pagestyle{fancy}
-    \lhead{\teamname -- \teamuni}
-    \rhead{page \thepage}
+    \lhead{\footnotesize\teamname -- \teamuni}
+    \rhead{\footnotesize page \thepage}
     \cfoot{}
 }
-\fancypagestyle{practice}{\fancyhf{}\lhead{\teamname -- \teamuni}\rhead{practice day}}
+\fancypagestyle{practice}{\fancyhf{}\lhead{\footnotesize\teamname -- \teamuni}\rhead{\footnotesize practice day}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 4. section %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 \titleformat{\section}{\normalfont\large\bfseries}{\thesection}{0.6em}{}
