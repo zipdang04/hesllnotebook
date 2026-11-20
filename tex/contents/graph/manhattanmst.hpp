@@ -34,7 +34,7 @@ vector<array<ll, 3>> manhattanMST(vector<pair<ll, ll>> p){
 	for(auto [w, u, v]: cand){
 		int a = find(u), b = find(v);
 		if(a == b) continue;
-		dsu[a] = b; res.push_back({w, u, v});
+		dsu[a] = b; res.push_back({u, v, w});
 	}
 	return res;
 }

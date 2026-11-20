@@ -14,7 +14,6 @@ struct LazySeg{
 	}
 	// node[id] gets t after the tag already in id
 	void apply(int id, Tag t){
-		if(t.b == 1 && t.c == 0) return;
 		node[id].sum = t.b * node[id].sum + t.c * node[id].len;
 		tag[id] = {t.b * tag[id].b, t.b * tag[id].c + t.c};
 	}

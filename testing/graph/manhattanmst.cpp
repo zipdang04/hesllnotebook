@@ -15,7 +15,7 @@ ll prim(const vector<pll> &p){
 }
 ll total(const vector<array<ll, 3>> &e){
 	ll s = 0;
-	for(auto [w, u, v]: e) s += w;
+	for(auto [u, v, w]: e) s += w;
 	return s;
 }
 int main(){
@@ -51,13 +51,13 @@ int main(){
 	auto e = manhattanMST(p);
 	assert(sz(e) == n - 1);
 	ll sum = 0, last = 0;
-	for(auto [w, u, v]: e){
+	for(auto [u, v, w]: e){
 		assert(w == llabs(p[u].fi - p[v].fi)
 			+ llabs(p[u].se - p[v].se));
 		assert(w >= last);
 		last = w; sum += w;
 	}
 	cout << sum << '\n';
-	for(auto [w, u, v]: e)
+	for(auto [u, v, w]: e)
 		cout << u - 1 << ' ' << v - 1 << '\n';
 }

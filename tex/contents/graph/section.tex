@@ -60,7 +60,7 @@ Use it to minimise the average weight $\bar w(C)$ of a cycle $C$, when the graph
 ]\label{dmst}
 \cpp[4]{Manhattan MST}{manhattanmst.hpp}[
 	\fld{Use} \texttt{vector<pll> p(n + 1); auto e = manhattanMST(p);}
-	\fld{Result} $n - 1$ edges \texttt{\{w, u, v\}} of a minimum spanning tree in increasing $w$, where $w = |x_u - x_v| + |y_u - y_v|$.
+	\fld{Result} $n - 1$ edges \texttt{\{u, v, w\}} of a minimum spanning tree in increasing $w$, where $w = |x_u - x_v| + |y_u - y_v|$.
 	\fld{Needs} $|x|, |y| \le 10^{17}$. Chebyshev distance: rotate to $(x + y, x - y)$ first (then $|x| + |y| \le 10^{17}$ is needed), then halve each $w$.
 ]\label{manhattanmst}
 \entry{Matrix-tree theorem}\label{matrixtree}
