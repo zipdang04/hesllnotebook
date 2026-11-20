@@ -198,6 +198,8 @@ NOTEBOOK (25 pp)  —  section → entry, or section → group → entry where a
 ```
 
 Budget: the PDF is 25 pages (cover + content pages labelled 1–24); no reserve page is left.
+The practice sheet (`contest/practice.tex`, header "practice day") is printed as an extra last page for the
+dry-run day only. It is not attached to the notebook and does not count toward the 25.
 Estimated content: ~3,060 lines ≈ 23.5 pp at 130 lines/page. §1 is ~85 lines over its 2 pp (cost scaling).
 
 Status (synced with the PDF, 2026-11-20): the PDF is 31 pages, 6 over the budget; page trimming is pending.
