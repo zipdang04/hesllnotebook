@@ -98,11 +98,14 @@ For a system over \texttt{double} (probabilities, expected values), copy \texttt
 	\fld{Needs} \texttt{MOD} $\ne 2$ for \texttt{'\textasciicircum'}. Uses Modint (\S\ref{modint}).
 	\fld{fwht} transforms in place, size a power of two; \texttt{fwht(a, op, true)} inverts it.
 ]\label{fwht}
-{\footnotesize\tightdisplay
-\topic{Subset sums (SOS)}
-To get $\sum_{T \subseteq S} a_T$ for every mask $S$, call \texttt{fwht(a, '|')}; for supersets, \texttt{'\&'}.
-\texttt{fwht(a, '|', true)} is Möbius inversion over subsets. For \texttt{ll} values, copy the loop with \texttt{ll} in place of \texttt{Mint<MOD>}.
-}
+\cpp[4]{SOS DP}{sos.hpp}[
+	\fld{Use} \texttt{sos(a, [](ll \&x, ll y)\{ x += y; \});} sums over submasks; \texttt{maximize}, min or a top-two merge work the same; \texttt{-=} inverts (Möbius); \texttt{true} for supersets.
+	\fld{Needs} size a power of two. Each $T \subseteq S$ reaches $S$ along one path, so a top-two merge never holds one element twice. Modular sums: \texttt{fwht(a, '|')} / \texttt{'\&'} (\S\ref{fwht}).
+	\fld{Submasks} of $S$, $O(3^n)$ over all $S$: \texttt{for(int T = S; T; T = (T - 1) \& S)}, then $T = 0$.
+	\fld{Subset convolution} ($T \cap U = \emptyset$): split $f, g$ by popcount, \texttt{sos} each rank, $\hat h_k = \sum_i \hat f_i \hat g_{k-i}$ per mask, invert, keep $|S| = k$; $O(n^2 2^n)$.
+	\fld{Trits} over $\{0,1,?\}^n$ in base 3: per trit, $f_{\dots ? \dots} = f_{\dots 0 \dots} + f_{\dots 1 \dots}$, $O(n 3^n)$.
+	\fld{Chromatic number} $I(S)$ = independent sets inside $S$ (SOS); $k$ colours suffice iff $\sum_S (-1)^{n-|S|} I(S)^k \ne 0$ (mod a random prime).
+]\label{sos}
 \cpp[4]{FPS: inv, log, exp, div}{fps.hpp}[
 	\fld{Use} \texttt{vector<MintN> g = fpsInv(a, n);}
 	\fld{Result} the first $n$ terms of $1/a$, $\log a$ or $\exp a$; \texttt{a} may be shorter or longer than $n$.
