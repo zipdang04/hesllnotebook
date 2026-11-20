@@ -121,7 +121,7 @@ Use it for covers of a bipartite graph, or for covering a DAG or a partial order
 	\node(S) at (0,0) {$S$}; \node(u) at (1.5,.35) {$u$}; \node(w) at (1.5,-.35) {$v$};
 	\node(u2) at (3.3,.35) {$u + n$}; \node(v2) at (3.3,-.35) {$v + n$}; \node(T) at (4.8,0) {$T$};
 	\draw (S) edge["1"] (u) (S) edge["1"'] (w) (u) edge["1"' near start] (v2) (u2) edge["1"] (T) (v2) edge["1"'] (T);
-	\node[note] at (1.5,-.75) {left copies}; \node[note] at (3.3,-.75) {right copies, DAG edge $u \to v$};
+	\node[note, anchor=east] at (2.2,-.75) {left copies}; \node[note, anchor=west] at (2.6,-.75) {right copies; DAG edge $u \to v$};
 }
 \begin{facts}
 	\item Take a bipartite graph with $V$ vertices and max matching $M$.
