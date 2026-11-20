@@ -104,9 +104,9 @@ Why: "fine in short arguments" was read broadly in the trial (`(lo + hi)/2`, `4*
 
 | Rule | Why | Example |
 |---|---|---|
-| One idea per line. Two or three short statements may share a line when they are one step. | A line number names one thing, and a debug print fits between two lines. | `stk.push_back(u); onStk[u] = 1;` |
+| One idea per row. Short statements share a row when together they are **one step** or a **matching pair**: plain statements, declarations, one-line `if`/`while`/`for`/`FOR`/`REV` statements, or a mix. Group by meaning, never just to fill the row: at most 3 statements and 60 columns, and never directly above an `else`. | A row number names one thing; a pair read side by side shows the symmetry. | `stk.push_back(u); onStk[u] = 1;` · `while(R < r) add(++R, 1); while(L > l) add(--L, 0);` · `if(n < 2) return false; if(n < 4) return true;` |
 | Statements joined by a comma are fine for one step. | Same. | `x = f(x), y = f(f(y));` |
-| A body of one statement joins the line of its `if`, `for`, `while`, `FOR`, `REV` or `else` when the joined line fits in 60 columns and holds only one of those words. | Less to type, one row fewer. | `if(lo == hi) return res;` |
+| A body of one statement joins the line of its `if`, `for`, `while`, `FOR`, `REV` or `else` when the joined line fits in 60 columns and holds only one of those words (two complete one-line statements on one row, by the row above, are fine). | Less to type, one row fewer. | `if(lo == hi) return res;` |
 | One `for` or `while` may be followed by one `if` on the same line. | Common "for each, if" shape. | `for(int v: g[u]) if(!comp[v]){` |
 | Otherwise a body of one statement goes on the next line, one tab deeper, without braces. A body of two or more statements is braced. | One statement needs no `}` to type back; a braced body gets a guide (1.5). | `for(auto &e: g[u]) if(e.rem > 0)` then `eps = max(eps, -rc(e, u));` |
 | Prefer an early `return`, `continue` or a loop condition to an `if` around the rest of a block. | One guide fewer, shorter lines. | `if(low[u] < num[u]) return;` |
