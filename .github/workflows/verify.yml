@@ -78,12 +78,18 @@ jobs:
   pdf:
     needs: verify                     # only build the PDF from code that passes
     runs-on: ubuntu-24.04
+    # TeX Live 2026 preinstalled (no apt install each run); the same TeX Live as local builds, so the same pages
+    container: texlive/texlive:latest-medium
     steps:
       - uses: actions/checkout@v4
 
-      - run: sudo apt-get update && sudo apt-get install -y latexmk texlive-latex-extra texlive-lang-other python3-pygments
+      # packages the medium scheme lacks; "path add" links the new latexminted into PATH (minted v3)
+      - run: tlmgr install titlesec minted vntex && tlmgr path add
 
-      # minted v3 runs a custom lexer only if its hash is listed; harmless under minted v2
+      # GNU cpp for the per-entry hashes (tex/entryhash.sh = contest/hash.sh); the image has no C toolchain
+      - run: apt-get update -qq && apt-get install -y -qq --no-install-recommends cpp
+
+      # minted v3 runs a custom lexer only if its hash is listed
       - name: Allow the custom lexer
         run: |
           hash=$(sha256sum tex/customlexers/lexers.py | cut -d' ' -f1)
@@ -91,7 +97,36 @@ jobs:
 
       - run: make pdf
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v4   # every run (PR previews), kept 90 days
         with:
           name: notebook
           path: tex/main.pdf
+
+  # main: a rolling "latest" release with a stable link (on the runner: the TeX Live image has no git / gh):
+  # https://github.com/<owner>/<repo>/releases/download/latest/hesllnotebook.pdf
+  release:
+    needs: pdf
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write                 # to move the tag and update the release
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: notebook
+
+      - name: Publish the "latest" release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mv main.pdf hesllnotebook.pdf
+          git tag -f latest && git push -f origin latest
+          notes="Notebook built from ${GITHUB_SHA::7} (run $GITHUB_RUN_NUMBER)."
+          if gh release view latest > /dev/null 2>&1; then
+            gh release edit latest --notes "$notes"
+          else
+            gh release create latest --title "Latest notebook" --notes "$notes"
+          fi
+          gh release upload latest hesllnotebook.pdf --clobber
