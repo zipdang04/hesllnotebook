@@ -3,11 +3,9 @@
 \setcurrentdir{contest}
 
 \cpp[3]{Template}{template.hpp}[
-	\fld{Use} \texttt{dbg(a, v, p);} under \texttt{-DLOCAL} prints \texttt{[a, v, p]: 3 \{1, 2\} (4, x)} to \texttt{cerr}.
-	\fld{Result} prints containers, pairs, C arrays, strings, \texttt{vector<bool>}.
-	\fld{Needs} no call the program needs inside \texttt{dbg} (not evaluated without \texttt{-DLOCAL}). The judge does not define \texttt{ONLINE\_JUDGE}.
-	\fld{maximize} \texttt{b} has the type of \texttt{a}; also \texttt{minimize}.
-	\fld{FOR} the end must not be the largest value of its type; \texttt{REV}: the smallest.
+	% \fld{Use} \texttt{dbg(a, v, p);} under \texttt{-DLOCAL} prints \texttt{[a, v, p]: 3 \{1, 2\} (4, x)} to \texttt{cerr}.
+	% \fld{Result} prints containers, pairs, C arrays, strings, \texttt{vector<bool>}.
+	% \fld{Needs} no call the program needs inside \texttt{dbg} (not evaluated without \texttt{-DLOCAL}). The judge does not define \texttt{ONLINE\_JUDGE}.
 ]\label{template}
 \othercodes{Shell: compile/run + hash}{bash}{command.sh}\label{command}
 \cpp[4]{Fast IO}{fastio.hpp}[
