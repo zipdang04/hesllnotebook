@@ -133,7 +133,7 @@ tests/1.in: FAIL
 tests/2.in: TLE
 tests/3.in: RE 3
 F
-diff -u expected log || fail "tests verdicts"
+grep '^tests/' log | diff -u expected - || fail "tests verdicts" # skip compiler warnings
 cat log
 newCase top
 checkOK -n 2 -s 9223372036854775806
