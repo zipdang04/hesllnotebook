@@ -1,6 +1,7 @@
 import os
 import platform
 import re
+import resource
 import shutil
 import subprocess
 import sys
@@ -10,6 +11,10 @@ import json
 
 if hasattr(sys.stdout, "reconfigure"):
 	sys.stdout.reconfigure(line_buffering=True)  # CI pipes stdout: keep our lines in order with the tests' output
+
+if platform.system() != "Darwin":  # 1 GB stack for every test program, inherited (macOS: the -stack_size flag)
+	hard = resource.getrlimit(resource.RLIMIT_STACK)[1]
+	resource.setrlimit(resource.RLIMIT_STACK, (1 << 30 if hard == resource.RLIM_INFINITY else min(1 << 30, hard), hard))
 
 TESTING_DIR = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(TESTING_DIR)

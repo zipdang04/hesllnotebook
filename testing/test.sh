@@ -2,7 +2,7 @@
 
 compile() {
 	# stack size: linker flag on macOS, ulimit elsewhere
-	if [ "$(uname)" = Darwin ]; then STACK="-Wl,-stack_size,0x10000000"; else STACK=""; ulimit -s unlimited 2> /dev/null; fi
+	if [ "$(uname)" = Darwin ]; then STACK="-Wl,-stack_size,0x10000000"; else STACK=""; ulimit -s 1048576 2> /dev/null; fi
 	${CXX:-g++-16} $1.cpp -O2 -lm -fmax-errors=5 -march=native $STACK -s -o $1 2> /dev/null
 	if [ $? -ne 0 ]
 	then
